@@ -105,16 +105,23 @@ class Job():
         return job_copy
 
     def render(self):
-        rendered_rules = []
-        for rule in self._rules:
-            rendered_rules.append(rule.render())
-
         rendered_job = {
             "script": self._script,
             "variables": self._variables,
             "tags": list(self._tags),
-            "rules": rendered_rules
         }
+
+        if len(self._rules) > 0:
+            rendered_rules = []
+            for rule in self._rules:
+                rendered_rules.append(rule.render())
+            rendered_job = {
+                **{
+                    "rules": rendered_rules
+                },
+                **rendered_job
+            }
+
         if self._image is not None:
             rendered_job = {
                 **{
