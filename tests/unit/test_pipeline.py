@@ -55,6 +55,6 @@ def test_full_pipeline_yaml_output():
     for environment in ["unstable", "dev", "tst", "iat"]:
         pipeline_stage(pipeline, environment)
 
-    pipeline.prepend_job_script("./install-dependencies.sh")
+    pipeline.prepend_script("./install-dependencies.sh")
 
     pipeline.print_yaml()

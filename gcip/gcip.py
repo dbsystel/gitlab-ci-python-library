@@ -37,6 +37,14 @@ class Job():
     def add_variables(self, variables: dict):
         self._variables = {**self._variables, **variables}
 
+    def add_namespace(self, namespace: str):
+        if namespace is None:
+            return
+        if self._namespace is None:
+            self._namespace = namespace
+        else:
+            self._namespace += namespace
+
     def copy(self, namespace: str = None):
         if self._namespace is None and namespace is None:
             target_namespace = None
@@ -65,88 +73,75 @@ class JobSequence():
     def __init__(self, *args, namespace: str = None):
         self._jobs = []
         self._namespace = namespace
+        self._prepend_scripts = []
+        self._append_scripts = []
 
     def add_job(self, job: Job, *args, namespace: str = None):
-        self._jobs.append(job.copy(namespace))
+        job.add_namespace(namespace)
+        self._jobs.append(job)
 
-    def add_sequence(self, job_sequence, namespace: str = None):
-        for name, job in job_sequence.items():
-            self.add_job(job, namespace)
+    def add_sequence(self, job_sequence, *args, namespace: str = None):
+        job_sequence.add_namespace(namespace)
+        self._jobs.append(job_sequence)
 
     def prepend_script(self, script: str):
-        for job in self._jobs:
-            job.prepend_script(script)
+        self._prepend_scripts.append(script)
 
     def append_script(self, script: str):
-        for job in self._job:
-            job.append_script(script)
+        self._append_scripts.append(script)
+
+    def add_namespace(self, namespace: str):
+        if namespace is None:
+            return
+        if self._namespace is None:
+            self._namespace = namespace
+        else:
+            self._namespace += namespace
+
+    @property
+    def populated_jobs(self) -> list:
+        all_jobs = []
+        for job in self._jobs:
+            if type(job) == JobSequence:
+                all_jobs += job.populated_jobs
+            elif type(job) == Job:
+                all_jobs.append(job.copy(self._namespace))
+
+        for job in all_jobs:
+            for script in self._prepend_scripts:
+                job.prepend_script(script)
+            for script in self._append_scripts:
+                job.append_script(script)
+
+        return all_jobs
 
     @property
     def jobs(self) -> list:
         return self._jobs
 
 
-class Pipeline():
+class Pipeline(JobSequence):
     def __init__(
         self,
         *args,
         variables: dict = None,
         before_script: list = None,
+        namespace: str = None,
     ):
+        super().__init__(namespace)
+
         self._pipeline = {}
         if variables is not None:
             self._pipeline["variables"] = variables
         if before_script is not None:
             self._pipeline["before_script"] = before_script
 
-        self._jobs = []
-        self._prepend_scripts = []
-        self._append_scripts = []
-
-    def add_job(
-        self,
-        job: Job,
-        *args,
-        variables: dict = {},
-        namespace: str = None,
-    ):
-        job_copy = job.copy(namespace)
-        job_copy.add_variables(variables)
-        self._jobs.append(job_copy)
-
-    def add_sequence(
-        self,
-        *args,
-        job_sequence: JobSequence,
-        variables: dict = {},
-        namespace: str = None,
-    ):
-        for job in job_sequence.jobs:
-            self.add_job(
-                job,
-                variables=variables,
-                namespace=namespace,
-            )
-
-    def prepend_job_script(self, script: str):
-        self._prepend_scripts.append(script)
-
-    def append_job_script(self, script: str):
-        self._append_scripts.append(script)
-
     def render(self):
         stages = {}
-        job_copies = []
-        for job in self._jobs:
-            job_copy = job.copy()
-            for script in self._prepend_scripts:
-                job_copy.prepend_script(script)
-            for script in self._append_scripts:
-                job_copy.append_script(script)
-            job_copies.append(job_copy)
-
+        job_copies = self.populated_jobs
+        for job in job_copies:
             # use the keys of dictionary as ordered set
-            stages[job_copy.fqdn] = None
+            stages[job.fqdn] = None
         pipe_copy = copy.deepcopy(self._pipeline)
         pipe_copy["stages"] = list(stages.keys())
         for job in job_copies:
