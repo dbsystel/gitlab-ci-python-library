@@ -21,8 +21,14 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
         update_image_job = gcip.Job(name="update-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}")
         update_image_job.add_rules([rules.not_on_merge_request_events(), gcip.Rule(if_statement="$IMAGE_SOURCE_PASSWORD")])
         env_pipe.add_job(update_image_job)
+    else:
+        env_pipe.add_job(gcip.Job(name="copy-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}"))
 
-    env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
+    if environment == "dev":
+        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances-barista"), namespace="windows_vm_intances_barista")
+        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances-impala"), namespace="windows_vm_intances_impala")
+    else:
+        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
 
     return env_pipe
 
