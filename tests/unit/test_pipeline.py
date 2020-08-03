@@ -4,45 +4,41 @@ from gcip import jobs
 from gcip import job_sequences
 
 
-def environment_pipeline(environment: str) -> gcip.JobSequence:
-    env_pipe = gcip.JobSequence(environment)
+def myapp_diff_deploy(environment: str, resource: str):
+    return job_sequences.cdk_diff_deploy(
+        stack=f"myapp-{environment}-{resource}", toolkit_stack_name=f"application-{environment}-cdk-toolkit"
+    )
 
-    env_pipe.add_sequence(job_sequences.cdk_diff_deploy(
-        stack=f"myapp-{environment}-project-resources",
-        toolkit_stack_name="foobar-toolkit"),
-                          namespace="project_resources")
+
+def environment_pipeline(environment: str) -> gcip.JobSequence:
+    env_pipe = gcip.JobSequence(namespace=environment)
+
+    env_pipe.add_sequence(myapp_diff_deploy(environment, "project-resources"), namespace="project_resources")
 
     if environment == "unstable":
-        env_pipe.add_sequence(job_sequences.cdk_diff_deploy(
-            stack=f"myapp-{environment}-windows-vm-bucket",
-            toolkit_stack_name="foobar-toolkit"),
-                              namespace=f"windows_vm_bucket")
+        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-bucket"), namespace="windows_vm_bucket")
 
-    env_pipe.add_sequence(job_sequences.cdk_diff_deploy(
-        stack=f"myapp-{environment}-windows-vm-instances",
-        toolkit_stack_name="foobar-toolkit"),
-                          namespace=f"windows_vm_intances")
+    env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
 
     return env_pipe
 
 
 def test_full_pipeline_yaml_output():
 
-    variables_unstable = {"MYPROJECT_RELEASE_VERSION": ">=0.dev"}
-    variables_dev = {"MYPROJECT_RELEASE_VERSION": "==0.0.dev10"}
-    variables_tst = {"MYPROJECT_RELEASE_VERSION": "==0.0.dev10"}
-    variables_iat = {"MYPROJECT_RELEASE_VERSION": "==0.0.dev10"}
-
-    image_iat = "python:3.9-slim"
-    image_prd = "python:3.9-slim"
-
     pipeline = gcip.Pipeline()
-    pipeline.prepend_script(
-        scripts.clone_repository("otherproject/configuration"))
+    pipeline.set_image("python:3.9-slim")
+    pipeline.prepend_script([
+        scripts.clone_repository("otherproject/configuration"),
+        "./install-dependencies.sh",
+    ])
+    pipeline.add_tags("environment-iat")
 
     for environment in ["unstable", "dev", "tst", "iat"]:
-        pipeline.add_sequence(environment_pipeline(environment))
-
-    pipeline.prepend_script("./install-dependencies.sh")
+        env_pipe = environment_pipeline(environment)
+        if environment == "unstable":
+            env_pipe.add_variables({"MYPROJECT_RELEASE_VERSION": ">=0.dev"})
+        else:
+            env_pipe.add_variables({"MYPROJECT_RELEASE_VERSION": "==0.0.dev10"})
+        pipeline.add_sequence(env_pipe)
 
     pipeline.print_yaml()
