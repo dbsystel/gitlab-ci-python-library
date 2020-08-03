@@ -1,5 +1,35 @@
 import yaml
 import copy
+from enum import Enum
+
+
+class WhenStatement(Enum):
+    ALWAYS = "always"
+    DELAYED = "delayed"
+    MANUAL = "manual"
+    NEVER = "never"
+    ON_FAILURE = "on_failure"
+    ON_SUCCESS = "on_success"
+
+
+class Rule():
+    def __init__(
+        self,
+        *args,
+        if_statement: str,
+        when: WhenStatement = WhenStatement.ON_SUCCESS,
+        allow_failure: bool = False,
+    ):
+        self._if = if_statement
+        self._when = when.value
+        self._allow_failure = allow_failure
+
+    def render(self):
+        return {
+            "if": self._if,
+            "when": self._when,
+            "allow_failure": self._allow_failure,
+        }
 
 
 class Job():
@@ -14,6 +44,7 @@ class Job():
         self._image = None
         self._variables = {}
         self._tags = set()
+        self._rules = []
 
         if type(script) == str:
             self._script = [script]
@@ -45,6 +76,11 @@ class Job():
     def add_tags(self, tags: set):
         self._tags.update(tags)
 
+    def add_rules(self, rules: dict):
+        if type(rules) != list:
+            rules = [rules]
+        self._rules += rules
+
     def add_namespace(self, namespace: str):
         if namespace is None:
             return
@@ -65,13 +101,19 @@ class Job():
         job_copy.add_variables(copy.deepcopy(self._variables))
         job_copy.add_namespace(self._namespace)
         job_copy.add_tags(self._tags)
+        job_copy.add_rules(self._rules)
         return job_copy
 
     def render(self):
+        rendered_rules = []
+        for rule in self._rules:
+            rendered_rules.append(rule.render())
+
         rendered_job = {
             "script": self._script,
             "variables": self._variables,
-            "tags": list(self._tags)
+            "tags": list(self._tags),
+            "rules": rendered_rules
         }
         if self._image is not None:
             rendered_job = {
@@ -87,11 +129,12 @@ class JobSequence():
     def __init__(self, namespace: str = None):
         self._jobs = []
         self._namespace = namespace
+        self._image = None
         self._variables = {}
         self._tags = set()
         self._prepend_scripts = []
         self._append_scripts = []
-        self._image = None
+        self._rules = []
 
     def add_job(self, job: Job, *args, namespace: str = None):
         job.add_namespace(namespace)
@@ -107,6 +150,11 @@ class JobSequence():
         if type(tags) == str:
             tags = [tags]
         self._tags.update(tags)
+
+    def add_rules(self, rules: dict):
+        if type(rules) != list:
+            rules = [rules]
+        self._rules += rules
 
     def add_sequence(self, job_sequence, *args, namespace: str = None):
         job_sequence.add_namespace(namespace)
@@ -147,6 +195,7 @@ class JobSequence():
             job.set_image(self._image)
             job.add_variables(self._variables)
             job.add_tags(self._tags)
+            job.add_rules(self._rules)
             job.prepend_script(self._prepend_scripts)
             job.append_script(self._append_scripts)
 

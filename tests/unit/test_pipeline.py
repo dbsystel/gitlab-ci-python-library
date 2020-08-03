@@ -2,6 +2,7 @@ from gcip import gcip
 from gcip import scripts
 from gcip import jobs
 from gcip import job_sequences
+from gcip import rules
 
 
 def myapp_diff_deploy(environment: str, resource: str):
@@ -17,6 +18,9 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
 
     if environment == "unstable":
         env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-bucket"), namespace="windows_vm_bucket")
+        update_image_job = gcip.Job(name="update-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}")
+        update_image_job.add_rules([rules.not_on_merge_request_events(), gcip.Rule(if_statement="$IMAGE_SOURCE_PASSWORD")])
+        env_pipe.add_job(update_image_job)
 
     env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
 
