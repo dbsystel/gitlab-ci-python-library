@@ -1,0 +1,21 @@
+generate-pipeline:
+  stage: build
+  image: python:3.9-slim
+  script:
+    - pip3 install --upgrade gcip==1.0.0
+    - python3 .gitlab-ci.py > generated-config.yml
+  artifacts:
+    paths:
+      - generated-config.yml
+  tags:
+    - environment-iat
+
+run-pipeline:
+  stage: deploy
+  needs:
+    - generate-pipeline
+  trigger:
+    include:
+      - artifact: generated-config.yml
+        job: generate-pipeline
+    strategy: depend

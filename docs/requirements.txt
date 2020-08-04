@@ -1,0 +1,3 @@
+sphinx
+sphinx-autoapi  # Auto documentation package for api
+sphinx_rtd_theme  # Default read the docs theme
