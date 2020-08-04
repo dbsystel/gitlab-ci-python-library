@@ -67,7 +67,12 @@ class Job():
             script = [script]
         self._script += script
 
-    def add_variables(self, variables: dict):
+    def add_variables(self, *var_dicts, **variables: dict):
+        for var_dict in var_dicts:
+            self._variables = {
+                **self._variables,
+                **var_dict
+            }
         self._variables = {
             **self._variables,
             **variables
@@ -147,7 +152,12 @@ class JobSequence():
         job.add_namespace(namespace)
         self._jobs.append(job)
 
-    def add_variables(self, variables: dict):
+    def add_variables(self, *var_dicts, **variables: dict):
+        for var_dict in var_dicts:
+            self._variables = {
+                **self._variables,
+                **var_dict
+            }
         self._variables = {
             **self._variables,
             **variables
@@ -200,7 +210,7 @@ class JobSequence():
         for job in all_jobs:
             job.add_namespace(self._namespace)
             job.set_image(self._image)
-            job.add_variables(self._variables)
+            job.add_variables(copy.deepcopy(self._variables))
             job.add_tags(self._tags)
             job.add_rules(self._rules)
             job.prepend_script(self._prepend_scripts)

@@ -46,9 +46,9 @@ def test_full_pipeline_yaml_output():
     for environment in ["unstable", "dev", "tst", "iat"]:
         env_pipe = environment_pipeline(environment)
         if environment == "unstable":
-            env_pipe.add_variables({"MYPROJECT_RELEASE_VERSION": ">=0.dev"})
+            env_pipe.add_variables(MYPROJECT_RELEASE_VERSION=">=0.dev")
         else:
-            env_pipe.add_variables({"MYPROJECT_RELEASE_VERSION": "==0.0.dev10"})
+            env_pipe.add_variables(MYPROJECT_RELEASE_VERSION="==0.0.dev10")
         pipeline.add_sequence(env_pipe)
 
     pipeline.print_yaml()
