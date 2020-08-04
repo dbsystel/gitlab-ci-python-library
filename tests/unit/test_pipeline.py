@@ -25,8 +25,10 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
         env_pipe.add_job(gcip.Job(name="copy-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}"))
 
     if environment == "dev":
-        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances-barista"), namespace="windows_vm_intances_barista")
-        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances-impala"), namespace="windows_vm_intances_impala")
+        env_pipe.add_sequence(
+            myapp_diff_deploy(environment, "windows-vm-instances-barista"), namespace="windows_vm_intances", name="barista"
+        )
+        env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances-impala"), namespace="windows_vm_intances", name="impala")
     else:
         env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
 

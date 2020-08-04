@@ -39,6 +39,7 @@ class Job():
         name: str,
         script: [str],
     ):
+        self._basename = name
         self._name = name
         self._namespace = None
         self._image = None
@@ -54,8 +55,17 @@ class Job():
             raise AttributeError("script parameter must be of type string or list of strings")
 
     @property
-    def fqdn(self):
+    def name(self):
         return self._name + (f"_{self._namespace}" if self._namespace is not None else "")
+
+    @property
+    def stage(self):
+        return self._basename + (f"_{self._namespace}" if self._namespace is not None else "")
+
+    def add_to_name(self, name: str):
+        if name is None:
+            return
+        self._name += "_" + name
 
     def prepend_script(self, script: str):
         if type(script) == str:
@@ -140,6 +150,7 @@ class Job():
 class JobSequence():
     def __init__(self, namespace: str = None):
         self._jobs = []
+        self._name = None
         self._namespace = namespace
         self._image = None
         self._variables = {}
@@ -151,6 +162,14 @@ class JobSequence():
     def add_job(self, job: Job, *args, namespace: str = None):
         job.add_namespace(namespace)
         self._jobs.append(job)
+
+    def add_to_name(self, name: str):
+        if name is None:
+            return
+        if self._name is None:
+            self._name = name
+        else:
+            self._name += "_" + name
 
     def add_variables(self, *var_dicts, **variables: dict):
         for var_dict in var_dicts:
@@ -173,8 +192,9 @@ class JobSequence():
             rules = [rules]
         self._rules += rules
 
-    def add_sequence(self, job_sequence, *args, namespace: str = None):
+    def add_sequence(self, job_sequence, *args, namespace: str = None, name: str = None):
         job_sequence.add_namespace(namespace)
+        job_sequence.add_to_name(name)
         self._jobs.append(job_sequence)
 
     def prepend_script(self, script: str):
@@ -209,6 +229,7 @@ class JobSequence():
 
         for job in all_jobs:
             job.add_namespace(self._namespace)
+            job.add_to_name(self._name)
             job.set_image(self._image)
             job.add_variables(copy.deepcopy(self._variables))
             job.add_tags(self._tags)
@@ -233,13 +254,13 @@ class Pipeline(JobSequence):
         job_copies = self.populated_jobs
         for job in job_copies:
             # use the keys of dictionary as ordered set
-            stages[job.fqdn] = None
+            stages[job.stage] = None
         pipe_copy = copy.deepcopy(self._pipeline)
         pipe_copy["stages"] = list(stages.keys())
         for job in job_copies:
             rendered_job = job.render()
-            rendered_job["stage"] = job.fqdn
-            pipe_copy[job.fqdn] = rendered_job
+            rendered_job["stage"] = job.stage
+            pipe_copy[job.name] = rendered_job
         return pipe_copy
 
     def print_yaml(self):
