@@ -50,3 +50,7 @@ print_date:
   - date
   stage: print_date
 ```
+
+## Configure Jobs
+
+[Input](./tests/unit/readme-configure-jobs.py):

@@ -93,7 +93,7 @@ class Job():
     def add_variables(self, **variables: Dict[str, str]):
         self._variables.update(variables)
 
-    def add_tags(self, tags: set):
+    def add_tags(self, *tags):
         self._tags.update(tags)
 
     def add_rules(self, rules: dict):
@@ -120,7 +120,7 @@ class Job():
         job_copy.set_image(self._image)
         job_copy.add_variables(**copy.deepcopy(self._variables))
         job_copy.add_namespace(self._namespace)
-        job_copy.add_tags(self._tags)
+        job_copy.add_tags(*self._tags)
         job_copy.add_rules(self._rules)
         return job_copy
 
@@ -179,9 +179,7 @@ class JobSequence():
     def add_variables(self, **variables: Dict[str, str]):
         self._variables.update(variables)
 
-    def add_tags(self, tags: set):
-        if type(tags) == str:
-            tags = [tags]
+    def add_tags(self, *tags):
         self._tags.update(tags)
 
     def add_rules(self, rules: dict):
@@ -229,7 +227,7 @@ class JobSequence():
             job.add_to_name(self._name)
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))
-            job.add_tags(self._tags)
+            job.add_tags(*self._tags)
             job.add_rules(self._rules)
             job.prepend_script(self._prepend_scripts)
             job.append_script(self._append_scripts)
