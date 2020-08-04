@@ -2,6 +2,17 @@ import copy
 from enum import Enum
 
 import yaml
+from pkg_resources import (
+    DistributionNotFound,
+    get_distribution,
+)
+
+try:
+    _distribution = get_distribution("custom-cdk")
+    __version__ = _distribution.version
+    __doc__ = _distribution.project_name
+except DistributionNotFound:
+    __version__ = "unknown"
 
 
 class WhenStatement(Enum):
