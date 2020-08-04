@@ -1,0 +1,13 @@
+README.md
+setup.cfg
+setup.py
+gcip/__init__.py
+gcip/job_sequences.py
+gcip/jobs.py
+gcip/rules.py
+gcip/scripts.py
+gcip.egg-info/PKG-INFO
+gcip.egg-info/SOURCES.txt
+gcip.egg-info/dependency_links.txt
+gcip.egg-info/requires.txt
+gcip.egg-info/top_level.txt

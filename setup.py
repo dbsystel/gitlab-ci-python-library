@@ -27,4 +27,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=("tests*", )),
     include_package_data=True,
     python_requires="~=3.7",
+    install_requires=[
+        "pyaml~=20.4",
+    ],
 )
