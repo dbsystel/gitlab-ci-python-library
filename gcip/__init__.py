@@ -80,15 +80,11 @@ class Job():
             return
         self._name += "_" + name
 
-    def prepend_script(self, script: str):
-        if type(script) == str:
-            script = [script]
-        self._script = script + self._script
+    def prepend_script(self, *script):
+        self._script = list(script) + self._script
 
-    def append_script(self, script: str):
-        if type(script) == str:
-            script = [script]
-        self._script += script
+    def append_script(self, *script):
+        self._script.extend(script)
 
     def add_variables(self, **variables: Dict[str, str]):
         self._variables.update(variables)
@@ -192,15 +188,11 @@ class JobSequence():
         job_sequence.add_to_name(name)
         self._jobs.append(job_sequence)
 
-    def prepend_script(self, script: str):
-        if type(script) == str:
-            script = [script]
-        self._prepend_scripts = script + self._prepend_scripts
+    def prepend_script(self, *script):
+        self._prepend_scripts = list(script) + self._prepend_scripts
 
-    def append_script(self, script: str):
-        if type(script) == str:
-            script = [script]
-        self._append_scripts += script
+    def append_script(self, *script):
+        self._append_scripts.extend(script)
 
     def set_image(self, image: str):
         self._image = image
@@ -229,8 +221,8 @@ class JobSequence():
             job.add_variables(**copy.deepcopy(self._variables))
             job.add_tags(*self._tags)
             job.add_rules(self._rules)
-            job.prepend_script(self._prepend_scripts)
-            job.append_script(self._append_scripts)
+            job.prepend_script(*self._prepend_scripts)
+            job.append_script(*self._append_scripts)
 
         return all_jobs
 

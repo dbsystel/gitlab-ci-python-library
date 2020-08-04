@@ -54,3 +54,24 @@ print_date:
 ## Configure Jobs
 
 [Input](./tests/unit/readme-configure-jobs.py):
+
+Output:
+
+```
+stages:
+- print_date
+print_date:
+  rules:
+  - if: $MY_VARIABLE_IS_PRESENT
+  script:
+  - ./before-script.sh
+  - date
+  - ./after-script.sh
+  variables:
+    USER: Max Power
+    URL: https://example.com
+  tags:
+  - europe
+  - test
+  stage: print_date
+```
