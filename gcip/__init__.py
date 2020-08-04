@@ -1,7 +1,6 @@
 import copy
 from enum import Enum
-
-from typing import List, Dict
+from typing import Dict, List
 
 import yaml
 from pkg_resources import (
