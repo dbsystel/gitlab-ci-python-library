@@ -1,4 +1,4 @@
-from gcip import gcip
+import gcip
 
 
 def cdk_diff(stack: str):

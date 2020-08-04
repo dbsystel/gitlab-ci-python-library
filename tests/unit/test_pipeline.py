@@ -1,8 +1,5 @@
-from gcip import gcip
-from gcip import scripts
-from gcip import jobs
-from gcip import job_sequences
-from gcip import rules
+import gcip
+from gcip import rules, scripts, job_sequences
 
 
 def myapp_diff_deploy(environment: str, resource: str):

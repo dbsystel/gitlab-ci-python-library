@@ -1,4 +1,4 @@
-from gcip import gcip
+import gcip
 from gcip import jobs
 
 

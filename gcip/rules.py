@@ -1,4 +1,4 @@
-from gcip import gcip
+import gcip
 
 
 def not_on_merge_request_events() -> gcip.Rule:
