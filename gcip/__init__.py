@@ -135,10 +135,10 @@ class Job():
             for rule in self._rules:
                 rendered_rules.append(rule.render())
             rendered_job = {
+                **rendered_job,
                 **{
                     "rules": rendered_rules
-                },
-                **rendered_job
+                }
             }
 
         if self._image is not None:

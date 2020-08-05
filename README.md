@@ -376,8 +376,8 @@ for env in ["development", "test"]:
     pipeline.add_sequence(environment_pipeline(env), name=env)
 ```
 
-Now the stages run in parallel, because just the job names are populated per environment but
-not the stages anymore.
+Now the environments run in parallel, because just the job names are populated per environment but
+not the stage names.
 
 Output:
 
@@ -444,6 +444,150 @@ update_service_test_service2:
   stage: update_service_test
 ```
 
+# Batteries included
+
+Until here you have learned everything about the logical functionality of gcip. But gcip does
+also contain a library of predefined assets you can use for building your pipelines. Those
+assets are contained in the following modules named by their type:
+
+* [scripts](./gcip/scripts.py)
+* [jobs](./gcip/jobs.py)
+* [job_sequences](./gcip/job_sequences.py)
+* [rules](./gcip/rules.py)
+
+Following sub chapters provide an example for one asset out of every module.
+
+## scripts
+
+[Input](./tests/unit/test_readme_assets_scripts.py)
+
+```
+from gcip import scripts
+
+pipeline = gcip.Pipeline()
+pipeline.add_job(gcip.Job(name="download_artifacts", script=scripts.clone_repository("path/to/group")))
+```
+
+Output:
+
+```
+stages:
+- download_artifacts
+print_date:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git
+  stage: download_artifacts
+```
+
+## jobs
+
+[Input](./tests/unit/test_readme_assets_jobs.py)
+
+```
+from gcip import jobs
+
+pipeline = gcip.Pipeline()
+pipeline.add_job(jobs.cdk_diff("my-cdk-stack"))
+```
+
+Output:
+
+```
+stages:
+- cdk_diff
+cdk_diff:
+  script:
+  - cdk synth my-cdk-stack
+  - cdk diff my-cdk-stack
+  stage: cdk_diff
+```
+
+## job_sequences
+
+[Input](./tests/unit/test_readme_assets_job_sequences.py)
+
+```
+from gcip import job_sequences
+
+pipeline = gcip.Pipeline()
+pipeline.add_job(job_sequences.cdk_diff_deploy(stack="my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+```
+
+Output:
+
+```
+stages:
+- cdk_diff
+- cdk_deploy
+cdk_diff:
+  script:
+  - cdk synth my-cdk-stack
+  - cdk diff my-cdk-stack
+  stage: cdk_diff
+cdk_deploy:
+  script:
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
+    my-cdk-stack
+  stage: cdk_deploy
+```
+
+## rules
+
+[Input](/.tests/unit/test_readme_assets/rules.py)
+
+```
+from gcip import rules
+
+job = gcip.Job(name="print_date", script="date")
+job.add_rules(rules.not_on_merge_request_events())
+
+pipeline = gcip.Pipeline()
+pipeline.add_job(job)
+```
+
+Output:
+
+```
+stages:
+- print_date
+print_date:
+  script:
+  - date
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+  stage: print_date
+```
+
 # Do more with Python
 
-# Batteries included
+NOTE: **Please note regarding the current version of gcip**
+Currently not all functinality of Gitlab CI is provided by gcip. In the following section is described that you don't need all
+the functionality from Gitlab CI, as you can cover some of this in Python. But some functionality must be part of gcip, like
+configure caching or artifacts, which isn't implemented yet.
+
+Until here you have learned everything about the functionality of _gcip_. That is, to sum it up:
+
+* Creating jobs.
+* Organizing job hierarchies with sequences.
+* Configuring jobs directly or at hierarchy level over sequences.
+* Namespacing and parallelization.
+* Predefined assets.
+
+With the few functionalities of gcip and the capabilities of Python, there is nothing left to create
+every pipeline you can imagine. Gitlab CI provides much more constructs you may miss here, but most of
+them are clunky workarounds as cause of the limited logic capabilities of the Domain Specific Script "Language"
+of Gitlab CI. You don't need them, when you can design your pipelines in Python. Here a few examples:
+
+* You don't need templates (the `extends` keyword or YAML anchors), because you can reuse jobs and sequences.
+* You don't need `before_script`, `after_script` or global configurations, because you can do configurations
+  at an arbitrary level in the sequences hierarchy. All configurations will finally be populated down to the jobs.
+* You didn't have to keep struggling with rules at pipeline and job level. In gcipd you can configure rules at
+  an arbitrary level in the sequences hierarchy.
+
+Furthermore you can leverage all the power of a programming language, to dynamically design your pipelies. Here
+some ideas:
+
+* Bundle jobs in sequences and use loops to populate the sequences over a list of environments.
+* Use if-then-else expressions to create jobs within job sequences depending on environment information or requirements.
+* Access information from outside your pipeline script you use for decision making inside your pipeline script.
