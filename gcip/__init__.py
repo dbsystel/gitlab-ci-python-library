@@ -149,10 +149,10 @@ class Job():
 
 
 class JobSequence():
-    def __init__(self, namespace: str = None):
+    def __init__(self):
         self._jobs = []
         self._name = None
-        self._namespace = namespace
+        self._namespace = None
         self._image = None
         self._variables = {}
         self._tags = set()
@@ -233,7 +233,7 @@ class Pipeline(JobSequence):
         *args,
         namespace: str = None,
     ):
-        super().__init__(namespace)
+        super().__init__()
         self._pipeline = {}
 
     def render(self):

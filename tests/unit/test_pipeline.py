@@ -9,7 +9,7 @@ def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
 
 
 def environment_pipeline(environment: str) -> gcip.JobSequence:
-    env_pipe = gcip.JobSequence(namespace=environment)
+    env_pipe = gcip.JobSequence()
 
     env_pipe.add_sequence(myapp_diff_deploy(environment, "project-resources"), namespace="project_resources")
 
@@ -48,6 +48,6 @@ def test_full_pipeline_yaml_output():
             env_pipe.add_variables(MYPROJECT_RELEASE_VERSION=">=0.dev")
         else:
             env_pipe.add_variables(MYPROJECT_RELEASE_VERSION="==0.0.dev10")
-        pipeline.add_sequence(env_pipe)
+        pipeline.add_sequence(env_pipe, namespace=environment)
 
     pipeline.print_yaml()

@@ -24,7 +24,8 @@ Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 * The command `pypeline.print_yaml()` is requred at the end of every pipeline script for
   synthesizing the Giltab CI pipeline code, but only shown in the first example.
 * The real output of a code snippet may containe more defaults not shown here in the documentation.
-* Before every code example there is a link to a working code snipped as pytest.
+* Before every code example there is a link to a working code snipped as pytest. It could be executed
+  with `pytest -s tests/unit/test_readme_<code-snippet>.py`
 
 ## Create a pipeline with one job
 
@@ -210,4 +211,110 @@ job2:
   - from-pipeline.sh
   - script2.sh
   stage: job2
+```
+
+# Namespaces allow reuse of jobs and sequences
+
+Assume you want to reuse a parameterized job. Following [Input](./tests/unit/test_readme_missing_namespace.py) is an **incorrect** example:
+
+```
+def job_for(environment: str) -> gcip.Job:
+    return gcip.Job(name="do_something", script=f"./do-something-on.sh {environment}")
+
+
+pipeline = gcip.Pipeline()
+for env in ["development", "test"]:
+    pipeline.add_job(job_for(env))
+```
+
+The output is obviously **wrong** as we expect two jobs but just get one:
+
+```
+stages:
+- do_something
+do_something:
+  script:
+  - ./do-something-on.sh test
+  variables: {}
+  tags: []
+  stage: do_something
+```
+
+Instead the `add_job(...)` and `add_sequence(...)` methods of sequences accept a `namespace` parameter,
+whose value will be appended to the Gitlab CI job name and stage.
+
+[Input](./tests/unit/test_readme_namespace_job.py):
+
+```
+def job_for(environment: str) -> gcip.Job:
+    return gcip.Job(name="do_something", script=f"./do-something-on.sh {environment}")
+
+
+pipeline = gcip.Pipeline()
+for env in ["development", "test"]:
+    pipeline.add_job(job_for(env), namespace=env)
+```
+
+Thus in the output we correctly populate the one job per environment:
+
+Output:
+
+```
+stages:
+- do_something_development
+- do_something_test
+do_something_development:
+  script:
+  - ./do-something-on.sh development
+  stage: do_something_development
+do_something_test:
+  script:
+  - ./do-something-on.sh test
+  stage: do_something_test
+```
+
+Namespacing is much more useful for reusing sequences. You can define a whole
+Gitlab CI pipeline within a stage - but need that to do for just one environment.
+Then you simply repeat that pipeline in a loop for all environments. Namespacing
+allows that all jobs of the pipeline are populated per environment.
+
+[Input](./tests/unit/test_readme_namespace_sequence.py):
+
+```
+def environment_pipeline(environment: str) -> gcip.JobSequence:
+    sequence = gcip.JobSequence()
+    sequence.add_job(gcip.Job(name="job1", script=f"job-1-on-{environment}"))
+    sequence.add_job(gcip.Job(name="job2", script=f"job-2-on-{environment}"))
+    return sequence
+
+
+pipeline = gcip.Pipeline()
+for env in ["development", "test"]:
+    pipeline.add_sequence(environment_pipeline(env), namespace=env)
+```
+
+Output:
+
+```
+stages:
+- job1_development
+- job2_development
+- job1_test
+- job2_test
+job1_development:
+  script:
+  - job-1-on-development
+  stage: job1_development
+job2_development:
+  script:
+  - job-2-on-development
+  stage: job2_development
+job1_test:
+  script:
+  - job-1-on-test
+  stage: job1_test
+job2_test:
+  script:
+  - job-2-on-test
+  stage: job2_test
 ```
