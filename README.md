@@ -26,7 +26,7 @@ Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 * The real output of a code snippet may containe more defaults not shown here in the documentation.
 * Before every code example there is a link to a working code snipped as pytest.
 
-## Create a Pipeline with one job
+## Create a pipeline with one job
 
 [Input](./tests/unit/test_readme_pipe_with_one_job.py):
 
@@ -34,9 +34,7 @@ Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 import gcip
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(
-    gcip.Job(name="print_date", script="date")
-    )
+pipeline.add_job(gcip.Job(name="print_date", script="date"))
 pipeline.print_yaml()
 ```
 
@@ -51,7 +49,7 @@ print_date:
   stage: print_date
 ```
 
-## Configure Jobs
+## Configure jobs
 
 Jobs can be configured by calling following methods:
 
@@ -94,7 +92,7 @@ print_date:
   stage: print_date
 ```
 
-## Bundling Jobs as Sequence
+## Bundling jobs as sequence
 
 You can bundle jobs to a sequence to apply a common configuration for all jobs included.
 A job sequence has the same configuration methods as shown in the previous example for jobs.
@@ -134,6 +132,81 @@ job1:
 job2:
   script:
   - from-sequence.sh
+  - script2.sh
+  stage: job2
+```
+
+# Stacking sequences
+
+[Input](./tests/unit/test_readme_stacking_sequences.py):
+
+```
+sequence_a = gcip.JobSequence()
+sequence_a.add_job(gcip.Job(name="job1", script="script1.sh"))
+sequence_a.prepend_script("from-sequence-a.sh")
+
+sequence_b = gcip.JobSequence()
+sequence_b.add_sequence(sequence_a)
+sequence_b.add_job(gcip.Job(name="job2", script="script2.sh"))
+sequence_b.prepend_script("from-sequence-b.sh")
+
+pipeline = gcip.Pipeline()
+pipeline.add_job(sequence_b)
+```
+
+Output:
+
+```
+stages:
+- job1
+- job2
+job1:
+  script:
+  - from-sequence-b.sh
+  - from-sequence-a.sh
+  - script1.sh
+  stage: job1
+job3:
+  script:
+  - from-sequence-b.sh
+  - script2.sh
+  stage: job2
+```
+
+# Pipelines are sequences
+
+Pipelines are a extended version of sequences and have all their abilities
+(plus piplipe specific abilities), like their configuration options and
+stacking other sequences.
+
+[Input](./tests/unit/test_readme_pipelines_are_sequences.py):
+
+```
+sequence_a = gcip.JobSequence()
+sequence_a.add_job(gcip.Job(name="job1", script="script1.sh"))
+sequence_a.prepend_script("from-sequence.sh")
+
+pipeline = gcip.Pipeline()
+pipeline.add_sequence(sequence_a)
+pipeline.add_job(gcip.Job(name="job2", script="script2.sh"))
+pipeline.prepend_script("from-pipeline.sh")
+```
+
+Output:
+
+```
+stages:
+- job1
+- job2
+job1:
+  script:
+  - from-pipeline.sh
+  - from-sequence.sh
+  - script1.sh
+  stage: job1
+job2:
+  script:
+  - from-pipeline.sh
   - script2.sh
   stage: job2
 ```
