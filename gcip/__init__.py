@@ -9,7 +9,7 @@ from pkg_resources import (
 )
 
 try:
-    _distribution = get_distribution("custom-cdk")
+    _distribution = get_distribution("gcip")
     __version__ = _distribution.version
     __doc__ = _distribution.project_name
 except DistributionNotFound:

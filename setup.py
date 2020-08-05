@@ -18,7 +18,7 @@ with open("README.md") as fp:
 setuptools.setup(
     name="gcip",
     version=get_version(),
-    description="Custom CDK Library",
+    description="The Gitlab CI Python Library",
     long_description=long_description_from_readme,
     long_description_content_type="text/markdown",
     author="Thomas Steinbach",
