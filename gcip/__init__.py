@@ -104,6 +104,8 @@ class Job():
             self._namespace += "_" + namespace
 
     def set_image(self, image: str):
+        if image is None:
+            return
         self._image = image
 
     def copy(self):
@@ -191,6 +193,8 @@ class JobSequence():
         self._append_scripts.extend(script)
 
     def set_image(self, image: str):
+        if image is None:
+            return
         self._image = image
 
     def add_namespace(self, namespace: str):
