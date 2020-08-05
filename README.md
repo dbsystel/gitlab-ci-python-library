@@ -6,7 +6,7 @@ Furthermore the Gitlab Ci Python Library is called _gcip_.
 
 [[_TOC_]]
 
-## Configuring you project to use gcip
+# Configuring you project to use gcip
 
 Create a `.gitlab-ci.yaml` with following static content:
 
@@ -19,7 +19,7 @@ include:
 
 Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 
-## Hints regarding the following examples
+# Hints regarding the following examples
 
 * Both, input code and output, is shortened to show the essence of the examples.
 * Once an import was shown in a code example it is left out in subsequent examples.
@@ -29,7 +29,7 @@ Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 * Before every code example there is a link to a working code snipped as pytest. It could be executed
   with `pytest -s tests/unit/test_readme_<code-snippet>.py`
 
-## Create a pipeline with one job
+# Create a pipeline with one job
 
 [Input](./tests/unit/test_readme_pipe_with_one_job.py):
 
@@ -52,7 +52,7 @@ print_date:
   stage: print_date
 ```
 
-## Configure jobs
+# Configure jobs
 
 Jobs can be configured by calling following methods:
 
@@ -96,7 +96,7 @@ print_date:
   stage: print_date
 ```
 
-## Bundling jobs as sequence
+# Bundling jobs as sequence
 
 You can bundle jobs to a sequence to apply a common configuration for all jobs included.
 A job sequence has the same configuration methods as shown in the previous example for jobs.
@@ -140,7 +140,7 @@ job2:
   stage: job2
 ```
 
-## Stacking sequences
+# Stacking sequences
 
 [Input](./tests/unit/test_readme_stacking_sequences.py):
 
@@ -177,7 +177,7 @@ job3:
   stage: job2
 ```
 
-## Pipelines are sequences
+# Pipelines are sequences
 
 Pipelines are a extended version of sequences and have all their abilities
 (plus piplipe specific abilities), like their configuration options and
@@ -215,7 +215,7 @@ job2:
   stage: job2
 ```
 
-## Namespaces allow reuse of jobs and sequences
+# Namespaces allow reuse of jobs and sequences
 
 Assume you want to reuse a parameterized job. Following [Input](./tests/unit/test_readme_missing_namespace.py) is an **incorrect** example:
 
