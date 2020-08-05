@@ -28,7 +28,7 @@ Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 
 ## Create a Pipeline with one job
 
-[Input](./tests/unit/readme-pipe-with-one-job.py):
+[Input](./tests/unit/test_readme_pipe_with_one_job.py):
 
 ```
 import gcip
@@ -53,7 +53,25 @@ print_date:
 
 ## Configure Jobs
 
-[Input](./tests/unit/readme-configure-jobs.py):
+Jobs can be configured by calling following methods:
+
+[Input](./tests/unit/test_readme_configure_jobs.py):
+
+```
+pipeline = gcip.Pipeline()
+
+job = gcip.Job(name="print_date", script="date")
+job.set_image("docker/image:example")
+job.prepend_script("./before-script.sh")
+job.append_script("./after-script.sh")
+job.add_variables(USER="Max Power", URL="https://example.com")
+job.add_tags("test", "europe")
+job.add_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
+
+pipeline.add_job(job)
+```
+
+The `prepend_script`, `append_script` and all `add_*` methods allow an arbitrary number of positional arguments.
 
 Output:
 
@@ -74,4 +92,48 @@ print_date:
   - europe
   - test
   stage: print_date
+```
+
+## Bundling Jobs as Sequence
+
+You can bundle jobs to a sequence to apply a common configuration for all jobs included.
+A job sequence has the same configuration methods as shown in the previous example for jobs.
+
+[Input](./tests/unit/test_readme_bundling_jobs.py):
+
+```
+job_sequence = gcip.JobSequence()
+
+job1 = gcip.Job(name="job1", script="script1.sh")
+job1.prepend_script("from-job-1.sh")
+job_sequence.add_job(job1)
+
+job_sequence.add_job(gcip.Job(name="job2", script="script2.sh"))
+
+job_sequence.prepend_script("from-sequence.sh")
+
+pipeline = gcip.Pipeline()
+pipeline.add_job(job_sequence)
+```
+
+As you will see in the output, jobs can have their own configuration (`job1.prepend_script(...`)
+as well as a common configuration from their sequence (`job_sequence.prepend_script(...`).
+
+Output:
+
+```
+stages:
+- job1
+- job2
+job1:
+  script:
+  - from-sequence.sh
+  - from-job-1.sh
+  - script1.sh
+  stage: job1
+job2:
+  script:
+  - from-sequence.sh
+  - script2.sh
+  stage: job2
 ```
