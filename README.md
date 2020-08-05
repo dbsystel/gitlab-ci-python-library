@@ -173,7 +173,7 @@ job1:
   - from-sequence-a.sh
   - script1.sh
   stage: job1
-job3:
+job2:
   script:
   - from-sequence-b.sh
   - script2.sh
