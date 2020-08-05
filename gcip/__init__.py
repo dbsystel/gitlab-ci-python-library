@@ -51,10 +51,10 @@ class Job():
         *args,
         name: str,
         script: List[str],
+        stage: str = None,
     ):
-        self._basename = name
         self._name = name
-        self._namespace = None
+        self._stage = stage if stage is not None else name
         self._image = None
         self._variables = {}
         self._tags = set()
@@ -69,16 +69,27 @@ class Job():
 
     @property
     def name(self):
-        return self._name + (f"_{self._namespace}" if self._namespace is not None else "")
+        return self._name
 
     @property
     def stage(self):
-        return self._basename + (f"_{self._namespace}" if self._namespace is not None else "")
+        return self._stage
 
-    def add_to_name(self, name: str):
+    def _extend_name(self, name: str):
         if name is None:
             return
         self._name += "_" + name
+
+    def _extend_stage(self, stage: str):
+        if stage is None:
+            return
+        self._stage += "_" + stage
+
+    def add_namespace(self, namespace: str):
+        if namespace is None:
+            return
+        self._extend_name(namespace)
+        self._extend_stage(namespace)
 
     def prepend_script(self, *script):
         self._script = list(script) + self._script
@@ -95,14 +106,6 @@ class Job():
     def add_rules(self, *rules):
         self._rules.extend(rules)
 
-    def add_namespace(self, namespace: str):
-        if namespace is None:
-            return
-        if self._namespace is None:
-            self._namespace = namespace
-        else:
-            self._namespace += "_" + namespace
-
     def set_image(self, image: str):
         if image is None:
             return
@@ -112,10 +115,10 @@ class Job():
         job_copy = Job(
             name=self._name,
             script=copy.deepcopy(self._script),
+            stage=self._stage,
         )
         job_copy.set_image(self._image)
         job_copy.add_variables(**copy.deepcopy(self._variables))
-        job_copy.add_namespace(self._namespace)
         job_copy.add_tags(*self._tags)
         job_copy.add_rules(*self._rules)
         return job_copy
@@ -150,8 +153,9 @@ class Job():
 
 class JobSequence():
     def __init__(self):
+        super().__init__()
         self._jobs = []
-        self._name = None
+        self._name_extension = None
         self._namespace = None
         self._image = None
         self._variables = {}
@@ -160,17 +164,31 @@ class JobSequence():
         self._append_scripts = []
         self._rules = []
 
-    def add_job(self, job: Job, *args, namespace: str = None):
-        job.add_namespace(namespace)
-        self._jobs.append(job)
-
-    def add_to_name(self, name: str):
+    def _extend_name(self, name: str):
         if name is None:
             return
-        if self._name is None:
-            self._name = name
+        if self._name_extension is None:
+            self._name_extension = name
         else:
-            self._name += "_" + name
+            self._name_extension += "_" + name
+
+    def add_namespace(self, namespace: str):
+        if namespace is None:
+            return
+        if self._namespace is None:
+            self._namespace = namespace
+        else:
+            self._namespace += namespace
+
+    def add_sequence(self, job_sequence, *args, namespace: str = None, name: str = None):
+        job_sequence.add_namespace(namespace)
+        job_sequence._extend_name(name)
+        self._jobs.append(job_sequence)
+
+    def add_job(self, job: Job, *args, namespace: str = None, name: str = None):
+        job.add_namespace(namespace)
+        job._extend_name(name)
+        self._jobs.append(job)
 
     def add_variables(self, **variables: Dict[str, str]):
         self._variables.update(variables)
@@ -180,11 +198,6 @@ class JobSequence():
 
     def add_rules(self, *rules):
         self._rules.extend(rules)
-
-    def add_sequence(self, job_sequence, *args, namespace: str = None, name: str = None):
-        job_sequence.add_namespace(namespace)
-        job_sequence.add_to_name(name)
-        self._jobs.append(job_sequence)
 
     def prepend_script(self, *script):
         self._prepend_scripts = list(script) + self._prepend_scripts
@@ -197,14 +210,6 @@ class JobSequence():
             return
         self._image = image
 
-    def add_namespace(self, namespace: str):
-        if namespace is None:
-            return
-        if self._namespace is None:
-            self._namespace = namespace
-        else:
-            self._namespace += namespace
-
     @property
     def populated_jobs(self) -> list:
         all_jobs = []
@@ -216,7 +221,7 @@ class JobSequence():
 
         for job in all_jobs:
             job.add_namespace(self._namespace)
-            job.add_to_name(self._name)
+            job._extend_name(self._name_extension)
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))
             job.add_tags(*self._tags)
@@ -228,11 +233,7 @@ class JobSequence():
 
 
 class Pipeline(JobSequence):
-    def __init__(
-        self,
-        *args,
-        namespace: str = None,
-    ):
+    def __init__(self):
         super().__init__()
         self._pipeline = {}
 
