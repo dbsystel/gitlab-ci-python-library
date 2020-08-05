@@ -2,7 +2,7 @@ generate-pipeline:
   stage: build
   image: python:3.9-slim
   script:
-    - pip3 install --upgrade gcip==0.11.0
+    - pip3 install --upgrade gcip==$GCIP_VERSION
     - python3 .gitlab-ci.py > generated-config.yml
   artifacts:
     paths:

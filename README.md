@@ -6,7 +6,7 @@ Furthermore the Gitlab Ci Python Library is called _gcip_.
 
 [[_TOC_]]
 
-# Configuring you project to use gcip
+# Configuring your project to use gcip
 
 Create a `.gitlab-ci.yaml` with following static content:
 
@@ -15,6 +15,8 @@ Create a `.gitlab-ci.yaml` with following static content:
 include:
  - project: gitlab-ci-python-library
    file: gcip-pipeline.yml
+   variables:
+     GCIP_VERSION: "<gcip release>"
 ```
 
 Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
