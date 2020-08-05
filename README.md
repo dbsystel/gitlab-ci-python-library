@@ -4,6 +4,8 @@ A Python Library for creating dynamic pipelines for Gitlab CI in Python.
 
 Furthermore the Gitlab Ci Python Library is called _gcip_.
 
+[[_TOC_]]
+
 ## Configuring you project to use gcip
 
 Create a `.gitlab-ci.yaml` with following static content:
