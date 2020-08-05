@@ -140,7 +140,7 @@ job2:
   stage: job2
 ```
 
-# Stacking sequences
+## Stacking sequences
 
 [Input](./tests/unit/test_readme_stacking_sequences.py):
 
@@ -177,7 +177,7 @@ job3:
   stage: job2
 ```
 
-# Pipelines are sequences
+## Pipelines are sequences
 
 Pipelines are a extended version of sequences and have all their abilities
 (plus piplipe specific abilities), like their configuration options and
@@ -215,7 +215,7 @@ job2:
   stage: job2
 ```
 
-# Namespaces allow reuse of jobs and sequences
+## Namespaces allow reuse of jobs and sequences
 
 Assume you want to reuse a parameterized job. Following [Input](./tests/unit/test_readme_missing_namespace.py) is an **incorrect** example:
 
