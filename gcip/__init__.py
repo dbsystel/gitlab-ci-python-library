@@ -92,10 +92,8 @@ class Job():
     def add_tags(self, *tags):
         self._tags.update(tags)
 
-    def add_rules(self, rules: dict):
-        if type(rules) != list:
-            rules = [rules]
-        self._rules += rules
+    def add_rules(self, *rules):
+        self._rules.extend(rules)
 
     def add_namespace(self, namespace: str):
         if namespace is None:
@@ -117,7 +115,7 @@ class Job():
         job_copy.add_variables(**copy.deepcopy(self._variables))
         job_copy.add_namespace(self._namespace)
         job_copy.add_tags(*self._tags)
-        job_copy.add_rules(self._rules)
+        job_copy.add_rules(*self._rules)
         return job_copy
 
     def render(self):
@@ -178,10 +176,8 @@ class JobSequence():
     def add_tags(self, *tags):
         self._tags.update(tags)
 
-    def add_rules(self, rules: dict):
-        if type(rules) != list:
-            rules = [rules]
-        self._rules += rules
+    def add_rules(self, *rules):
+        self._rules.extend(rules)
 
     def add_sequence(self, job_sequence, *args, namespace: str = None, name: str = None):
         job_sequence.add_namespace(namespace)
@@ -220,7 +216,7 @@ class JobSequence():
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))
             job.add_tags(*self._tags)
-            job.add_rules(self._rules)
+            job.add_rules(*self._rules)
             job.prepend_script(*self._prepend_scripts)
             job.append_script(*self._append_scripts)
 
