@@ -1,6 +1,17 @@
+from __future__ import annotations
+
 import copy
 from enum import Enum
-from typing import Dict, List
+from typing import (
+    Any,
+    Set,
+    Dict,
+    List,
+    Union,
+    Iterable,
+    NoReturn,
+    Optional,
+)
 
 import yaml
 from pkg_resources import (
@@ -28,16 +39,16 @@ class WhenStatement(Enum):
 class Rule():
     def __init__(
         self,
-        *args,
+        *args: Any,
         if_statement: str,
         when: WhenStatement = WhenStatement.ON_SUCCESS,
         allow_failure: bool = False,
-    ):
+    ) -> None:
         self._if = if_statement
         self._when = when.value
         self._allow_failure = allow_failure
 
-    def render(self):
+    def render(self) -> Dict[str, Union[str, bool]]:
         return {
             "if": self._if,
             "when": self._when,
@@ -48,7 +59,7 @@ class Rule():
 class Job():
     def __init__(
         self,
-        *args,
+        *args: Any,
         name: str,
         script: List[str],
         stage: str = None,
@@ -60,9 +71,9 @@ class Job():
         self._tags = set()
         self._rules = []
 
-        if type(script) == str:
+        if isinstance(script, str):
             self._script = [script]
-        elif type(script) == list:
+        elif isinstance(script, list):
             self._script = script
         else:
             raise AttributeError("script parameter must be of type string or list of strings")
@@ -77,7 +88,7 @@ class Job():
 
     def _extend_name(self, name: str):
         if name is None:
-            return
+            return ""
         self._name += "_" + name
 
     def _extend_stage(self, stage: str):
@@ -94,16 +105,16 @@ class Job():
     def prepend_script(self, *script):
         self._script = list(script) + self._script
 
-    def append_script(self, *script):
+    def append_script(self, *script: str) -> None:
         self._script.extend(script)
 
-    def add_variables(self, **variables: Dict[str, str]):
+    def add_variables(self, **variables: str) -> None:
         self._variables.update(variables)
 
-    def add_tags(self, *tags):
+    def add_tags(self, *tags: str) -> None:
         self._tags.update(tags)
 
-    def add_rules(self, *rules):
+    def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
 
     def set_image(self, image: str):
@@ -111,7 +122,7 @@ class Job():
             return
         self._image = image
 
-    def copy(self):
+    def copy(self) -> Job:
         job_copy = Job(
             name=self._name,
             script=copy.deepcopy(self._script),
@@ -123,7 +134,7 @@ class Job():
         job_copy.add_rules(*self._rules)
         return job_copy
 
-    def render(self):
+    def render(self) -> Dict[str, str]:
         rendered_job = {
             "script": self._script,
             "variables": self._variables,
@@ -159,7 +170,7 @@ class JobSequence():
         self._namespace = None
         self._image = None
         self._variables = {}
-        self._tags = set()
+        self._tags: Set[str] = set()
         self._prepend_scripts = []
         self._append_scripts = []
         self._rules = []
