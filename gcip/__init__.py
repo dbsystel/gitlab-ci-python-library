@@ -8,6 +8,7 @@ from typing import (
     Dict,
     List,
     Union,
+    Generic,
     Iterable,
     NoReturn,
     Optional,
@@ -87,7 +88,7 @@ class Job():
     def stage(self) -> str:
         return self._stage
 
-    def _extend_name(self, name: str) -> None:
+    def _extend_name(self, name: Optional[str]) -> None:
         if name:
             self._name += "_" + name
 
@@ -95,7 +96,7 @@ class Job():
         if stage:
             self._stage += "_" + stage
 
-    def add_namespace(self, namespace: str) -> None:
+    def add_namespace(self, namespace: Optional[str]) -> None:
         if namespace:
             self._extend_name(namespace)
             self._extend_stage(namespace)
@@ -151,71 +152,68 @@ class Job():
 
 
 class JobSequence():
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self._jobs = []
-        self._name_extension = None
-        self._namespace = None
-        self._image = None
-        self._variables = {}
+        self._jobs: List[Union[Job, JobSequence]] = list()
+        self._name_extension: Optional[str] = None
+        self._namespace: Optional[str] = None
+        self._image: Optional[str] = None
+        self._variables: Dict[str, str] = {}
         self._tags: Set[str] = set()
-        self._prepend_scripts = []
-        self._append_scripts = []
-        self._rules = []
+        self._prepend_scripts: List[str] = []
+        self._append_scripts: List[str] = []
+        self._rules: List[Rule] = []
 
-    def _extend_name(self, name: str):
-        if name is None:
-            return
-        if self._name_extension is None:
-            self._name_extension = name
-        else:
-            self._name_extension += "_" + name
+    def _extend_name(self, name: Optional[str]) -> None:
+        if name:
+            if self._name_extension:
+                self._name_extension += "_" + name
+            else:
+                self._name_extension = name
 
-    def add_namespace(self, namespace: str):
-        if namespace is None:
-            return
-        if self._namespace is None:
-            self._namespace = namespace
-        else:
-            self._namespace += namespace
+    def add_namespace(self, namespace: Optional[str]) -> None:
+        if namespace:
+            if self._namespace:
+                self._namespace += namespace
+            else:
+                self._namespace = namespace
 
-    def add_sequence(self, job_sequence, *args, namespace: str = None, name: str = None):
+    def add_sequence(self, job_sequence: JobSequence, *args: Any, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
         job_sequence.add_namespace(namespace)
         job_sequence._extend_name(name)
         self._jobs.append(job_sequence)
 
-    def add_job(self, job: Job, *args, namespace: str = None, name: str = None):
+    def add_job(self, job: Job, *args: Any, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
         job.add_namespace(namespace)
         job._extend_name(name)
         self._jobs.append(job)
 
-    def add_variables(self, **variables: Dict[str, str]):
+    def add_variables(self, **variables: str) -> None:
         self._variables.update(variables)
 
-    def add_tags(self, *tags):
+    def add_tags(self, *tags: str) -> None:
         self._tags.update(tags)
 
-    def add_rules(self, *rules):
+    def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
 
-    def prepend_script(self, *script):
+    def prepend_script(self, *script: str) -> None:
         self._prepend_scripts = list(script) + self._prepend_scripts
 
-    def append_script(self, *script):
+    def append_script(self, *script: str) -> None:
         self._append_scripts.extend(script)
 
-    def set_image(self, image: str):
-        if image is None:
-            return
-        self._image = image
+    def set_image(self, image: str) -> None:
+        if image:
+            self._image = image
 
     @property
-    def populated_jobs(self) -> list:
-        all_jobs = []
+    def populated_jobs(self) -> List[Job]:
+        all_jobs: List[Job] = []
         for job in self._jobs:
-            if type(job) == JobSequence:
+            if isinstance(job, JobSequence):
                 all_jobs += job.populated_jobs
-            elif type(job) == Job:
+            elif isinstance(job, Job):
                 all_jobs.append(job.copy())
 
         for job in all_jobs:
@@ -232,23 +230,22 @@ class JobSequence():
 
 
 class Pipeline(JobSequence):
-    def __init__(self):
-        super().__init__()
-        self._pipeline = {}
 
-    def render(self):
-        stages = {}
+    def render(self) -> Dict[str, Any]:
+        stages: Dict[str, None] = {}
+        pipline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
+
         for job in job_copies:
             # use the keys of dictionary as ordered set
             stages[job.stage] = None
-        pipe_copy = copy.deepcopy(self._pipeline)
-        pipe_copy["stages"] = list(stages.keys())
+
+        pipline["stages"] = list(stages.keys())
         for job in job_copies:
             rendered_job = job.render()
             rendered_job["stage"] = job.stage
-            pipe_copy[job.name] = rendered_job
-        return pipe_copy
+            pipline[job.name] = rendered_job
+        return pipline
 
-    def print_yaml(self):
+    def print_yaml(self) -> None:
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
