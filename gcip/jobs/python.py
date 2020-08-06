@@ -2,7 +2,7 @@ import gcip
 from gcip import rules, scripts
 
 
-def flake8():
+def flake8() -> gcip.Job:
     """
     Runs:
 
@@ -21,7 +21,7 @@ def flake8():
     )
 
 
-def isort():
+def isort() -> gcip.Job:
     """
     Runs:
 
@@ -40,7 +40,7 @@ def isort():
     )
 
 
-def pytest():
+def pytest() -> gcip.Job:
     """
     Runs `pytest` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
 
@@ -56,7 +56,7 @@ def pytest():
     )
 
 
-def evaluate_git_tag_pep404_conformity():
+def evaluate_git_tag_pep404_conformity() -> gcip.Job:
     """
     Checks if the current pipelines `$CI_COMMIT_TAG` validates to a valid Python package version according to
     https://www.python.org/dev/peps/pep-0440
@@ -71,11 +71,11 @@ def evaluate_git_tag_pep404_conformity():
             "python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity",
         ],
     )
-    job.add_rule(rules.only_tags())
+    job.add_rules(rules.only_tags())
     return job
 
 
-def bdist_wheel():
+def bdist_wheel() -> gcip.Job:
     """
     Runs `python3 setup.py bdist_wheel` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
 
@@ -91,7 +91,7 @@ def bdist_wheel():
     )
 
 
-def pages_sphinx():
+def pages_sphinx() -> gcip.Job:
     """
     Runs `sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}` and installs project requirements
     before (`gcip.scripts.pip_install_requirements()`)
@@ -112,7 +112,7 @@ def twine_upload(
     varname_repository_url: str,
     varname_user: str,
     varname_password: str,
-):
+) -> gcip.Job:
     """
     Runs:
 

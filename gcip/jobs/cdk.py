@@ -1,7 +1,7 @@
 import gcip
 
 
-def diff(stack: str):
+def diff(stack: str) -> gcip.Job:
     return gcip.Job(
         name="cdk_diff",
         stage="diff",
@@ -12,7 +12,7 @@ def diff(stack: str):
     )
 
 
-def deploy(stack: str, toolkit_stack_name: str):
+def deploy(stack: str, toolkit_stack_name: str) -> gcip.Job:
     return gcip.Job(
         name="cdk_deploy",
         stage="deploy",

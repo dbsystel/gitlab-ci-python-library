@@ -1,8 +1,7 @@
 ---
-
 variables:
-  ARTIFACTORY_DEV_URL: '<pypi-repo-url-dev>'
-  ARTIFACTORY_PRD_URL: '<pypi-repo-url-stable>'
+  ARTIFACTORY_DEV_URL: "<pypi-repo-url-dev>"
+  ARTIFACTORY_PRD_URL: "<pypi-repo-url-stable>"
 
 stages:
   - lint
@@ -21,8 +20,10 @@ lint:
   extends:
     - .on_prd
   script:
+    - pip install -r requirements.txt
     - flake8
     - isort --check .
+    - mypy ./gcip
 
 pytest:
   stage: test
