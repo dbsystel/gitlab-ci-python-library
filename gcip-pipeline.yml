@@ -8,7 +8,7 @@ generate-pipeline:
     paths:
       - generated-config.yml
   tags:
-    - environment-iat
+    - environment-prd
 
 run-pipeline:
   stage: deploy
