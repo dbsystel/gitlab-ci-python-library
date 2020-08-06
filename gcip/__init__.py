@@ -62,14 +62,15 @@ class Job():
         *args: Any,
         name: str,
         script: List[str],
-        stage: str = None,
+        stage: Optional[str] = None,
     ):
         self._name = name
         self._stage = stage if stage is not None else name
-        self._image = None
-        self._variables = {}
-        self._tags = set()
-        self._rules = []
+        self._image: Optional[str] = None
+        self._variables: Dict[str, str] = {}
+        self._tags: Set[str] = set()
+        self._rules: List[Rule] = []
+        self._script: List[str]
 
         if isinstance(script, str):
             self._script = [script]
@@ -79,30 +80,27 @@ class Job():
             raise AttributeError("script parameter must be of type string or list of strings")
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
-    def stage(self):
+    def stage(self) -> str:
         return self._stage
 
-    def _extend_name(self, name: str):
-        if name is None:
-            return ""
-        self._name += "_" + name
+    def _extend_name(self, name: str) -> None:
+        if name:
+            self._name += "_" + name
 
-    def _extend_stage(self, stage: str):
-        if stage is None:
-            return
-        self._stage += "_" + stage
+    def _extend_stage(self, stage: str) -> None:
+        if stage:
+            self._stage += "_" + stage
 
-    def add_namespace(self, namespace: str):
-        if namespace is None:
-            return
-        self._extend_name(namespace)
-        self._extend_stage(namespace)
+    def add_namespace(self, namespace: str) -> None:
+        if namespace:
+            self._extend_name(namespace)
+            self._extend_stage(namespace)
 
-    def prepend_script(self, *script):
+    def prepend_script(self, *script: str) -> None:
         self._script = list(script) + self._script
 
     def append_script(self, *script: str) -> None:
@@ -117,10 +115,9 @@ class Job():
     def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
 
-    def set_image(self, image: str):
-        if image is None:
-            return
-        self._image = image
+    def set_image(self, image: Optional[str]) -> None:
+        if image:
+            self._image = image
 
     def copy(self) -> Job:
         job_copy = Job(
@@ -134,8 +131,8 @@ class Job():
         job_copy.add_rules(*self._rules)
         return job_copy
 
-    def render(self) -> Dict[str, str]:
-        rendered_job = {
+    def render(self) -> Dict[str, Any]:
+        rendered_job: Dict[str, Any] = {
             "script": self._script,
             "variables": self._variables,
             "tags": list(self._tags),
@@ -145,20 +142,11 @@ class Job():
             rendered_rules = []
             for rule in self._rules:
                 rendered_rules.append(rule.render())
-            rendered_job = {
-                **rendered_job,
-                **{
-                    "rules": rendered_rules
-                }
-            }
+            rendered_job.update({"rules": rendered_rules})
 
         if self._image is not None:
-            rendered_job = {
-                **{
-                    "image": self._image
-                },
-                **rendered_job
-            }
+            rendered_job.update({"image": self._image})
+
         return rendered_job
 
 
