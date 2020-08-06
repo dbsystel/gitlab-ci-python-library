@@ -90,7 +90,7 @@ class Job():
         if name:
             self._name += "_" + name
 
-    def _extend_stage(self, stage: str) -> None:
+    def _extend_stage(self, stage: Optional[str]) -> None:
         if stage:
             self._stage += "_" + stage
 
