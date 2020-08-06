@@ -34,7 +34,7 @@ def isort() -> gcip.Job:
         name="isort",
         stage="lint",
         script=[
-            scripts.pip_install_requirements(),
+            "pip3 install --upgrade isort",
             "isort --check .",
         ],
     )
@@ -109,8 +109,8 @@ def pages_sphinx() -> gcip.Job:
 
 
 def twine_upload(
-    varname_repository_url: str,
-    varname_user: str,
+    repository_url: str,
+    user: str,
     varname_password: str,
 ) -> gcip.Job:
     """
@@ -121,16 +121,12 @@ def twine_upload(
     python3 -m twine upload --non-interactive --disable-progress-bar dist/*
     ```
 
-    :arg varname_repository_url: The name of the environment variable delivering the URL to the PyPI repository.
-    :arg varname_user: The name of the environment variable delivering the user to access the PyPI repository.
+    :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
+    :arg user: The name of the user to access the PyPI repository.
     :arg varname_password: The name of the environment variable delivering the password to access the PyPI repository.
+    If not existent, automatically a "$" will be prepended to the string. DO NOT DEFINE THE PASSWORD WITHIN THE PIPELINE.
+    Define your password outside the pipeline, e.g. as secret variable in the Gitlab CI/CD settings section.
     """
-    if not varname_repository_url.startswith("$"):
-        varname_repository_url = "$" + varname_repository_url
-
-    if not varname_user.startswith("$"):
-        varname_user = "$" + varname_user
-
     if not varname_password.startswith("$"):
         varname_password = "$" + varname_password
 
@@ -143,8 +139,8 @@ def twine_upload(
         ],
     )
     job.add_variables(
-        TWINE_REPOSITORY_URL=varname_repository_url,
-        TWINE_USERNAME=varname_user,
+        TWINE_REPOSITORY_URL=repository_url,
+        TWINE_USERNAME=user,
         TWINE_PASSWORD=varname_password,
     )
     return job

@@ -10,6 +10,8 @@ def diff_deploy(
     toolkit_stack_name: str,
 ) -> gcip.JobSequence:
     sequence = gcip.JobSequence()
-    sequence.add_job(cdk.diff(stack))
-    sequence.add_job(cdk.deploy(stack, toolkit_stack_name))
+    sequence.add_jobs(
+        cdk.diff(stack),
+        cdk.deploy(stack, toolkit_stack_name),
+    )
     return sequence

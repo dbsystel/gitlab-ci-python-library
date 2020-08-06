@@ -7,5 +7,5 @@ def test():
     job.add_rules(rules.not_on_merge_request_events())
 
     pipeline = gcip.Pipeline()
-    pipeline.add_job(job)
+    pipeline.add_jobs(job)
     pipeline.print_yaml()

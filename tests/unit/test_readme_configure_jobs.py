@@ -12,6 +12,6 @@ def test():
     job.add_tags("test", "europe")
     job.add_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
-    pipeline.add_job(job)
+    pipeline.add_jobs(job)
 
     pipeline.print_yaml()

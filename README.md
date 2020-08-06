@@ -40,7 +40,7 @@ Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 import gcip
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(gcip.Job(name="print_date", script="date"))
+pipeline.add_jobs(gcip.Job(name="print_date", script="date"))
 pipeline.print_yaml()
 ```
 
@@ -72,7 +72,7 @@ job.add_variables(USER="Max Power", URL="https://example.com")
 job.add_tags("test", "europe")
 job.add_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
-pipeline.add_job(job)
+pipeline.add_jobs(job)
 ```
 
 The `prepend_script`, `append_script` and all `add_*` methods allow an arbitrary number of positional arguments.
@@ -112,13 +112,15 @@ job_sequence = gcip.JobSequence()
 job1 = gcip.Job(name="job1", script="script1.sh")
 job1.prepend_script("from-job-1.sh")
 
-job_sequence.add_job(job1)
-job_sequence.add_job(gcip.Job(name="job2", script="script2.sh"))
+job_sequence.add_jobs(
+    job1,
+    gcip.Job(name="job2", script="script2.sh"),
+)
 
 job_sequence.prepend_script("from-sequence.sh")
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(job_sequence)
+pipeline.add_jobs(job_sequence)
 ```
 
 As you will see in the output, jobs can have their own configuration (`job1.prepend_script(...`)
@@ -149,16 +151,16 @@ job2:
 
 ```
 sequence_a = gcip.JobSequence()
-sequence_a.add_job(gcip.Job(name="job1", script="script1.sh"))
+sequence_a.add_jobs(gcip.Job(name="job1", script="script1.sh"))
 sequence_a.prepend_script("from-sequence-a.sh")
 
 sequence_b = gcip.JobSequence()
 sequence_b.add_sequence(sequence_a)
-sequence_b.add_job(gcip.Job(name="job2", script="script2.sh"))
+sequence_b.add_jobs(gcip.Job(name="job2", script="script2.sh"))
 sequence_b.prepend_script("from-sequence-b.sh")
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(sequence_b)
+pipeline.add_jobs(sequence_b)
 ```
 
 Output:
@@ -190,12 +192,12 @@ stacking other sequences.
 
 ```
 sequence_a = gcip.JobSequence()
-sequence_a.add_job(gcip.Job(name="job1", script="script1.sh"))
+sequence_a.add_jobs(gcip.Job(name="job1", script="script1.sh"))
 sequence_a.prepend_script("from-sequence.sh")
 
 pipeline = gcip.Pipeline()
 pipeline.add_sequence(sequence_a)
-pipeline.add_job(gcip.Job(name="job2", script="script2.sh"))
+pipeline.add_jobs(gcip.Job(name="job2", script="script2.sh"))
 pipeline.prepend_script("from-pipeline.sh")
 ```
 
@@ -228,7 +230,7 @@ def job_for(environment: str) -> gcip.Job:
 
 pipeline = gcip.Pipeline()
 for env in ["development", "test"]:
-    pipeline.add_job(job_for(env))
+    pipeline.add_jobs(job_for(env))
 ```
 
 The output is obviously **wrong** as we expect two jobs but just get one:
@@ -244,7 +246,7 @@ do_something:
   stage: do_something
 ```
 
-Instead the `.add_job(...)` and `.add_sequence(...)` methods of sequences accept a `namespace` parameter,
+Instead the `.add_jobs(...)` and `.add_sequence(...)` methods of sequences accept a `namespace` parameter,
 whose value will be appended to the Gitlab CI job name and stage.
 
 [Input](./tests/unit/test_readme_namespace_job.py):
@@ -255,7 +257,7 @@ def job_for(environment: str) -> gcip.Job:
 
 pipeline = gcip.Pipeline()
 for env in ["development", "test"]:
-    pipeline.add_job(job_for(env), namespace=env)
+    pipeline.add_jobs(job_for(env), namespace=env)
 ```
 
 Thus in the output we correctly populate the one job per environment:
@@ -286,8 +288,10 @@ allows that all jobs of the pipeline are populated per environment.
 ```
 def environment_pipeline(environment: str) -> gcip.JobSequence:
     sequence = gcip.JobSequence()
-    sequence.add_job(gcip.Job(name="job1", script=f"job-1-on-{environment}"))
-    sequence.add_job(gcip.Job(name="job2", script=f"job-2-on-{environment}"))
+    sequence.add_jobs(
+        gcip.Job(name="job1", script=f"job-1-on-{environment}"),
+        gcip.Job(name="job2", script=f"job-2-on-{environment}"),
+    )
     return sequence
 
 pipeline = gcip.Pipeline()
@@ -336,8 +340,10 @@ value for the jobs stage on its initialization:
 
 ```
 pipeline = gcip.Pipeline()
-pipeline.add_job(gcip.Job(name="job1", stage="single-stage", script="date"))
-pipeline.add_job(gcip.Job(name="job2", stage="single-stage", script="date"))
+pipeline.add_jobs(
+    gcip.Job(name="job1", stage="single-stage", script="date"),
+    gcip.Job(name="job2", stage="single-stage", script="date"),
+)
 ```
 
 Output:
@@ -357,7 +363,7 @@ job2:
 
 Because job name and stage values are both extended by the namespace equally, to run sequences in parallel you have
 just to extend the name values of the jobs but not the stage values. So instead of passing the `namespace` parameter
-to the `.add_job(...)` and `.add_sequence(...)` method you cann pass the `name` parameter.
+to the `.add_jobs(...)` and `.add_sequence(...)` method you cann pass the `name` parameter.
 
 Lets take the sequence example from the chapter [Namespaces allow reuse of jobs and sequence](#namespaces-allow-reuse-of-jobs-and-sequence)
 and instead of using the `namespace` when adding the sequence several times to the pipeline we now use the `name` parameter.
@@ -367,8 +373,10 @@ and instead of using the `namespace` when adding the sequence several times to t
 ```
 def environment_pipeline(environment: str) -> gcip.JobSequence:
     sequence = gcip.JobSequence()
-    sequence.add_job(gcip.Job(name="job1", script=f"job-1-on-{environment}"))
-    sequence.add_job(gcip.Job(name="job2", script=f"job-2-on-{environment}"))
+    sequence.add_jobs(
+        gcip.Job(name="job1", script=f"job-1-on-{environment}"),
+        gcip.Job(name="job2", script=f"job-2-on-{environment}"),
+    )
     return sequence
 
 pipeline = gcip.Pipeline()
@@ -414,8 +422,8 @@ def job_for(service: str) -> gcip.Job:
 
 pipeline = gcip.Pipeline()
 for env in ["development", "test"]:
-    pipeline.add_job(job_for(env), namespace=env, name="service1")
-    pipeline.add_job(job_for(env), namespace=env, name="service2")
+    pipeline.add_jobs(job_for(env), namespace=env, name="service1")
+    pipeline.add_jobs(job_for(env), namespace=env, name="service2")
 ```
 
 As output we get two services updated in parallel but in consecutive stages.
@@ -465,7 +473,7 @@ Following sub chapters provide an example for one asset out of every module.
 from gcip import scripts
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(gcip.Job(name="download_artifacts", script=scripts.clone_repository("path/to/group")))
+pipeline.add_jobs(gcip.Job(name="download_artifacts", script=scripts.clone_repository("path/to/group")))
 ```
 
 Output:
@@ -487,7 +495,7 @@ print_date:
 from gcip.jobs import python
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(python.flake8())
+pipeline.add_jobs(python.flake8())
 ```
 
 Output:
@@ -510,7 +518,7 @@ flake8:
 from gcip.job_sequences import cdk
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(cdk.diff_deploy(stack="my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+pipeline.add_jobs(cdk.diff_deploy(stack="my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
 ```
 
 Output:
@@ -542,7 +550,7 @@ job = gcip.Job(name="print_date", script="date")
 job.add_rules(rules.not_on_merge_request_events())
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(job)
+pipeline.add_jobs(job)
 ```
 
 Output:

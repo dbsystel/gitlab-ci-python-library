@@ -8,7 +8,7 @@ def job_for(service: str) -> gcip.Job:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_job(job_for(env), namespace=env, name="service1")
-        pipeline.add_job(job_for(env), namespace=env, name="service2")
+        pipeline.add_jobs(job_for(env), namespace=env, name="service1")
+        pipeline.add_jobs(job_for(env), namespace=env, name="service2")
 
     pipeline.print_yaml()
