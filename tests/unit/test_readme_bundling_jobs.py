@@ -1,4 +1,5 @@
 import gcip
+from tests import conftest
 
 
 def test():
@@ -17,4 +18,23 @@ def test():
     pipeline = gcip.Pipeline()
     pipeline.add_jobs(job_sequence)
 
-    pipeline.print_yaml()
+    output = pipeline.render()
+    # print(output)
+    assert conftest.dict_a_contains_b(
+        a=output,
+        b={
+            'stages': ['job1', 'job2'],
+            'job1': {
+                'script': ['from-sequence.sh', 'from-job-1.sh', 'script1.sh'],
+                'variables': {},
+                'tags': [],
+                'stage': 'job1'
+            },
+            'job2': {
+                'script': ['from-sequence.sh', 'script2.sh'],
+                'variables': {},
+                'tags': [],
+                'stage': 'job2'
+            }
+        },
+    )

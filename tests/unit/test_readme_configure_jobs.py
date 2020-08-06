@@ -1,4 +1,5 @@
 import gcip
+from tests import conftest
 
 
 def test():
@@ -14,4 +15,26 @@ def test():
 
     pipeline.add_jobs(job)
 
-    pipeline.print_yaml()
+    output = pipeline.render()
+    # print(output)
+    assert conftest.dict_a_contains_b(
+        a=output,
+        b={
+            'stages': ['print_date'],
+            'print_date': {
+                'script': ['./before-script.sh', 'date', './after-script.sh'],
+                'variables': {
+                    'USER': 'Max Power',
+                    'URL': 'https://example.com'
+                },
+                'tags': ['test', 'europe'],
+                'rules': [{
+                    'if': '$MY_VARIABLE_IS_PRESENT',
+                    'when': 'on_success',
+                    'allow_failure': False
+                }],
+                'image': 'docker/image:example',
+                'stage': 'print_date'
+            }
+        },
+    )
