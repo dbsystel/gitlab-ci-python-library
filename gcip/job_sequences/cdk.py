@@ -1,15 +1,15 @@
 from typing import Any
 
 import gcip
-from gcip import jobs
+from gcip.jobs import cdk
 
 
-def cdk_diff_deploy(
+def diff_deploy(
     *args: Any,
     stack: str,
     toolkit_stack_name: str,
 ) -> gcip.JobSequence:
     sequence = gcip.JobSequence()
-    sequence.add_job(jobs.cdk_diff(stack))
-    sequence.add_job(jobs.cdk_deploy(stack, toolkit_stack_name))
+    sequence.add_job(cdk.diff(stack))
+    sequence.add_job(cdk.deploy(stack, toolkit_stack_name))
     return sequence

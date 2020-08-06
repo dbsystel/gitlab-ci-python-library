@@ -484,22 +484,22 @@ print_date:
 [Input](./tests/unit/test_readme_assets_jobs.py)
 
 ```
-from gcip import jobs
+from gcip.jobs import python
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(jobs.cdk_diff("my-cdk-stack"))
+pipeline.add_job(python.flake8())
 ```
 
 Output:
 
 ```
 stages:
-- cdk_diff
-cdk_diff:
+- lint
+flake8:
   script:
-  - cdk synth my-cdk-stack
-  - cdk diff my-cdk-stack
-  stage: cdk_diff
+  - pip3 install --upgrade flake8
+  - flake8
+  stage: lint
 ```
 
 ## job_sequences
@@ -507,10 +507,10 @@ cdk_diff:
 [Input](./tests/unit/test_readme_assets_job_sequences.py)
 
 ```
-from gcip import job_sequences
+from gcip.job_sequences import cdk
 
 pipeline = gcip.Pipeline()
-pipeline.add_job(job_sequences.cdk_diff_deploy(stack="my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+pipeline.add_job(cdk.diff_deploy(stack="my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
 ```
 
 Output:

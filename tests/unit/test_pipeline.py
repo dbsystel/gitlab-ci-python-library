@@ -1,11 +1,10 @@
 import gcip
-from gcip import rules, scripts, job_sequences
+from gcip import rules, scripts
+from gcip.job_sequences import cdk
 
 
 def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
-    return job_sequences.cdk_diff_deploy(
-        stack=f"myapp-{environment}-{resource}", toolkit_stack_name=f"application-{environment}-cdk-toolkit"
-    )
+    return cdk.diff_deploy(stack=f"myapp-{environment}-{resource}", toolkit_stack_name=f"application-{environment}-cdk-toolkit")
 
 
 def environment_pipeline(environment: str) -> gcip.JobSequence:

@@ -2,12 +2,14 @@ import os
 
 import setuptools
 
-from helpers import evaluate_version_tag as phelpers
+from gcip.script_library import (
+    evaluate_git_tag_pep404_conformity as pep404,
+)
 
 
 def get_version() -> str:
     ci_commit_tag = os.getenv("CI_COMMIT_TAG")
-    if ci_commit_tag is not None and phelpers.is_canonical(ci_commit_tag):
+    if ci_commit_tag is not None and pep404.is_canonical(ci_commit_tag):
         return ci_commit_tag
     return f"0.dev{os.getenv('CI_PIPELINE_ID')}"
 
