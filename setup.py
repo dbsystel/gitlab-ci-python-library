@@ -2,7 +2,7 @@ import os
 
 import setuptools
 
-from helpers import evaluate_version_tag as phelpers
+from gcip.script_library import evaluate_version_scheme as phelpers
 
 
 def get_version() -> str:
