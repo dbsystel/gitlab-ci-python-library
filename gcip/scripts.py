@@ -15,4 +15,4 @@ def pip_install_requirements(requirements_file: str = "requirements.txt") -> str
 
     :arg requirements_file: Defaults to `requirements.txt`
     """
-    return "pip3 install --upgrade -r {requirements_file}"
+    return f"pip3 install --upgrade -r {requirements_file}"

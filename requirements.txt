@@ -1,2 +1,6 @@
 -e .
+isort
+flake8
+pytest
 mypy
+pydash

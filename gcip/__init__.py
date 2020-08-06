@@ -181,10 +181,11 @@ class JobSequence():
         job_sequence._extend_name(name)
         self._jobs.append(job_sequence)
 
-    def add_job(self, job: Job, *args: Any, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
-        job.add_namespace(namespace)
-        job._extend_name(name)
-        self._jobs.append(job)
+    def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
+        for job in jobs:
+            job.add_namespace(namespace)
+            job._extend_name(name)
+            self._jobs.append(job)
 
     def add_variables(self, **variables: str) -> None:
         self._variables.update(variables)
@@ -228,7 +229,6 @@ class JobSequence():
 
 
 class Pipeline(JobSequence):
-
     def render(self) -> Dict[str, Any]:
         stages: Dict[str, None] = {}
         pipline: Dict[str, Any] = {}
