@@ -2,7 +2,15 @@ from __future__ import annotations
 
 import copy
 from enum import Enum
-from typing import Any, Set, Dict, List, Union, Optional
+from typing import (
+    Any,
+    Set,
+    Dict,
+    List,
+    Union,
+    AnyStr,
+    Optional,
+)
 
 import yaml
 from pkg_resources import (
@@ -52,7 +60,7 @@ class Job():
         self,
         *args: Any,
         name: str,
-        script: List[str],
+        script: Union[AnyStr, List[str]],
         stage: Optional[str] = None,
     ):
         self._name = name
