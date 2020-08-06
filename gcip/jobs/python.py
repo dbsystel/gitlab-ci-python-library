@@ -1,5 +1,5 @@
 import gcip
-from gcip import rules
+from gcip import rules, scripts
 
 
 def flake8():
@@ -34,7 +34,7 @@ def isort():
         name="isort",
         stage="lint",
         script=[
-            scipts.pip_install_requirements(),
+            scripts.pip_install_requirements(),
             "isort --check .",
         ],
     )
@@ -50,7 +50,7 @@ def pytest():
         name="pytest",
         stage="test",
         script=[
-            scipts.pip_install_requirements(),
+            scripts.pip_install_requirements(),
             "pytest",
         ],
     )
@@ -85,7 +85,7 @@ def bdist_wheel():
         name="bdist_wheel",
         stage="build",
         script=[
-            scipts.pip_install_requirements(),
+            scripts.pip_install_requirements(),
             "python3 setup.py bdist_wheel",
         ],
     )
