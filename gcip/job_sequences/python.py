@@ -6,7 +6,7 @@ def full_stack(
     repository_url: str,
     user: str,
     varname_password: str,
-) -> gcip.Job:
+) -> gcip.JobSequence:
     """
     Returns a pipeline containing all jobs from `gcip.jobs.python`:
         * isort
