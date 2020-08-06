@@ -1,9 +1,11 @@
+from typing import Any
+
 import gcip
 from gcip import jobs
 
 
 def cdk_diff_deploy(
-    *args,
+    *args: Any,
     stack: str,
     toolkit_stack_name: str,
 ) -> gcip.JobSequence:

@@ -2,17 +2,7 @@ from __future__ import annotations
 
 import copy
 from enum import Enum
-from typing import (
-    Any,
-    Set,
-    Dict,
-    List,
-    Union,
-    Generic,
-    Iterable,
-    NoReturn,
-    Optional,
-)
+from typing import Any, Set, Dict, List, Union, Optional
 
 import yaml
 from pkg_resources import (
