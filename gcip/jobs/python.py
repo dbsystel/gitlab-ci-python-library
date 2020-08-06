@@ -80,8 +80,9 @@ def bdist_wheel() -> gcip.Job:
     Runs `python3 setup.py bdist_wheel` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `setuptools`
+    * Creates artifacts under the path `dist/`
     """
-    return gcip.Job(
+    job = gcip.Job(
         name="bdist_wheel",
         stage="build",
         script=[
@@ -89,6 +90,8 @@ def bdist_wheel() -> gcip.Job:
             "python3 setup.py bdist_wheel",
         ],
     )
+    job.add_artifacts_paths("dist/")
+    return job
 
 
 def pages_sphinx() -> gcip.Job:
@@ -97,8 +100,9 @@ def pages_sphinx() -> gcip.Job:
     before (`gcip.scripts.pip_install_requirements()`)
 
     * Requires a `docs/requirements.txt` in your project folder` containing at least `sphinx`
+    * Creates it artifacts for Gitlab Pages under `pages`
     """
-    return gcip.Job(
+    job = gcip.Job(
         name="pages_python_sphinx",
         stage="build",
         script=[
@@ -106,6 +110,8 @@ def pages_sphinx() -> gcip.Job:
             "sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}",
         ],
     )
+    job.add_artifacts_paths("public")
+    return job
 
 
 def twine_upload(
@@ -120,6 +126,8 @@ def twine_upload(
     pip3 install --upgrade twine
     python3 -m twine upload --non-interactive --disable-progress-bar dist/*
     ```
+
+    * Requires artifacts from a build job under `dist/` (e.g. from `gcip.jobs.python.bdist_wheel()`)
 
     :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
     :arg user: The name of the user to access the PyPI repository.

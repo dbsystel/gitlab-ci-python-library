@@ -43,11 +43,17 @@ def test():
             },
             'bdist_wheel': {
                 'script': ['pip3 install --upgrade -r requirements.txt', 'python3 setup.py bdist_wheel'],
+                'artifacts': {
+                    'paths': ['dist/']
+                },
                 'stage': 'build'
             },
             'pages_python_sphinx': {
                 'script':
                 ['pip3 install --upgrade -r docs/requirements.txt', 'sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}'],
+                'artifacts': {
+                    'paths': ['public']
+                },
                 'stage': 'build'
             },
             'twine_upload': {

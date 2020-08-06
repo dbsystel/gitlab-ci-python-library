@@ -69,12 +69,13 @@ class Job():
         self._variables: Dict[str, str] = {}
         self._tags: Set[str] = set()
         self._rules: List[Rule] = []
-        self._script: List[str]
+        self._scripts: List[str]
+        self._artifacts_paths: Set[str] = set()
 
         if isinstance(script, str):
-            self._script = [script]
+            self._scripts = [script]
         elif isinstance(script, list):
-            self._script = script
+            self._scripts = script
         else:
             raise AttributeError("script parameter must be of type string or list of strings")
 
@@ -100,16 +101,19 @@ class Job():
             self._extend_stage(namespace)
 
     def prepend_script(self, *script: str) -> None:
-        self._script = list(script) + self._script
+        self._scripts = list(script) + self._scripts
 
     def append_script(self, *script: str) -> None:
-        self._script.extend(script)
+        self._scripts.extend(script)
 
     def add_variables(self, **variables: str) -> None:
         self._variables.update(variables)
 
     def add_tags(self, *tags: str) -> None:
         self._tags.update(tags)
+
+    def add_artifacts_paths(self, *paths: str) -> None:
+        self._artifacts_paths.update(paths)
 
     def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
@@ -121,18 +125,19 @@ class Job():
     def copy(self) -> Job:
         job_copy = Job(
             name=self._name,
-            script=copy.deepcopy(self._script),
+            script=copy.deepcopy(self._scripts),
             stage=self._stage,
         )
         job_copy.set_image(self._image)
         job_copy.add_variables(**copy.deepcopy(self._variables))
         job_copy.add_tags(*self._tags)
+        job_copy.add_artifacts_paths(*self._artifacts_paths)
         job_copy.add_rules(*self._rules)
         return job_copy
 
     def render(self) -> Dict[str, Any]:
         rendered_job: Dict[str, Any] = {
-            "script": self._script,
+            "script": self._scripts,
             "variables": self._variables,
             "tags": list(self._tags),
         }
@@ -142,6 +147,11 @@ class Job():
             for rule in self._rules:
                 rendered_rules.append(rule.render())
             rendered_job.update({"rules": rendered_rules})
+
+        if len(self._artifacts_paths) > 0:
+            rendered_job.update({"artifacts": {
+                "paths": list(self._artifacts_paths),
+            }})
 
         if self._image is not None:
             rendered_job.update({"image": self._image})
@@ -158,6 +168,7 @@ class JobSequence():
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
         self._tags: Set[str] = set()
+        self._artifacts_paths: Set[str] = set()
         self._prepend_scripts: List[str] = []
         self._append_scripts: List[str] = []
         self._rules: List[Rule] = []
@@ -193,6 +204,9 @@ class JobSequence():
     def add_tags(self, *tags: str) -> None:
         self._tags.update(tags)
 
+    def add_artifacts_paths(self, *paths: str) -> None:
+        self._artifacts_paths.update(paths)
+
     def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
 
@@ -221,6 +235,7 @@ class JobSequence():
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))
             job.add_tags(*self._tags)
+            job.add_artifacts_paths(*self._artifacts_paths)
             job.add_rules(*self._rules)
             job.prepend_script(*self._prepend_scripts)
             job.append_script(*self._append_scripts)

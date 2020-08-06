@@ -70,6 +70,7 @@ job.prepend_script("./before-script.sh")
 job.append_script("./after-script.sh")
 job.add_variables(USER="Max Power", URL="https://example.com")
 job.add_tags("test", "europe")
+job.add_artifacts_paths("binaries/", ".config")
 job.add_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
 pipeline.add_jobs(job)
@@ -86,6 +87,10 @@ print_date:
   image: docker/image:example
   rules:
   - if: $MY_VARIABLE_IS_PRESENT
+  artifacts:
+    paths:
+    - binaries/
+    - .config
   script:
   - ./before-script.sh
   - date

@@ -11,6 +11,7 @@ def test():
     job.append_script("./after-script.sh")
     job.add_variables(USER="Max Power", URL="https://example.com")
     job.add_tags("test", "europe")
+    job.add_artifacts_paths("binaries/", ".config")
     job.add_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
     pipeline.add_jobs(job)
@@ -27,7 +28,10 @@ def test():
                     'USER': 'Max Power',
                     'URL': 'https://example.com'
                 },
-                'tags': ['test', 'europe'],
+                'tags': ['europe', 'test'],
+                'artifacts': {
+                    'paths': ['.config', 'binaries/']
+                },
                 'rules': [{
                     'if': '$MY_VARIABLE_IS_PRESENT',
                     'when': 'on_success',
