@@ -552,7 +552,10 @@ cdk_deploy:
 from gcip import rules
 
 job = gcip.Job(name="print_date", script="date")
-job.add_rules(rules.not_on_merge_request_events())
+job.add_rules(
+    rules.on_merge_request_events().never(),
+    rules.on_master(),
+)
 
 pipeline = gcip.Pipeline()
 pipeline.add_jobs(job)
@@ -569,6 +572,7 @@ print_date:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     when: never
+  - if: $CI_COMMIT_REF_NAME == "branch_name"
   stage: print_date
 ```
 

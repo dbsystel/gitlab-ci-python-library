@@ -1,11 +1,15 @@
 import gcip
+from gcip import rules
 from gcip.jobs import python
 
 
 def full_stack(
-    repository_url: str,
-    user: str,
-    varname_password: str,
+    dev_repository_url: str,
+    dev_user: str,
+    varname_dev_password: str,
+    stable_repository_url: str,
+    stable_user: str,
+    varname_stable_password: str,
 ) -> gcip.JobSequence:
     """
     Returns a pipeline containing all jobs from `gcip.jobs.python`:
@@ -30,7 +34,25 @@ def full_stack(
         python.pytest(),
         python.evaluate_git_tag_pep404_conformity(),
         python.bdist_wheel(),
-        python.pages_sphinx(),
-        python.twine_upload(repository_url, user, varname_password),
     )
+
+    pages_sphinx = python.pages_sphinx()
+    pages_sphinx.add_rules(
+        rules.on_master(),
+        rules.on_tags(),
+    )
+    sequence.add_jobs(pages_sphinx)
+
+    twine_upload_dev = python.twine_upload(dev_repository_url, dev_user, varname_dev_password)
+    twine_upload_dev.add_rules(
+        rules.on_merge_request_events().never(),
+        rules.on_tags().never(),
+        rules.on_master(),
+    )
+    sequence.add_jobs(twine_upload_dev, name="dev")
+
+    twine_upload_stable = python.twine_upload(stable_repository_url, stable_user, varname_stable_password)
+    twine_upload_stable.add_rules(rules.on_tags())
+    sequence.add_jobs(twine_upload_stable, name="stable")
+
     return sequence

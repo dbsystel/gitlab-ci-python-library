@@ -1,17 +1,17 @@
 import gcip
 
 
-def not_on_merge_request_events() -> gcip.Rule:
-    return gcip.Rule(if_statement='$CI_PIPELINE_SOURCE == "merge_request_event"', when=gcip.WhenStatement.NEVER)
+def on_merge_request_events() -> gcip.Rule:
+    return gcip.Rule(if_statement='$CI_PIPELINE_SOURCE == "merge_request_event"')
 
 
-def only_branch(branch_name: str) -> gcip.Rule:
+def on_branch(branch_name: str) -> gcip.Rule:
     return gcip.Rule(if_statement='$CI_COMMIT_REF_NAME == "branch_name"')
 
 
-def only_master() -> gcip.Rule:
-    return only_branch("master")
+def on_master() -> gcip.Rule:
+    return on_branch("master")
 
 
-def only_tags() -> gcip.Rule:
+def on_tags() -> gcip.Rule:
     return gcip.Rule(if_statement='$CI_COMMIT_TAG')

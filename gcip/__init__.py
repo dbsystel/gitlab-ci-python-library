@@ -44,13 +44,17 @@ class Rule():
         allow_failure: bool = False,
     ) -> None:
         self._if = if_statement
-        self._when = when.value
+        self._when = when
         self._allow_failure = allow_failure
+
+    def never(self) -> Rule:
+        self._when = WhenStatement.NEVER
+        return self
 
     def render(self) -> Dict[str, Union[str, bool]]:
         return {
             "if": self._if,
-            "when": self._when,
+            "when": self._when.value,
             "allow_failure": self._allow_failure,
         }
 

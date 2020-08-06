@@ -16,7 +16,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
     if environment == "unstable":
         env_pipe.add_sequence(myapp_diff_deploy(environment, "windows-vm-bucket"), namespace="windows_vm_bucket")
         update_image_job = gcip.Job(name="update-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}")
-        update_image_job.add_rules(rules.not_on_merge_request_events(), gcip.Rule(if_statement="$IMAGE_SOURCE_PASSWORD"))
+        update_image_job.add_rules(rules.on_merge_request_events().never(), gcip.Rule(if_statement="$IMAGE_SOURCE_PASSWORD"))
         env_pipe.add_jobs(update_image_job)
     else:
         env_pipe.add_jobs(gcip.Job(name="copy-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}"))
@@ -67,7 +67,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_project_resources_unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-unstable-project-resources', 'cdk diff myapp-unstable-project-resources'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-unstable-project-resources',
+                    'cdk diff myapp-unstable-project-resources'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '>=0.dev'
@@ -96,7 +98,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_windows_vm_bucket_unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-unstable-windows-vm-bucket', 'cdk diff myapp-unstable-windows-vm-bucket'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-unstable-windows-vm-bucket',
+                    'cdk diff myapp-unstable-windows-vm-bucket'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '>=0.dev'
@@ -125,7 +129,8 @@ def test_full_pipeline_yaml_output():
             'update-windows-vm-image_unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'python3 update_windows_vm_image.py unstable'
+                    './install-dependencies.sh',
+                    'python3 update_windows_vm_image.py unstable'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '>=0.dev'
@@ -150,7 +155,8 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_windows_vm_intances_unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-unstable-windows-vm-instances',
+                    './install-dependencies.sh',
+                    'cdk synth myapp-unstable-windows-vm-instances',
                     'cdk diff myapp-unstable-windows-vm-instances'
                 ],
                 'variables': {
@@ -180,7 +186,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_project_resources_dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-dev-project-resources', 'cdk diff myapp-dev-project-resources'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-dev-project-resources',
+                    'cdk diff myapp-dev-project-resources'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -209,7 +217,8 @@ def test_full_pipeline_yaml_output():
             'copy-windows-vm-image_dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'python3 update_windows_vm_image.py dev'
+                    './install-dependencies.sh',
+                    'python3 update_windows_vm_image.py dev'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -223,7 +232,8 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_windows_vm_intances_barista_dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-dev-windows-vm-instances-barista',
+                    './install-dependencies.sh',
+                    'cdk synth myapp-dev-windows-vm-instances-barista',
                     'cdk diff myapp-dev-windows-vm-instances-barista'
                 ],
                 'variables': {
@@ -253,7 +263,8 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_windows_vm_intances_impala_dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-dev-windows-vm-instances-impala',
+                    './install-dependencies.sh',
+                    'cdk synth myapp-dev-windows-vm-instances-impala',
                     'cdk diff myapp-dev-windows-vm-instances-impala'
                 ],
                 'variables': {
@@ -283,7 +294,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_project_resources_tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-tst-project-resources', 'cdk diff myapp-tst-project-resources'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-tst-project-resources',
+                    'cdk diff myapp-tst-project-resources'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -312,7 +325,8 @@ def test_full_pipeline_yaml_output():
             'copy-windows-vm-image_tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'python3 update_windows_vm_image.py tst'
+                    './install-dependencies.sh',
+                    'python3 update_windows_vm_image.py tst'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -326,7 +340,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_windows_vm_intances_tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-tst-windows-vm-instances', 'cdk diff myapp-tst-windows-vm-instances'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-tst-windows-vm-instances',
+                    'cdk diff myapp-tst-windows-vm-instances'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -355,7 +371,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_project_resources_iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-iat-project-resources', 'cdk diff myapp-iat-project-resources'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-iat-project-resources',
+                    'cdk diff myapp-iat-project-resources'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -384,7 +402,8 @@ def test_full_pipeline_yaml_output():
             'copy-windows-vm-image_iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'python3 update_windows_vm_image.py iat'
+                    './install-dependencies.sh',
+                    'python3 update_windows_vm_image.py iat'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
@@ -398,7 +417,9 @@ def test_full_pipeline_yaml_output():
             'cdk_diff_windows_vm_intances_iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
-                    './install-dependencies.sh', 'cdk synth myapp-iat-windows-vm-instances', 'cdk diff myapp-iat-windows-vm-instances'
+                    './install-dependencies.sh',
+                    'cdk synth myapp-iat-windows-vm-instances',
+                    'cdk diff myapp-iat-windows-vm-instances'
                 ],
                 'variables': {
                     'MYPROJECT_RELEASE_VERSION': '==0.0.dev10'
