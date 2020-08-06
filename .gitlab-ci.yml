@@ -38,7 +38,7 @@ evaluate-git-tag-pep404-conformity:
   stage: evaluate
   extends:
     - .on_prd
-  script: python3 ./gcip/script_library/evaluate_git_tag_pep_404_conformity.py
+  script: python3 ./gcip/script_library/evaluate_git_tag_pep404_conformity.py
   rules:
     - if: $CI_COMMIT_TAG
 
