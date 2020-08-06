@@ -13,8 +13,11 @@ def is_canonical(version: str) -> bool:
 
 if __name__ == "__main__":
     ci_commit_tag = os.getenv('CI_COMMIT_TAG')
+    
+    if ci_commit_tag is None:
+        raise ValueError("Environment variable CI_COMMIT_TAG must be set.")
 
-    if ci_commit_tag and is_canonical(ci_commit_tag):
+    if is_canonical(ci_commit_tag):
         sys.exit()
 
     print(f"'{ci_commit_tag}' is not a valid Python package version.")
