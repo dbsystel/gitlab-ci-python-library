@@ -13,7 +13,7 @@ def is_canonical(version: str) -> bool:
 
 if __name__ == "__main__":
     ci_commit_tag = os.getenv('CI_COMMIT_TAG')
-    
+
     if ci_commit_tag is None:
         raise ValueError("Environment variable CI_COMMIT_TAG must be set.")
 
