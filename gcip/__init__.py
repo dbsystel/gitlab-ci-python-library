@@ -246,19 +246,9 @@ class JobSequence():
 
 
 class Pipeline(JobSequence):
-    def __init__(self) -> None:
-        super().__init__()
-        self._pipeline_variables: Dict[str, str] = {}
-
-    def add_pipeline_variables(self, **variables: str) -> None:
-        self._pipeline_variables.update(variables)
-
     def render(self) -> Dict[str, Any]:
-        pipline: Dict[str, Any] = {
-            "variables": self._pipeline_variables,
-        }
-
         stages: OrderedSet = {}
+        pipline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
 
         for job in job_copies:
