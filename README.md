@@ -225,6 +225,40 @@ job2:
   stage: job2
 ```
 
+# Pipelines have settings above jobs
+
+Pipelines as sequences have all methods to modify their containing jobs. Above pipelines have their own configuration methods
+(currently just `.add_pipeline_variables()`):
+
+[Input](./tests/unit/test_readme_configure_pipelines.py)
+
+```
+pipeline = gcip.Pipeline()
+pipeline.add_pipeline_variables(USER="Kueckii", URL="https://muttergans.de")
+
+job = gcip.Job(name="print_date", script="date")
+job.add_variables(USER="Max Power", URL="https://example.com")
+
+pipeline.add_jobs(job)
+```
+
+Output:
+
+```
+variables:
+  USER: Kueckii
+  URL: https://muttergans.de
+stages:
+- print_date
+print_date:
+  script:
+  - date
+  variables:
+    USER: Max Power
+    URL: https://example.com
+  stage: print_date
+```
+
 # Namespaces allow reuse of jobs and sequences
 
 Assume you want to reuse a parameterized job. Following [Input](./tests/unit/test_readme_missing_namespace.py) is an **incorrect** example:
