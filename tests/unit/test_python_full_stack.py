@@ -18,7 +18,7 @@ def test():
     )
 
     output = pipeline.render()
-    print(output)
+    # print(output)
     assert conftest.dict_a_contains_b(
         a=output,
         b={
@@ -56,7 +56,7 @@ def test():
                 ['pip3 install --upgrade -r docs/requirements.txt', 'sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}'],
                 'rules': [
                     {
-                        'if': '$CI_COMMIT_REF_NAME == "branch_name"',
+                        'if': '$CI_COMMIT_REF_NAME == "master"',
                         'when': 'on_success',
                         'allow_failure': False
                     }, {
@@ -88,7 +88,7 @@ def test():
                         'when': 'never',
                         'allow_failure': False
                     }, {
-                        'if': '$CI_COMMIT_REF_NAME == "branch_name"',
+                        'if': '$CI_COMMIT_REF_NAME == "master"',
                         'when': 'on_success',
                         'allow_failure': False
                     }

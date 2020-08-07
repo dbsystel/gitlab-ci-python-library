@@ -6,7 +6,7 @@ def on_merge_request_events() -> gcip.Rule:
 
 
 def on_branch(branch_name: str) -> gcip.Rule:
-    return gcip.Rule(if_statement='$CI_COMMIT_REF_NAME == "branch_name"')
+    return gcip.Rule(if_statement=f'$CI_COMMIT_REF_NAME == "{branch_name}"')
 
 
 def on_master() -> gcip.Rule:

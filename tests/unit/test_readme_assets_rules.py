@@ -27,7 +27,7 @@ def test():
                         'when': 'never',
                         'allow_failure': False
                     }, {
-                        'if': '$CI_COMMIT_REF_NAME == "branch_name"',
+                        'if': '$CI_COMMIT_REF_NAME == "master"',
                         'when': 'on_success',
                         'allow_failure': False
                     }

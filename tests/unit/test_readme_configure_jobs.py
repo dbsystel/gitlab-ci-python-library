@@ -28,9 +28,9 @@ def test():
                     'USER': 'Max Power',
                     'URL': 'https://example.com'
                 },
-                'tags': ['europe', 'test'],
+                'tags': ['test', 'europe'],
                 'artifacts': {
-                    'paths': ['.config', 'binaries/']
+                    'paths': ['binaries/', '.config']
                 },
                 'rules': [{
                     'if': '$MY_VARIABLE_IS_PRESENT',

@@ -25,6 +25,8 @@ try:
 except DistributionNotFound:
     __version__ = "unknown"
 
+OrderedSet = Dict[str, None]
+
 
 class WhenStatement(Enum):
     ALWAYS = "always"
@@ -71,10 +73,10 @@ class Job():
         self._stage = stage if stage is not None else name
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
-        self._tags: Set[str] = set()
+        self._tags: OrderedSet = {}
         self._rules: List[Rule] = []
         self._scripts: List[str]
-        self._artifacts_paths: Set[str] = set()
+        self._artifacts_paths: OrderedSet = {}
 
         if isinstance(script, str):
             self._scripts = [script]
@@ -114,10 +116,12 @@ class Job():
         self._variables.update(variables)
 
     def add_tags(self, *tags: str) -> None:
-        self._tags.update(tags)
+        for tag in tags:
+            self._tags[tag] = None
 
     def add_artifacts_paths(self, *paths: str) -> None:
-        self._artifacts_paths.update(paths)
+        for path in paths:
+            self._artifacts_paths[path] = None
 
     def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
@@ -134,8 +138,8 @@ class Job():
         )
         job_copy.set_image(self._image)
         job_copy.add_variables(**copy.deepcopy(self._variables))
-        job_copy.add_tags(*self._tags)
-        job_copy.add_artifacts_paths(*self._artifacts_paths)
+        job_copy.add_tags(*list(self._tags.keys()))
+        job_copy.add_artifacts_paths(*list(self._artifacts_paths.keys()))
         job_copy.add_rules(*self._rules)
         return job_copy
 
@@ -143,7 +147,7 @@ class Job():
         rendered_job: Dict[str, Any] = {
             "script": self._scripts,
             "variables": self._variables,
-            "tags": list(self._tags),
+            "tags": list(self._tags.keys()),
         }
 
         if len(self._rules) > 0:
@@ -152,9 +156,9 @@ class Job():
                 rendered_rules.append(rule.render())
             rendered_job.update({"rules": rendered_rules})
 
-        if len(self._artifacts_paths) > 0:
+        if len(self._artifacts_paths.keys()) > 0:
             rendered_job.update({"artifacts": {
-                "paths": list(self._artifacts_paths),
+                "paths": list(self._artifacts_paths.keys()),
             }})
 
         if self._image is not None:
@@ -171,8 +175,8 @@ class JobSequence():
         self._namespace: Optional[str] = None
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
-        self._tags: Set[str] = set()
-        self._artifacts_paths: Set[str] = set()
+        self._tags: OrderedSet = {}
+        self._artifacts_paths: OrderedSet = {}
         self._prepend_scripts: List[str] = []
         self._append_scripts: List[str] = []
         self._rules: List[Rule] = []
@@ -206,10 +210,12 @@ class JobSequence():
         self._variables.update(variables)
 
     def add_tags(self, *tags: str) -> None:
-        self._tags.update(tags)
+        for tag in tags:
+            self._tags[tag] = None
 
     def add_artifacts_paths(self, *paths: str) -> None:
-        self._artifacts_paths.update(paths)
+        for path in paths:
+            self._artifacts_paths[path] = None
 
     def add_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
@@ -238,8 +244,8 @@ class JobSequence():
             job._extend_name(self._name_extension)
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))
-            job.add_tags(*self._tags)
-            job.add_artifacts_paths(*self._artifacts_paths)
+            job.add_tags(*list(self._tags.keys()))
+            job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
             job.add_rules(*self._rules)
             job.prepend_script(*self._prepend_scripts)
             job.append_script(*self._append_scripts)
@@ -249,7 +255,7 @@ class JobSequence():
 
 class Pipeline(JobSequence):
     def render(self) -> Dict[str, Any]:
-        stages: Dict[str, None] = {}
+        stages: OrderedSet = {}
         pipline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
 
