@@ -11,7 +11,7 @@ def get_version() -> str:
     ci_commit_tag = os.getenv("CI_COMMIT_TAG")
     if ci_commit_tag is not None and pep404.is_canonical(ci_commit_tag):
         return ci_commit_tag
-    return f"0.dev{os.getenv('CI_PIPELINE_ID')}"
+    return f"0.0.{os.getenv('CI_PIPELINE_ID')}"
 
 
 with open("README.md") as fp:
