@@ -22,15 +22,16 @@ include:
 
 Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 
-## Passing variables to the downstream pipeline
+## Passing pipeline variables to the downstream pipeline
 
-Passing variables to the dynamic pipeline is a little downside of the triggered pipelines.
-They must be set explicitly. Thus you cannot include the default `gcip-pipeline.yml` but
+All variables defined within the `.gitlab-ci.yml` are automatically passed to triggered pipelines,
+even to dynamic pipelines or pipelines from other projects. Not so variables, that are passed from
+outside into the pipelines. Those are not passed to triggered pipelines.
+They must be explicitly set for the trigger job. Thus you cannot include the default `gcip-pipeline.yml` but
 have to copy its contents to your project and pass variables in the trigger job.
 
-Furthermore there is no easy way to set a variable only when
-it exists. You then have to create two trigger jobs, one passing the variable when set and
-one not passing the variable else. Here an example:
+Furthermore there is no easy way to set a variable only when it exists. You then have to create two trigger
+jobs, one passing the variable when set and one not passing the variable else. Here an example:
 
 ```
 ---
