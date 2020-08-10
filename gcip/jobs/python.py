@@ -71,7 +71,7 @@ def evaluate_git_tag_pep404_conformity() -> gcip.Job:
             "python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity",
         ],
     )
-    job.add_rules(rules.on_tags())
+    job.append_rules(rules.on_tags())
     return job
 
 

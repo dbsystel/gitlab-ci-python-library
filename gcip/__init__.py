@@ -119,8 +119,11 @@ class Job():
         for path in paths:
             self._artifacts_paths[path] = None
 
-    def add_rules(self, *rules: Rule) -> None:
+    def append_rules(self, *rules: Rule) -> None:
         self._rules.extend(rules)
+
+    def prepend_rules(self, *rules: Rule) -> None:
+        self._rules = list(rules) + self._rules
 
     def set_image(self, image: Optional[str]) -> None:
         if image:
@@ -136,7 +139,7 @@ class Job():
         job_copy.add_variables(**copy.deepcopy(self._variables))
         job_copy.add_tags(*list(self._tags.keys()))
         job_copy.add_artifacts_paths(*list(self._artifacts_paths.keys()))
-        job_copy.add_rules(*self._rules)
+        job_copy.append_rules(*self._rules)
         return job_copy
 
     def render(self) -> Dict[str, Any]:
@@ -175,7 +178,8 @@ class JobSequence():
         self._artifacts_paths: OrderedSetType = {}
         self._prepend_scripts: List[str] = []
         self._append_scripts: List[str] = []
-        self._rules: List[Rule] = []
+        self._append_rules: List[Rule] = []
+        self._prepend_rules: List[Rule] = []
 
     def _extend_name(self, name: Optional[str]) -> None:
         if name:
@@ -214,8 +218,11 @@ class JobSequence():
         for path in paths:
             self._artifacts_paths[path] = None
 
-    def add_rules(self, *rules: Rule) -> None:
-        self._rules.extend(rules)
+    def append_rules(self, *rules: Rule) -> None:
+        self._append_rules.extend(rules)
+
+    def prepend_rules(self, *rules: Rule) -> None:
+        self._prepend_rules = list(rules) + self._prepend_rules
 
     def prepend_script(self, *script: str) -> None:
         self._prepend_scripts = list(script) + self._prepend_scripts
@@ -243,7 +250,8 @@ class JobSequence():
             job.add_variables(**copy.deepcopy(self._variables))
             job.add_tags(*list(self._tags.keys()))
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
-            job.add_rules(*self._rules)
+            job.append_rules(*self._append_rules)
+            job.prepend_rules(*self._prepend_rules)
             job.prepend_script(*self._prepend_scripts)
             job.append_script(*self._append_scripts)
 

@@ -37,14 +37,14 @@ def full_stack(
     )
 
     pages_sphinx = python.pages_sphinx()
-    pages_sphinx.add_rules(
+    pages_sphinx.append_rules(
         rules.on_master(),
         rules.on_tags(),
     )
     sequence.add_jobs(pages_sphinx)
 
     twine_upload_dev = python.twine_upload(dev_repository_url, dev_user, varname_dev_password)
-    twine_upload_dev.add_rules(
+    twine_upload_dev.append_rules(
         rules.on_merge_request_events().never(),
         rules.on_tags().never(),
         rules.on_master(),
@@ -52,7 +52,7 @@ def full_stack(
     sequence.add_jobs(twine_upload_dev, name="dev")
 
     twine_upload_stable = python.twine_upload(stable_repository_url, stable_user, varname_stable_password)
-    twine_upload_stable.add_rules(rules.on_tags())
+    twine_upload_stable.append_rules(rules.on_tags())
     sequence.add_jobs(twine_upload_stable, name="stable")
 
     return sequence
