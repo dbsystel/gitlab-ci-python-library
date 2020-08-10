@@ -102,11 +102,11 @@ class Job():
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
-    def prepend_script(self, *script: str) -> None:
-        self._scripts = list(script) + self._scripts
+    def prepend_scripts(self, *scripts: str) -> None:
+        self._scripts = list(scripts) + self._scripts
 
-    def append_script(self, *script: str) -> None:
-        self._scripts.extend(script)
+    def append_scripts(self, *scripts: str) -> None:
+        self._scripts.extend(scripts)
 
     def add_variables(self, **variables: str) -> None:
         self._variables.update(variables)
@@ -224,11 +224,11 @@ class JobSequence():
     def prepend_rules(self, *rules: Rule) -> None:
         self._prepend_rules = list(rules) + self._prepend_rules
 
-    def prepend_script(self, *script: str) -> None:
-        self._prepend_scripts = list(script) + self._prepend_scripts
+    def prepend_scripts(self, *scripts: str) -> None:
+        self._prepend_scripts = list(scripts) + self._prepend_scripts
 
-    def append_script(self, *script: str) -> None:
-        self._append_scripts.extend(script)
+    def append_scripts(self, *scripts: str) -> None:
+        self._append_scripts.extend(scripts)
 
     def set_image(self, image: str) -> None:
         if image:
@@ -252,8 +252,8 @@ class JobSequence():
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
             job.append_rules(*self._append_rules)
             job.prepend_rules(*self._prepend_rules)
-            job.prepend_script(*self._prepend_scripts)
-            job.append_script(*self._append_scripts)
+            job.prepend_scripts(*self._prepend_scripts)
+            job.append_scripts(*self._append_scripts)
 
         return all_jobs
 

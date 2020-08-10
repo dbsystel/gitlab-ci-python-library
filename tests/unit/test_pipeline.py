@@ -38,7 +38,7 @@ def test_full_pipeline_yaml_output():
 
     pipeline = gcip.Pipeline()
     pipeline.set_image("python:3.9-slim")
-    pipeline.prepend_script(
+    pipeline.prepend_scripts(
         scripts.clone_repository("otherproject/configuration"),
         "./install-dependencies.sh",
     )

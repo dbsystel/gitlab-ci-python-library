@@ -124,17 +124,17 @@ pipeline = gcip.Pipeline()
 
 job = gcip.Job(name="print_date", script="date")
 job.set_image("docker/image:example")
-job.prepend_script("./before-script.sh")
-job.append_script("./after-script.sh")
+job.prepend_scripts("./before-script.sh")
+job.append_scripts("./after-script.sh")
 job.add_variables(USER="Max Power", URL="https://example.com")
 job.add_tags("test", "europe")
 job.add_artifacts_paths("binaries/", ".config")
-job.add_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
+job.append_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
 pipeline.add_jobs(job)
 ```
 
-The `prepend_script`, `append_script` and all `add_*` methods allow an arbitrary number of positional arguments.
+The `prepend_scripts`, `append_scripts` and all `add_*` methods allow an arbitrary number of positional arguments.
 
 Output:
 
@@ -173,21 +173,21 @@ A job sequence has the same configuration methods as shown in the previous examp
 job_sequence = gcip.JobSequence()
 
 job1 = gcip.Job(name="job1", script="script1.sh")
-job1.prepend_script("from-job-1.sh")
+job1.prepend_scripts("from-job-1.sh")
 
 job_sequence.add_jobs(
     job1,
     gcip.Job(name="job2", script="script2.sh"),
 )
 
-job_sequence.prepend_script("from-sequence.sh")
+job_sequence.prepend_scripts("from-sequence.sh")
 
 pipeline = gcip.Pipeline()
 pipeline.add_jobs(job_sequence)
 ```
 
-As you will see in the output, jobs can have their own configuration (`job1.prepend_script(...`)
-as well as a common configuration from their sequence (`job_sequence.prepend_script(...`).
+As you will see in the output, jobs can have their own configuration (`job1.prepend_scripts(...`)
+as well as a common configuration from their sequence (`job_sequence.prepend_scripts(...`).
 
 Output:
 
@@ -215,12 +215,12 @@ job2:
 ```
 sequence_a = gcip.JobSequence()
 sequence_a.add_jobs(gcip.Job(name="job1", script="script1.sh"))
-sequence_a.prepend_script("from-sequence-a.sh")
+sequence_a.prepend_scripts("from-sequence-a.sh")
 
 sequence_b = gcip.JobSequence()
 sequence_b.add_sequences(sequence_a)
 sequence_b.add_jobs(gcip.Job(name="job2", script="script2.sh"))
-sequence_b.prepend_script("from-sequence-b.sh")
+sequence_b.prepend_scripts("from-sequence-b.sh")
 
 pipeline = gcip.Pipeline()
 pipeline.add_jobs(sequence_b)
@@ -256,12 +256,12 @@ stacking other sequences.
 ```
 sequence_a = gcip.JobSequence()
 sequence_a.add_jobs(gcip.Job(name="job1", script="script1.sh"))
-sequence_a.prepend_script("from-sequence.sh")
+sequence_a.prepend_scripts("from-sequence.sh")
 
 pipeline = gcip.Pipeline()
 pipeline.add_sequences(sequence_a)
 pipeline.add_jobs(gcip.Job(name="job2", script="script2.sh"))
-pipeline.prepend_script("from-pipeline.sh")
+pipeline.prepend_scripts("from-pipeline.sh")
 ```
 
 Output:
@@ -610,7 +610,7 @@ cdk_deploy:
 from gcip import rules
 
 job = gcip.Job(name="print_date", script="date")
-job.add_rules(
+job.append_rules(
     rules.on_merge_request_events().never(),
     rules.on_master(),
 )

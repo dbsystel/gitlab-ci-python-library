@@ -7,8 +7,8 @@ def test():
 
     job = gcip.Job(name="print_date", script="date")
     job.set_image("docker/image:example")
-    job.prepend_script("./before-script.sh")
-    job.append_script("./after-script.sh")
+    job.prepend_scripts("./before-script.sh")
+    job.append_scripts("./after-script.sh")
     job.add_variables(USER="Max Power", URL="https://example.com")
     job.add_tags("test", "europe")
     job.add_artifacts_paths("binaries/", ".config")
