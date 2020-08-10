@@ -4,7 +4,6 @@ import copy
 from enum import Enum
 from typing import Any, Dict, List, Union, AnyStr, Optional
 
-import yaml
 from pkg_resources import (
     DistributionNotFound,
     get_distribution,
@@ -276,4 +275,5 @@ class Pipeline(JobSequence):
         return pipline
 
     def print_yaml(self) -> None:
+        import yaml
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
