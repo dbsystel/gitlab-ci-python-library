@@ -4,3 +4,4 @@ flake8
 pytest
 mypy
 pydash
+pyaml
