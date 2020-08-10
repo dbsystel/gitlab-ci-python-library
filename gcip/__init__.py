@@ -33,7 +33,7 @@ class Rule():
     def __init__(
         self,
         *args: Any,
-        if_statement: str,
+        if_statement: str = None,
         when: WhenStatement = WhenStatement.ON_SUCCESS,
         allow_failure: bool = False,
     ) -> None:
@@ -46,11 +46,17 @@ class Rule():
         return self
 
     def render(self) -> Dict[str, Union[str, bool]]:
-        return {
-            "if": self._if,
+        if self._if:
+            rendered_rule = {
+                "if": self._if
+            }
+        else:
+            rendered_rule = {}
+        rendered_rule.update({
             "when": self._when.value,
             "allow_failure": self._allow_failure,
-        }
+        })
+        return rendered_rule
 
 
 class Job():
