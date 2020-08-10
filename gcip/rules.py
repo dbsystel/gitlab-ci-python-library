@@ -26,7 +26,8 @@ def on_pipeline_trigger() -> gcip.Rule:
     From https://docs.gitlab.com/ee/ci/yaml/
 
     |pipeline|For multi-project pipelines created by using the API with CI_JOB_TOKEN, or the trigger keyword.|
-    |parent_pipeline|For pipelines triggered by a parent/child pipeline with rules, use this in the child pipeline configuration so that it can be triggered by the parent pipeline.|
+    |parent_pipeline|For pipelines triggered by a parent/child pipeline with rules, use this in the child pipeline
+      configuration so that it can be triggered by the parent pipeline.|
     """
     return gcip.Rule(if_statement='$CI_PIPELINE_SOURCE == "pipeline" || $CI_PIPELINE_SOURCE == "parent_pipeline"')
 

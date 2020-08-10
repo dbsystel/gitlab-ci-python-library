@@ -1,7 +1,7 @@
 import gcip
 
 
-def bootstrap(*args, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags) -> gcip.Job:
+def bootstrap(*args: None, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags: str) -> gcip.Job:
     return gcip.Job(
         name="cdk_bootstrap",
         script="cdk bootstrap"

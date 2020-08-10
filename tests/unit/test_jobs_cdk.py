@@ -1,6 +1,6 @@
 import gcip
-from gcip.jobs import cdk
 from tests import conftest
+from gcip.jobs import cdk
 
 
 def test_bootstrap() -> None:
@@ -27,14 +27,14 @@ def test_bootstrap() -> None:
             'stages': ['cdk_bootstrap_dev', 'cdk_bootstrap_tst'],
             'cdk_bootstrap_dev': {
                 'script': [
-                    'cdk bootstrap --toolkit-stack-name my-cdk-toolkit-dev --bootstrap-kms-key-id abcd aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION}'
+                    'cdk bootstrap --toolkit-stack-name my-cdk-toolkit-dev --bootstrap-kms-key-id abcd aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION}'  # noqa: E501,W505
                 ],
                 'stage':
                 'cdk_bootstrap_dev'
             },
             'cdk_bootstrap_tst': {
                 'script': [
-                    'cdk bootstrap --toolkit-stack-name my-cdk-toolkit-tst --bootstrap-kms-key-id abcd aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION} -t ApplicationName=testapp -t Subsystem=testsystem'
+                    'cdk bootstrap --toolkit-stack-name my-cdk-toolkit-tst --bootstrap-kms-key-id abcd aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION} -t ApplicationName=testapp -t Subsystem=testsystem'  # noqa: E501,W505
                 ],
                 'stage':
                 'cdk_bootstrap_tst'

@@ -17,7 +17,7 @@ try:
 except DistributionNotFound:
     __version__ = "unknown"
 
-OrderedSet = Dict[str, None]
+OrderedSetType = Dict[str, None]
 
 
 class WhenStatement(Enum):
@@ -33,7 +33,7 @@ class Rule():
     def __init__(
         self,
         *args: Any,
-        if_statement: str = None,
+        if_statement: Optional[str] = None,
         when: WhenStatement = WhenStatement.ON_SUCCESS,
         allow_failure: bool = False,
     ) -> None:
@@ -46,12 +46,10 @@ class Rule():
         return self
 
     def render(self) -> Dict[str, Union[str, bool]]:
+        rendered_rule: Dict[str, Union[str, bool]] = {}
         if self._if:
-            rendered_rule = {
-                "if": self._if
-            }
-        else:
-            rendered_rule = {}
+            rendered_rule.update({"if": self._if})
+
         rendered_rule.update({
             "when": self._when.value,
             "allow_failure": self._allow_failure,
@@ -71,10 +69,10 @@ class Job():
         self._stage = stage if stage is not None else name
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
-        self._tags: OrderedSet = {}
+        self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
         self._scripts: List[str]
-        self._artifacts_paths: OrderedSet = {}
+        self._artifacts_paths: OrderedSetType = {}
 
         if isinstance(script, str):
             self._scripts = [script]
@@ -173,8 +171,8 @@ class JobSequence():
         self._namespace: Optional[str] = None
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
-        self._tags: OrderedSet = {}
-        self._artifacts_paths: OrderedSet = {}
+        self._tags: OrderedSetType = {}
+        self._artifacts_paths: OrderedSetType = {}
         self._prepend_scripts: List[str] = []
         self._append_scripts: List[str] = []
         self._rules: List[Rule] = []
@@ -253,7 +251,7 @@ class JobSequence():
 
 class Pipeline(JobSequence):
     def render(self) -> Dict[str, Any]:
-        stages: OrderedSet = {}
+        stages: OrderedSetType = {}
         pipline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
 
