@@ -1,7 +1,6 @@
 ---
 variables:
   CUSTOM_GCIP_VERSION: "0.4.0"
-  CUSTOM_CDK_VERSION: "0.0.$CI_PIPELINE_ID"
 
 include:
   - project: otherproject/custom-gcip-library
