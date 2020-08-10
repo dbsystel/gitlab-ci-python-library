@@ -191,10 +191,11 @@ class JobSequence():
             else:
                 self._namespace = namespace
 
-    def add_sequence(self, job_sequence: JobSequence, *args: Any, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
-        job_sequence.add_namespace(namespace)
-        job_sequence._extend_name(name)
-        self._jobs.append(job_sequence)
+    def add_sequences(self, *job_sequences: JobSequence, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
+        for sequence in job_sequences:
+            sequence.add_namespace(namespace)
+            sequence._extend_name(name)
+            self._jobs.append(sequence)
 
     def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
         for job in jobs:

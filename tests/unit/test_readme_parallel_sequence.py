@@ -14,7 +14,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_sequence(environment_pipeline(env), name=env)
+        pipeline.add_sequences(environment_pipeline(env), name=env)
 
     output = pipeline.render()
     # print(output)

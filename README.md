@@ -218,7 +218,7 @@ sequence_a.add_jobs(gcip.Job(name="job1", script="script1.sh"))
 sequence_a.prepend_script("from-sequence-a.sh")
 
 sequence_b = gcip.JobSequence()
-sequence_b.add_sequence(sequence_a)
+sequence_b.add_sequences(sequence_a)
 sequence_b.add_jobs(gcip.Job(name="job2", script="script2.sh"))
 sequence_b.prepend_script("from-sequence-b.sh")
 
@@ -259,7 +259,7 @@ sequence_a.add_jobs(gcip.Job(name="job1", script="script1.sh"))
 sequence_a.prepend_script("from-sequence.sh")
 
 pipeline = gcip.Pipeline()
-pipeline.add_sequence(sequence_a)
+pipeline.add_sequences(sequence_a)
 pipeline.add_jobs(gcip.Job(name="job2", script="script2.sh"))
 pipeline.prepend_script("from-pipeline.sh")
 ```
@@ -309,7 +309,7 @@ do_something:
   stage: do_something
 ```
 
-Instead the `.add_jobs(...)` and `.add_sequence(...)` methods of sequences accept a `namespace` parameter,
+Instead the `.add_jobs(...)` and `.add_sequences(...)` methods of sequences accept a `namespace` parameter,
 whose value will be appended to the Gitlab CI job name and stage.
 
 [Input](./tests/unit/test_readme_namespace_job.py):
@@ -359,7 +359,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
 
 pipeline = gcip.Pipeline()
 for env in ["development", "test"]:
-    pipeline.add_sequence(environment_pipeline(env), namespace=env)
+    pipeline.add_sequences(environment_pipeline(env), namespace=env)
 ```
 
 Output:
@@ -426,7 +426,7 @@ job2:
 
 Because job name and stage values are both extended by the namespace equally, to run sequences in parallel you have
 just to extend the name values of the jobs but not the stage values. So instead of passing the `namespace` parameter
-to the `.add_jobs(...)` and `.add_sequence(...)` method you cann pass the `name` parameter.
+to the `.add_jobs(...)` and `.add_sequences(...)` method you cann pass the `name` parameter.
 
 Lets take the sequence example from the chapter [Namespaces allow reuse of jobs and sequence](#namespaces-allow-reuse-of-jobs-and-sequence)
 and instead of using the `namespace` when adding the sequence several times to the pipeline we now use the `name` parameter.
@@ -444,7 +444,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
 
 pipeline = gcip.Pipeline()
 for env in ["development", "test"]:
-    pipeline.add_sequence(environment_pipeline(env), name=env)
+    pipeline.add_sequences(environment_pipeline(env), name=env)
 ```
 
 Now the environments run in parallel, because just the job names are populated per environment but

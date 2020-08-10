@@ -6,7 +6,7 @@ from gcip.job_sequences import python
 def test():
     pipeline = gcip.Pipeline()
 
-    pipeline.add_sequence(
+    pipeline.add_sequences(
         python.full_stack(
             dev_repository_url="https://my.artifactory.net/pypi/dev-repository",
             dev_user="$ARTIFACTORY_DEV_USER",

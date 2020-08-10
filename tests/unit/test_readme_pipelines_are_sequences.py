@@ -8,7 +8,7 @@ def test():
     sequence_a.prepend_script("from-sequence.sh")
 
     pipeline = gcip.Pipeline()
-    pipeline.add_sequence(sequence_a)
+    pipeline.add_sequences(sequence_a)
     pipeline.add_jobs(gcip.Job(name="job2", script="script2.sh"))
     pipeline.prepend_script("from-pipeline.sh")
 
