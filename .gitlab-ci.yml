@@ -1,82 +1,18 @@
 ---
 variables:
-  ARTIFACTORY_DEV_URL: "<pypi-repo-url-dev>"
-  ARTIFACTORY_PRD_URL: "<pypi-repo-url-stable>"
+  CUSTOM_GCIP_VERSION: "0.4.0"
+  CUSTOM_CDK_VERSION: "0.0.$CI_PIPELINE_ID"
 
-stages:
-  - lint
-  - test
-  - evaluate
-  - build
-  - deploy
+include:
+  - project: otherproject/custom-gcip-library
+    file: custom-gcip-pipeline.yml
 
-.on_prd:
-  image: python:3.9-slim
-  tags:
-    - environment-prd
-
-lint:
-  stage: lint
-  extends:
-    - .on_prd
-  script:
-    - pip install -r requirements.txt
-    - flake8
-    - isort --check .
-    - mypy ./gcip
-
-pytest:
-  stage: test
-  image: python:3.9-slim
-  script:
-    - pip3 install -r requirements.txt
-    - pytest
-  tags:
-    - environment-prd
-
-evaluate-git-tag-pep404-conformity:
-  stage: evaluate
-  extends:
-    - .on_prd
-  script: python3 ./gcip/script_library/evaluate_git_tag_pep404_conformity.py
-  rules:
-    - if: $CI_COMMIT_TAG
-
-build:
-  stage: build
-  extends:
-    - .on_prd
-  script: python3 setup.py bdist_wheel
-  artifacts:
-    paths:
-      - dist/
-
-pages:
-  stage: build
-  extends:
-    - .on_prd
-  script:
-    - pip install -r docs/requirements.txt
-    - sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: '$CI_COMMIT_TAG || $CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_REF_NAME == "sphinx"'
-
-.deploy-to-artifactory:
-  stage: deploy
-  extends:
-    - .on_prd
-  script: python3 -m twine upload --non-interactive --disable-progress-bar dist/*
-
-deploy-to-dev-artifactory:
-  extends:
-    - .deploy-to-artifactory
-  variables:
-    TWINE_REPOSITORY_URL: $ARTIFACTORY_DEV_URL
-    TWINE_USERNAME: $ARTIFACTORY_DEV_USER
-    TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
+trigger_custom_gcip_library:
+  stage: .post
+  trigger:
+    project: otherproject/custom-gcip-library
+    branch: master
+    strategy: depend
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
@@ -84,13 +20,3 @@ deploy-to-dev-artifactory:
       when: never
     - if: $CI_COMMIT_REF_NAME == "master"
       when: on_success
-
-deploy-to-prd-artifactory:
-  extends:
-    - .deploy-to-artifactory
-  variables:
-    TWINE_REPOSITORY_URL: $ARTIFACTORY_PRD_URL
-    TWINE_USERNAME: $ARTIFACTORY_PRD_USER
-    TWINE_PASSWORD: $ARTIFACTORY_PRD_PASSWORD
-  rules:
-    - if: $CI_COMMIT_TAG
