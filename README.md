@@ -22,64 +22,6 @@ include:
 
 Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 
-## Passing pipeline variables to the downstream pipeline
-
-All variables defined within the `.gitlab-ci.yml` are automatically passed to triggered pipelines,
-even to dynamic pipelines or pipelines from other projects. Not so variables, that are passed from
-outside into the pipelines. Those are not passed to triggered pipelines.
-They must be explicitly set for the trigger job. Thus you cannot include the default `gcip-pipeline.yml` but
-have to copy its contents to your project and pass variables in the trigger job.
-
-Furthermore there is no easy way to set a variable only when it exists. You then have to create two trigger
-jobs, one passing the variable when set and one not passing the variable else. Here an example:
-
-```
----
-
-variables:
-  GCIP_VERSION: "0.14.0"
-
-generate-pipeline:
-  stage: build
-  image: python:3.9-slim
-  script:
-    - pip3 install --upgrade gcip==$GCIP_VERSION
-    - python3 .gitlab-ci.py > generated-config.yml
-  artifacts:
-    paths:
-      - generated-config.yml
-  tags:
-    - environment-prd
-
-run-pipeline-without-version:
-  stage: deploy
-  needs:
-    - generate-pipeline
-  trigger:
-    include:
-      - artifact: generated-config.yml
-        job: generate-pipeline
-    strategy: depend
-  rules:
-    - if: $CUSTOM_VARIABLE
-      when: never
-    - when: on_success
-
-run-pipeline-with-version:
-  stage: deploy
-  needs:
-    - generate-pipeline
-  trigger:
-    include:
-      - artifact: generated-config.yml
-        job: generate-pipeline
-    strategy: depend
-  variables:
-    CUSTOM_VARIABLE: $CUSTOM_VARIABLE
-  rules:
-    - if: $CUSTOM_VARIABLE != '$CUSTOM_VARIABLE'
-```
-
 # Hints regarding the following examples
 
 * Both, input code and output, is shortened to show the essence of the examples.
