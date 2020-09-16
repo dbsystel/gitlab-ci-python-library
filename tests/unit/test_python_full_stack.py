@@ -35,7 +35,7 @@ def test():
                 'script': ['pip3 install --upgrade -r requirements.txt', 'pytest'],
                 'stage': 'test'
             },
-            'evaluate_git_tag_pep404_conformity': {
+            'evaluate-git-tag-pep404-conformity': {
                 'script': ['pip3 install --upgrade gcip', 'python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity'],
                 'rules': [{
                     'if': '$CI_COMMIT_TAG',
@@ -44,14 +44,14 @@ def test():
                 }],
                 'stage': 'test'
             },
-            'bdist_wheel': {
+            'bdist-wheel': {
                 'script': ['pip3 install --upgrade -r requirements.txt', 'python3 setup.py bdist_wheel'],
                 'artifacts': {
                     'paths': ['dist/']
                 },
                 'stage': 'build'
             },
-            'pages_python_sphinx': {
+            'pages-python-sphinx': {
                 'script':
                 ['pip3 install --upgrade -r docs/requirements.txt', 'sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}'],
                 'rules': [
@@ -71,7 +71,7 @@ def test():
                 'stage':
                 'build'
             },
-            'twine_upload_dev': {
+            'twine-upload-dev': {
                 'script': ['pip3 install --upgrade twine', 'python3 -m twine upload --non-interactive --disable-progress-bar dist/*'],
                 'variables': {
                     'TWINE_REPOSITORY_URL': 'https://my.artifactory.net/pypi/dev-repository',
@@ -96,7 +96,7 @@ def test():
                 'stage':
                 'deploy'
             },
-            'twine_upload_stable': {
+            'twine-upload-stable': {
                 'script': ['pip3 install --upgrade twine', 'python3 -m twine upload --non-interactive --disable-progress-bar dist/*'],
                 'variables': {
                     'TWINE_REPOSITORY_URL': 'https://my.artifactory.net/pypi/prod-repository',

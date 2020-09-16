@@ -22,19 +22,19 @@ def test():
         a=output,
         b={
             'stages': ['job1_development', 'job2_development', 'job1_test', 'job2_test'],
-            'job1_development': {
+            'job1-development': {
                 'script': ['job-1-on-development'],
                 'stage': 'job1_development'
             },
-            'job2_development': {
+            'job2-development': {
                 'script': ['job-2-on-development'],
                 'stage': 'job2_development'
             },
-            'job1_test': {
+            'job1-test': {
                 'script': ['job-1-on-test'],
                 'stage': 'job1_test'
             },
-            'job2_test': {
+            'job2-test': {
                 'script': ['job-2-on-test'],
                 'stage': 'job2_test'
             }

@@ -32,14 +32,14 @@ def test_bootstrap() -> None:
         a=output,
         b={
             'stages': ['cdk_bootstrap_dev', 'cdk_bootstrap_tst'],
-            'cdk_bootstrap_dev': {
+            'cdk-bootstrap-dev': {
                 'script': [
                     'cdk bootstrap --toolkit-stack-name my-cdk-toolkit-dev --bootstrap-kms-key-id abcd aws://1234567890/net-wunderland-1'  # noqa: E501,W505
                 ],
                 'stage':
                 'cdk_bootstrap_dev'
             },
-            'cdk_bootstrap_tst': {
+            'cdk-bootstrap-tst': {
                 'script': [
                     'cdk bootstrap --toolkit-stack-name my-cdk-toolkit-tst --bootstrap-kms-key-id abcd aws://1234567890/net-wunderland-1 -t ApplicationName=testapp -t Subsystem=testsystem'  # noqa: E501,W505
                 ],

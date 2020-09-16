@@ -59,14 +59,14 @@ def test_full_pipeline_yaml_output():
         b={
             'stages': [
                 'diff_project_resources_unstable', 'deploy_project_resources_unstable', 'diff_windows_vm_bucket_unstable',
-                'deploy_windows_vm_bucket_unstable', 'update-windows-vm-image_unstable', 'diff_windows_vm_intances_unstable',
+                'deploy_windows_vm_bucket_unstable', 'update_windows_vm_image_unstable', 'diff_windows_vm_intances_unstable',
                 'deploy_windows_vm_intances_unstable', 'diff_project_resources_dev', 'deploy_project_resources_dev',
-                'copy-windows-vm-image_dev', 'diff_windows_vm_intances_dev', 'deploy_windows_vm_intances_dev', 'diff_project_resources_tst',
-                'deploy_project_resources_tst', 'copy-windows-vm-image_tst', 'diff_windows_vm_intances_tst',
-                'deploy_windows_vm_intances_tst', 'diff_project_resources_iat', 'deploy_project_resources_iat', 'copy-windows-vm-image_iat',
+                'copy_windows_vm_image_dev', 'diff_windows_vm_intances_dev', 'deploy_windows_vm_intances_dev', 'diff_project_resources_tst',
+                'deploy_project_resources_tst', 'copy_windows_vm_image_tst', 'diff_windows_vm_intances_tst',
+                'deploy_windows_vm_intances_tst', 'diff_project_resources_iat', 'deploy_project_resources_iat', 'copy_windows_vm_image_iat',
                 'diff_windows_vm_intances_iat', 'deploy_windows_vm_intances_iat'
             ],
-            'cdk_diff_project_resources_unstable': {
+            'cdk-diff-project-resources-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -82,7 +82,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_project_resources_unstable'
             },
-            'cdk_deploy_project_resources_unstable': {
+            'cdk-deploy-project-resources-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -97,7 +97,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_project_resources_unstable'
             },
-            'cdk_diff_windows_vm_bucket_unstable': {
+            'cdk-diff-windows-vm-bucket-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -113,7 +113,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_windows_vm_bucket_unstable'
             },
-            'cdk_deploy_windows_vm_bucket_unstable': {
+            'cdk-deploy-windows-vm-bucket-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -128,7 +128,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_windows_vm_bucket_unstable'
             },
-            'update-windows-vm-image_unstable': {
+            'update-windows-vm-image-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -152,9 +152,9 @@ def test_full_pipeline_yaml_output():
                 'image':
                 'python:3.9-slim',
                 'stage':
-                'update-windows-vm-image_unstable'
+                'update_windows_vm_image_unstable'
             },
-            'cdk_diff_windows_vm_intances_unstable': {
+            'cdk-diff-windows-vm-intances-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -170,7 +170,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_windows_vm_intances_unstable'
             },
-            'cdk_deploy_windows_vm_intances_unstable': {
+            'cdk-deploy-windows-vm-intances-unstable': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -185,7 +185,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_windows_vm_intances_unstable'
             },
-            'cdk_diff_project_resources_dev': {
+            'cdk-diff-project-resources-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -201,7 +201,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_project_resources_dev'
             },
-            'cdk_deploy_project_resources_dev': {
+            'cdk-deploy-project-resources-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -216,7 +216,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_project_resources_dev'
             },
-            'copy-windows-vm-image_dev': {
+            'copy-windows-vm-image-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -229,9 +229,9 @@ def test_full_pipeline_yaml_output():
                 'image':
                 'python:3.9-slim',
                 'stage':
-                'copy-windows-vm-image_dev'
+                'copy_windows_vm_image_dev'
             },
-            'cdk_diff_windows_vm_intances_barista_dev': {
+            'cdk-diff-windows-vm-intances-barista-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -247,7 +247,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_windows_vm_intances_dev'
             },
-            'cdk_deploy_windows_vm_intances_barista_dev': {
+            'cdk-deploy-windows-vm-intances-barista-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -262,7 +262,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_windows_vm_intances_dev'
             },
-            'cdk_diff_windows_vm_intances_impala_dev': {
+            'cdk-diff-windows-vm-intances-impala-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -278,7 +278,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_windows_vm_intances_dev'
             },
-            'cdk_deploy_windows_vm_intances_impala_dev': {
+            'cdk-deploy-windows-vm-intances-impala-dev': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -293,7 +293,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_windows_vm_intances_dev'
             },
-            'cdk_diff_project_resources_tst': {
+            'cdk-diff-project-resources-tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -309,7 +309,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_project_resources_tst'
             },
-            'cdk_deploy_project_resources_tst': {
+            'cdk-deploy-project-resources-tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -324,7 +324,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_project_resources_tst'
             },
-            'copy-windows-vm-image_tst': {
+            'copy-windows-vm-image-tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -337,9 +337,9 @@ def test_full_pipeline_yaml_output():
                 'image':
                 'python:3.9-slim',
                 'stage':
-                'copy-windows-vm-image_tst'
+                'copy_windows_vm_image_tst'
             },
-            'cdk_diff_windows_vm_intances_tst': {
+            'cdk-diff-windows-vm-intances-tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -355,7 +355,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_windows_vm_intances_tst'
             },
-            'cdk_deploy_windows_vm_intances_tst': {
+            'cdk-deploy-windows-vm-intances-tst': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -370,7 +370,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_windows_vm_intances_tst'
             },
-            'cdk_diff_project_resources_iat': {
+            'cdk-diff-project-resources-iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -386,7 +386,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_project_resources_iat'
             },
-            'cdk_deploy_project_resources_iat': {
+            'cdk-deploy-project-resources-iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -401,7 +401,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'deploy_project_resources_iat'
             },
-            'copy-windows-vm-image_iat': {
+            'copy-windows-vm-image-iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -414,9 +414,9 @@ def test_full_pipeline_yaml_output():
                 'image':
                 'python:3.9-slim',
                 'stage':
-                'copy-windows-vm-image_iat'
+                'copy_windows_vm_image_iat'
             },
-            'cdk_diff_windows_vm_intances_iat': {
+            'cdk-diff-windows-vm-intances-iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',
@@ -432,7 +432,7 @@ def test_full_pipeline_yaml_output():
                 'stage':
                 'diff_windows_vm_intances_iat'
             },
-            'cdk_deploy_windows_vm_intances_iat': {
+            'cdk-deploy-windows-vm-intances-iat': {
                 'script': [
                     'git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git',  # noqa: E501
                     './install-dependencies.sh',

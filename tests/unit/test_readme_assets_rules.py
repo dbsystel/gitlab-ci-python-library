@@ -19,7 +19,7 @@ def test():
         a=output,
         b={
             'stages': ['print_date'],
-            'print_date': {
+            'print-date': {
                 'script': ['date'],
                 'rules': [
                     {

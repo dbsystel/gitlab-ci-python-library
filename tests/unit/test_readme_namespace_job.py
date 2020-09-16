@@ -17,11 +17,11 @@ def test():
         a=output,
         b={
             'stages': ['do_something_development', 'do_something_test'],
-            'do_something_development': {
+            'do-something-development': {
                 'script': ['./do-something-on.sh development'],
                 'stage': 'do_something_development'
             },
-            'do_something_test': {
+            'do-something-test': {
                 'script': ['./do-something-on.sh test'],
                 'stage': 'do_something_test'
             }

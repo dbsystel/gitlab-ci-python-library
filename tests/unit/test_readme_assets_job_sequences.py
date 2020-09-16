@@ -13,11 +13,11 @@ def test():
         a=output,
         b={
             'stages': ['diff', 'deploy'],
-            'cdk_diff': {
+            'cdk-diff': {
                 'script': ['cdk synth my-cdk-stack', 'cdk diff my-cdk-stack'],
                 'stage': 'diff'
             },
-            'cdk_deploy': {
+            'cdk-deploy': {
                 'script': ["cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit my-cdk-stack"],
                 'stage': 'deploy'
             }

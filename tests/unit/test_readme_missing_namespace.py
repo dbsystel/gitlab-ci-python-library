@@ -17,7 +17,7 @@ def test():
         a=output,
         b={
             'stages': ['do_something'],
-            'do_something': {
+            'do-something': {
                 'script': ['./do-something-on.sh test'],
                 'stage': 'do_something'
             }

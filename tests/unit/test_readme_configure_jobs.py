@@ -22,7 +22,7 @@ def test():
         a=output,
         b={
             'stages': ['print_date'],
-            'print_date': {
+            'print-date': {
                 'script': ['./before-script.sh', 'date', './after-script.sh'],
                 'variables': {
                     'USER': 'Max Power',

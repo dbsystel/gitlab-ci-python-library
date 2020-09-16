@@ -14,14 +14,14 @@ def test():
     assert conftest.dict_a_contains_b(
         a=output,
         b={
-            'stages': ['single-stage'],
+            'stages': ['single_stage'],
             'job1': {
                 'script': ['date'],
-                'stage': 'single-stage'
+                'stage': 'single_stage'
             },
             'job2': {
                 'script': ['date'],
-                'stage': 'single-stage'
+                'stage': 'single_stage'
             }
         },
     )
