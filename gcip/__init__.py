@@ -64,8 +64,8 @@ class Job():
         script: Union[AnyStr, List[str]],
         stage: Optional[str] = None,
     ):
-        self._name = name
-        self._stage = stage if stage is not None else name
+        self._name = name.replace("_", "-")
+        self._stage = stage.replace("-", "_") if stage is not None else name.replace("_","-")
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
@@ -90,11 +90,11 @@ class Job():
 
     def _extend_name(self, name: Optional[str]) -> None:
         if name:
-            self._name += "_" + name
+            self._name += "-" + name.replace("_", "-")
 
     def _extend_stage(self, stage: Optional[str]) -> None:
         if stage:
-            self._stage += "_" + stage
+            self._stage += "_" + stage.replace("-", "_")
 
     def add_namespace(self, namespace: Optional[str]) -> None:
         if namespace:
