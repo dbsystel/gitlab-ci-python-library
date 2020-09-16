@@ -65,7 +65,7 @@ class Job():
         stage: Optional[str] = None,
     ):
         self._name = name.replace("_", "-")
-        self._stage = stage.replace("-", "_") if stage is not None else name.replace("_","-")
+        self._stage = stage.replace("-", "_") if stage is not None else name.replace("_", "-")
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
