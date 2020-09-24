@@ -22,6 +22,6 @@ if __name__ == "__main__":
 
     cfn = boto3.client('cloudformation')
 
-    while "IN_PROGRESS" not in cfn.describe_stacks(StackName=args.stack_name)["Stacks"][0]["StackStatus"]:
-        print(f"Stack {args.stack_name} status is in progress. Waiting...")
+    while "IN_PROGRESS" in cfn.describe_stacks(StackName=args.stack_name)["Stacks"][0]["StackStatus"]:
+        print(f"Stack {args.stack_name} status is in progress. Waiting...", flush=True)
         sleep(args.wait_seconds)
