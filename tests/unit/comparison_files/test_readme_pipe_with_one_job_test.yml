@@ -1,0 +1,8 @@
+print-date:
+  script:
+  - date
+  stage: print_date
+  tags: []
+  variables: {}
+stages:
+- print_date

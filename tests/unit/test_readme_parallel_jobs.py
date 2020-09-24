@@ -9,19 +9,4 @@ def test():
         gcip.Job(name="job2", stage="single-stage", script="date"),
     )
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['single_stage'],
-            'job1': {
-                'script': ['date'],
-                'stage': 'single_stage'
-            },
-            'job2': {
-                'script': ['date'],
-                'stage': 'single_stage'
-            }
-        },
-    )
+    conftest.check(pipeline.render())

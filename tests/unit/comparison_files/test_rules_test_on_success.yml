@@ -1,0 +1,11 @@
+stages:
+- testjob
+testjob:
+  rules:
+  - allow_failure: false
+    when: on_success
+  script:
+  - foo
+  stage: testjob
+  tags: []
+  variables: {}

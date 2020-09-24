@@ -9,22 +9,7 @@ def test_on_success():
     job.append_rules(rules.on_success())
     pipeline.add_jobs(job)
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['testjob'],
-            'testjob': {
-                'script': ['foo'],
-                'rules': [{
-                    'when': 'on_success',
-                    'allow_failure': False
-                }],
-                'stage': 'testjob'
-            }
-        },
-    )
+    conftest.check(pipeline.render())
 
 
 def test_rule_order():
@@ -50,77 +35,4 @@ def test_rule_order():
 
     pipeline.add_sequences(sequence)
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['testjob'],
-            'testjob': {
-                'script': ['foo'],
-                'variables': {},
-                'tags': [],
-                'rules': [
-                    {
-                        'if': '6',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': '4',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': '1',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'g',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'h',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'c',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'd',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'a',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'b',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'e',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': 'f',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': '2',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': '3',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }, {
-                        'if': '5',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }
-                ],
-                'stage':
-                'testjob'
-            }
-        },
-    )
+    conftest.check(pipeline.render())

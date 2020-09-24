@@ -1,0 +1,17 @@
+cdk-bootstrap-dev:
+  script:
+  - cdk bootstrap --toolkit-stack-name my-cdk-toolkit-dev --bootstrap-kms-key-id abcd
+    aws://1234567890/net-wunderland-1
+  stage: cdk_bootstrap_dev
+  tags: []
+  variables: {}
+cdk-bootstrap-tst:
+  script:
+  - cdk bootstrap --toolkit-stack-name my-cdk-toolkit-tst --bootstrap-kms-key-id abcd
+    aws://1234567890/net-wunderland-1 -t ApplicationName=testapp -t Subsystem=testsystem
+  stage: cdk_bootstrap_tst
+  tags: []
+  variables: {}
+stages:
+- cdk_bootstrap_dev
+- cdk_bootstrap_tst

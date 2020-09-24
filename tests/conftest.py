@@ -1,18 +1,22 @@
-import pydash
+import os
+import inspect
+import pathlib
+
+import yaml
 
 
-def dict_a_contains_b(a: dict, b: dict) -> bool:
-    """
-    https://stackoverflow.com/a/54696573/1768273
-    """
-    match = pydash.predicates.is_match(a, b)
-    if not match:
-        import yaml
-        print("Dictionary a should be a superset of b but isn't")
-        print("a is:")
-        print(yaml.safe_dump(a))
-        print("----------------------------")
-        print("b is:")
-        print(yaml.safe_dump(b))
+def check(output: str) -> bool:
+    yaml_output = yaml.safe_dump(output)
+    # inspired by https://stackoverflow.com/a/60297932
+    caller_file_path, caller_file_name = os.path.split(os.path.abspath(inspect.stack()[1].filename))
+    caller_file_name = os.path.splitext(caller_file_name)[0]
+    caller_function_name = inspect.stack()[1].function
+    compare_file = f"{caller_file_path}/comparison_files/{caller_file_name}_{caller_function_name}.yml"
 
-    return match
+    if os.getenv("UPDATE_TEST_OUTPUT", "false").lower() == "true":
+        pathlib.Path(os.path.split(compare_file)[0]).mkdir(parents=True, exist_ok=True)
+        with open(compare_file, "w") as outfile:
+            outfile.write(yaml_output)
+    else:
+        with open(compare_file, "r") as infile:
+            assert yaml_output == infile.read()

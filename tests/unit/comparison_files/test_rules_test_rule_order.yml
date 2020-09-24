@@ -1,0 +1,51 @@
+stages:
+- testjob
+testjob:
+  rules:
+  - allow_failure: false
+    if: '6'
+    when: on_success
+  - allow_failure: false
+    if: '4'
+    when: on_success
+  - allow_failure: false
+    if: '1'
+    when: on_success
+  - allow_failure: false
+    if: g
+    when: on_success
+  - allow_failure: false
+    if: h
+    when: on_success
+  - allow_failure: false
+    if: c
+    when: on_success
+  - allow_failure: false
+    if: d
+    when: on_success
+  - allow_failure: false
+    if: a
+    when: on_success
+  - allow_failure: false
+    if: b
+    when: on_success
+  - allow_failure: false
+    if: e
+    when: on_success
+  - allow_failure: false
+    if: f
+    when: on_success
+  - allow_failure: false
+    if: '2'
+    when: on_success
+  - allow_failure: false
+    if: '3'
+    when: on_success
+  - allow_failure: false
+    if: '5'
+    when: on_success
+  script:
+  - foo
+  stage: testjob
+  tags: []
+  variables: {}

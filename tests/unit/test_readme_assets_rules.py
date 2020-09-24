@@ -13,27 +13,4 @@ def test():
     pipeline = gcip.Pipeline()
     pipeline.add_jobs(job)
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['print_date'],
-            'print-date': {
-                'script': ['date'],
-                'rules': [
-                    {
-                        'if': '$CI_PIPELINE_SOURCE == "merge_request_event"',
-                        'when': 'never',
-                        'allow_failure': False
-                    }, {
-                        'if': '$CI_COMMIT_REF_NAME == "master"',
-                        'when': 'on_success',
-                        'allow_failure': False
-                    }
-                ],
-                'stage':
-                'print_date'
-            }
-        },
-    )
+    conftest.check(pipeline.render())

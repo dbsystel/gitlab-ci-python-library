@@ -16,27 +16,4 @@ def test():
     for env in ["development", "test"]:
         pipeline.add_sequences(environment_pipeline(env), name=env)
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['job1', 'job2'],
-            'job1-development': {
-                'script': ['job-1-on-development'],
-                'stage': 'job1'
-            },
-            'job2-development': {
-                'script': ['job-2-on-development'],
-                'stage': 'job2'
-            },
-            'job1-test': {
-                'script': ['job-1-on-test'],
-                'stage': 'job1'
-            },
-            'job2-test': {
-                'script': ['job-2-on-test'],
-                'stage': 'job2'
-            }
-        },
-    )
+    conftest.check(pipeline.render())

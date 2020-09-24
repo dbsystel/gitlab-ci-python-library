@@ -11,15 +11,4 @@ def test():
     for env in ["development", "test"]:
         pipeline.add_jobs(job_for(env))
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['do_something'],
-            'do-something': {
-                'script': ['./do-something-on.sh test'],
-                'stage': 'do_something'
-            }
-        },
-    )
+    conftest.check(pipeline.render())

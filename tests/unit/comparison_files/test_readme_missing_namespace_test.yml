@@ -1,0 +1,8 @@
+do-something:
+  script:
+  - ./do-something-on.sh test
+  stage: do_something
+  tags: []
+  variables: {}
+stages:
+- do_something

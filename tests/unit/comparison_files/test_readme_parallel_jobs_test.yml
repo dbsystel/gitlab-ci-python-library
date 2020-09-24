@@ -1,0 +1,14 @@
+job1:
+  script:
+  - date
+  stage: single_stage
+  tags: []
+  variables: {}
+job2:
+  script:
+  - date
+  stage: single_stage
+  tags: []
+  variables: {}
+stages:
+- single_stage

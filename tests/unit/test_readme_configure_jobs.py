@@ -16,29 +16,4 @@ def test():
 
     pipeline.add_jobs(job)
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['print_date'],
-            'print-date': {
-                'script': ['./before-script.sh', 'date', './after-script.sh'],
-                'variables': {
-                    'USER': 'Max Power',
-                    'URL': 'https://example.com'
-                },
-                'tags': ['test', 'europe'],
-                'artifacts': {
-                    'paths': ['binaries/', '.config']
-                },
-                'rules': [{
-                    'if': '$MY_VARIABLE_IS_PRESENT',
-                    'when': 'on_success',
-                    'allow_failure': False
-                }],
-                'image': 'docker/image:example',
-                'stage': 'print_date'
-            }
-        },
-    )
+    conftest.check(pipeline.render())

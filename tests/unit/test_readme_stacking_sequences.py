@@ -15,19 +15,4 @@ def test():
     pipeline = gcip.Pipeline()
     pipeline.add_jobs(sequence_b)
 
-    output = pipeline.render()
-    # print(output)
-    assert conftest.dict_a_contains_b(
-        a=output,
-        b={
-            'stages': ['job1', 'job2'],
-            'job1': {
-                'script': ['from-sequence-b.sh', 'from-sequence-a.sh', 'script1.sh'],
-                'stage': 'job1'
-            },
-            'job2': {
-                'script': ['from-sequence-b.sh', 'script2.sh'],
-                'stage': 'job2'
-            }
-        },
-    )
+    conftest.check(pipeline.render())
