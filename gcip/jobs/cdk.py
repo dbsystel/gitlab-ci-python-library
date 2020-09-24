@@ -29,5 +29,9 @@ def deploy(stack: str, toolkit_stack_name: str) -> gcip.Job:
     return gcip.Job(
         name="cdk_deploy",
         stage="deploy",
-        script=f"cdk deploy --strict --require-approval 'never' --toolkit-stack-name {toolkit_stack_name} {stack}",
+        script=[
+            "pip3 install --upgrade gcip",
+            f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name {stack}",
+            f"cdk deploy --strict --require-approval 'never' --toolkit-stack-name {toolkit_stack_name} {stack}",
+        ],
     )
