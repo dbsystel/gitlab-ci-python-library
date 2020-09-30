@@ -1,306 +1,3 @@
-cdk-deploy-project-resources-unstable:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-unstable-project-resources
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
-    myapp-unstable-project-resources
-  stage: deploy_project_resources_unstable
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: '>=0.dev'
-cdk-deploy-project-resources-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-dev-project-resources
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
-    myapp-dev-project-resources
-  stage: deploy_project_resources_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-deploy-project-resources-iat:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-iat-project-resources
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-iat-cdk-toolkit
-    myapp-iat-project-resources
-  stage: deploy_project_resources_iat
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-deploy-project-resources-tst:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-tst-project-resources
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-tst-cdk-toolkit
-    myapp-tst-project-resources
-  stage: deploy_project_resources_tst
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-deploy-windows-vm-bucket-unstable:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-unstable-windows-vm-bucket
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
-    myapp-unstable-windows-vm-bucket
-  stage: deploy_windows_vm_bucket_unstable
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: '>=0.dev'
-cdk-deploy-windows-vm-intances-barista-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-dev-windows-vm-instances-barista
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
-    myapp-dev-windows-vm-instances-barista
-  stage: deploy_windows_vm_intances_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-deploy-windows-vm-intances-unstable:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-unstable-windows-vm-instances
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
-    myapp-unstable-windows-vm-instances
-  stage: deploy_windows_vm_intances_unstable
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: '>=0.dev'
-cdk-deploy-windows-vm-intances-iat:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-iat-windows-vm-instances
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-iat-cdk-toolkit
-    myapp-iat-windows-vm-instances
-  stage: deploy_windows_vm_intances_iat
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-deploy-windows-vm-intances-impala-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-dev-windows-vm-instances-impala
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
-    myapp-dev-windows-vm-instances-impala
-  stage: deploy_windows_vm_intances_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-deploy-windows-vm-intances-tst:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    myapp-tst-windows-vm-instances
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-tst-cdk-toolkit
-    myapp-tst-windows-vm-instances
-  stage: deploy_windows_vm_intances_tst
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-project-resources-unstable:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-unstable-project-resources
-  - cdk diff myapp-unstable-project-resources
-  stage: diff_project_resources_unstable
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: '>=0.dev'
-cdk-diff-project-resources-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-dev-project-resources
-  - cdk diff myapp-dev-project-resources
-  stage: diff_project_resources_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-project-resources-iat:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-iat-project-resources
-  - cdk diff myapp-iat-project-resources
-  stage: diff_project_resources_iat
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-project-resources-tst:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-tst-project-resources
-  - cdk diff myapp-tst-project-resources
-  stage: diff_project_resources_tst
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-windows-vm-bucket-unstable:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-unstable-windows-vm-bucket
-  - cdk diff myapp-unstable-windows-vm-bucket
-  stage: diff_windows_vm_bucket_unstable
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: '>=0.dev'
-cdk-diff-windows-vm-intances-barista-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-dev-windows-vm-instances-barista
-  - cdk diff myapp-dev-windows-vm-instances-barista
-  stage: diff_windows_vm_intances_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-windows-vm-intances-unstable:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-unstable-windows-vm-instances
-  - cdk diff myapp-unstable-windows-vm-instances
-  stage: diff_windows_vm_intances_unstable
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: '>=0.dev'
-cdk-diff-windows-vm-intances-iat:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-iat-windows-vm-instances
-  - cdk diff myapp-iat-windows-vm-instances
-  stage: diff_windows_vm_intances_iat
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-windows-vm-intances-impala-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-dev-windows-vm-instances-impala
-  - cdk diff myapp-dev-windows-vm-instances-impala
-  stage: diff_windows_vm_intances_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-cdk-diff-windows-vm-intances-tst:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - cdk synth myapp-tst-windows-vm-instances
-  - cdk diff myapp-tst-windows-vm-instances
-  stage: diff_windows_vm_intances_tst
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-copy-windows-vm-image-dev:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - python3 update_windows_vm_image.py dev
-  stage: copy_windows_vm_image_dev
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-copy-windows-vm-image-iat:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - python3 update_windows_vm_image.py iat
-  stage: copy_windows_vm_image_iat
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
-copy-windows-vm-image-tst:
-  image: python:3.9-slim
-  script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
-  - ./install-dependencies.sh
-  - python3 update_windows_vm_image.py tst
-  stage: copy_windows_vm_image_tst
-  tags:
-  - environment-iat
-  variables:
-    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
 stages:
 - diff_project_resources_unstable
 - deploy_project_resources_unstable
@@ -324,21 +21,324 @@ stages:
 - copy_windows_vm_image_iat
 - diff_windows_vm_intances_iat
 - deploy_windows_vm_intances_iat
-update-windows-vm-image-unstable:
+cdk-diff-project-resources-unstable:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-unstable-project-resources
+  - cdk diff myapp-unstable-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
   image: python:3.9-slim
-  rules:
-  - allow_failure: false
-    if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    when: never
-  - allow_failure: false
-    if: $IMAGE_SOURCE_PASSWORD
-    when: on_success
+  stage: diff_project_resources_unstable
+cdk-deploy-project-resources-unstable:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-unstable-project-resources
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
+    myapp-unstable-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_project_resources_unstable
+cdk-diff-windows-vm-bucket-unstable:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-unstable-windows-vm-bucket
+  - cdk diff myapp-unstable-windows-vm-bucket
+  variables:
+    MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_windows_vm_bucket_unstable
+cdk-deploy-windows-vm-bucket-unstable:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-unstable-windows-vm-bucket
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
+    myapp-unstable-windows-vm-bucket
+  variables:
+    MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_windows_vm_bucket_unstable
+update-windows-vm-image-unstable:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
   - python3 update_windows_vm_image.py unstable
-  stage: update_windows_vm_image_unstable
-  tags:
-  - environment-iat
   variables:
     MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+    allow_failure: false
+  - if: $IMAGE_SOURCE_PASSWORD
+    when: on_success
+    allow_failure: false
+  image: python:3.9-slim
+  stage: update_windows_vm_image_unstable
+cdk-diff-windows-vm-intances-unstable:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-unstable-windows-vm-instances
+  - cdk diff myapp-unstable-windows-vm-instances
+  variables:
+    MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_windows_vm_intances_unstable
+cdk-deploy-windows-vm-intances-unstable:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-unstable-windows-vm-instances
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
+    myapp-unstable-windows-vm-instances
+  variables:
+    MYPROJECT_RELEASE_VERSION: '>=0.dev'
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_windows_vm_intances_unstable
+cdk-diff-project-resources-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-dev-project-resources
+  - cdk diff myapp-dev-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_project_resources_dev
+cdk-deploy-project-resources-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-dev-project-resources
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
+    myapp-dev-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_project_resources_dev
+copy-windows-vm-image-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - python3 update_windows_vm_image.py dev
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: copy_windows_vm_image_dev
+cdk-diff-windows-vm-intances-barista-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-dev-windows-vm-instances-barista
+  - cdk diff myapp-dev-windows-vm-instances-barista
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_windows_vm_intances_dev
+cdk-deploy-windows-vm-intances-barista-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-dev-windows-vm-instances-barista
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
+    myapp-dev-windows-vm-instances-barista
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_windows_vm_intances_dev
+cdk-diff-windows-vm-intances-impala-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-dev-windows-vm-instances-impala
+  - cdk diff myapp-dev-windows-vm-instances-impala
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_windows_vm_intances_dev
+cdk-deploy-windows-vm-intances-impala-dev:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-dev-windows-vm-instances-impala
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
+    myapp-dev-windows-vm-instances-impala
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_windows_vm_intances_dev
+cdk-diff-project-resources-tst:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-tst-project-resources
+  - cdk diff myapp-tst-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_project_resources_tst
+cdk-deploy-project-resources-tst:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-tst-project-resources
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-tst-cdk-toolkit
+    myapp-tst-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_project_resources_tst
+copy-windows-vm-image-tst:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - python3 update_windows_vm_image.py tst
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: copy_windows_vm_image_tst
+cdk-diff-windows-vm-intances-tst:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-tst-windows-vm-instances
+  - cdk diff myapp-tst-windows-vm-instances
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_windows_vm_intances_tst
+cdk-deploy-windows-vm-intances-tst:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-tst-windows-vm-instances
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-tst-cdk-toolkit
+    myapp-tst-windows-vm-instances
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_windows_vm_intances_tst
+cdk-diff-project-resources-iat:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-iat-project-resources
+  - cdk diff myapp-iat-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_project_resources_iat
+cdk-deploy-project-resources-iat:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-iat-project-resources
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-iat-cdk-toolkit
+    myapp-iat-project-resources
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_project_resources_iat
+copy-windows-vm-image-iat:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - python3 update_windows_vm_image.py iat
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: copy_windows_vm_image_iat
+cdk-diff-windows-vm-intances-iat:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - cdk synth myapp-iat-windows-vm-instances
+  - cdk diff myapp-iat-windows-vm-instances
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: diff_windows_vm_intances_iat
+cdk-deploy-windows-vm-intances-iat:
+  script:
+  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
+  - ./install-dependencies.sh
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
+    myapp-iat-windows-vm-instances
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-iat-cdk-toolkit
+    myapp-iat-windows-vm-instances
+  variables:
+    MYPROJECT_RELEASE_VERSION: ==0.0.dev10
+  tags:
+  - environment-iat
+  image: python:3.9-slim
+  stage: deploy_windows_vm_intances_iat

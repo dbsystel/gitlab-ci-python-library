@@ -4,24 +4,24 @@ stages:
 update-service-development-service1:
   script:
   - ./update-service.sh development
-  stage: update_service_development
-  tags: []
   variables: {}
+  tags: []
+  stage: update_service_development
 update-service-development-service2:
   script:
   - ./update-service.sh development
-  stage: update_service_development
-  tags: []
   variables: {}
+  tags: []
+  stage: update_service_development
 update-service-test-service1:
   script:
   - ./update-service.sh test
-  stage: update_service_test
-  tags: []
   variables: {}
+  tags: []
+  stage: update_service_test
 update-service-test-service2:
   script:
   - ./update-service.sh test
-  stage: update_service_test
-  tags: []
   variables: {}
+  tags: []
+  stage: update_service_test

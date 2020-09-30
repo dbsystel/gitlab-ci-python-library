@@ -1,98 +1,98 @@
-bdist-wheel:
-  artifacts:
-    paths:
-    - dist/
-  script:
-  - pip3 install --upgrade -r requirements.txt
-  - python3 setup.py bdist_wheel
-  stage: build
-  tags: []
-  variables: {}
-evaluate-git-tag-pep404-conformity:
-  rules:
-  - allow_failure: false
-    if: $CI_COMMIT_TAG
-    when: on_success
-  script:
-  - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity
-  stage: test
-  tags: []
-  variables: {}
-flake8:
-  script:
-  - pip3 install --upgrade flake8
-  - flake8
-  stage: lint
-  tags: []
-  variables: {}
-isort:
-  script:
-  - pip3 install --upgrade isort
-  - isort --check .
-  stage: lint
-  tags: []
-  variables: {}
-pages-python-sphinx:
-  artifacts:
-    paths:
-    - public
-  rules:
-  - allow_failure: false
-    if: $CI_COMMIT_REF_NAME == "master"
-    when: on_success
-  - allow_failure: false
-    if: $CI_COMMIT_TAG
-    when: on_success
-  script:
-  - pip3 install --upgrade -r docs/requirements.txt
-  - sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}
-  stage: build
-  tags: []
-  variables: {}
-pytest:
-  script:
-  - pip3 install --upgrade -r requirements.txt
-  - pytest
-  stage: test
-  tags: []
-  variables: {}
 stages:
 - lint
 - test
 - build
 - deploy
-twine-upload-dev:
+isort:
+  script:
+  - pip3 install --upgrade isort
+  - isort --check .
+  variables: {}
+  tags: []
+  stage: lint
+flake8:
+  script:
+  - pip3 install --upgrade flake8
+  - flake8
+  variables: {}
+  tags: []
+  stage: lint
+pytest:
+  script:
+  - pip3 install --upgrade -r requirements.txt
+  - pytest
+  variables: {}
+  tags: []
+  stage: test
+evaluate-git-tag-pep404-conformity:
+  script:
+  - pip3 install --upgrade gcip
+  - python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity
+  variables: {}
+  tags: []
   rules:
-  - allow_failure: false
-    if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    when: never
-  - allow_failure: false
-    if: $CI_COMMIT_TAG
-    when: never
-  - allow_failure: false
-    if: $CI_COMMIT_REF_NAME == "master"
+  - if: $CI_COMMIT_TAG
     when: on_success
+    allow_failure: false
+  stage: test
+bdist-wheel:
+  script:
+  - pip3 install --upgrade -r requirements.txt
+  - python3 setup.py bdist_wheel
+  variables: {}
+  tags: []
+  artifacts:
+    paths:
+    - dist/
+  stage: build
+pages-python-sphinx:
+  script:
+  - pip3 install --upgrade -r docs/requirements.txt
+  - sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}
+  variables: {}
+  tags: []
+  rules:
+  - if: $CI_COMMIT_REF_NAME == "master"
+    when: on_success
+    allow_failure: false
+  - if: $CI_COMMIT_TAG
+    when: on_success
+    allow_failure: false
+  artifacts:
+    paths:
+    - public
+  stage: build
+twine-upload-dev:
   script:
   - pip3 install --upgrade twine
   - python3 -m twine upload --non-interactive --disable-progress-bar dist/*
-  stage: deploy
-  tags: []
   variables:
-    TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
     TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/dev-repository
     TWINE_USERNAME: $ARTIFACTORY_DEV_USER
-twine-upload-stable:
+    TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
+  tags: []
   rules:
-  - allow_failure: false
-    if: $CI_COMMIT_TAG
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+    allow_failure: false
+  - if: $CI_COMMIT_TAG
+    when: never
+    allow_failure: false
+  - if: $CI_COMMIT_REF_NAME == "master"
     when: on_success
+    allow_failure: false
+  stage: deploy
+twine-upload-stable:
   script:
   - pip3 install --upgrade twine
   - python3 -m twine upload --non-interactive --disable-progress-bar dist/*
-  stage: deploy
-  tags: []
   variables:
-    TWINE_PASSWORD: $ARTIFACTORY_PROD_PASSWORD
     TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/prod-repository
     TWINE_USERNAME: $ARTIFACTORY_PROD_USER
+    TWINE_PASSWORD: $ARTIFACTORY_PROD_PASSWORD
+  tags: []
+  rules:
+  - if: $CI_COMMIT_TAG
+    when: on_success
+    allow_failure: false
+  stage: deploy

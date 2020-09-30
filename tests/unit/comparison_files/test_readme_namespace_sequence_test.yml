@@ -1,29 +1,29 @@
-job1-development:
-  script:
-  - job-1-on-development
-  stage: job1_development
-  tags: []
-  variables: {}
-job1-test:
-  script:
-  - job-1-on-test
-  stage: job1_test
-  tags: []
-  variables: {}
-job2-development:
-  script:
-  - job-2-on-development
-  stage: job2_development
-  tags: []
-  variables: {}
-job2-test:
-  script:
-  - job-2-on-test
-  stage: job2_test
-  tags: []
-  variables: {}
 stages:
 - job1_development
 - job2_development
 - job1_test
 - job2_test
+job1-development:
+  script:
+  - job-1-on-development
+  variables: {}
+  tags: []
+  stage: job1_development
+job2-development:
+  script:
+  - job-2-on-development
+  variables: {}
+  tags: []
+  stage: job2_development
+job1-test:
+  script:
+  - job-1-on-test
+  variables: {}
+  tags: []
+  stage: job1_test
+job2-test:
+  script:
+  - job-2-on-test
+  variables: {}
+  tags: []
+  stage: job2_test

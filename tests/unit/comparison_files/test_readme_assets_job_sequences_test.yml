@@ -1,3 +1,13 @@
+stages:
+- diff
+- deploy
+cdk-diff:
+  script:
+  - cdk synth my-cdk-stack
+  - cdk diff my-cdk-stack
+  variables: {}
+  tags: []
+  stage: diff
 cdk-deploy:
   script:
   - pip3 install --upgrade gcip
@@ -5,16 +15,6 @@ cdk-deploy:
     my-cdk-stack
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
     my-cdk-stack
+  variables: {}
+  tags: []
   stage: deploy
-  tags: []
-  variables: {}
-cdk-diff:
-  script:
-  - cdk synth my-cdk-stack
-  - cdk diff my-cdk-stack
-  stage: diff
-  tags: []
-  variables: {}
-stages:
-- diff
-- deploy

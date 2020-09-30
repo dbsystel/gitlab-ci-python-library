@@ -6,7 +6,7 @@ import yaml
 
 
 def check(output: str) -> bool:
-    yaml_output = yaml.safe_dump(output)
+    yaml_output = yaml.safe_dump(output, default_flow_style=False, sort_keys=False)
     # inspired by https://stackoverflow.com/a/60297932
     caller_file_path, caller_file_name = os.path.split(os.path.abspath(inspect.stack()[1].filename))
     caller_file_name = os.path.splitext(caller_file_name)[0]

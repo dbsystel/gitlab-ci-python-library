@@ -1,18 +1,18 @@
+stages:
+- job1
+- job2
 job1:
   script:
   - from-sequence-b.sh
   - from-sequence-a.sh
   - script1.sh
-  stage: job1
-  tags: []
   variables: {}
+  tags: []
+  stage: job1
 job2:
   script:
   - from-sequence-b.sh
   - script2.sh
-  stage: job2
-  tags: []
   variables: {}
-stages:
-- job1
-- job2
+  tags: []
+  stage: job2

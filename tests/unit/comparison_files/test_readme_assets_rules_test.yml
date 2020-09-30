@@ -1,15 +1,15 @@
-print-date:
-  rules:
-  - allow_failure: false
-    if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    when: never
-  - allow_failure: false
-    if: $CI_COMMIT_REF_NAME == "master"
-    when: on_success
-  script:
-  - date
-  stage: print_date
-  tags: []
-  variables: {}
 stages:
 - print_date
+print-date:
+  script:
+  - date
+  variables: {}
+  tags: []
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
+    allow_failure: false
+  - if: $CI_COMMIT_REF_NAME == "master"
+    when: on_success
+    allow_failure: false
+  stage: print_date
