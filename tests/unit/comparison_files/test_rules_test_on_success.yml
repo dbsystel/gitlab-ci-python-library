@@ -3,8 +3,6 @@ stages:
 testjob:
   script:
   - foo
-  variables: {}
-  tags: []
   rules:
   - when: on_success
     allow_failure: false

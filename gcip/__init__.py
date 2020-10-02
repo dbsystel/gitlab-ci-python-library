@@ -60,18 +60,34 @@ class Job():
     def __init__(
         self,
         *args: Any,
-        name: str,
+        name: Optional[str] = None,
+        namespace: Optional[str] = None,
         script: Union[AnyStr, List[str]],
-        stage: Optional[str] = None,
     ):
-        self._name = name.replace("_", "-")
-        self._stage = stage.replace("-", "_") if stage is not None else name.replace("_", "-")
+        self._stage = ""
+        self._name = ""
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
+
+        if namespace and name:
+            self._name = f"{namespace}-{name}"
+            self._stage = namespace
+        elif namespace:
+            self._name = namespace
+            self._stage = namespace
+        elif name:
+            self._name = name
+            # default for unset stages is 'test' -> https://docs.gitlab.com/ee/ci/yaml/#stages
+            self._stage = "test"
+        else:
+            raise ValueError("At least one of the parameters `name` or `namespace` have to be set.")
+
+        self._name = self._name.replace("_", "-")
+        self._stage = self._stage.replace("-", "_")
 
         if isinstance(script, str):
             self._scripts = [script]
@@ -96,7 +112,7 @@ class Job():
         if stage:
             self._stage += "_" + stage.replace("-", "_")
 
-    def add_namespace(self, namespace: Optional[str]) -> None:
+    def _extend_namespace(self, namespace: Optional[str]) -> None:
         if namespace:
             self._extend_name(namespace)
             self._extend_stage(namespace)
@@ -130,10 +146,12 @@ class Job():
 
     def copy(self) -> Job:
         job_copy = Job(
-            name=self._name,
+            name=".",
             script=copy.deepcopy(self._scripts),
-            stage=self._stage,
         )
+        job_copy._name = self._name
+        job_copy._stage = self._stage
+
         job_copy.set_image(self._image)
         job_copy.add_variables(**copy.deepcopy(self._variables))
         job_copy.add_tags(*list(self._tags.keys()))
@@ -144,22 +162,26 @@ class Job():
     def render(self) -> Dict[str, Any]:
         rendered_job: Dict[str, Any] = {
             "script": self._scripts,
-            "variables": self._variables,
-            "tags": list(self._tags.keys()),
         }
 
-        if len(self._rules) > 0:
+        if self._variables:
+            rendered_job["variables"] = self._variables
+
+        if self._tags.keys():
+            rendered_job["tags"] = list(self._tags.keys())
+
+        if self._rules:
             rendered_rules = []
             for rule in self._rules:
                 rendered_rules.append(rule.render())
             rendered_job.update({"rules": rendered_rules})
 
-        if len(self._artifacts_paths.keys()) > 0:
+        if self._artifacts_paths.keys():
             rendered_job.update({"artifacts": {
                 "paths": list(self._artifacts_paths.keys()),
             }})
 
-        if self._image is not None:
+        if self._image:
             rendered_job.update({"image": self._image})
 
         return rendered_job
@@ -187,7 +209,7 @@ class JobSequence():
             else:
                 self._name_extension = name
 
-    def add_namespace(self, namespace: Optional[str]) -> None:
+    def _extend_namespace(self, namespace: Optional[str]) -> None:
         if namespace:
             if self._namespace:
                 self._namespace += namespace
@@ -196,13 +218,13 @@ class JobSequence():
 
     def add_sequences(self, *job_sequences: JobSequence, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
         for sequence in job_sequences:
-            sequence.add_namespace(namespace)
+            sequence._extend_namespace(namespace)
             sequence._extend_name(name)
             self._jobs.append(sequence)
 
     def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
         for job in jobs:
-            job.add_namespace(namespace)
+            job._extend_namespace(namespace)
             job._extend_name(name)
             self._jobs.append(job)
 
@@ -243,7 +265,7 @@ class JobSequence():
                 all_jobs.append(job.copy())
 
         for job in all_jobs:
-            job.add_namespace(self._namespace)
+            job._extend_namespace(self._namespace)
             job._extend_name(self._name_extension)
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))

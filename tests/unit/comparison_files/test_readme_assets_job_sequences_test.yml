@@ -1,20 +1,16 @@
 stages:
 - diff
 - deploy
-cdk-diff:
+diff-cdk:
   script:
   - cdk synth my-cdk-stack
   - cdk diff my-cdk-stack
-  variables: {}
-  tags: []
   stage: diff
-cdk-deploy:
+deploy-cdk:
   script:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
     my-cdk-stack
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
     my-cdk-stack
-  variables: {}
-  tags: []
   stage: deploy

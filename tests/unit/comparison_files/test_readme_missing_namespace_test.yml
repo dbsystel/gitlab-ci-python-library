@@ -3,6 +3,4 @@ stages:
 do-something:
   script:
   - ./do-something-on.sh test
-  variables: {}
-  tags: []
   stage: do_something

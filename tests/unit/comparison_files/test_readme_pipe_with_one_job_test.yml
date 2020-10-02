@@ -3,6 +3,4 @@ stages:
 print-date:
   script:
   - date
-  variables: {}
-  tags: []
   stage: print_date

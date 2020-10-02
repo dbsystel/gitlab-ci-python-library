@@ -13,7 +13,7 @@ def flake8() -> gcip.Job:
     """
     return gcip.Job(
         name="flake8",
-        stage="lint",
+        namespace="lint",
         script=[
             "pip3 install --upgrade flake8",
             "flake8",
@@ -32,7 +32,7 @@ def isort() -> gcip.Job:
     """
     return gcip.Job(
         name="isort",
-        stage="lint",
+        namespace="lint",
         script=[
             "pip3 install --upgrade isort",
             "isort --check .",
@@ -48,7 +48,7 @@ def pytest() -> gcip.Job:
     """
     return gcip.Job(
         name="pytest",
-        stage="test",
+        namespace="test",
         script=[
             scripts.pip_install_requirements(),
             "pytest",
@@ -65,7 +65,7 @@ def evaluate_git_tag_pep404_conformity() -> gcip.Job:
     """
     job = gcip.Job(
         name="evaluate_git_tag_pep404_conformity",
-        stage="test",
+        namespace="test",
         script=[
             "pip3 install --upgrade gcip",
             "python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity",
@@ -84,7 +84,7 @@ def bdist_wheel() -> gcip.Job:
     """
     job = gcip.Job(
         name="bdist_wheel",
-        stage="build",
+        namespace="build",
         script=[
             scripts.pip_install_requirements(),
             "python3 setup.py bdist_wheel",
@@ -104,7 +104,7 @@ def pages_sphinx() -> gcip.Job:
     """
     job = gcip.Job(
         name="pages_python_sphinx",
-        stage="build",
+        namespace="build",
         script=[
             scripts.pip_install_requirements("docs/requirements.txt"),
             "sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}",
@@ -140,7 +140,7 @@ def twine_upload(
 
     job = gcip.Job(
         name="twine_upload",
-        stage="deploy",
+        namespace="deploy",
         script=[
             "pip3 install --upgrade twine",
             "python3 -m twine upload --non-interactive --disable-progress-bar dist/*",

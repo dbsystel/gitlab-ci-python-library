@@ -5,7 +5,7 @@ from tests import conftest
 def test():
     pipeline = gcip.Pipeline()
 
-    job = gcip.Job(name="print_date", script="date")
+    job = gcip.Job(namespace="print_date", script="date")
     job.set_image("docker/image:example")
     job.prepend_scripts("./before-script.sh")
     job.append_scripts("./after-script.sh")

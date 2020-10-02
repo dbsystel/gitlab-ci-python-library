@@ -4,24 +4,16 @@ stages:
 job1-development:
   script:
   - job-1-on-development
-  variables: {}
-  tags: []
   stage: job1
 job2-development:
   script:
   - job-2-on-development
-  variables: {}
-  tags: []
   stage: job2
 job1-test:
   script:
   - job-1-on-test
-  variables: {}
-  tags: []
   stage: job1
 job2-test:
   script:
   - job-2-on-test
-  variables: {}
-  tags: []
   stage: job2

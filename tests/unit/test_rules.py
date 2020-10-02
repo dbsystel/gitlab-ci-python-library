@@ -5,7 +5,7 @@ from tests import conftest
 
 def test_on_success():
     pipeline = gcip.Pipeline()
-    job = gcip.Job(name="testjob", script="foo")
+    job = gcip.Job(namespace="testjob", script="foo")
     job.append_rules(rules.on_success())
     pipeline.add_jobs(job)
 
@@ -18,7 +18,7 @@ def test_rule_order():
     sequence.prepend_rules(gcip.Rule(if_statement="1"))
     sequence.append_rules(gcip.Rule(if_statement="2"))
 
-    job = gcip.Job(name="testjob", script="foo")
+    job = gcip.Job(namespace="testjob", script="foo")
     sequence.add_jobs(job)
 
     job.append_rules(gcip.Rule(if_statement="a"), gcip.Rule(if_statement="b"))

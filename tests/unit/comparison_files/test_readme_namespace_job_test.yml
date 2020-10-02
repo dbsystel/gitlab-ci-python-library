@@ -4,12 +4,8 @@ stages:
 do-something-development:
   script:
   - ./do-something-on.sh development
-  variables: {}
-  tags: []
   stage: do_something_development
 do-something-test:
   script:
   - ./do-something-on.sh test
-  variables: {}
-  tags: []
   stage: do_something_test
