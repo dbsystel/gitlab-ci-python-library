@@ -3,54 +3,42 @@ stages:
 - test
 - build
 - deploy
-isort:
+lint-isort:
   script:
   - pip3 install --upgrade isort
   - isort --check .
-  variables: {}
-  tags: []
   stage: lint
-flake8:
+lint-flake8:
   script:
   - pip3 install --upgrade flake8
   - flake8
-  variables: {}
-  tags: []
   stage: lint
-pytest:
+test-pytest:
   script:
   - pip3 install --upgrade -r requirements.txt
   - pytest
-  variables: {}
-  tags: []
   stage: test
-evaluate-git-tag-pep404-conformity:
+test-evaluate-git-tag-pep404-conformity:
   script:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity
-  variables: {}
-  tags: []
   rules:
   - if: $CI_COMMIT_TAG
     when: on_success
     allow_failure: false
   stage: test
-bdist-wheel:
+build-bdist-wheel:
   script:
   - pip3 install --upgrade -r requirements.txt
   - python3 setup.py bdist_wheel
-  variables: {}
-  tags: []
   artifacts:
     paths:
     - dist/
   stage: build
-pages-python-sphinx:
+build-pages-python-sphinx:
   script:
   - pip3 install --upgrade -r docs/requirements.txt
   - sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}
-  variables: {}
-  tags: []
   rules:
   - if: $CI_COMMIT_REF_NAME == "master"
     when: on_success
@@ -62,7 +50,7 @@ pages-python-sphinx:
     paths:
     - public
   stage: build
-twine-upload-dev:
+deploy-twine-upload-dev:
   script:
   - pip3 install --upgrade twine
   - python3 -m twine upload --non-interactive --disable-progress-bar dist/*
@@ -70,7 +58,6 @@ twine-upload-dev:
     TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/dev-repository
     TWINE_USERNAME: $ARTIFACTORY_DEV_USER
     TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
-  tags: []
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     when: never
@@ -82,7 +69,7 @@ twine-upload-dev:
     when: on_success
     allow_failure: false
   stage: deploy
-twine-upload-stable:
+deploy-twine-upload-stable:
   script:
   - pip3 install --upgrade twine
   - python3 -m twine upload --non-interactive --disable-progress-bar dist/*
@@ -90,7 +77,6 @@ twine-upload-stable:
     TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/prod-repository
     TWINE_USERNAME: $ARTIFACTORY_PROD_USER
     TWINE_PASSWORD: $ARTIFACTORY_PROD_PASSWORD
-  tags: []
   rules:
   - if: $CI_COMMIT_TAG
     when: on_success

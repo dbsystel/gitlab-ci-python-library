@@ -3,8 +3,6 @@ stages:
 testjob:
   script:
   - foo
-  variables: {}
-  tags: []
   rules:
   - if: '6'
     when: on_success

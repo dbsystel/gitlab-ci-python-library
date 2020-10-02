@@ -5,7 +5,7 @@ def bootstrap(
     *args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags: str
 ) -> gcip.Job:
     return gcip.Job(
-        name="cdk_bootstrap",
+        namespace="cdk_bootstrap",
         script="cdk bootstrap"
         f" --toolkit-stack-name {toolkit_stack_name}"
         f" --bootstrap-kms-key-id {bootstrap_kms_key_id}"
@@ -16,8 +16,8 @@ def bootstrap(
 
 def diff(stack: str) -> gcip.Job:
     return gcip.Job(
-        name="cdk_diff",
-        stage="diff",
+        name="cdk",
+        namespace="diff",
         script=[
             f"cdk synth {stack}",
             f"cdk diff {stack}",
@@ -27,8 +27,8 @@ def diff(stack: str) -> gcip.Job:
 
 def deploy(stack: str, toolkit_stack_name: str) -> gcip.Job:
     return gcip.Job(
-        name="cdk_deploy",
-        stage="deploy",
+        name="cdk",
+        namespace="deploy",
         script=[
             "pip3 install --upgrade gcip",
             f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name {stack}",

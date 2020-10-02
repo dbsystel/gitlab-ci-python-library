@@ -6,13 +6,9 @@ job1:
   - from-sequence.sh
   - from-job-1.sh
   - script1.sh
-  variables: {}
-  tags: []
   stage: job1
 job2:
   script:
   - from-sequence.sh
   - script2.sh
-  variables: {}
-  tags: []
   stage: job2
