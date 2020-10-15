@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     print(f"waiting for to complete: {stacks}")
 
-    def stack_in_progress():
+    def stack_in_progress() -> bool:
         for stack in stacks:
             if "IN_PROGRESS" in cfn.describe_stacks(StackName=stack)["Stacks"][0]["StackStatus"]:
                 return True

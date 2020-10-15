@@ -1,8 +1,8 @@
-import gcip
-from gcip import rules, scripts
+from .. import rules, scripts
+from .._core.job import Job
 
 
-def flake8() -> gcip.Job:
+def flake8() -> Job:
     """
     Runs:
 
@@ -11,7 +11,7 @@ def flake8() -> gcip.Job:
     flake8
     ```
     """
-    return gcip.Job(
+    return Job(
         name="flake8",
         namespace="lint",
         script=[
@@ -21,7 +21,7 @@ def flake8() -> gcip.Job:
     )
 
 
-def isort() -> gcip.Job:
+def isort() -> Job:
     """
     Runs:
 
@@ -30,7 +30,7 @@ def isort() -> gcip.Job:
     isort --check .
     ```
     """
-    return gcip.Job(
+    return Job(
         name="isort",
         namespace="lint",
         script=[
@@ -40,13 +40,13 @@ def isort() -> gcip.Job:
     )
 
 
-def pytest() -> gcip.Job:
+def pytest() -> Job:
     """
     Runs `pytest` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `pytest`
     """
-    return gcip.Job(
+    return Job(
         name="pytest",
         namespace="test",
         script=[
@@ -56,14 +56,14 @@ def pytest() -> gcip.Job:
     )
 
 
-def evaluate_git_tag_pep404_conformity() -> gcip.Job:
+def evaluate_git_tag_pep404_conformity() -> Job:
     """
     Checks if the current pipelines `$CI_COMMIT_TAG` validates to a valid Python package version according to
     https://www.python.org/dev/peps/pep-0440
 
     This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`gcip.rules.only_tags()`).
     """
-    job = gcip.Job(
+    job = Job(
         name="evaluate_git_tag_pep404_conformity",
         namespace="test",
         script=[
@@ -75,14 +75,14 @@ def evaluate_git_tag_pep404_conformity() -> gcip.Job:
     return job
 
 
-def bdist_wheel() -> gcip.Job:
+def bdist_wheel() -> Job:
     """
     Runs `python3 setup.py bdist_wheel` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `setuptools`
     * Creates artifacts under the path `dist/`
     """
-    job = gcip.Job(
+    job = Job(
         name="bdist_wheel",
         namespace="build",
         script=[
@@ -94,7 +94,7 @@ def bdist_wheel() -> gcip.Job:
     return job
 
 
-def pages_sphinx() -> gcip.Job:
+def pages_sphinx() -> Job:
     """
     Runs `sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}` and installs project requirements
     before (`gcip.scripts.pip_install_requirements()`)
@@ -102,7 +102,7 @@ def pages_sphinx() -> gcip.Job:
     * Requires a `docs/requirements.txt` in your project folder` containing at least `sphinx`
     * Creates it artifacts for Gitlab Pages under `pages`
     """
-    job = gcip.Job(
+    job = Job(
         name="pages_python_sphinx",
         namespace="build",
         script=[
@@ -118,7 +118,7 @@ def twine_upload(
     repository_url: str,
     user: str,
     varname_password: str,
-) -> gcip.Job:
+) -> Job:
     """
     Runs:
 
@@ -138,7 +138,7 @@ def twine_upload(
     if not varname_password.startswith("$"):
         varname_password = "$" + varname_password
 
-    job = gcip.Job(
+    job = Job(
         name="twine_upload",
         namespace="deploy",
         script=[

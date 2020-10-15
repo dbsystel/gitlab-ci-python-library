@@ -1,10 +1,10 @@
-import gcip
+from .._core.job import Job
 
 
 def bootstrap(
     *args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags: str
-) -> gcip.Job:
-    return gcip.Job(
+) -> Job:
+    return Job(
         namespace="cdk_bootstrap",
         script="cdk bootstrap"
         f" --toolkit-stack-name {toolkit_stack_name}"
@@ -14,8 +14,8 @@ def bootstrap(
     )
 
 
-def diff(stack: str) -> gcip.Job:
-    return gcip.Job(
+def diff(stack: str) -> Job:
+    return Job(
         name="cdk",
         namespace="diff",
         script=[
@@ -25,8 +25,8 @@ def diff(stack: str) -> gcip.Job:
     )
 
 
-def deploy(stack: str, toolkit_stack_name: str) -> gcip.Job:
-    return gcip.Job(
+def deploy(stack: str, toolkit_stack_name: str) -> Job:
+    return Job(
         name="cdk",
         namespace="deploy",
         script=[
