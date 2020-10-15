@@ -1,23 +1,23 @@
-import gcip
+from ._core.rule import Rule
 
 
-def on_branch(branch_name: str) -> gcip.Rule:
-    return gcip.Rule(if_statement=f'$CI_COMMIT_REF_NAME == "{branch_name}"')
+def on_branch(branch_name: str) -> Rule:
+    return Rule(if_statement=f'$CI_COMMIT_REF_NAME == "{branch_name}"')
 
 
-def on_master() -> gcip.Rule:
+def on_master() -> Rule:
     return on_branch("master")
 
 
-def on_merge_request_events() -> gcip.Rule:
-    return gcip.Rule(if_statement='$CI_PIPELINE_SOURCE == "merge_request_event"')
+def on_merge_request_events() -> Rule:
+    return Rule(if_statement='$CI_PIPELINE_SOURCE == "merge_request_event"')
 
 
-def on_success() -> gcip.Rule:
-    return gcip.Rule()
+def on_success() -> Rule:
+    return Rule()
 
 
-def on_pipeline_trigger() -> gcip.Rule:
+def on_pipeline_trigger() -> Rule:
     """
     ```
     if: '$CI_PIPELINE_SOURCE == "pipeline"'
@@ -27,8 +27,8 @@ def on_pipeline_trigger() -> gcip.Rule:
 
     |pipeline|For multi-project pipelines created by using the API with CI_JOB_TOKEN, or the trigger keyword.|
     """
-    return gcip.Rule(if_statement='$CI_PIPELINE_SOURCE == "pipeline"')
+    return Rule(if_statement='$CI_PIPELINE_SOURCE == "pipeline"')
 
 
-def on_tags() -> gcip.Rule:
-    return gcip.Rule(if_statement='$CI_COMMIT_TAG')
+def on_tags() -> Rule:
+    return Rule(if_statement='$CI_COMMIT_TAG')

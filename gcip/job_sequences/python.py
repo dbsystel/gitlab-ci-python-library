@@ -1,6 +1,6 @@
-import gcip
-from gcip import rules
-from gcip.jobs import python
+from .. import rules
+from ..jobs import python
+from .._core.job_sequence import JobSequence
 
 
 def full_stack(
@@ -10,7 +10,7 @@ def full_stack(
     stable_repository_url: str,
     stable_user: str,
     varname_stable_password: str,
-) -> gcip.JobSequence:
+) -> JobSequence:
     """
     Returns a pipeline containing all jobs from `gcip.jobs.python`:
         * isort
@@ -27,7 +27,7 @@ def full_stack(
     If not existent, automatically a "$" will be prepended to the string. DO NOT DEFINE THE PASSWORD WITHIN THE PIPELINE.
     Define your password outside the pipeline, e.g. as secret variable in the Gitlab CI/CD settings section.
     """
-    sequence = gcip.JobSequence()
+    sequence = JobSequence()
     sequence.add_jobs(
         python.isort(),
         python.flake8(),
