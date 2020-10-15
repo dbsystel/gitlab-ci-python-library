@@ -21,6 +21,30 @@ def flake8() -> Job:
     )
 
 
+def mypy(package_dir: str) -> Job:
+    """Runs:
+
+    ```python
+    pip3 install --upgrade mypy
+    mypy package_dir
+    ```
+
+    Args:
+        package_dir (str): Relativ path to package which should be checked with mypy.
+
+    Returns:
+        Job: Job running mypy.
+    """
+    return Job(
+        name="mypy",
+        namespace="test",
+        script=[
+            "pip3 install --upgrade mypy",
+            "mypy package_dir"
+        ],
+    )
+
+
 def isort() -> Job:
     """
     Runs:

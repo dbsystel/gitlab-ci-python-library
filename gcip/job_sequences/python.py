@@ -1,3 +1,5 @@
+from typing import Optional
+
 from .. import rules
 from ..jobs import python
 from .._core.job_sequence import JobSequence
@@ -10,6 +12,7 @@ def full_stack(
     stable_repository_url: str,
     stable_user: str,
     varname_stable_password: str,
+    mypy_package_dir: Optional[str] = None,
 ) -> JobSequence:
     """
     Returns a pipeline containing all jobs from `gcip.jobs.python`:
@@ -35,6 +38,9 @@ def full_stack(
         python.evaluate_git_tag_pep404_conformity(),
         python.bdist_wheel(),
     )
+
+    if mypy_package_dir:
+        sequence.add_jobs(python.mypy(mypy_package_dir))
 
     pages_sphinx = python.pages_sphinx()
     pages_sphinx.append_rules(
