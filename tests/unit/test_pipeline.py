@@ -1,6 +1,7 @@
 import gcip
 from gcip import rules, scripts
 from tests import conftest
+from gcip.includes import include_pattern
 from gcip.job_sequences import cdk
 
 
@@ -52,4 +53,12 @@ def test_full_pipeline_yaml_output():
             env_pipe.add_variables(MYPROJECT_RELEASE_VERSION="==0.0.dev10")
         pipeline.add_sequences(env_pipe, namespace=environment)
 
+    conftest.check(pipeline.render())
+
+
+def test_includes_pipeline():
+    first_include = include_pattern.LocalInclude("local-file.yml")
+    second_include = include_pattern.RemoteInclude("https://gitlab.com/my/project/include_file.yml")
+    pipeline = gcip.Pipeline(includes=[first_include, second_include])
+    pipeline.add_include(include_pattern.TemplateInclude("Template-Include-File.yml"))
     conftest.check(pipeline.render())
