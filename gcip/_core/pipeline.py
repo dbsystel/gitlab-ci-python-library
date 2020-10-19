@@ -12,6 +12,19 @@ class Pipeline(JobSequence):
         includes: Optional[Union[Include, List[Include]]] = None,
         **kwargs,
     ):
+        """
+        Pipeline class creates an empty Gitlab pipeline.
+
+        Args:
+            includes (Optional[Union[Include, List[Include]]]): You can add global Gitlab includes.
+                See `Gitlab CI Reference include`_. Defaults to None.
+
+        Raises:
+            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`Includes`
+
+        .. _Gitlab CI Reference include:
+           https://docs.gitlab.com/ee/ci/yaml/#include
+        """
         if not includes:
             self._includes = []
         elif isinstance(includes, Include):
@@ -34,7 +47,7 @@ class Pipeline(JobSequence):
             # use the keys of dictionary as ordered set
             stages[job.stage] = None
 
-        pipline["includes"] = [include.render() for include in self._includes]
+        pipline["include"] = [include.render() for include in self._includes]
         pipline["stages"] = list(stages.keys())
         for job in job_copies:
             rendered_job = job.render()
