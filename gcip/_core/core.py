@@ -12,10 +12,10 @@ class Core(object):
             2. https://github.com/django/django/blob/6726d750979a7c29e0dd866b4ea367eef7c8a420/django/core/validators.py#L45
 
         Args:
-            url (str): Unified resource locator (URL) to check.
+            url (str): Uniform Resource Locator (URL) to check.
 
         Returns:
-            bool: `True` if url is valid. If not `False` is returned.
+            bool: ``True`` if ``url`` is valid. If not, ``False`` is returned.
         """
         regex = re.compile(
             r'^(?:http|ftp)s?://'  # http:// or https://
