@@ -32,26 +32,15 @@ class Include(object):
         Args:
             file (str): Absolute or relative path to file to include.
             include_method (IncludeMethod): IncludeMethod used to determine which include to produce.
-<<<<<<< HEAD
             project (Optional[str]): Remote project only available if :class:`IncludeMethod`.FILE. Defaults to None.
             ref (Optional[str]): Branch of remote ``project`` to include ``file`` from. Defaults to None.
-=======
-            project (Optional[str], optional): Remote project only available if :class:`IncludeMethod`.FILE. Defaults to None.
-            ref (Optional[str], optional): Branch of remote ``project`` to include ``file`` from. Defaults to None.
->>>>>>> f3a0ec1... Added gcip.Include class.
 
         Raises:
             TypeError: If ``file`` is not of type :class:`str`.
             TypeError: If ``include_method`` is not of type :class:`IncludeMethod`
-<<<<<<< HEAD
             ValueError: If ``project`` is given but ``include_method`` is not :class:`IncludeMethod.FILE`
             AttributeError: If :class:`IncludeMethod.FILE` but ``project`` is missing.
             ValueError: If :class:`IncludeMethod.REMOTE` and ``file`` is not a valid URL.
-=======
-            ValueError: If ``project`` is given but ``include_method`` is not :class:`IncludeMethod`.FILE
-            AttributeError: If :class:`IncludeMethod`.FILE but ``project`` is missing.
-            ValueError: If :class:`IncludeMethod`.REMOTE and ``file`` is not a valid URL.
->>>>>>> f3a0ec1... Added gcip.Include class.
         """
         self._file = file
         self._include_method = include_method
