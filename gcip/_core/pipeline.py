@@ -47,7 +47,9 @@ class Pipeline(JobSequence):
             # use the keys of dictionary as ordered set
             stages[job.stage] = None
 
-        pipline["include"] = [include.render() for include in self._includes]
+        if self._includes:
+            pipline["include"] = [include.render() for include in self._includes]
+
         pipline["stages"] = list(stages.keys())
         for job in job_copies:
             rendered_job = job.render()
