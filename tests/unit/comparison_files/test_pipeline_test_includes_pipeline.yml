@@ -1,4 +1,4 @@
-includes:
+include:
 - local: local-file.yml
 - remote: https://gitlab.com/my/project/include_file.yml
 - template: Template-Include-File.yml
