@@ -1,9 +1,7 @@
 from .._core.job import Job
 
 
-def bootstrap(
-    *args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags: str
-) -> Job:
+def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags: str) -> Job:
     return Job(
         namespace="cdk_bootstrap",
         script="cdk bootstrap"

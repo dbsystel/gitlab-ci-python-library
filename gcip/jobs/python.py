@@ -38,10 +38,7 @@ def mypy(package_dir: str) -> Job:
     return Job(
         name="mypy",
         namespace="test",
-        script=[
-            "pip3 install --upgrade mypy",
-            "mypy package_dir"
-        ],
+        script=["pip3 install --upgrade mypy", "mypy package_dir"],
     )
 
 

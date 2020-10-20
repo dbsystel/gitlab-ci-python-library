@@ -1,76 +1,42 @@
 import pytest
 
-from gcip import Include, IncludeMethod
+from gcip import Job, Need, Pipeline
 from tests import conftest
 
 
-def test_include_methods():
-    test_dict = {}
-    for member, value in IncludeMethod.__members__.items():
-        test_dict.update({member: value.value})
-    assert {
-        "LOCAL": "local",
-        "FILE": "project",
-        "TEMPLATE": "template",
-        "REMOTE": "remote",
-    } == test_dict
+@pytest.fixture
+def testjob():
+    return Job(namespace="testjob", script="foobar")
 
 
-def test_include_exceptions():
-    with pytest.raises(TypeError):
-        assert Include(file=["test"], include_method=IncludeMethod.FILE)
-        assert Include(file="Gitlab-Ci.yaml", include_method="file")
-    with pytest.raises(ValueError):
-        assert Include(
-            file="/test/gitlab-test.yaml",
-            include_method=IncludeMethod.LOCAL,
-            project="throw/exception",
-        )
-        assert Include(
-            file="/test/gitlab-test.yaml",
-            include_method=IncludeMethod.TEMPLATE,
-            ref="missing/project",
-        )
-        assert Include(
-            file="/test/gitlab-test.yaml",
-            include_method=IncludeMethod.REMOTE,
-            project="throw/exception",
-            ref="added_exception",
-        )
-    with pytest.raises(AttributeError):
-        assert Include(file="/test/gitlab-test.yaml", include_method=IncludeMethod.FILE)
-
-    with pytest.raises(ValueError):
-        assert Include(file="htp:/this.url/totaly/wrong", include_method=IncludeMethod.REMOTE)
+def test_simple_need():
+    conftest.check(Need("testjob").render())
 
 
-def test_local_include():
-    conftest.check(Include(
-        file="/test/gitlab-test.yaml",
-        include_method=IncludeMethod.LOCAL,
-    ).render())
+def test_default_need(testjob):
+    conftest.check(Need(testjob).render())
 
 
-def test_remote_include():
-    conftest.check(Include(
-        file="https://test.example.com/gitlab-test.yaml",
-        include_method=IncludeMethod.REMOTE,
-    ).render())
+def test_no_artifacts(testjob):
+    conftest.check(Need(testjob, artifacts=False).render())
 
 
-def test_template_include():
-    conftest.check(Include(
-        file="Auto-DevOps.gitlab-ci.yml",
-        include_method=IncludeMethod.TEMPLATE,
-    ).render())
+def test_other_project_need(testjob):
+    conftest.check(Need(testjob, project="foo/bar").render())
 
 
-def test_file_include():
-    conftest.check(
-        Include(
-            file="/test/gitlab-test.yaml",
-            include_method=IncludeMethod.FILE,
-            project="testgroup/testproject",
-            ref="staging",
-        ).render()
-    )
+def test_other_project_ref_need(testjob):
+    conftest.check(Need(testjob, project="foo/bar", ref="test").render())
+
+
+def test_job_with_needs():
+    job = Job(namespace="depending_job", script="bar")
+    job.add_needs(Need("job1"), Need("job2", project="foo/bar"))
+    conftest.check(job.render())
+
+
+def test_sequence_with_needs():
+    pipeline = Pipeline()
+    pipeline.add_jobs(Job(namespace="testjob", script="foobar"))
+    pipeline.add_needs(Need("job1"), Need("job2"))
+    conftest.check(pipeline.render())

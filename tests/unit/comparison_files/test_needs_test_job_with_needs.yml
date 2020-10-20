@@ -1,0 +1,9 @@
+script:
+- bar
+needs:
+- job: job1
+  artifacts: true
+- job: job2
+  artifacts: true
+  project: foo/bar
+  ref: master

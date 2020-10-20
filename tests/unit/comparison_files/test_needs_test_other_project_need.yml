@@ -1,0 +1,4 @@
+job: testjob
+artifacts: true
+project: foo/bar
+ref: master

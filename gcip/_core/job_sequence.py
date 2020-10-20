@@ -4,7 +4,7 @@ import copy
 from typing import Dict, List, Union, Optional
 
 from . import OrderedSetType
-from .job import Job
+from .job import Job, Need
 from .rule import Rule
 
 
@@ -22,6 +22,7 @@ class JobSequence():
         self._append_scripts: List[str] = []
         self._append_rules: List[Rule] = []
         self._prepend_rules: List[Rule] = []
+        self._needs: List[Need] = []
 
     def _extend_name(self, name: Optional[str]) -> None:
         if name:
@@ -66,6 +67,9 @@ class JobSequence():
     def prepend_rules(self, *rules: Rule) -> None:
         self._prepend_rules = list(rules) + self._prepend_rules
 
+    def add_needs(self, *needs: Need) -> None:
+        self._needs.extend(needs)
+
     def prepend_scripts(self, *scripts: str) -> None:
         self._prepend_scripts = list(scripts) + self._prepend_scripts
 
@@ -94,6 +98,7 @@ class JobSequence():
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
             job.append_rules(*self._append_rules)
             job.prepend_rules(*self._prepend_rules)
+            job.add_needs(*self._needs)
             job.prepend_scripts(*self._prepend_scripts)
             job.append_scripts(*self._append_scripts)
 
