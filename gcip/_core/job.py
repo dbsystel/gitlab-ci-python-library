@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Union, AnyStr, Optional
 from . import OrderedSetType
 from .rule import Rule
 
+
 class _JobCommons():
     def __init__(
         self,
@@ -33,7 +34,6 @@ class _JobCommons():
 
         self._name = self._name.replace("_", "-")
         self._stage = self._stage.replace("-", "_")
-
 
     @property
     def name(self) -> str:
@@ -149,10 +149,16 @@ class Job(_JobCommons):
     def render(self) -> Dict[str, Any]:
         rendered_job = super().render()
 
-        rendered_job = {"script": self._scripts, **rendered_job}
+        rendered_job = {
+            "script": self._scripts,
+            **rendered_job
+        }
 
         if self._image:
-            rendered_job = {"image": self._image, **rendered_job}
+            rendered_job = {
+                "image": self._image,
+                **rendered_job
+            }
 
         if self._variables:
             rendered_job["variables"] = self._variables
