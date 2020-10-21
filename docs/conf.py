@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "autoapi.extension",
     "sphinx.ext.viewcode",
+    "sphinxcontrib.napoleon",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -62,7 +63,9 @@ autoapi_options = [
 autoapi_python_class_content = "both"
 
 # -- Intersphinx configuration -----------------------------------------------
-intersphinx_mapping = {}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = "sphinx_rtd_theme"
