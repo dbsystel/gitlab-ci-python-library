@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import copy
+from enum import Enum
 from typing import Any, Dict, List, Union, AnyStr, Optional
 
 from . import OrderedSetType
 from .rule import Rule
+from .include import Include
 
 
 class _JobCommons():
@@ -170,6 +172,102 @@ class Job(_JobCommons):
 
         if self._tags.keys():
             rendered_job["tags"] = list(self._tags.keys())
+
+        return rendered_job
+
+
+class TriggerStrategy(Enum):
+    """Class with static values for ``TriggerStrategy`` used together with :class:`gcip.Trigger`. To construct an object."""
+    DEPEND = "depend"
+
+
+class TriggerJob(_JobCommons):
+    def __init__(
+        self,
+        *args: Any,
+        name: Optional[str] = None,
+        namespace: Optional[str] = None,
+        project: Optional[str] = None,
+        branch: Optional[str] = None,
+        includes: Optional[Include, List[Include]] = None,
+        strategy: Optional[TriggerStrategy] = None,
+        **kwargs: Mapping[Any, Any],
+    ) -> None:
+        """
+        Class to create a Gitlab CI Trigger.
+
+        You can create either a "Parent-child" or a "Multi-project" pipeline trigger.
+
+
+        Args:
+            project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
+                e.g 'team1/project1'. Defaults to None.
+            branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
+            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
+            strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
+                If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
+
+        Raises:
+            ValueError: If ``project`` and ``includes`` is given at the same time.
+            ValueError: There is a Gitlab CI limitation, in "Parent-child" pipelines it is only allowed to add max. three includes.
+        """
+
+        if includes and project:
+            raise ValueError(("You cannot specify 'include' and 'project' together. Either 'include' or 'project' is possible."))
+        if not includes and not project:
+            raise ValueError("Neither 'includes' nor 'project' is given.")
+
+        super().__init__(name=name, namespace=namespace)
+
+        self._project = project
+        self._branch = branch
+        self._includes = includes or []
+        self._strategy = strategy
+
+        if not includes:
+            self._includes = None
+        elif isinstance(includes, Include):
+            self._includes = [includes]
+        elif isinstance(includes, list):
+            if len(includes) > 3:
+                raise ValueError(
+                    (
+                        "The length of 'includes' is limited to three."
+                        "See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information."
+                    )
+                )
+            self._includes = includes
+        else:
+            raise AttributeError("script parameter must be of type string or list of strings")
+
+    def copy(self) -> Job:
+        job_copy = Job(name=".")
+        super().copy(job_copy)
+        job_copy._project = self._project
+        job_copy._branch = self._branch
+        job_copy._includes = self._includes
+        job_copy._strategy = self._strategy
+        return job_copy
+
+    def render(self) -> Dict[Any, Any]:
+        rendered_job = super().render()
+
+        # Child pipelines
+        if self._includes:
+            rendered_job.update({
+                "include": [include.render() for include in self._includes],
+            })
+
+        # Multiproject pipelines
+        if self._project:
+            rendered_job.update({
+                "project": self._project,
+            })
+            if self._branch:
+                rendered_job.update({"branch": self._branch})
+
+        if self._strategy:
+            rendered_job.update({"strategy": self._strategy.value})
 
         return rendered_job
 

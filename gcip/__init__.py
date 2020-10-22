@@ -3,11 +3,10 @@ from pkg_resources import (
     get_distribution as _get_distribution,
 )
 
-from ._core.job import Job, Need  # noqa
+from ._core.job import Job, TriggerJob, TriggerStrategy, Need  # noqa
 from ._core.core import Core  # noqa
 from ._core.rule import Rule  # noqa
 from ._core.include import Include, IncludeMethod  # noqa
-from ._core.trigger import Trigger, TriggerStrategy  # noqa
 from ._core.pipeline import Pipeline  # noqa
 from ._core.job_sequence import JobSequence  # noqa
 

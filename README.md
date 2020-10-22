@@ -855,3 +855,39 @@ some ideas:
 * Bundle jobs in sequences and use loops to populate the sequences over a list of environments.
 * Use if-then-else expressions to create jobs within job sequences depending on environment information or requirements.
 * Access information from outside your pipeline script you use for decision making inside your pipeline script.
+
+# Beyond the basics
+
+This chapter covers further abilities of GCIP which suffices to be read after the basics.
+
+## TriggerJobs
+
+Besides normal Jobs with GCIP you can define TriggerJobs which either run another projects pipeline or a child-pipeline.
+
+Here an example for triggering another pipeline:
+
+**Input:**
+
+```py
+# ./tests/unit/test_readme_trigger_project_pipeline.py
+```
+
+**Output:**
+
+```yaml
+# ./tests/unit/comparison_files/test_readme_trigger_project_pipeline_test.yml
+```
+
+Here an example for triggering a child pipeline:
+
+**Input:**
+
+```py
+# ./tests/unit/test_readme_trigger_child_pipeline.py
+```
+
+**Output:**
+
+```yaml
+# ./tests/unit/comparison_files/test_readme_trigger_child_pipeline_test.yml
+```
