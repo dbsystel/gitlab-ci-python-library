@@ -4,7 +4,10 @@ from pkg_resources import (
 )
 
 from ._core.job import (  # noqa
-    Job, Need, TriggerJob, TriggerStrategy,
+    Job,
+    Need,
+    TriggerJob,
+    TriggerStrategy,
 )
 from ._core.rule import Rule  # noqa
 from ._core.include import Include, IncludeMethod  # noqa

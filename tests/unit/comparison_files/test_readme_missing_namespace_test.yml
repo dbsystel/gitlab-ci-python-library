@@ -1,6 +1,6 @@
 stages:
 - do_something
 do-something:
+  stage: do_something
   script:
   - ./do-something-on.sh test
-  stage: do_something

@@ -2,7 +2,15 @@ from __future__ import annotations
 
 import copy
 from enum import Enum
-from typing import Any, Dict, List, Union, AnyStr, Optional, Mapping
+from typing import (
+    Any,
+    Dict,
+    List,
+    Union,
+    AnyStr,
+    Mapping,
+    Optional,
+)
 
 from . import OrderedSetType
 from .rule import Rule
@@ -118,21 +126,10 @@ class Job():
         return job
 
     def render(self) -> Dict[str, Any]:
-        rendered_job: Dict[str, Any] = {
-            "script": self._scripts,
-        }
+        rendered_job: Dict[str, Any] = {}
 
-        if self._variables:
-            rendered_job["variables"] = self._variables
-
-        if self._tags.keys():
-            rendered_job["tags"] = list(self._tags.keys())
-
-        if self._rules:
-            rendered_rules = []
-            for rule in self._rules:
-                rendered_rules.append(rule.render())
-            rendered_job.update({"rules": rendered_rules})
+        if self._image:
+            rendered_job.update({"image": self._image})
 
         if self._needs:
             rendered_needs = []
@@ -140,15 +137,27 @@ class Job():
                 rendered_needs.append(need.render())
             rendered_job.update({"needs": rendered_needs})
 
+        rendered_job.update({
+            "stage": self._stage,
+            "script": self._scripts,
+        })
+
+        if self._variables:
+            rendered_job["variables"] = self._variables
+
+        if self._rules:
+            rendered_rules = []
+            for rule in self._rules:
+                rendered_rules.append(rule.render())
+            rendered_job.update({"rules": rendered_rules})
+
         if self._artifacts_paths.keys():
             rendered_job.update({"artifacts": {
                 "paths": list(self._artifacts_paths.keys()),
             }})
 
-        if self._image:
-            rendered_job.update({"image": self._image})
-
-        rendered_job["stage"] = self._stage
+        if self._tags.keys():
+            rendered_job["tags"] = list(self._tags.keys())
 
         return rendered_job
 

@@ -1,6 +1,8 @@
 stages:
 - print_date
 print-date:
+  image: docker/image:example
+  stage: print_date
   script:
   - ./before-script.sh
   - date
@@ -8,9 +10,6 @@ print-date:
   variables:
     USER: Max Power
     URL: https://example.com
-  tags:
-  - test
-  - europe
   rules:
   - if: $MY_VARIABLE_IS_PRESENT
     when: on_success
@@ -19,5 +18,6 @@ print-date:
     paths:
     - binaries/
     - .config
-  image: docker/image:example
-  stage: print_date
+  tags:
+  - test
+  - europe

@@ -2,18 +2,18 @@ stages:
 - job1
 - job2
 job1-development:
+  stage: job1
   script:
   - job-1-on-development
-  stage: job1
 job2-development:
+  stage: job2
   script:
   - job-2-on-development
-  stage: job2
 job1-test:
+  stage: job1
   script:
   - job-1-on-test
-  stage: job1
 job2-test:
+  stage: job2
   script:
   - job-2-on-test
-  stage: job2

@@ -1,6 +1,7 @@
 stages:
 - print_date
 print-date:
+  stage: print_date
   script:
   - date
   rules:
@@ -10,4 +11,3 @@ print-date:
   - if: $CI_COMMIT_REF_NAME == "master"
     when: on_success
     allow_failure: false
-  stage: print_date

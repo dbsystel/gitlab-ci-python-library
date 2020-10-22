@@ -2,13 +2,13 @@ stages:
 - job1
 - job2
 job1:
+  stage: job1
   script:
   - from-sequence.sh
   - from-job-1.sh
   - script1.sh
-  stage: job1
 job2:
+  stage: job2
   script:
   - from-sequence.sh
   - script2.sh
-  stage: job2
