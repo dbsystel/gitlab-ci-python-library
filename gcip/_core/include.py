@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Any, Dict, Mapping, Optional
 
-from .core import Core
+from ..helpers import is_valid_url
 
 
 class IncludeMethod(Enum):
@@ -61,7 +61,7 @@ class Include(object):
                 raise AttributeError("Missing parameter 'project'.")
 
         if self._include_method == IncludeMethod.REMOTE:
-            if not Core.validate_url(file):
+            if not is_valid_url(file):
                 raise ValueError(f"URL is not valid. URL: {file}")
 
     def render(self) -> Dict[Any, Optional[str]]:
