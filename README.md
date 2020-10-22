@@ -63,9 +63,9 @@ your real pipeline code must end with `pipeline.print_yaml()` instead of `confte
 stages:
 - print_date
 print-date:
+  stage: print_date
   script:
   - date
-  stage: print_date
 
 ```
 
@@ -111,6 +111,8 @@ That means you can prepend/append/add a single script/variable/tag/... or a list
 stages:
 - print_date
 print-date:
+  image: docker/image:example
+  stage: print_date
   script:
   - ./before-script.sh
   - date
@@ -118,9 +120,6 @@ print-date:
   variables:
     USER: Max Power
     URL: https://example.com
-  tags:
-  - test
-  - europe
   rules:
   - if: $MY_VARIABLE_IS_PRESENT
     when: on_success
@@ -129,8 +128,9 @@ print-date:
     paths:
     - binaries/
     - .config
-  image: docker/image:example
-  stage: print_date
+  tags:
+  - test
+  - europe
 
 ```
 
@@ -180,16 +180,16 @@ stages:
 - job1
 - job2
 job1:
+  stage: job1
   script:
   - from-sequence.sh
   - from-job-1.sh
   - script1.sh
-  stage: job1
 job2:
+  stage: job2
   script:
   - from-sequence.sh
   - script2.sh
-  stage: job2
 
 ```
 
@@ -230,16 +230,16 @@ stages:
 - job1
 - job2
 job1:
+  stage: job1
   script:
   - from-sequence-b.sh
   - from-sequence-a.sh
   - script1.sh
-  stage: job1
 job2:
+  stage: job2
   script:
   - from-sequence-b.sh
   - script2.sh
-  stage: job2
 
 ```
 
@@ -281,16 +281,16 @@ stages:
 - job1
 - job2
 job1:
+  stage: job1
   script:
   - from-pipeline.sh
   - from-sequence.sh
   - script1.sh
-  stage: job1
 job2:
+  stage: job2
   script:
   - from-pipeline.sh
   - script2.sh
-  stage: job2
 
 ```
 
@@ -326,9 +326,9 @@ The output is obviously **wrong** as we expect two jobs but just get one:
 stages:
 - do_something
 do-something:
+  stage: do_something
   script:
   - ./do-something-on.sh test
-  stage: do_something
 
 ```
 
@@ -380,13 +380,13 @@ stages:
 - do_something_development
 - do_something_test
 do-something-development:
+  stage: do_something_development
   script:
   - ./do-something-on.sh development
-  stage: do_something_development
 do-something-test:
+  stage: do_something_test
   script:
   - ./do-something-on.sh test
-  stage: do_something_test
 
 ```
 
@@ -435,21 +435,21 @@ stages:
 - job1_test
 - job2_test
 job1-development:
+  stage: job1_development
   script:
   - job-1-on-development
-  stage: job1_development
 job2-development:
+  stage: job2_development
   script:
   - job-2-on-development
-  stage: job2_development
 job1-test:
+  stage: job1_test
   script:
   - job-1-on-test
-  stage: job1_test
 job2-test:
+  stage: job2_test
   script:
   - job-2-on-test
-  stage: job2_test
 
 ```
 
@@ -496,13 +496,13 @@ def test():
 stages:
 - single_stage
 single-stage-job1:
+  stage: single_stage
   script:
   - date
-  stage: single_stage
 single-stage-job2:
+  stage: single_stage
   script:
   - date
-  stage: single_stage
 
 ```
 
@@ -576,21 +576,21 @@ stages:
 - job1
 - job2
 job1-development:
+  stage: job1
   script:
   - job-1-on-development
-  stage: job1
 job2-development:
+  stage: job2
   script:
   - job-2-on-development
-  stage: job2
 job1-test:
+  stage: job1
   script:
   - job-1-on-test
-  stage: job1
 job2-test:
+  stage: job2
   script:
   - job-2-on-test
-  stage: job2
 
 ```
 
@@ -632,21 +632,21 @@ stages:
 - update_service_development
 - update_service_test
 update-service-development-service1:
+  stage: update_service_development
   script:
   - ./update-service.sh service1_development
-  stage: update_service_development
 update-service-development-service2:
+  stage: update_service_development
   script:
   - ./update-service.sh service2_development
-  stage: update_service_development
 update-service-test-service1:
+  stage: update_service_test
   script:
   - ./update-service.sh service1_test
-  stage: update_service_test
 update-service-test-service2:
+  stage: update_service_test
   script:
   - ./update-service.sh service2_test
-  stage: update_service_test
 
 ```
 
@@ -691,9 +691,9 @@ def test():
 stages:
 - print_date
 print-date:
+  stage: print_date
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git
-  stage: print_date
 
 ```
 
@@ -725,10 +725,10 @@ def test():
 stages:
 - lint
 lint-flake8:
+  stage: lint
   script:
   - pip3 install --upgrade flake8
   - flake8
-  stage: lint
 
 ```
 
@@ -761,18 +761,18 @@ stages:
 - diff
 - deploy
 diff-cdk:
+  stage: diff
   script:
   - cdk synth my-cdk-stack
   - cdk diff my-cdk-stack
-  stage: diff
 deploy-cdk:
+  stage: deploy
   script:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
     my-cdk-stack
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
     my-cdk-stack
-  stage: deploy
 
 ```
 
@@ -810,6 +810,7 @@ def test():
 stages:
 - print_date
 print-date:
+  stage: print_date
   script:
   - date
   rules:
@@ -819,7 +820,6 @@ print-date:
   - if: $CI_COMMIT_REF_NAME == "master"
     when: on_success
     allow_failure: false
-  stage: print_date
 
 ```
 
@@ -870,12 +870,38 @@ Here an example for triggering another pipeline:
 
 ```py
 # ./tests/unit/test_readme_trigger_project_pipeline.py
+
+from gcip import Pipeline, TriggerJob, TriggerStrategy
+from tests import conftest
+
+
+def test():
+    pipeline = Pipeline()
+    pipeline.add_jobs(TriggerJob(
+        namespace="trigger-banana",
+        project="myteam/banana",
+        branch="test",
+        strategy=TriggerStrategy.DEPEND,
+    ))
+
+    conftest.check(pipeline.render())
+
 ```
 
 **Output:**
 
 ```yaml
 # ./tests/unit/comparison_files/test_readme_trigger_project_pipeline_test.yml
+
+stages:
+- trigger_banana
+trigger-banana:
+  trigger:
+    project: myteam/banana
+    branch: test
+    strategy: depend
+  stage: trigger_banana
+
 ```
 
 Here an example for triggering a child pipeline:
@@ -884,10 +910,38 @@ Here an example for triggering a child pipeline:
 
 ```py
 # ./tests/unit/test_readme_trigger_child_pipeline.py
+
+from gcip import Pipeline, TriggerJob, TriggerStrategy
+from tests import conftest
+from gcip.includes.include_pattern import LocalInclude
+
+
+def test():
+    pipeline = Pipeline()
+    pipeline.add_jobs(
+        TriggerJob(
+            namespace="trigger-subpipe",
+            includes=LocalInclude("./my-subpipe.yml"),
+            strategy=TriggerStrategy.DEPEND,
+        )
+    )
+
+    conftest.check(pipeline.render())
+
 ```
 
 **Output:**
 
 ```yaml
 # ./tests/unit/comparison_files/test_readme_trigger_child_pipeline_test.yml
+
+stages:
+- trigger_subpipe
+trigger-subpipe:
+  trigger:
+    include:
+    - local: ./my-subpipe.yml
+    strategy: depend
+  stage: trigger_subpipe
+
 ```
