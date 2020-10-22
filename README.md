@@ -344,7 +344,7 @@ both methods accept the `namespace` parameter, you should use to modify the name
 The value of `namespaces` will be appended to the jobs `name` and `stage`. This only applies to
 the jobs (sequences) added but not to the jobs (and sequences) already contained in the sequence.
 
-## reuse jobs
+## Reuse jobs
 
 **Input:**
 
@@ -390,7 +390,7 @@ do-something-test:
 
 ```
 
-# reuse sequences
+# Reuse sequences
 
 Namespacing is much more useful for reusing sequences. You can define a whole
 Gitlab CI pipeline within a sequence and reuse that sequence per environment.
