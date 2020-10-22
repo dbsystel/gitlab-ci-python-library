@@ -52,9 +52,7 @@ class Pipeline(JobSequence):
 
         pipline["stages"] = list(stages.keys())
         for job in job_copies:
-            rendered_job = job.render()
-            rendered_job["stage"] = job.stage
-            pipline[job.name] = rendered_job
+            pipline[job.name] = job.render()
         return pipline
 
     def add_include(self, include: Include):

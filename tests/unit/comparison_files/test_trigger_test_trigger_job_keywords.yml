@@ -1,0 +1,13 @@
+stages:
+- foobar
+foobar:
+  trigger:
+    project: my/project
+  variables:
+    USER: Max Power
+    URL: https://example.com
+  rules:
+  - if: $MY_VARIABLE_IS_PRESENT
+    when: on_success
+    allow_failure: false
+  stage: foobar

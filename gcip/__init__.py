@@ -3,7 +3,9 @@ from pkg_resources import (
     get_distribution as _get_distribution,
 )
 
-from ._core.job import Job, TriggerJob, TriggerStrategy, Need  # noqa
+from ._core.job import (  # noqa
+    Job, Need, TriggerJob, TriggerStrategy,
+)
 from ._core.core import Core  # noqa
 from ._core.rule import Rule  # noqa
 from ._core.include import Include, IncludeMethod  # noqa

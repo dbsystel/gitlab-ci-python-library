@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import copy
 from enum import Enum
-from typing import Any, Dict, List, Union, AnyStr, Optional
+from typing import Any, Dict, List, Union, AnyStr, Optional, Mapping
 
 from . import OrderedSetType
 from .rule import Rule
 from .include import Include
-
 
 
 class Job():
@@ -103,20 +102,20 @@ class Job():
             self._image = image
 
     def copy(self) -> Job:
-        job_copy = Job(
-            name=".",
-            script=copy.deepcopy(self._scripts),
-        )
-        job_copy._name = self._name
-        job_copy._stage = self._stage
+        return self._copy_into(Job(name=".", script=copy.deepcopy(self._scripts)))
 
-        job_copy.set_image(self._image)
-        job_copy.add_variables(**copy.deepcopy(self._variables))
-        job_copy.add_tags(*list(self._tags.keys()))
-        job_copy.add_artifacts_paths(*list(self._artifacts_paths.keys()))
-        job_copy.append_rules(*self._rules)
-        job_copy.add_needs(*self._needs)
-        return job_copy
+    def _copy_into(self, job: Job) -> Job:
+        job._name = self._name
+        job._stage = self._stage
+
+        job.set_image(self._image)
+        job.add_variables(**copy.deepcopy(self._variables))
+        job.add_tags(*list(self._tags.keys()))
+        job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+        job.append_rules(*self._rules)
+        job.add_needs(*self._needs)
+
+        return job
 
     def render(self) -> Dict[str, Any]:
         rendered_job: Dict[str, Any] = {
@@ -149,6 +148,8 @@ class Job():
         if self._image:
             rendered_job.update({"image": self._image})
 
+        rendered_job["stage"] = self._stage
+
         return rendered_job
 
 
@@ -157,7 +158,7 @@ class TriggerStrategy(Enum):
     DEPEND = "depend"
 
 
-class TriggerJob(_JobCommons):
+class TriggerJob(Job):
     def __init__(
         self,
         *args: Any,
@@ -193,7 +194,7 @@ class TriggerJob(_JobCommons):
         if not includes and not project:
             raise ValueError("Neither 'includes' nor 'project' is given.")
 
-        super().__init__(name=name, namespace=namespace)
+        super().__init__(name=name, namespace=namespace, script="none")
 
         self._project = project
         self._branch = branch
@@ -216,9 +217,10 @@ class TriggerJob(_JobCommons):
         else:
             raise AttributeError("script parameter must be of type string or list of strings")
 
-    def copy(self) -> Job:
-        job_copy = Job(name=".")
-        super().copy(job_copy)
+    def copy(self) -> TriggerJob:
+        job_copy = TriggerJob(name=".", project=".")
+        super()._copy_into(job_copy)
+
         job_copy._project = self._project
         job_copy._branch = self._branch
         job_copy._includes = self._includes
@@ -228,22 +230,41 @@ class TriggerJob(_JobCommons):
     def render(self) -> Dict[Any, Any]:
         rendered_job = super().render()
 
+        # remove unsupported keywords from TriggerJob
+        rendered_job.pop("script")
+
+        if "image" in rendered_job:
+            rendered_job.pop("image")
+
+        if "tags" in rendered_job:
+            rendered_job.pop("tags")
+
+        if "artifacts" in rendered_job:
+            rendered_job.pop("artifacts")
+
+        trigger = {}
+
         # Child pipelines
         if self._includes:
-            rendered_job.update({
+            trigger.update({
                 "include": [include.render() for include in self._includes],
             })
 
         # Multiproject pipelines
         if self._project:
-            rendered_job.update({
+            trigger.update({
                 "project": self._project,
             })
             if self._branch:
-                rendered_job.update({"branch": self._branch})
+                trigger.update({"branch": self._branch})
 
         if self._strategy:
-            rendered_job.update({"strategy": self._strategy.value})
+            trigger.update({"strategy": self._strategy.value})
+
+        rendered_job = {
+            "trigger": trigger,
+            **rendered_job
+        }
 
         return rendered_job
 

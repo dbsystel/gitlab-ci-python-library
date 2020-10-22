@@ -7,3 +7,4 @@ needs:
   artifacts: true
   project: foo/bar
   ref: master
+stage: depending_job
