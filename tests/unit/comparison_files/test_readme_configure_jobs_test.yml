@@ -1,23 +1,23 @@
 stages:
 - print_date
 print-date:
-  image: docker/image:example
   script:
   - ./before-script.sh
   - date
   - ./after-script.sh
+  variables:
+    USER: Max Power
+    URL: https://example.com
+  tags:
+  - test
+  - europe
   rules:
   - if: $MY_VARIABLE_IS_PRESENT
     when: on_success
     allow_failure: false
-  variables:
-    USER: Max Power
-    URL: https://example.com
   artifacts:
     paths:
     - binaries/
     - .config
-  tags:
-  - test
-  - europe
+  image: docker/image:example
   stage: print_date

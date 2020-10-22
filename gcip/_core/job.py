@@ -9,17 +9,24 @@ from .rule import Rule
 from .include import Include
 
 
-class _JobCommons():
+
+class Job():
     def __init__(
         self,
         *args: Any,
         name: Optional[str] = None,
         namespace: Optional[str] = None,
+        script: Union[AnyStr, List[str]],
     ):
         self._stage = ""
         self._name = ""
+        self._image: Optional[str] = None
+        self._variables: Dict[str, str] = {}
+        self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
         self._needs: List[Need] = []
+        self._scripts: List[str]
+        self._artifacts_paths: OrderedSetType = {}
 
         if namespace and name:
             self._name = f"{namespace}-{name}"
@@ -36,6 +43,13 @@ class _JobCommons():
 
         self._name = self._name.replace("_", "-")
         self._stage = self._stage.replace("-", "_")
+
+        if isinstance(script, str):
+            self._scripts = [script]
+        elif isinstance(script, list):
+            self._scripts = script
+        else:
+            raise AttributeError("script parameter must be of type string or list of strings")
 
     @property
     def name(self) -> str:
@@ -58,63 +72,6 @@ class _JobCommons():
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
-    def append_rules(self, *rules: Rule) -> None:
-        self._rules.extend(rules)
-
-    def prepend_rules(self, *rules: Rule) -> None:
-        self._rules = list(rules) + self._rules
-
-    def add_needs(self, *needs: Need) -> None:
-        self._needs.extend(needs)
-
-    def copy(self, job_copy: Job) -> Job:
-        job_copy._name = self._name
-        job_copy._stage = self._stage
-        job_copy.append_rules(*self._rules)
-        job_copy.add_needs(*self._needs)
-        return job_copy
-
-    def render(self) -> Dict[str, Any]:
-        rendered_job: Dict[str, Any] = {}
-
-        if self._needs:
-            rendered_needs = []
-            for need in self._needs:
-                rendered_needs.append(need.render())
-            rendered_job.update({"needs": rendered_needs})
-
-        if self._rules:
-            rendered_rules = []
-            for rule in self._rules:
-                rendered_rules.append(rule.render())
-            rendered_job.update({"rules": rendered_rules})
-
-        return rendered_job
-
-
-class Job(_JobCommons):
-    def __init__(
-        self,
-        *args: Any,
-        name: Optional[str] = None,
-        namespace: Optional[str] = None,
-        script: Union[AnyStr, List[str]],
-    ):
-        super().__init__(name=name, namespace=namespace)
-
-        self._image: Optional[str] = None
-        self._variables: Dict[str, str] = {}
-        self._tags: OrderedSetType = {}
-        self._scripts: List[str]
-        self._artifacts_paths: OrderedSetType = {}
-
-        if isinstance(script, str):
-            self._scripts = [script]
-        elif isinstance(script, list):
-            self._scripts = script
-        else:
-            raise AttributeError("script parameter must be of type string or list of strings")
-
     def prepend_scripts(self, *scripts: str) -> None:
         self._scripts = list(scripts) + self._scripts
 
@@ -132,6 +89,15 @@ class Job(_JobCommons):
         for path in paths:
             self._artifacts_paths[path] = None
 
+    def append_rules(self, *rules: Rule) -> None:
+        self._rules.extend(rules)
+
+    def prepend_rules(self, *rules: Rule) -> None:
+        self._rules = list(rules) + self._rules
+
+    def add_needs(self, *needs: Need) -> None:
+        self._needs.extend(needs)
+
     def set_image(self, image: Optional[str]) -> None:
         if image:
             self._image = image
@@ -141,37 +107,47 @@ class Job(_JobCommons):
             name=".",
             script=copy.deepcopy(self._scripts),
         )
-        super().copy(job_copy)
+        job_copy._name = self._name
+        job_copy._stage = self._stage
+
         job_copy.set_image(self._image)
         job_copy.add_variables(**copy.deepcopy(self._variables))
         job_copy.add_tags(*list(self._tags.keys()))
         job_copy.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+        job_copy.append_rules(*self._rules)
+        job_copy.add_needs(*self._needs)
         return job_copy
 
     def render(self) -> Dict[str, Any]:
-        rendered_job = super().render()
-
-        rendered_job = {
+        rendered_job: Dict[str, Any] = {
             "script": self._scripts,
-            **rendered_job
         }
-
-        if self._image:
-            rendered_job = {
-                "image": self._image,
-                **rendered_job
-            }
 
         if self._variables:
             rendered_job["variables"] = self._variables
+
+        if self._tags.keys():
+            rendered_job["tags"] = list(self._tags.keys())
+
+        if self._rules:
+            rendered_rules = []
+            for rule in self._rules:
+                rendered_rules.append(rule.render())
+            rendered_job.update({"rules": rendered_rules})
+
+        if self._needs:
+            rendered_needs = []
+            for need in self._needs:
+                rendered_needs.append(need.render())
+            rendered_job.update({"needs": rendered_needs})
 
         if self._artifacts_paths.keys():
             rendered_job.update({"artifacts": {
                 "paths": list(self._artifacts_paths.keys()),
             }})
 
-        if self._tags.keys():
-            rendered_job["tags"] = list(self._tags.keys())
+        if self._image:
+            rendered_job.update({"image": self._image})
 
         return rendered_job
 

@@ -54,6 +54,10 @@ deploy-twine-upload-dev:
   script:
   - pip3 install --upgrade twine
   - python3 -m twine upload --non-interactive --disable-progress-bar dist/*
+  variables:
+    TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/dev-repository
+    TWINE_USERNAME: $ARTIFACTORY_DEV_USER
+    TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     when: never
@@ -64,21 +68,17 @@ deploy-twine-upload-dev:
   - if: $CI_COMMIT_REF_NAME == "master"
     when: on_success
     allow_failure: false
-  variables:
-    TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/dev-repository
-    TWINE_USERNAME: $ARTIFACTORY_DEV_USER
-    TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
   stage: deploy
 deploy-twine-upload-stable:
   script:
   - pip3 install --upgrade twine
   - python3 -m twine upload --non-interactive --disable-progress-bar dist/*
-  rules:
-  - if: $CI_COMMIT_TAG
-    when: on_success
-    allow_failure: false
   variables:
     TWINE_REPOSITORY_URL: https://my.artifactory.net/pypi/prod-repository
     TWINE_USERNAME: $ARTIFACTORY_PROD_USER
     TWINE_PASSWORD: $ARTIFACTORY_PROD_PASSWORD
+  rules:
+  - if: $CI_COMMIT_TAG
+    when: on_success
+    allow_failure: false
   stage: deploy
