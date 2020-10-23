@@ -35,6 +35,7 @@ extensions = [
     "autoapi.extension",
     "sphinx.ext.viewcode",
     "sphinxcontrib.napoleon",
+    "sphinx_multiversion",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -67,11 +68,25 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
 }
 
+# -- multiversion configuration ----------------------------------------------
+# See https://holzhaus.github.io/sphinx-multiversion/master/index.html
+# Disable usage of branches
+smv_branch_whitelist = None
+# Include all tags
+smv_tag_whitelist = r'^.*$'
+smv_branch_whitelist = r'^master$'
+# Only use local branches.
+smv_remote_whitelist = None
 # -- Options for HTML output -------------------------------------------------
 html_theme = "sphinx_rtd_theme"
 html_style = "css/custom.css"
 html_theme_options = {
     "prev_next_buttons_location": "both"
+}
+html_sidebars = {
+    '**': [
+        'versioning.html',
+    ],
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
