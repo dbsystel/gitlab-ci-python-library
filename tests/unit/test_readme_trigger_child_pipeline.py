@@ -1,6 +1,10 @@
-from gcip import Pipeline, TriggerJob, TriggerStrategy
+from gcip import (
+    Pipeline,
+    TriggerJob,
+    IncludeLocal,
+    TriggerStrategy,
+)
 from tests import conftest
-from gcip.includes.include_pattern import LocalInclude
 
 
 def test():
@@ -8,7 +12,7 @@ def test():
     pipeline.add_jobs(
         TriggerJob(
             namespace="trigger-subpipe",
-            includes=LocalInclude("./my-subpipe.yml"),
+            includes=IncludeLocal("./my-subpipe.yml"),
             strategy=TriggerStrategy.DEPEND,
         )
     )

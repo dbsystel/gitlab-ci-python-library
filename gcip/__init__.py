@@ -4,13 +4,12 @@ from pkg_resources import (
 )
 
 from ._core.job import (  # noqa
-    Job,
-    Need,
-    TriggerJob,
-    TriggerStrategy,
+    Job, Need, TriggerJob, TriggerStrategy,
 )
 from ._core.rule import Rule  # noqa
-from ._core.include import Include, IncludeMethod  # noqa
+from ._core.include import (  # noqa
+    IncludeFile, IncludeLocal, IncludeRemote, IncludeArtifact, IncludeTemplate,
+)
 from ._core.pipeline import Pipeline  # noqa
 from ._core.job_sequence import JobSequence  # noqa
 
