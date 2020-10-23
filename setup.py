@@ -14,6 +14,7 @@ __license__ = 'Apache-2.0'
 __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
+
 def get_version() -> str:
     ci_commit_tag = os.getenv("CI_COMMIT_TAG")
     if ci_commit_tag is not None and pep404.is_canonical(ci_commit_tag):
