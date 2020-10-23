@@ -949,3 +949,13 @@ trigger-subpipe:
   stage: trigger_subpipe
 
 ```
+
+# Authors
+
+GCIP was created by [Thomas Steinbach](mailto:thomas.t.steinbach@deutschebahn.com) in 2020.
+
+Thanks to initial contributions from [Daniel von Eßen](mailto:daniel.von-essen@deutschebahn.com)
+
+# Licence
+
+The content of this repository is licensed under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).

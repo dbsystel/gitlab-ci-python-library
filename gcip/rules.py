@@ -1,5 +1,13 @@
 from ._core.rule import Rule
 
+__author__ = "Thomas Steinbach"
+__copyright__ = "Copyright 2020 DB Systel GmbH"
+__credits__ = ["Thomas Steinbach"]
+# SPDX-License-Identifier: Apache-2.0
+__license__ = 'Apache-2.0'
+__maintainer__ = 'Thomas Steinbach'
+__email__ = 'thomas.t.steinbach@deutschebahn.com'
+
 
 def on_branch(branch_name: str) -> Rule:
     return Rule(if_statement=f'$CI_COMMIT_REF_NAME == "{branch_name}"')

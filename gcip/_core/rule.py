@@ -3,6 +3,14 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Dict, Union, Optional
 
+__author__ = "Thomas Steinbach"
+__copyright__ = "Copyright 2020 DB Systel GmbH"
+__credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
+# SPDX-License-Identifier: Apache-2.0
+__license__ = 'Apache-2.0'
+__maintainer__ = 'Thomas Steinbach'
+__email__ = 'thomas.t.steinbach@deutschebahn.com'
+
 
 class WhenStatement(Enum):
     ALWAYS = "always"

@@ -6,6 +6,13 @@ from gcip.script_library import (
     evaluate_git_tag_pep404_conformity as pep404,
 )
 
+__author__ = "Thomas Steinbach"
+__copyright__ = "Copyright 2020 DB Systel GmbH"
+__credits__ = ["Thomas Steinbach"]
+# SPDX-License-Identifier: Apache-2.0
+__license__ = 'Apache-2.0'
+__maintainer__ = 'Thomas Steinbach'
+__email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 def get_version() -> str:
     ci_commit_tag = os.getenv("CI_COMMIT_TAG")
