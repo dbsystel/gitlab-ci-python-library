@@ -14,7 +14,7 @@ from typing import (
 
 from . import OrderedSetType
 from .rule import Rule
-from .include import Include
+from .include import _Include
 
 
 class Job():
@@ -175,7 +175,7 @@ class TriggerJob(Job):
         namespace: Optional[str] = None,
         project: Optional[str] = None,
         branch: Optional[str] = None,
-        includes: Optional[Include, List[Include]] = None,
+        includes: Optional[_Include, List[_Include]] = None,
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -> None:
@@ -189,7 +189,7 @@ class TriggerJob(Job):
             project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
                 e.g 'team1/project1'. Defaults to None.
             branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
+            includes (Optional[List[_Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
             strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
                 If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
 
@@ -212,7 +212,7 @@ class TriggerJob(Job):
 
         if not includes:
             self._includes = None
-        elif isinstance(includes, Include):
+        elif isinstance(includes, _Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             if len(includes) > 3:

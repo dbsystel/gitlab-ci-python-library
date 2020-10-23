@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Union, Optional
 
 from . import OrderedSetType
-from .include import Include
+from .include import _Include
 from .job_sequence import JobSequence
 
 
@@ -9,30 +9,30 @@ class Pipeline(JobSequence):
     def __init__(
         self,
         *args,
-        includes: Optional[Union[Include, List[Include]]] = None,
+        includes: Optional[Union[_Include, List[_Include]]] = None,
         **kwargs,
     ):
         """
         Pipeline class creates an empty Gitlab pipeline.
 
         Args:
-            includes (Optional[Union[Include, List[Include]]]): You can add global Gitlab includes.
+            includes (Optional[Union[_Include, List[_Include]]]): You can add global Gitlab includes.
                 See `Gitlab CI Reference include`_. Defaults to None.
 
         Raises:
-            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`Includes`
+            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`_Includes`
 
         .. _Gitlab CI Reference include:
            https://docs.gitlab.com/ee/ci/yaml/#include
         """
         if not includes:
             self._includes = []
-        elif isinstance(includes, Include):
+        elif isinstance(includes, _Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             self._includes = includes
         else:
-            raise ValueError("Parameter include must of type gcip.Include or List[gcip.Include]")
+            raise ValueError("Parameter include must of type gcip._Include or List[gcip._Include]")
         super().__init__(
             *args,
             **kwargs,
@@ -55,7 +55,7 @@ class Pipeline(JobSequence):
             pipline[job.name] = job.render()
         return pipline
 
-    def add_include(self, include: Include):
+    def add_include(self, include: _Include):
         self._includes.append(include)
 
     def print_yaml(self) -> None:
