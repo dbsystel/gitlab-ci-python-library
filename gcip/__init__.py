@@ -3,13 +3,24 @@ from pkg_resources import (
     get_distribution as _get_distribution,
 )
 
+# yapf: disable
 from ._core.job import (  # noqa
-    Job, Need, TriggerJob, TriggerStrategy,
+    Job,
+    Need,
+    TriggerJob,
+    TriggerStrategy,
 )
+# yapf: disable
 from ._core.rule import Rule  # noqa
+# yapf: disable
 from ._core.include import (  # noqa
-    IncludeFile, IncludeLocal, IncludeRemote, IncludeArtifact, IncludeTemplate,
+    IncludeFile,
+    IncludeLocal,
+    IncludeRemote,
+    IncludeArtifact,
+    IncludeTemplate,
 )
+# yapf: disable
 from ._core.pipeline import Pipeline  # noqa
 from ._core.job_sequence import JobSequence  # noqa
 
