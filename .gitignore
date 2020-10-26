@@ -10,8 +10,3 @@ dist
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Documentation output
-public/*
-
-.DS_Store
