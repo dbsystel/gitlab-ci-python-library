@@ -74,20 +74,20 @@ class JobSequence():
         Please read the argument documentation first and then this note:
 
         This method could be called multiple times. All tags will be collected within the
-        :class:`JobSequence` and applied to downstream :class:`JobSequence`s and :class:`Job`s
+        :class:`JobSequence` and applied to downstream :class:`JobSequence` s and :class:`Job` s
         at rendering times.
 
         If this method is called multiple times but with different values for ``override``, then
         only ``tags`` added with ``override=True`` will be applied, as they override the
         initialization tags.
 
-        If this function is called together with :func:`add_tags`, then first all tags from :func:`set_tags`
-        and then tags from :func:`add_tags` will be applied to downstream :class:`Job`s.
+        If this function is called together with :meth:`add_tags`, then first all tags from :meth:`set_tags`
+        and then tags from :meth:`add_tags` will be applied to downstream :class:`Job` s.
 
         Args:
-            tags (str): One or more strings that will be applied as tags to all :class:`Jobs`s
-            override (bool): If True (default), existing :class:`Job` tags will be replaced.
-                             If False, ``tags`` will only be applied if the :class:`Job`s tag list is empty.
+            tags (str): One or more strings that will be applied as tags to all :class:`Jobs` s
+            override (bool): If `True` (default), existing :class:`Job` tags will be replaced.
+                             If `False`, ``tags`` will only be applied if the :class:`Job` s tag list is empty.
         """
         for tag in tags:
             if override:
