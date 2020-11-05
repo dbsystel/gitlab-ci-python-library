@@ -25,6 +25,8 @@ class JobSequence():
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
+        self._init_tags: OrderedSetType = {}
+        self._replace_tags: OrderedSetType = {}
         self._artifacts_paths: OrderedSetType = {}
         self._prepend_scripts: List[str] = []
         self._append_scripts: List[str] = []
@@ -65,6 +67,34 @@ class JobSequence():
         for tag in tags:
             self._tags[tag] = None
 
+    def set_tags(self, *tags: str, override: bool = True) -> None:
+        """
+        Initialize or replace tags of all jobs.
+
+        Please read the argument documentation first and then this note:
+
+        This method could be called multiple times. All tags will be collected within the
+        :class:`JobSequence` and applied to downstream :class:`JobSequence`s and :class:`Job`s
+        at rendering times.
+
+        If this method is called multiple times but with different values for ``override``, then
+        only ``tags`` added with ``override=True`` will be applied, as they override the
+        initialization tags.
+
+        If this function is called together with :func:`add_tags`, then first all tags from :func:`set_tags`
+        and then tags from :func:`add_tags` will be applied to downstream :class:`Job`s.
+
+        Args:
+            tags (str): One or more strings that will be applied as tags to all :class:`Jobs`s
+            override (bool): If True (default), existing :class:`Job` tags will be replaced.
+                             If False, ``tags`` will only be applied if the :class:`Job`s tag list is empty.
+        """
+        for tag in tags:
+            if override:
+                self._replace_tags[tag] = None
+            else:
+                self._init_tags[tag] = None
+
     def add_artifacts_paths(self, *paths: str) -> None:
         for path in paths:
             self._artifacts_paths[path] = None
@@ -102,6 +132,10 @@ class JobSequence():
             job._extend_name(self._name_extension)
             job.set_image(self._image)
             job.add_variables(**copy.deepcopy(self._variables))
+            if self._init_tags and not job._tags:
+                job._tags = copy.deepcopy(self._init_tags)
+            if self._replace_tags:
+                job._tags = copy.deepcopy(self._replace_tags)
             job.add_tags(*list(self._tags.keys()))
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
             job.append_rules(*self._append_rules)
