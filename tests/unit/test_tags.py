@@ -11,14 +11,14 @@ def testjob():
 
 def test_init_empty_tags(testjob):
     pipeline = Pipeline()
-    pipeline.set_tags("foo", "bar", override=False)
+    pipeline.initialize_tags("foo", "bar")
     pipeline.add_jobs(testjob)
     conftest.check(pipeline.render())
 
 
-def test_init_set_tags(testjob):
+def test_init_non_empty_tags(testjob):
     pipeline = Pipeline()
-    pipeline.set_tags("foo", "bar", override=False)
+    pipeline.initialize_tags("foo", "bar")
     testjob.add_tags("keep", "those", "tags")
     pipeline.add_jobs(testjob)
     conftest.check(pipeline.render())
@@ -26,7 +26,7 @@ def test_init_set_tags(testjob):
 
 def test_override_tags(testjob):
     pipeline = Pipeline()
-    pipeline.set_tags("new", "values")
+    pipeline.override_tags("new", "values")
     testjob.add_tags("replace", "those", "tags")
     pipeline.add_jobs(testjob)
     conftest.check(pipeline.render())

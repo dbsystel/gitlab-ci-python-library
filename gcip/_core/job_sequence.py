@@ -24,9 +24,11 @@ class JobSequence():
         self._namespace: Optional[str] = None
         self._image: Optional[str] = None
         self._variables: Dict[str, str] = {}
+        self._variables_for_initialization: Dict[str, str] = {}
+        self._variables_for_replacement: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
-        self._init_tags: OrderedSetType = {}
-        self._replace_tags: OrderedSetType = {}
+        self._tags_for_initialization: OrderedSetType = {}
+        self._tags_for_replacement: OrderedSetType = {}
         self._artifacts_paths: OrderedSetType = {}
         self._prepend_scripts: List[str] = []
         self._append_scripts: List[str] = []
@@ -63,37 +65,55 @@ class JobSequence():
     def add_variables(self, **variables: str) -> None:
         self._variables.update(variables)
 
+    def initialize_variables(self, **variables: str) -> None:
+        """
+        Works like :meth:`initialize_tags` but for variales.
+
+        Args:
+            variables (str): A keyword argument list which key-value-pairs will be applied as variable-value-pairs
+                             to all downstream :class:`Job` s without variables already set.
+        """
+        self._variables_for_initialization.update(variables)
+
+    def override_variables(self, **variables: str) -> None:
+        """
+        Works like :meth:`override_tags` but for variables.
+
+        Args:
+            variables (str): A keyword argument list which key-value-pairs will be set as variable-value-pairs
+                             to all downstream :class:`Job` s.
+        """
+        self._variables_for_replacement.update(variables)
+
     def add_tags(self, *tags: str) -> None:
         for tag in tags:
             self._tags[tag] = None
 
-    def set_tags(self, *tags: str, override: bool = True) -> None:
+    def initialize_tags(self, *tags: str) -> None:
         """
-        Initialize or replace tags of all jobs.
+        Adds tags to downstream :class:`Job` s only if they haven't tags added yet.
 
-        Please read the argument documentation first and then this note:
-
-        This method could be called multiple times. All tags will be collected within the
-        :class:`JobSequence` and applied to downstream :class:`JobSequence` s and :class:`Job` s
-        at rendering times.
-
-        If this method is called multiple times but with different values for ``override``, then
-        only ``tags`` added with ``override=True`` will be applied, as they override the
-        initialization tags.
-
-        If this function is called together with :meth:`add_tags`, then first all tags from :meth:`set_tags`
-        and then tags from :meth:`add_tags` will be applied to downstream :class:`Job` s.
+        :meth:`initialize_tags` would be extended by :meth:`add_tags` and overridden
+        by :meth:`override_tags` if one of the other methods is called too.
 
         Args:
-            tags (str): One or more strings that will be applied as tags to all :class:`Jobs` s
-            override (bool): If `True` (default), existing :class:`Job` tags will be replaced.
-                             If `False`, ``tags`` will only be applied if the :class:`Job` s tag list is empty.
+            tags (str): One or more strings that will be applied to :class:`Job` s with empty tag list.
         """
         for tag in tags:
-            if override:
-                self._replace_tags[tag] = None
-            else:
-                self._init_tags[tag] = None
+            self._tags_for_initialization[tag] = None
+
+    def override_tags(self, *tags: str) -> None:
+        """
+        Will replace all tags from downstream :class:`Job` s.
+
+        :meth:`override_tags` will also override tags set by :meth:`initialize_tags`
+        but be extended by :meth:`add_tags` when one of the other methods is called too.
+
+        Args:
+            tags (str): One or more strings that will be set as tags to all downstream :class:`Job` s.
+        """
+        for tag in tags:
+            self._tags_for_replacement[tag] = None
 
     def add_artifacts_paths(self, *paths: str) -> None:
         for path in paths:
@@ -131,12 +151,19 @@ class JobSequence():
             job._extend_namespace(self._namespace)
             job._extend_name(self._name_extension)
             job.set_image(self._image)
+
+            if self._variables_for_initialization and not job._variables:
+                job._variables = copy.deepcopy(self._variables_for_initialization)
+            if self._variables_for_replacement:
+                job._variables = copy.deepcopy(self._variables_for_replacement)
             job.add_variables(**copy.deepcopy(self._variables))
-            if self._init_tags and not job._tags:
-                job._tags = copy.deepcopy(self._init_tags)
-            if self._replace_tags:
-                job._tags = copy.deepcopy(self._replace_tags)
+
+            if self._tags_for_initialization and not job._tags:
+                job._tags = copy.deepcopy(self._tags_for_initialization)
+            if self._tags_for_replacement:
+                job._tags = copy.deepcopy(self._tags_for_replacement)
             job.add_tags(*list(self._tags.keys()))
+
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
             job.append_rules(*self._append_rules)
             job.prepend_rules(*self._prepend_rules)

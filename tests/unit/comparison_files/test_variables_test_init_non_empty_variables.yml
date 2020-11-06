@@ -1,0 +1,10 @@
+stages:
+- testjob
+testjob:
+  stage: testjob
+  script:
+  - foobar
+  variables:
+    variable1: keep
+    variable2: those
+    variable3: variables
