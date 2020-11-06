@@ -1,10 +1,25 @@
 ---
-variables:
-  CUSTOM_GCIP_VERSION: "0.4.0"
+generate-pipeline:
+  stage: build
+  image: python:3.9-slim
+  script:
+    - pip3 install requirements.txt
+    - python3 .gitlab-ci.py > generated-config.yml
+  artifacts:
+    paths:
+      - generated-config.yml
+  tags:
+    - environment-prd
 
-include:
-  - project: otherproject/custom-gcip-library
-    file: custom-gcip-pipeline.yml
+run-pipeline:
+  stage: deploy
+  needs:
+    - generate-pipeline
+  trigger:
+    include:
+      - artifact: generated-config.yml
+        job: generate-pipeline
+    strategy: depend
 
 trigger_custom_gcip_library:
   stage: .post
