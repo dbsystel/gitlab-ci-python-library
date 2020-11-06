@@ -30,10 +30,10 @@ class JobSequence():
         self._tags_for_initialization: OrderedSetType = {}
         self._tags_for_replacement: OrderedSetType = {}
         self._artifacts_paths: OrderedSetType = {}
-        self._prepend_scripts: List[str] = []
-        self._append_scripts: List[str] = []
-        self._append_rules: List[Rule] = []
-        self._prepend_rules: List[Rule] = []
+        self._scripts_to_prepend: List[str] = []
+        self._scripts_to_append: List[str] = []
+        self._rules_to_append: List[Rule] = []
+        self._rules_to_prepend: List[Rule] = []
         self._needs: List[Need] = []
 
     def _extend_name(self, name: Optional[str]) -> None:
@@ -120,19 +120,19 @@ class JobSequence():
             self._artifacts_paths[path] = None
 
     def append_rules(self, *rules: Rule) -> None:
-        self._append_rules.extend(rules)
+        self._rules_to_append.extend(rules)
 
     def prepend_rules(self, *rules: Rule) -> None:
-        self._prepend_rules = list(rules) + self._prepend_rules
+        self._rules_to_prepend = list(rules) + self._rules_to_prepend
 
     def add_needs(self, *needs: Need) -> None:
         self._needs.extend(needs)
 
     def prepend_scripts(self, *scripts: str) -> None:
-        self._prepend_scripts = list(scripts) + self._prepend_scripts
+        self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
 
     def append_scripts(self, *scripts: str) -> None:
-        self._append_scripts.extend(scripts)
+        self._scripts_to_append.extend(scripts)
 
     def set_image(self, image: str) -> None:
         if image:
@@ -165,10 +165,10 @@ class JobSequence():
             job.add_tags(*list(self._tags.keys()))
 
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
-            job.append_rules(*self._append_rules)
-            job.prepend_rules(*self._prepend_rules)
+            job.append_rules(*self._rules_to_append)
+            job.prepend_rules(*self._rules_to_prepend)
             job.add_needs(*self._needs)
-            job.prepend_scripts(*self._prepend_scripts)
-            job.append_scripts(*self._append_scripts)
+            job.prepend_scripts(*self._scripts_to_prepend)
+            job.append_scripts(*self._scripts_to_append)
 
         return all_jobs
