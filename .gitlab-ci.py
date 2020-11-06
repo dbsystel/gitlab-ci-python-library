@@ -1,4 +1,7 @@
-pipeline = gcip.Pipeline()
+from gcip import Pipeline
+from gcip.job_sequences import python
+
+pipeline = Pipeline()
 pipeline.initialize_image("<docker-image-with-cdk-and-python>")
 pipeline.add_tags("environment-prd")
 

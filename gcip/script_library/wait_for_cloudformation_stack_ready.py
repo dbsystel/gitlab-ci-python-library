@@ -1,7 +1,7 @@
 import argparse
 from time import sleep
 
-import boto3 # type: ignore
+import boto3  # type: ignore
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
