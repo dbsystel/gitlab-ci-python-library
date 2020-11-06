@@ -3,7 +3,7 @@ generate-pipeline:
   stage: build
   image: python:3.9-slim
   script:
-    - pip3 install requirements.txt
+    - pip3 install -r requirements.txt
     - python3 .gitlab-ci.py > generated-config.yml
   artifacts:
     paths:

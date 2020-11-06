@@ -183,7 +183,7 @@ class TriggerJob(Job):
         namespace: Optional[str] = None,
         project: Optional[str] = None,
         branch: Optional[str] = None,
-        includes: Optional[_Include, List[_Include]] = None,
+        includes: Union[_Include, List[_Include], None] = None,
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -> None:
@@ -215,7 +215,6 @@ class TriggerJob(Job):
 
         self._project = project
         self._branch = branch
-        self._includes = includes or []
         self._strategy = strategy
 
         if not includes:
@@ -259,7 +258,7 @@ class TriggerJob(Job):
         if "artifacts" in rendered_job:
             rendered_job.pop("artifacts")
 
-        trigger = {}
+        trigger: Dict[str, Union[str, List[Dict[str, str]]]] = {}
 
         # Child pipelines
         if self._includes:

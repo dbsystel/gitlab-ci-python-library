@@ -1,4 +1,5 @@
-from typing import Optional
+from abc import ABCMeta
+from typing import Dict, Optional
 
 from ..helpers import is_valid_url
 
@@ -11,16 +12,16 @@ __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
-class _Include():
-    def __init__():
-        pass
+class _Include(metaclass=ABCMeta):
 
-    def render(self):
+    _rendered_include: Dict[str, str]
+
+    def render(self) -> Dict[str, str]:
         return self._rendered_include
 
 
 class IncludeLocal(_Include):
-    def __init__(self, local: str):
+    def __init__(self, local: str) -> None:
         self._rendered_include = {
             "local": local
         }
@@ -32,7 +33,7 @@ class IncludeFile(_Include):
         file: str,
         project: str,
         ref: Optional[str] = None,
-    ):
+    ) -> None:
         self._rendered_include = {
             "file": file,
             "project": project
@@ -42,7 +43,7 @@ class IncludeFile(_Include):
 
 
 class IncludeRemote(_Include):
-    def __init__(self, remote: str):
+    def __init__(self, remote: str) -> None:
         if not is_valid_url(remote):
             raise ValueError(f"`remote` is not a valid URL: {remote}")
 

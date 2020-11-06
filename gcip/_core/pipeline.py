@@ -14,12 +14,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 class Pipeline(JobSequence):
-    def __init__(
-        self,
-        *args,
-        includes: Optional[Union[_Include, List[_Include]]] = None,
-        **kwargs,
-    ):
+    def __init__(self, *, includes: Optional[Union[_Include, List[_Include]]] = None):
         """
         Pipeline class creates an empty Gitlab pipeline.
 
@@ -41,10 +36,7 @@ class Pipeline(JobSequence):
             self._includes = includes
         else:
             raise ValueError("Parameter include must of type gcip._Include or List[gcip._Include]")
-        super().__init__(
-            *args,
-            **kwargs,
-        )
+        super().__init__()
 
     def render(self) -> Dict[str, Any]:
         stages: OrderedSetType = {}
@@ -63,7 +55,7 @@ class Pipeline(JobSequence):
             pipline[job.name] = job.render()
         return pipline
 
-    def add_include(self, include: _Include):
+    def add_include(self, include: _Include) -> None:
         self._includes.append(include)
 
     def print_yaml(self) -> None:
