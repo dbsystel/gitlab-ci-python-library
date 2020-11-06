@@ -1,12 +1,13 @@
-from gcip import Pipeline, JobSequence, Job, Rule
-from gcip import rules
-from tests import conftest
 import pytest
+
+from gcip import Job, Rule, Pipeline, JobSequence, rules
+from tests import conftest
 
 
 @pytest.fixture
 def testjob():
     return Job(namespace="testjob", script="foobar")
+
 
 def test_on_success():
     pipeline = Pipeline()
@@ -41,6 +42,7 @@ def test_rule_order():
     pipeline.add_sequences(sequence)
 
     conftest.check(pipeline.render())
+
 
 def test_init_empty_rules(testjob):
     pipeline = Pipeline()
