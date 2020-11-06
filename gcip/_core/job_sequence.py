@@ -34,6 +34,8 @@ class JobSequence():
         self._scripts_to_append: List[str] = []
         self._rules_to_append: List[Rule] = []
         self._rules_to_prepend: List[Rule] = []
+        self._rules_for_initialization: List[Rule] = []
+        self._rules_for_replacement: List[Rule] = []
         self._needs: List[Need] = []
 
     def _extend_name(self, name: Optional[str]) -> None:
@@ -125,6 +127,24 @@ class JobSequence():
     def prepend_rules(self, *rules: Rule) -> None:
         self._rules_to_prepend = list(rules) + self._rules_to_prepend
 
+    def initialize_rules(self, *rules: Rule) -> None:
+        """
+        Works like :meth:`initialize_tags` but for rules.
+
+        Args:
+            rules (Rule): A list of :class:`Rule` s that will be applied to :class:`Job` s with empty rules list.
+        """
+        self._rules_for_initialization.extend(rules)
+
+    def override_rules(self, *rules: Rule) -> None:
+        """
+        Works like :meth:`override_tags` but for rules.
+
+        Args:
+            rules (Rule): A list of :class:`Rule` s that will be replace all downstream :class:`Job` s rules.
+        """
+        self._rules_for_replacement.extend(rules)
+
     def add_needs(self, *needs: Need) -> None:
         self._needs.extend(needs)
 
@@ -165,8 +185,14 @@ class JobSequence():
             job.add_tags(*list(self._tags.keys()))
 
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+
+            if self._rules_for_initialization and not job._rules:
+                job._rules = copy.deepcopy(self._rules_for_initialization)
+            if self._rules_for_replacement:
+                job._rules = copy.deepcopy(self._rules_for_replacement)
             job.append_rules(*self._rules_to_append)
             job.prepend_rules(*self._rules_to_prepend)
+
             job.add_needs(*self._needs)
             job.prepend_scripts(*self._scripts_to_prepend)
             job.append_scripts(*self._scripts_to_append)
