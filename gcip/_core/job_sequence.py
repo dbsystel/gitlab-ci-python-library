@@ -22,7 +22,8 @@ class JobSequence():
         self._jobs: List[Union[Job, JobSequence]] = list()
         self._name_extension: Optional[str] = None
         self._namespace: Optional[str] = None
-        self._image: Optional[str] = None
+        self._image_for_initialization: Optional[str] = None
+        self._image_for_replacement: Optional[str] = None
         self._variables: Dict[str, str] = {}
         self._variables_for_initialization: Dict[str, str] = {}
         self._variables_for_replacement: Dict[str, str] = {}
@@ -154,9 +155,21 @@ class JobSequence():
     def append_scripts(self, *scripts: str) -> None:
         self._scripts_to_append.extend(scripts)
 
-    def set_image(self, image: str) -> None:
+    def initialize_image(self, image: str) -> None:
+        """
+        Args:
+            image (str): The image to set for all downstream :class:`Job` s only if not already set.
+        """
         if image:
-            self._image = image
+            self._image_for_initialization = image
+
+    def override_image(self, image: str) -> None:
+        """
+        Args:
+            image (str): The image to set for all downstream :class:`Job` s.
+        """
+        if image:
+            self._image_for_replacement = image
 
     @property
     def populated_jobs(self) -> List[Job]:
@@ -170,7 +183,11 @@ class JobSequence():
         for job in all_jobs:
             job._extend_namespace(self._namespace)
             job._extend_name(self._name_extension)
-            job.set_image(self._image)
+
+            if self._image_for_initialization and not job._image:
+                job.set_image(self._image_for_initialization)
+            if self._image_for_replacement:
+                job.set_image(self._image_for_replacement)
 
             if self._variables_for_initialization and not job._variables:
                 job._variables = copy.deepcopy(self._variables_for_initialization)

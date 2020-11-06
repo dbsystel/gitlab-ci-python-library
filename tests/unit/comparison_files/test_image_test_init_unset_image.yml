@@ -1,0 +1,7 @@
+stages:
+- testjob
+testjob:
+  image: foobar
+  stage: testjob
+  script:
+  - foobar
