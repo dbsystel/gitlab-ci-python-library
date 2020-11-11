@@ -1,4 +1,6 @@
 needs:
+- job: testjob
+  artifacts: true
 - job: job1
   artifacts: true
 - job: job2

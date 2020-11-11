@@ -37,7 +37,7 @@ class JobSequence():
         self._rules_to_prepend: List[Rule] = []
         self._rules_for_initialization: List[Rule] = []
         self._rules_for_replacement: List[Rule] = []
-        self._needs: List[Need] = []
+        self._needs: List[Union[Job, Need]] = []
 
     def _extend_name(self, name: Optional[str]) -> None:
         if name:
@@ -146,7 +146,7 @@ class JobSequence():
         """
         self._rules_for_replacement.extend(rules)
 
-    def add_needs(self, *needs: Need) -> None:
+    def add_needs(self, *needs: Union[Job, Need]) -> None:
         self._needs.extend(needs)
 
     def prepend_scripts(self, *scripts: str) -> None:

@@ -6,10 +6,10 @@ from pkg_resources import (
 # yapf: disable
 from ._core.job import (  # noqa
     Job,
-    Need,
     TriggerJob,
     TriggerStrategy,
 )
+from ._core.need import Need  # noqa
 # yapf: disable
 from ._core.rule import Rule  # noqa
 # yapf: disable
