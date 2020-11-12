@@ -33,6 +33,18 @@ def test_job_with_needs(testjob):
 
 def test_sequence_with_needs(testjob):
     pipeline = Pipeline()
-    pipeline.add_jobs(Job(namespace="testjob", script="foobar"))
+    pipeline.add_jobs(Job(namespace="firstjob", script="foo"), Job(namespace="secondjob", script="bar"))
     pipeline.add_needs(testjob, Need("job1"), Need("job2"))
+    conftest.check(pipeline.render())
+
+
+def test_sequence_with_parallel_jobs_and_needs(testjob):
+    pipeline = Pipeline()
+    pipeline.add_jobs(
+        Job(namespace="job", name="first", script="foo"),
+        Job(namespace="secondjob", script="bar"),
+        Job(namespace="job", name="third", script="baz"),
+        Job(namespace="fourthjob", script="maz"),
+    )
+    pipeline.add_needs(testjob)
     conftest.check(pipeline.render())

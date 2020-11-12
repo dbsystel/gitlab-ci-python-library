@@ -147,6 +147,10 @@ class JobSequence():
         self._rules_for_replacement.extend(rules)
 
     def add_needs(self, *needs: Union[Job, Need]) -> None:
+        """
+        Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
+        the same stage.
+        """
         self._needs.extend(needs)
 
     def prepend_scripts(self, *scripts: str) -> None:
@@ -180,6 +184,13 @@ class JobSequence():
             elif isinstance(job, Job):
                 all_jobs.append(job.copy())
 
+        if len(all_jobs) > 0:
+            first_job = all_jobs[0]
+            first_job.add_needs(*self._needs)
+            for job in all_jobs[1:]:
+                if job._stage == first_job.stage:
+                    job.add_needs(*self._needs)
+
         for job in all_jobs:
             job._extend_namespace(self._namespace)
             job._extend_name(self._name_extension)
@@ -210,7 +221,6 @@ class JobSequence():
             job.append_rules(*self._rules_to_append)
             job.prepend_rules(*self._rules_to_prepend)
 
-            job.add_needs(*self._needs)
             job.prepend_scripts(*self._scripts_to_prepend)
             job.append_scripts(*self._scripts_to_append)
 

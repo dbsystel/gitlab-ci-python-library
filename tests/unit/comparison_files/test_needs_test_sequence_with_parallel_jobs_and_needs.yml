@@ -1,0 +1,26 @@
+stages:
+- job
+- secondjob
+- fourthjob
+job-first:
+  needs:
+  - job: testjob
+    artifacts: true
+  stage: job
+  script:
+  - foo
+secondjob:
+  stage: secondjob
+  script:
+  - bar
+job-third:
+  needs:
+  - job: testjob
+    artifacts: true
+  stage: job
+  script:
+  - baz
+fourthjob:
+  stage: fourthjob
+  script:
+  - maz

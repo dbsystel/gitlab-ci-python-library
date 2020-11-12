@@ -1,6 +1,7 @@
 stages:
-- testjob
-testjob:
+- firstjob
+- secondjob
+firstjob:
   needs:
   - job: testjob
     artifacts: true
@@ -8,6 +9,10 @@ testjob:
     artifacts: true
   - job: job2
     artifacts: true
-  stage: testjob
+  stage: firstjob
   script:
-  - foobar
+  - foo
+secondjob:
+  stage: secondjob
+  script:
+  - bar
