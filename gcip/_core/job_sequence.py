@@ -4,7 +4,8 @@ import copy
 from typing import Dict, List, Union, Optional
 
 from . import OrderedSetType
-from .job import Job, Need
+from .job import Job
+from .need import Need
 from .rule import Rule
 
 __author__ = "Thomas Steinbach"
@@ -174,6 +175,22 @@ class JobSequence():
         """
         if image:
             self._image_for_replacement = image
+
+    @property
+    def last_jobs_executed(self) -> List[Job]:
+        all_jobs = self.populated_jobs
+        stages: Dict[str, None] = {}
+        for job in all_jobs:
+            # use the keys of dictionary as ordered set
+            stages[job.stage] = None
+
+        last_stage = list(stages.keys())[-1]
+        last_executed_jobs = []
+        for job in all_jobs:
+            if job._stage == last_stage:
+                last_executed_jobs.append(job)
+
+        return last_executed_jobs
 
     @property
     def populated_jobs(self) -> List[Job]:

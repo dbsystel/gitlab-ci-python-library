@@ -1,6 +1,6 @@
 import pytest
 
-from gcip import Job, Need, Pipeline
+from gcip import Job, Need, Pipeline, JobSequence
 from tests import conftest
 
 
@@ -47,4 +47,22 @@ def test_sequence_with_parallel_jobs_and_needs(testjob):
         Job(namespace="fourthjob", script="maz"),
     )
     pipeline.add_needs(testjob)
+    conftest.check(pipeline.render())
+
+
+def test_add_sequence_as_need(testjob):
+    sequence = JobSequence()
+    sequence.add_jobs(
+        Job(namespace="first", name="A", script="firstDateA"),
+        Job(namespace="second", name="A", script="secondDateA"),
+        Job(namespace="last", name="A", script="lastDateA"),
+        Job(namespace="second", name="B", script="secondDateB"),
+        Job(namespace="last", name="B", script="lastDateB"),
+        Job(namespace="first", name="B", script="firstDateB"),
+    )
+
+    testjob.add_needs(sequence)
+
+    pipeline = Pipeline()
+    pipeline.add_jobs(testjob)
     conftest.check(pipeline.render())

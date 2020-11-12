@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 from enum import Enum
 from typing import (
+    TYPE_CHECKING,
     Any,
     Dict,
     List,
@@ -16,6 +17,9 @@ from . import OrderedSetType
 from .need import Need
 from .rule import Rule
 from .include import _Include
+
+if TYPE_CHECKING:
+    from .job_sequence import JobSequence
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -40,7 +44,7 @@ class Job():
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
-        self._needs: List[Need] = []
+        self._needs: List[Union[Need, JobSequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
 
@@ -111,7 +115,7 @@ class Job():
     def prepend_rules(self, *rules: Rule) -> None:
         self._rules = list(rules) + self._rules
 
-    def add_needs(self, *needs: Union[Job, Need]) -> None:
+    def add_needs(self, *needs: Union[Need, Job, JobSequence]) -> None:
         for need in needs:
             if isinstance(need, Job):
                 self._needs.append(Need(need.name))
@@ -139,6 +143,9 @@ class Job():
         return job
 
     def render(self) -> Dict[str, Any]:
+        from .job_sequence import \
+            JobSequence  # late import to avoid circular dependencies
+
         rendered_job: Dict[str, Any] = {}
 
         if self._image:
@@ -147,7 +154,13 @@ class Job():
         if self._needs:
             rendered_needs = []
             for need in self._needs:
-                rendered_needs.append(need.render())
+                if isinstance(need, JobSequence):
+                    for job in need.last_jobs_executed:
+                        rendered_needs.append(Need(job.name).render())
+                elif isinstance(need, Need):
+                    rendered_needs.append(need.render())
+                else:
+                    raise TypeError
             rendered_job.update({"needs": rendered_needs})
 
         rendered_job.update({
