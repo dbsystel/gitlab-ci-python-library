@@ -860,6 +860,25 @@ some ideas:
 
 This chapter covers further abilities of GCIP which suffices to be read after the basics.
 
+## string Job / JobSequence modifications together
+
+Every modification method of Job and JobSequence returns the appropriate Job / JobSequence object. Thus you can
+string multiple modifications methods together. Here an example for the job configuration.
+
+**Input:**
+
+```py
+# ./tests/unit/test_readme_string_together_job_configurations.py
+```
+
+**Output:**
+
+```yaml
+# ./tests/unit/comparison_files/test_readme_string_together_job_configurations_test.py
+```
+
+The same works with sequences.
+
 ## TriggerJobs
 
 Besides normal Jobs with GCIP you can define TriggerJobs which either run another projects pipeline or a child-pipeline.

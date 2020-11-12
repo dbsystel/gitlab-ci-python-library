@@ -54,22 +54,25 @@ class JobSequence():
             else:
                 self._namespace = namespace
 
-    def add_sequences(self, *job_sequences: JobSequence, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
+    def add_sequences(self, *job_sequences: JobSequence, namespace: Optional[str] = None, name: Optional[str] = None) -> JobSequence:
         for sequence in job_sequences:
             sequence._extend_namespace(namespace)
             sequence._extend_name(name)
             self._jobs.append(sequence)
+        return self
 
-    def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> None:
+    def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> JobSequence:
         for job in jobs:
             job._extend_namespace(namespace)
             job._extend_name(name)
             self._jobs.append(job)
+        return self
 
-    def add_variables(self, **variables: str) -> None:
+    def add_variables(self, **variables: str) -> JobSequence:
         self._variables.update(variables)
+        return self
 
-    def initialize_variables(self, **variables: str) -> None:
+    def initialize_variables(self, **variables: str) -> JobSequence:
         """
         Works like :meth:`initialize_tags` but for variales.
 
@@ -78,8 +81,9 @@ class JobSequence():
                              to all downstream :class:`Job` s without variables already set.
         """
         self._variables_for_initialization.update(variables)
+        return self
 
-    def override_variables(self, **variables: str) -> None:
+    def override_variables(self, **variables: str) -> JobSequence:
         """
         Works like :meth:`override_tags` but for variables.
 
@@ -88,12 +92,14 @@ class JobSequence():
                              to all downstream :class:`Job` s.
         """
         self._variables_for_replacement.update(variables)
+        return self
 
-    def add_tags(self, *tags: str) -> None:
+    def add_tags(self, *tags: str) -> JobSequence:
         for tag in tags:
             self._tags[tag] = None
+        return self
 
-    def initialize_tags(self, *tags: str) -> None:
+    def initialize_tags(self, *tags: str) -> JobSequence:
         """
         Adds tags to downstream :class:`Job` s only if they haven't tags added yet.
 
@@ -105,8 +111,9 @@ class JobSequence():
         """
         for tag in tags:
             self._tags_for_initialization[tag] = None
+        return self
 
-    def override_tags(self, *tags: str) -> None:
+    def override_tags(self, *tags: str) -> JobSequence:
         """
         Will replace all tags from downstream :class:`Job` s.
 
@@ -118,18 +125,22 @@ class JobSequence():
         """
         for tag in tags:
             self._tags_for_replacement[tag] = None
+        return self
 
-    def add_artifacts_paths(self, *paths: str) -> None:
+    def add_artifacts_paths(self, *paths: str) -> JobSequence:
         for path in paths:
             self._artifacts_paths[path] = None
+        return self
 
-    def append_rules(self, *rules: Rule) -> None:
+    def append_rules(self, *rules: Rule) -> JobSequence:
         self._rules_to_append.extend(rules)
+        return self
 
-    def prepend_rules(self, *rules: Rule) -> None:
+    def prepend_rules(self, *rules: Rule) -> JobSequence:
         self._rules_to_prepend = list(rules) + self._rules_to_prepend
+        return self
 
-    def initialize_rules(self, *rules: Rule) -> None:
+    def initialize_rules(self, *rules: Rule) -> JobSequence:
         """
         Works like :meth:`initialize_tags` but for rules.
 
@@ -137,8 +148,9 @@ class JobSequence():
             rules (Rule): A list of :class:`Rule` s that will be applied to :class:`Job` s with empty rules list.
         """
         self._rules_for_initialization.extend(rules)
+        return self
 
-    def override_rules(self, *rules: Rule) -> None:
+    def override_rules(self, *rules: Rule) -> JobSequence:
         """
         Works like :meth:`override_tags` but for rules.
 
@@ -146,35 +158,41 @@ class JobSequence():
             rules (Rule): A list of :class:`Rule` s that will be replace all downstream :class:`Job` s rules.
         """
         self._rules_for_replacement.extend(rules)
+        return self
 
-    def add_needs(self, *needs: Union[Job, Need]) -> None:
+    def add_needs(self, *needs: Union[Job, Need]) -> JobSequence:
         """
         Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
         the same stage.
         """
         self._needs.extend(needs)
+        return self
 
-    def prepend_scripts(self, *scripts: str) -> None:
+    def prepend_scripts(self, *scripts: str) -> JobSequence:
         self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
+        return self
 
-    def append_scripts(self, *scripts: str) -> None:
+    def append_scripts(self, *scripts: str) -> JobSequence:
         self._scripts_to_append.extend(scripts)
+        return self
 
-    def initialize_image(self, image: str) -> None:
+    def initialize_image(self, image: str) -> JobSequence:
         """
         Args:
             image (str): The image to set for all downstream :class:`Job` s only if not already set.
         """
         if image:
             self._image_for_initialization = image
+        return self
 
-    def override_image(self, image: str) -> None:
+    def override_image(self, image: str) -> JobSequence:
         """
         Args:
             image (str): The image to set for all downstream :class:`Job` s.
         """
         if image:
             self._image_for_replacement = image
+        return self
 
     @property
     def last_jobs_executed(self) -> List[Job]:

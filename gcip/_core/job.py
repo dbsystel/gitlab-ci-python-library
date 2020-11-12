@@ -92,39 +92,48 @@ class Job():
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
-    def prepend_scripts(self, *scripts: str) -> None:
+    def prepend_scripts(self, *scripts: str) -> Job:
         self._scripts = list(scripts) + self._scripts
+        return self
 
-    def append_scripts(self, *scripts: str) -> None:
+    def append_scripts(self, *scripts: str) -> Job:
         self._scripts.extend(scripts)
+        return self
 
-    def add_variables(self, **variables: str) -> None:
+    def add_variables(self, **variables: str) -> Job:
         self._variables.update(variables)
+        return self
 
-    def add_tags(self, *tags: str) -> None:
+    def add_tags(self, *tags: str) -> Job:
         for tag in tags:
             self._tags[tag] = None
+        return self
 
-    def add_artifacts_paths(self, *paths: str) -> None:
+    def add_artifacts_paths(self, *paths: str) -> Job:
         for path in paths:
             self._artifacts_paths[path] = None
+        return self
 
-    def append_rules(self, *rules: Rule) -> None:
+    def append_rules(self, *rules: Rule) -> Job:
         self._rules.extend(rules)
+        return self
 
-    def prepend_rules(self, *rules: Rule) -> None:
+    def prepend_rules(self, *rules: Rule) -> Job:
         self._rules = list(rules) + self._rules
+        return self
 
-    def add_needs(self, *needs: Union[Need, Job, JobSequence]) -> None:
+    def add_needs(self, *needs: Union[Need, Job, JobSequence]) -> Job:
         for need in needs:
             if isinstance(need, Job):
                 self._needs.append(Need(need.name))
             else:
                 self._needs.append(need)
+        return self
 
-    def set_image(self, image: Optional[str]) -> None:
+    def set_image(self, image: Optional[str]) -> Job:
         if image:
             self._image = image
+        return self
 
     def copy(self) -> Job:
         return self._copy_into(Job(name=".", script=copy.deepcopy(self._scripts)))
