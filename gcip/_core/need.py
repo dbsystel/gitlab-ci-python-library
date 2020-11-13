@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Union, Optional
 
 
 class Need(object):
@@ -44,15 +44,15 @@ class Need(object):
         if self._project and not self._ref:
             self._ref = "master"
 
-    def render(self) -> Dict[str, object]:
+    def render(self) -> Dict[str, Union[str, bool]]:
         """
         Renders the :class:`Need` object. Returns the :obj:`dict` representation of the object
         """
-        rendered_need = {
+        rendered_need: Dict[str, Union[str, bool]] = {
             "job": self._job,
             "artifacts": self._artifacts
         }
-        if self._project:
+        if self._project and self._ref:
             rendered_need.update({
                 "project": self._project,
                 "ref": self._ref

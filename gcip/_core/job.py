@@ -5,6 +5,7 @@ from enum import Enum
 from typing import (
     TYPE_CHECKING,
     Any,
+    Set,
     Dict,
     List,
     Union,
@@ -12,6 +13,7 @@ from typing import (
     Mapping,
     Optional,
 )
+from operator import itemgetter
 
 from . import OrderedSetType
 from .need import Need
@@ -44,9 +46,10 @@ class Job():
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
-        self._needs: List[Union[Need, JobSequence]] = []
+        self._needs: List[Union[Need, Job, JobSequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
+        self._parents: List[JobSequence] = list()
 
         if namespace and name:
             self._name = f"{namespace}-{name}"
@@ -92,6 +95,9 @@ class Job():
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
+    def _add_parent(self, parent: JobSequence) -> None:
+        self._parents.append(parent)
+
     def prepend_scripts(self, *scripts: str) -> Job:
         self._scripts = list(scripts) + self._scripts
         return self
@@ -123,17 +129,23 @@ class Job():
         return self
 
     def add_needs(self, *needs: Union[Need, Job, JobSequence]) -> Job:
-        for need in needs:
-            if isinstance(need, Job):
-                self._needs.append(Need(need.name))
-            else:
-                self._needs.append(need)
+        self._needs.extend(needs)
         return self
 
     def set_image(self, image: Optional[str]) -> Job:
         if image:
             self._image = image
         return self
+
+    def _get_all_instance_names(self) -> Set[str]:
+        instance_names: Set[str] = set()
+        for parent in self._parents:
+            for postfix in parent._get_all_instance_names(self):
+                if postfix:
+                    instance_names.add(f"{self._name}-{postfix}")
+                else:
+                    instance_names.add(self._name)
+        return instance_names
 
     def copy(self) -> Job:
         return self._copy_into(Job(name=".", script=copy.deepcopy(self._scripts)))
@@ -148,6 +160,7 @@ class Job():
         job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
         job.append_rules(*self._rules)
         job.add_needs(*self._needs)
+        job._parents = self._parents.copy()
 
         return job
 
@@ -161,15 +174,29 @@ class Job():
             rendered_job.update({"image": self._image})
 
         if self._needs:
-            rendered_needs = []
+            need_jobs: List[Job] = list()
+            rendered_needs: List[Dict[str, Union[str, bool]]] = list()
             for need in self._needs:
-                if isinstance(need, JobSequence):
+                if isinstance(need, Job):
+                    need_jobs.append(need)
+                elif isinstance(need, JobSequence):
                     for job in need.last_jobs_executed:
-                        rendered_needs.append(Need(job.name).render())
+                        need_jobs.append(job)
                 elif isinstance(need, Need):
                     rendered_needs.append(need.render())
                 else:
-                    raise TypeError
+                    raise TypeError(f"Need '{need}' is of type {type(need)}.")
+
+            job_names: Set[str] = set()
+            for job in need_jobs:
+                job_names.update(job._get_all_instance_names())
+
+            for name in job_names:
+                rendered_needs.append(Need(name).render())
+
+            # sort needs by the name of the referenced job
+            rendered_needs = sorted(rendered_needs, key=itemgetter("job"))
+
             rendered_job.update({"needs": rendered_needs})
 
         rendered_job.update({

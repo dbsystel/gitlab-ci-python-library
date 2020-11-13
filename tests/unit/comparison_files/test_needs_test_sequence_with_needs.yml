@@ -1,13 +1,18 @@
 stages:
+- testjob
 - firstjob
 - secondjob
+testjob:
+  stage: testjob
+  script:
+  - foobar
 firstjob:
   needs:
-  - job: testjob
-    artifacts: true
   - job: job1
     artifacts: true
   - job: job2
+    artifacts: true
+  - job: testjob
     artifacts: true
   stage: firstjob
   script:

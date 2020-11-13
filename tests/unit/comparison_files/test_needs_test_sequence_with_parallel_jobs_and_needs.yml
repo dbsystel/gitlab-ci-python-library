@@ -1,7 +1,12 @@
 stages:
+- testjob
 - job
 - secondjob
 - fourthjob
+testjob:
+  stage: testjob
+  script:
+  - foobar
 job-first:
   needs:
   - job: testjob

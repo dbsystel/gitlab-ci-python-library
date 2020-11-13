@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import copy
-from typing import Dict, List, Union, Optional
+from typing import Set, Dict, List, Union, Optional
 
 from . import OrderedSetType
 from .job import Job
@@ -20,9 +20,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 class JobSequence():
     def __init__(self) -> None:
         super().__init__()
-        self._jobs: List[Union[Job, JobSequence]] = list()
-        self._name_extension: Optional[str] = None
-        self._namespace: Optional[str] = None
+        self._children: List[Dict[str, Union[Job, JobSequence, Optional[str]]]] = list()
         self._image_for_initialization: Optional[str] = None
         self._image_for_replacement: Optional[str] = None
         self._variables: Dict[str, str] = {}
@@ -39,33 +37,29 @@ class JobSequence():
         self._rules_for_initialization: List[Rule] = []
         self._rules_for_replacement: List[Rule] = []
         self._needs: List[Union[Job, Need]] = []
+        self._parents: List[JobSequence] = list()
 
-    def _extend_name(self, name: Optional[str]) -> None:
-        if name:
-            if self._name_extension:
-                self._name_extension += "_" + name
-            else:
-                self._name_extension = name
-
-    def _extend_namespace(self, namespace: Optional[str]) -> None:
-        if namespace:
-            if self._namespace:
-                self._namespace += namespace
-            else:
-                self._namespace = namespace
+    def _add_parent(self, parent: JobSequence) -> None:
+        self._parents.append(parent)
 
     def add_sequences(self, *job_sequences: JobSequence, namespace: Optional[str] = None, name: Optional[str] = None) -> JobSequence:
         for sequence in job_sequences:
-            sequence._extend_namespace(namespace)
-            sequence._extend_name(name)
-            self._jobs.append(sequence)
+            sequence._add_parent(self)
+            self._children.append({
+                "object": sequence,
+                "namespace": namespace,
+                "name": name
+            })
         return self
 
     def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> JobSequence:
         for job in jobs:
-            job._extend_namespace(namespace)
-            job._extend_name(name)
-            self._jobs.append(job)
+            job._add_parent(self)
+            self._children.append({
+                "object": job,
+                "namespace": namespace,
+                "name": name
+            })
         return self
 
     def add_variables(self, **variables: str) -> JobSequence:
@@ -194,6 +188,36 @@ class JobSequence():
             self._image_for_replacement = image
         return self
 
+    def _get_all_instance_names(self, child: Union[Job, JobSequence]) -> Set[str]:
+        instance_names: Set[str] = set()
+        for parent in self._parents:
+            instance_names.update(parent._get_all_instance_names(self))
+
+        child_instance_names: Set[str] = set()
+        child_instance_name: Optional[str]
+        for item in self._children:
+            if item["object"] == child:
+                if item["namespace"]:
+                    if item["name"]:
+                        child_instance_name = f"{item['namespace']}-{item['name']}"
+                    else:
+                        child_instance_name = item["namespace"]
+                else:
+                    child_instance_name = item["name"]
+                child_instance_names.add(child_instance_name)
+
+        return_values: Set[str] = set()
+        # add instane names of this sequence to all instance
+        # names of its children
+        if instance_names:
+            for child_instance_name in child_instance_names:
+                for instance_name in instance_names:
+                    return_values.add(f"{child_instance_name}-{instance_name}")
+        else:
+            return_values = child_instance_names
+
+        return return_values
+
     @property
     def last_jobs_executed(self) -> List[Job]:
         all_jobs = self.populated_jobs
@@ -206,18 +230,25 @@ class JobSequence():
         last_executed_jobs = []
         for job in all_jobs:
             if job._stage == last_stage:
-                last_executed_jobs.append(job)
+                last_executed_jobs.append(job._original)
 
         return last_executed_jobs
 
     @property
     def populated_jobs(self) -> List[Job]:
         all_jobs: List[Job] = []
-        for job in self._jobs:
-            if isinstance(job, JobSequence):
-                all_jobs += job.populated_jobs
-            elif isinstance(job, Job):
-                all_jobs.append(job.copy())
+        for child in self._children:
+            if isinstance(child["object"], JobSequence):
+                for job_copy in child["object"].populated_jobs:
+                    job_copy._extend_namespace(child["namespace"])
+                    job_copy._extend_name(child["name"])
+                    all_jobs.append(job_copy)
+            elif isinstance(child["object"], Job):
+                job_copy = child["object"].copy()
+                job_copy._original = child["object"]
+                job_copy._extend_namespace(child["namespace"])
+                job_copy._extend_name(child["name"])
+                all_jobs.append(job_copy)
 
         if len(all_jobs) > 0:
             first_job = all_jobs[0]
@@ -227,8 +258,6 @@ class JobSequence():
                     job.add_needs(*self._needs)
 
         for job in all_jobs:
-            job._extend_namespace(self._namespace)
-            job._extend_name(self._name_extension)
 
             if self._image_for_initialization and not job._image:
                 job.set_image(self._image_for_initialization)
