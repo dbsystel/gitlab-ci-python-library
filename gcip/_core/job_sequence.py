@@ -202,8 +202,11 @@ class JobSequence():
                         child_instance_name = f"{item['namespace']}-{item['name']}"
                     else:
                         child_instance_name = item["namespace"]
-                else:
+                elif item["name"]:
                     child_instance_name = item["name"]
+                else:
+                    child_instance_name = "#unset#"
+
                 child_instance_names.add(child_instance_name)
 
         return_values: Set[str] = set()

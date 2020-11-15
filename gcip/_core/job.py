@@ -142,7 +142,7 @@ class Job():
         for parent in self._parents:
             for postfix in parent._get_all_instance_names(self):
                 if postfix:
-                    instance_names.add(f"{self._name}-{postfix}")
+                    instance_names.add(f"{self._name}-{postfix}".replace("-#unset#", ""))
                 else:
                     instance_names.add(self._name)
         return instance_names

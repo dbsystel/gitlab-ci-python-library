@@ -79,9 +79,11 @@ def test_needs_will_be_namespaced():
     targetJob = Job(namespace="target1", script="foobar").add_needs(job1, sequence)
     targetSequence = JobSequence().add_jobs(Job(namespace="target2", script="foobar"), namespace="TTT").add_needs(job1, sequence)
 
-    parentSequence = JobSequence()
-    parentSequence.add_jobs(job1, namespace="abc")
-    parentSequence.add_sequences(sequence, namespace="abc")
+    sequenceWithoutNamespace = JobSequence()
+    sequenceWithoutNamespace.add_jobs(job1)
+    sequenceWithoutNamespace.add_sequences(sequence)
+
+    parentSequence = JobSequence().add_sequences(sequenceWithoutNamespace, namespace="abc")
 
     parentSequence2 = JobSequence()
     parentSequence2.add_jobs(targetJob, namespace="xyz")
