@@ -18,8 +18,9 @@ def diff_deploy(
     toolkit_stack_name: str,
 ) -> JobSequence:
     sequence = JobSequence()
+    diff_job = cdk.diff(stack)
     sequence.add_jobs(
-        cdk.diff(stack),
-        cdk.deploy(stack, toolkit_stack_name),
+        diff_job,
+        cdk.deploy(stack, toolkit_stack_name).add_needs(diff_job),
     )
     return sequence

@@ -7,6 +7,9 @@ diff-cdk:
   - cdk synth my-cdk-stack
   - cdk diff my-cdk-stack
 deploy-cdk:
+  needs:
+  - job: diff-cdk
+    artifacts: true
   stage: deploy
   script:
   - pip3 install --upgrade gcip

@@ -35,6 +35,9 @@ diff-cdk-project-resources-unstable:
   - environment-iat
 deploy-cdk-project-resources-unstable:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-project_resources-unstable
+    artifacts: true
   stage: deploy_project_resources_unstable
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -62,6 +65,9 @@ diff-cdk-windows-vm-bucket-unstable:
   - environment-iat
 deploy-cdk-windows-vm-bucket-unstable:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-windows_vm_bucket-unstable
+    artifacts: true
   stage: deploy_windows_vm_bucket_unstable
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -107,6 +113,9 @@ diff-cdk-windows-vm-intances-unstable:
   - environment-iat
 deploy-cdk-windows-vm-intances-unstable:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-windows_vm_intances-unstable
+    artifacts: true
   stage: deploy_windows_vm_intances_unstable
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -134,6 +143,9 @@ diff-cdk-project-resources-dev:
   - environment-iat
 deploy-cdk-project-resources-dev:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-project_resources-dev
+    artifacts: true
   stage: deploy_project_resources_dev
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -172,6 +184,9 @@ diff-cdk-windows-vm-intances-barista-dev:
   - environment-iat
 deploy-cdk-windows-vm-intances-barista-dev:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-windows_vm_intances-barista-dev
+    artifacts: true
   stage: deploy_windows_vm_intances_dev
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -199,6 +214,9 @@ diff-cdk-windows-vm-intances-impala-dev:
   - environment-iat
 deploy-cdk-windows-vm-intances-impala-dev:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-windows_vm_intances-impala-dev
+    artifacts: true
   stage: deploy_windows_vm_intances_dev
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -226,6 +244,9 @@ diff-cdk-project-resources-tst:
   - environment-iat
 deploy-cdk-project-resources-tst:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-project_resources-tst
+    artifacts: true
   stage: deploy_project_resources_tst
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -264,6 +285,9 @@ diff-cdk-windows-vm-intances-tst:
   - environment-iat
 deploy-cdk-windows-vm-intances-tst:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-windows_vm_intances-tst
+    artifacts: true
   stage: deploy_windows_vm_intances_tst
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -291,6 +315,9 @@ diff-cdk-project-resources-iat:
   - environment-iat
 deploy-cdk-project-resources-iat:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-project_resources-iat
+    artifacts: true
   stage: deploy_project_resources_iat
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -329,6 +356,9 @@ diff-cdk-windows-vm-intances-iat:
   - environment-iat
 deploy-cdk-windows-vm-intances-iat:
   image: python:3.9-slim
+  needs:
+  - job: diff-cdk-windows_vm_intances-iat
+    artifacts: true
   stage: deploy_windows_vm_intances_iat
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
