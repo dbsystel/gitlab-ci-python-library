@@ -207,7 +207,8 @@ class JobSequence():
                 else:
                     child_instance_name = "#unset#"
 
-                child_instance_names.add(child_instance_name)
+                # all job names have '-' instead of '_'
+                child_instance_names.add(child_instance_name.replace("_", "-"))
 
         return_values: Set[str] = set()
         # add instane names of this sequence to all instance
