@@ -15,9 +15,9 @@ if __name__ == "__main__":
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument(
-        "--stack-name",
-        dest="stack_name",
-        help="The name of the stack to wait all CloudFormation operations are finished for.",
+        "--stack-names",
+        dest="stack_names",
+        help="The names of the stacks to wait all CloudFormation operations are finished for, separated by blanks.",
     )
     argparser.add_argument(
         "--wait-seconds",
@@ -56,16 +56,17 @@ if __name__ == "__main__":
     ]
 
     stacks = []
-    if "*" in args.stack_name:
-        stack_name = args.stack_name.replace("*", "")
-        for ppage in cfn.get_paginator("list_stacks").paginate(StackStatusFilter=stack_status_filter):
-            for stack in ppage.get("StackSummaries"):
-                if stack_name in stack["StackName"]:
-                    stacks.append(stack["StackName"])
-    else:
-        stacks.append(args.stack_name)
+    for stack_id in args.stack_names:
+        if "*" in stack_id:
+            stack_name = stack_id.replace("*", "")
+            for ppage in cfn.get_paginator("list_stacks").paginate(StackStatusFilter=stack_status_filter):
+                for stack in ppage.get("StackSummaries"):
+                    if stack_name in stack["StackName"]:
+                        stacks.append(stack["StackName"])
+        else:
+            stacks.append(stack_id)
 
-    print(f"waiting for to complete: {stacks}")
+    print(f"waiting for stacks to complete: {stacks}")
 
     def stack_in_progress() -> bool:
         for stack in stacks:

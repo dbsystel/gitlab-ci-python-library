@@ -11,7 +11,7 @@ from gcip.job_sequences import cdk
 
 
 def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
-    return cdk.diff_deploy(stack=f"myapp-{environment}-{resource}", toolkit_stack_name=f"application-{environment}-cdk-toolkit")
+    return cdk.diff_deploy(f"myapp-{environment}-{resource}", toolkit_stack_name=f"application-{environment}-cdk-toolkit")
 
 
 def environment_pipeline(environment: str) -> gcip.JobSequence:

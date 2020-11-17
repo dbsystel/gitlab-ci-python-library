@@ -1,5 +1,3 @@
-from typing import Any
-
 from ..jobs import cdk
 from .._core.job_sequence import JobSequence
 
@@ -13,14 +11,13 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 def diff_deploy(
-    *args: Any,
-    stack: str,
+    *stacks: str,
     toolkit_stack_name: str,
 ) -> JobSequence:
     sequence = JobSequence()
-    diff_job = cdk.diff(stack)
+    diff_job = cdk.diff(*stacks)
     sequence.add_jobs(
         diff_job,
-        cdk.deploy(stack, toolkit_stack_name).add_needs(diff_job),
+        cdk.deploy(*stacks, toolkit_stack_name=toolkit_stack_name).add_needs(diff_job),
     )
     return sequence
