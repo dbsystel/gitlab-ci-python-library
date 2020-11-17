@@ -56,7 +56,7 @@ if __name__ == "__main__":
     ]
 
     stacks = []
-    for stack_id in args.stack_names:
+    for stack_id in args.stack_names.split(" "):
         if "*" in stack_id:
             stack_name = stack_id.replace("*", "")
             for ppage in cfn.get_paginator("list_stacks").paginate(StackStatusFilter=stack_status_filter):
