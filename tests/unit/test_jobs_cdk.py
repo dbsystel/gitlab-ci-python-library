@@ -9,17 +9,14 @@ def test_bootstrap() -> None:
         cdk.bootstrap(
             aws_account_id="1234567890",
             aws_region="net-wunderland-1",
-            toolkit_stack_name="my-cdk-toolkit-dev",
-            bootstrap_kms_key_id="abcd",
-        ),
-        namespace="dev"
+            qualifier="beautifulapp",
+        ), namespace="dev"
     )
     pipeline.add_jobs(
         cdk.bootstrap(
             aws_account_id="1234567890",
             aws_region="net-wunderland-1",
-            toolkit_stack_name="my-cdk-toolkit-tst",
-            bootstrap_kms_key_id="abcd",
+            qualifier="beautifulapp",
             ApplicationName="testapp",
             Subsystem="testsystem",
         ),
