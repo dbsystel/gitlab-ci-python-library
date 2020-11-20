@@ -10,11 +10,19 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 def on_branch(branch_name: str) -> Rule:
-    return Rule(if_statement=f'$CI_COMMIT_REF_NAME == "{branch_name}"')
+    return Rule(if_statement=f'$CI_COMMIT_BRANCH == "{branch_name}"')
+
+
+def not_on_branch(branch_name: str) -> Rule:
+    return Rule(if_statement=f'$CI_COMMIT_BRANCH != "{branch_name}"')
 
 
 def on_master() -> Rule:
     return on_branch("master")
+
+
+def not_on_master() -> Rule:
+    return not_on_branch("master")
 
 
 def on_merge_request_events() -> Rule:
