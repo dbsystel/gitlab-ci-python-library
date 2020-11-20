@@ -9,15 +9,14 @@ __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
-def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, bootstrap_kms_key_id: str, **tags: str) -> Job:
+def bootstrap(*args: None, aws_account_id: str, aws_region: str, qualifier: str, **tags: str) -> Job:
     return Job(
         namespace="cdk_bootstrap",
         script="cdk bootstrap"
-        f" --toolkit-stack-name {toolkit_stack_name}"
-        f" --bootstrap-kms-key-id {bootstrap_kms_key_id}"
+        f" --qualifier {qualifier}"
         f" aws://{aws_account_id}/{aws_region}" +
         " ".join([""] + list(map(lambda keyvalue: f"-t {keyvalue[0]}={keyvalue[1]}", tags.items()))),
-    )
+    ).add_variables(CDK_NEW_BOOTSTRAP="1")
 
 
 def diff(*stacks: str) -> Job:
