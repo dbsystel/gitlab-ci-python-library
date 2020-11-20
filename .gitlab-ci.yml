@@ -28,9 +28,6 @@ trigger_custom_gcip_library:
     branch: master
     strategy: depend
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_COMMIT_REF_NAME == "master"
-      when: on_success
+    - if: $CI_COMMIT_BRANCH != "master"
