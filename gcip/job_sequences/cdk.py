@@ -10,9 +10,7 @@ __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
-def diff_deploy(
-    *stacks: str,
-) -> JobSequence:
+def diff_deploy(*stacks: str) -> JobSequence:
     sequence = JobSequence()
     diff_job = cdk.diff(*stacks)
     sequence.add_jobs(
