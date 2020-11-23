@@ -746,7 +746,7 @@ from gcip.job_sequences import cdk
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(cdk.diff_deploy(stack="my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+    pipeline.add_jobs(cdk.diff_deploy("my-cdk-stack"))
 
     conftest.check(pipeline.render())
 
@@ -766,13 +766,15 @@ diff-cdk:
   - cdk synth my-cdk-stack
   - cdk diff my-cdk-stack
 deploy-cdk:
+  needs:
+  - job: diff-cdk
+    artifacts: true
   stage: deploy
   script:
   - pip3 install --upgrade gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-name
-    my-cdk-stack
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
-    my-cdk-stack
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
+    'my-cdk-stack'
+  - cdk deploy --strict --require-approval 'never' my-cdk-stack
 
 ```
 
@@ -817,7 +819,7 @@ print-date:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     when: never
     allow_failure: false
-  - if: $CI_COMMIT_REF_NAME == "master"
+  - if: $CI_COMMIT_BRANCH == "master"
     when: on_success
     allow_failure: false
 
@@ -869,6 +871,29 @@ string multiple modifications methods together. Here an example for the job conf
 
 ```py
 # ./tests/unit/test_readme_string_together_job_configurations.py
+
+from gcip import Job, Rule, Pipeline
+from tests import conftest
+
+
+def test():
+    pipeline = Pipeline()
+
+    # yapf: disable
+    pipeline.add_jobs(
+        Job(namespace="print_date", script="date")
+        .set_image("docker/image:example")
+        .prepend_scripts("./before-script.sh")
+        .append_scripts("./after-script.sh")
+        .add_variables(USER="Max Power", URL="https://example.com")
+        .add_tags("test", "europe")
+        .add_artifacts_paths("binaries/", ".config")
+        .append_rules(Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
+    )
+    # yapf: enable
+
+    conftest.check(pipeline.render())
+
 ```
 
 **Output:**

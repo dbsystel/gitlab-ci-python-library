@@ -31,7 +31,7 @@ def diff(*stacks: str) -> Job:
     )
 
 
-def deploy(*stacks: str, toolkit_stack_name: str) -> Job:
+def deploy(*stacks: str) -> Job:
     stacks_string = " ".join(stacks)
     return Job(
         name="cdk",
@@ -39,6 +39,6 @@ def deploy(*stacks: str, toolkit_stack_name: str) -> Job:
         script=[
             "pip3 install --upgrade gcip",
             f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'",
-            f"cdk deploy --strict --require-approval 'never' --toolkit-stack-name {toolkit_stack_name} {stacks_string}",
+            f"cdk deploy --strict --require-approval 'never' {stacks_string}",
         ],
     )

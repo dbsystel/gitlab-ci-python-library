@@ -45,8 +45,7 @@ deploy-cdk-project-resources-unstable:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-unstable-project-resources'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
-    myapp-unstable-project-resources
+  - cdk deploy --strict --require-approval 'never' myapp-unstable-project-resources
   variables:
     MYPROJECT_RELEASE_VERSION: '>=0.dev'
   tags:
@@ -75,8 +74,7 @@ deploy-cdk-windows-vm-bucket-unstable:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-unstable-windows-vm-bucket'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
-    myapp-unstable-windows-vm-bucket
+  - cdk deploy --strict --require-approval 'never' myapp-unstable-windows-vm-bucket
   variables:
     MYPROJECT_RELEASE_VERSION: '>=0.dev'
   tags:
@@ -123,8 +121,7 @@ deploy-cdk-windows-vm-intances-unstable:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-unstable-windows-vm-instances'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-unstable-cdk-toolkit
-    myapp-unstable-windows-vm-instances
+  - cdk deploy --strict --require-approval 'never' myapp-unstable-windows-vm-instances
   variables:
     MYPROJECT_RELEASE_VERSION: '>=0.dev'
   tags:
@@ -153,8 +150,7 @@ deploy-cdk-project-resources-dev:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-dev-project-resources'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
-    myapp-dev-project-resources
+  - cdk deploy --strict --require-approval 'never' myapp-dev-project-resources
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:
@@ -194,8 +190,7 @@ deploy-cdk-windows-vm-intances-barista-dev:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-dev-windows-vm-instances-barista'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
-    myapp-dev-windows-vm-instances-barista
+  - cdk deploy --strict --require-approval 'never' myapp-dev-windows-vm-instances-barista
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:
@@ -224,8 +219,7 @@ deploy-cdk-windows-vm-intances-impala-dev:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-dev-windows-vm-instances-impala'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-dev-cdk-toolkit
-    myapp-dev-windows-vm-instances-impala
+  - cdk deploy --strict --require-approval 'never' myapp-dev-windows-vm-instances-impala
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:
@@ -254,8 +248,7 @@ deploy-cdk-project-resources-tst:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-tst-project-resources'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-tst-cdk-toolkit
-    myapp-tst-project-resources
+  - cdk deploy --strict --require-approval 'never' myapp-tst-project-resources
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:
@@ -295,8 +288,7 @@ deploy-cdk-windows-vm-intances-tst:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-tst-windows-vm-instances'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-tst-cdk-toolkit
-    myapp-tst-windows-vm-instances
+  - cdk deploy --strict --require-approval 'never' myapp-tst-windows-vm-instances
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:
@@ -325,8 +317,7 @@ deploy-cdk-project-resources-iat:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-iat-project-resources'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-iat-cdk-toolkit
-    myapp-iat-project-resources
+  - cdk deploy --strict --require-approval 'never' myapp-iat-project-resources
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:
@@ -366,8 +357,7 @@ deploy-cdk-windows-vm-intances-iat:
   - pip3 install --upgrade gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-iat-windows-vm-instances'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name application-iat-cdk-toolkit
-    myapp-iat-windows-vm-instances
+  - cdk deploy --strict --require-approval 'never' myapp-iat-windows-vm-instances
   variables:
     MYPROJECT_RELEASE_VERSION: ==0.0.dev10
   tags:

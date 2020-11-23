@@ -12,12 +12,11 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 def diff_deploy(
     *stacks: str,
-    toolkit_stack_name: str,
 ) -> JobSequence:
     sequence = JobSequence()
     diff_job = cdk.diff(*stacks)
     sequence.add_jobs(
         diff_job,
-        cdk.deploy(*stacks, toolkit_stack_name=toolkit_stack_name).add_needs(diff_job),
+        cdk.deploy(*stacks).add_needs(diff_job),
     )
     return sequence
