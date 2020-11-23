@@ -13,6 +13,7 @@ def bootstrap(*args: None, aws_account_id: str, aws_region: str, qualifier: str,
     return Job(
         namespace="cdk_bootstrap",
         script="cdk bootstrap"
+        f" --toolkit-stack-name CDKToolkit-{qualifier}"
         f" --qualifier {qualifier}"
         f" aws://{aws_account_id}/{aws_region}" +
         " ".join([""] + list(map(lambda keyvalue: f"-t {keyvalue[0]}={keyvalue[1]}", tags.items()))),

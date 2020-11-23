@@ -4,13 +4,14 @@ stages:
 cdk-bootstrap-dev:
   stage: cdk_bootstrap_dev
   script:
-  - cdk bootstrap --qualifier beautifulapp aws://1234567890/net-wunderland-1
+  - cdk bootstrap --toolkit-stack-name CDKToolkit-beautifulapp --qualifier beautifulapp
+    aws://1234567890/net-wunderland-1
   variables:
     CDK_NEW_BOOTSTRAP: '1'
 cdk-bootstrap-tst:
   stage: cdk_bootstrap_tst
   script:
-  - cdk bootstrap --qualifier beautifulapp aws://1234567890/net-wunderland-1 -t ApplicationName=testapp
-    -t Subsystem=testsystem
+  - cdk bootstrap --toolkit-stack-name CDKToolkit-beautifulapp --qualifier beautifulapp
+    aws://1234567890/net-wunderland-1 -t ApplicationName=testapp -t Subsystem=testsystem
   variables:
     CDK_NEW_BOOTSTRAP: '1'
