@@ -1,7 +1,14 @@
 from __future__ import annotations
 
 import copy
-from typing import Set, Dict, List, Union, Optional, TypedDict
+from typing import (
+    Set,
+    Dict,
+    List,
+    Union,
+    Optional,
+    TypedDict,
+)
 
 from . import OrderedSetType
 from .job import Job
@@ -15,6 +22,7 @@ __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 __license__ = 'Apache-2.0'
 __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
+
 
 class ChildDict(TypedDict):
     object: Union[Job, JobSequence]
