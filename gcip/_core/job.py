@@ -50,6 +50,8 @@ class Job():
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
         self._parents: List[JobSequence] = list()
+        self._original: Optional[Job]
+        """Only set if you get a :meth:`copy()` of this job"""
 
         if namespace and name:
             self._name = f"{namespace}-{name}"
@@ -151,6 +153,7 @@ class Job():
         return self._copy_into(Job(name=".", script=copy.deepcopy(self._scripts)))
 
     def _copy_into(self, job: Job) -> Job:
+        job._original = self
         job._name = self._name
         job._stage = self._stage
 

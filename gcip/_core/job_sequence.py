@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import copy
-from typing import Set, Dict, List, Union, Optional
+from typing import Set, Dict, List, Union, Optional, TypedDict
 
 from . import OrderedSetType
 from .job import Job
@@ -16,11 +16,16 @@ __license__ = 'Apache-2.0'
 __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
+class ChildDict(TypedDict):
+    object: Union[Job, JobSequence]
+    namespace: Optional[str]
+    name: Optional[str]
+
 
 class JobSequence():
     def __init__(self) -> None:
         super().__init__()
-        self._children: List[Dict[str, Union[Job, JobSequence, Optional[str]]]] = list()
+        self._children: List[ChildDict] = list()
         self._image_for_initialization: Optional[str] = None
         self._image_for_replacement: Optional[str] = None
         self._variables: Dict[str, str] = {}
@@ -194,15 +199,15 @@ class JobSequence():
             instance_names.update(parent._get_all_instance_names(self))
 
         child_instance_names: Set[str] = set()
-        child_instance_name: Optional[str]
+        child_instance_name: str
         for item in self._children:
             if item["object"] == child:
-                if item["namespace"]:
+                if item["namespace"] is not None:
                     if item["name"]:
                         child_instance_name = f"{item['namespace']}-{item['name']}"
                     else:
                         child_instance_name = item["namespace"]
-                elif item["name"]:
+                elif item["name"] is not None:
                     child_instance_name = item["name"]
                 else:
                     child_instance_name = "#unset#"
@@ -231,10 +236,13 @@ class JobSequence():
             stages[job.stage] = None
 
         last_stage = list(stages.keys())[-1]
-        last_executed_jobs = []
+        last_executed_jobs: List[Job] = list()
         for job in all_jobs:
             if job._stage == last_stage:
-                last_executed_jobs.append(job._original)
+                if job._original:
+                    last_executed_jobs.append(job._original)
+                else:
+                    raise AttributeError("job._original is None, because the job is not a copy of another job")
 
         return last_executed_jobs
 
@@ -249,7 +257,6 @@ class JobSequence():
                     all_jobs.append(job_copy)
             elif isinstance(child["object"], Job):
                 job_copy = child["object"].copy()
-                job_copy._original = child["object"]
                 job_copy._extend_namespace(child["namespace"])
                 job_copy._extend_name(child["name"])
                 all_jobs.append(job_copy)
