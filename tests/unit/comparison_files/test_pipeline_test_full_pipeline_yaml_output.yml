@@ -42,7 +42,7 @@ deploy-cdk-project-resources-unstable:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-unstable-project-resources'
   - cdk deploy --strict --require-approval 'never' myapp-unstable-project-resources
@@ -71,7 +71,7 @@ deploy-cdk-windows-vm-bucket-unstable:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-unstable-windows-vm-bucket'
   - cdk deploy --strict --require-approval 'never' myapp-unstable-windows-vm-bucket
@@ -118,7 +118,7 @@ deploy-cdk-windows-vm-intances-unstable:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-unstable-windows-vm-instances'
   - cdk deploy --strict --require-approval 'never' myapp-unstable-windows-vm-instances
@@ -147,7 +147,7 @@ deploy-cdk-project-resources-dev:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-dev-project-resources'
   - cdk deploy --strict --require-approval 'never' myapp-dev-project-resources
@@ -187,7 +187,7 @@ deploy-cdk-windows-vm-intances-barista-dev:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-dev-windows-vm-instances-barista'
   - cdk deploy --strict --require-approval 'never' myapp-dev-windows-vm-instances-barista
@@ -216,7 +216,7 @@ deploy-cdk-windows-vm-intances-impala-dev:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-dev-windows-vm-instances-impala'
   - cdk deploy --strict --require-approval 'never' myapp-dev-windows-vm-instances-impala
@@ -245,7 +245,7 @@ deploy-cdk-project-resources-tst:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-tst-project-resources'
   - cdk deploy --strict --require-approval 'never' myapp-tst-project-resources
@@ -285,7 +285,7 @@ deploy-cdk-windows-vm-intances-tst:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-tst-windows-vm-instances'
   - cdk deploy --strict --require-approval 'never' myapp-tst-windows-vm-instances
@@ -314,7 +314,7 @@ deploy-cdk-project-resources-iat:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-iat-project-resources'
   - cdk deploy --strict --require-approval 'never' myapp-iat-project-resources
@@ -354,7 +354,7 @@ deploy-cdk-windows-vm-intances-iat:
   script:
   - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
   - ./install-dependencies.sh
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'myapp-iat-windows-vm-instances'
   - cdk deploy --strict --require-approval 'never' myapp-iat-windows-vm-instances

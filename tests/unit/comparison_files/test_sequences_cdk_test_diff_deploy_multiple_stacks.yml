@@ -12,7 +12,7 @@ deploy-cdk:
     artifacts: true
   stage: deploy
   script:
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'stack1 stack2'
   - cdk deploy --strict --require-approval 'never' stack1 stack2
