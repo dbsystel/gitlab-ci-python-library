@@ -38,7 +38,7 @@ def deploy(*stacks: str) -> Job:
         name="cdk",
         namespace="deploy",
         script=[
-            "pip3 install --upgrade gcip",
+            "pip3 install gcip",
             f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'",
             f"cdk deploy --strict --require-approval 'never' {stacks_string}",
         ],
