@@ -9,11 +9,11 @@ __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
-def bootstrap(*args: None, aws_account_id: str, aws_region: str, qualifier: str, **tags: str) -> Job:
+def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, qualifier: str, **tags: str) -> Job:
     return Job(
         namespace="cdk_bootstrap",
         script="cdk bootstrap"
-        f" --toolkit-stack-name CDKToolkit-{qualifier}"
+        f" --toolkit-stack-name {toolkit_stack_name}"
         f" --qualifier {qualifier}"
         f" aws://{aws_account_id}/{aws_region}" +
         " ".join([""] + list(map(lambda keyvalue: f"-t {keyvalue[0]}={keyvalue[1]}", tags.items()))),
@@ -32,7 +32,7 @@ def diff(*stacks: str) -> Job:
     )
 
 
-def deploy(*stacks: str) -> Job:
+def deploy(*stacks: str, toolkit_stack_name: str) -> Job:
     stacks_string = " ".join(stacks)
     return Job(
         name="cdk",
@@ -40,6 +40,6 @@ def deploy(*stacks: str) -> Job:
         script=[
             "pip3 install gcip",
             f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'",
-            f"cdk deploy --strict --require-approval 'never' {stacks_string}",
+            f"cdk deploy --strict --require-approval 'never' --toolkit-stack-name {toolkit_stack_name} {stacks_string}",
         ],
     )

@@ -15,4 +15,5 @@ deploy-cdk:
   - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'my-cdk-stack'
-  - cdk deploy --strict --require-approval 'never' my-cdk-stack
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
+    my-cdk-stack
