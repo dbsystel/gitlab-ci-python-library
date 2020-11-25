@@ -746,7 +746,7 @@ from gcip.job_sequences import cdk
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(cdk.diff_deploy("my-cdk-stack"))
+    pipeline.add_jobs(cdk.diff_deploy("my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
 
     conftest.check(pipeline.render())
 
@@ -771,10 +771,11 @@ deploy-cdk:
     artifacts: true
   stage: deploy
   script:
-  - pip3 install --upgrade gcip
+  - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
     'my-cdk-stack'
-  - cdk deploy --strict --require-approval 'never' my-cdk-stack
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
+    my-cdk-stack
 
 ```
 
