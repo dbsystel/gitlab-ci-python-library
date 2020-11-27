@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import copy
-from typing import (  # Needs Python 3.8:; TypedDict,
+from typing import (
     Set,
     Dict,
     List,
     Union,
     Optional,
+    # Needs Python 3.8:
+    #    TypedDict,
 )
 
 from . import OrderedSetType
