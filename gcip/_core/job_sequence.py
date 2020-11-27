@@ -7,8 +7,7 @@ from typing import (
     List,
     Union,
     Optional,
-    # Needs Python 3.8:
-    #    TypedDict,
+    TypedDict,
 )
 
 from . import OrderedSetType
@@ -24,19 +23,17 @@ __license__ = 'Apache-2.0'
 __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
-# Needs Python 3.8:
-# class ChildDict(TypedDict):
-#    object: Union[Job, JobSequence]
-#    namespace: Optional[str]
-#    name: Optional[str]
+
+class ChildDict(TypedDict):
+    object: Union[Job, JobSequence]
+    namespace: Optional[str]
+    name: Optional[str]
 
 
 class JobSequence():
     def __init__(self) -> None:
         super().__init__()
-        # Needs Python 3.8:
-        #        self._children: List[ChildDict] = list()
-        self._children = list()
+        self._children: List[ChildDict] = list()
         self._image_for_initialization: Optional[str] = None
         self._image_for_replacement: Optional[str] = None
         self._variables: Dict[str, str] = {}
