@@ -65,14 +65,10 @@ deploy-twine-upload-dev:
     TWINE_USERNAME: $ARTIFACTORY_DEV_USER
     TWINE_PASSWORD: $ARTIFACTORY_DEV_PASSWORD
   rules:
-  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    when: never
-    allow_failure: false
   - if: $CI_COMMIT_TAG
     when: never
     allow_failure: false
-  - if: $CI_COMMIT_BRANCH == "master"
-    when: on_success
+  - when: on_success
     allow_failure: false
 deploy-twine-upload-stable:
   stage: deploy

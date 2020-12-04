@@ -59,9 +59,8 @@ def full_stack(
 
     twine_upload_dev = python.twine_upload(dev_repository_url, dev_user, varname_dev_password)
     twine_upload_dev.append_rules(
-        rules.on_merge_request_events().never(),
         rules.on_tags().never(),
-        rules.on_master(),
+        rules.on_success(),
     )
     sequence.add_jobs(twine_upload_dev, name="dev")
 
