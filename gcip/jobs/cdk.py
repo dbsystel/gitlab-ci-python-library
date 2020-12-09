@@ -1,3 +1,5 @@
+from typing import Dict
+
 from .._core.job import Job
 
 __author__ = "Thomas Steinbach"
@@ -20,19 +22,25 @@ def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_n
     ).add_variables(CDK_NEW_BOOTSTRAP="1")
 
 
-def diff(*stacks: str) -> Job:
+def _context_options(context_dict: Dict[str, str]) -> str:
+    if not context_dict:
+        return ""
+    return " ".join(f"-c {key}={value}" for key, value in context_dict.items()) + " "
+
+
+def diff(*stacks: str, **context: str) -> Job:
     stacks_string = " ".join(stacks)
     return Job(
         name="cdk",
         namespace="diff",
         script=[
             f"cdk synth {stacks_string}",
-            f"cdk diff {stacks_string}",
+            f"cdk diff {_context_options(context)}{stacks_string}",
         ],
     )
 
 
-def deploy(*stacks: str, toolkit_stack_name: str) -> Job:
+def deploy(*stacks: str, toolkit_stack_name: str, **context: str) -> Job:
     stacks_string = " ".join(stacks)
     return Job(
         name="cdk",
@@ -40,6 +48,7 @@ def deploy(*stacks: str, toolkit_stack_name: str) -> Job:
         script=[
             "pip3 install gcip",
             f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'",
-            f"cdk deploy --strict --require-approval 'never' --toolkit-stack-name {toolkit_stack_name} {stacks_string}",
+            "cdk deploy --strict --require-approval 'never'"
+            f" --toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}",
         ],
     )

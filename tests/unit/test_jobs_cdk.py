@@ -1,10 +1,10 @@
-import gcip
+from gcip import Pipeline
 from tests import conftest
 from gcip.jobs import cdk
 
 
 def test_bootstrap() -> None:
-    pipeline = gcip.Pipeline()
+    pipeline = Pipeline()
     pipeline.add_jobs(
         cdk.bootstrap(
             aws_account_id="1234567890",
@@ -24,6 +24,16 @@ def test_bootstrap() -> None:
             Subsystem="testsystem",
         ),
         namespace="tst"
+    )
+
+    conftest.check(pipeline.render())
+
+
+def test_diff_deploy_with_context() -> None:
+    pipeline = Pipeline()
+    pipeline.add_jobs(
+        cdk.diff("teststack", foo="bar", abra="kadabra"),
+        cdk.deploy("teststack", toolkit_stack_name="CDKToolkit", foo="bar", abra="kadabra"),
     )
 
     conftest.check(pipeline.render())
