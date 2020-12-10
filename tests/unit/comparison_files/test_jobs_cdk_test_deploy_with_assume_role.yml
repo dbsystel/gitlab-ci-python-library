@@ -1,0 +1,19 @@
+stages:
+- deploy_local_role
+- deploy_remote_role
+deploy-cdk-local-role:
+  stage: deploy_local_role
+  script:
+  - pip3 install gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
+    'teststack' --assume_role MasterOfDesaster
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name CDKToolkit
+    teststack
+deploy-cdk-remote-role:
+  stage: deploy_remote_role
+  script:
+  - pip3 install gcip
+  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
+    'teststack' --assume_role MasterOfDesaster --assume_role_account_id 1234567890
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name CDKToolkit
+    teststack

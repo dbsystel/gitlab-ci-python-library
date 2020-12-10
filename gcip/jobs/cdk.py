@@ -1,3 +1,4 @@
+import warnings
 from typing import Dict
 
 from .._core.job import Job
@@ -40,14 +41,29 @@ def diff(*stacks: str, **context: str) -> Job:
     )
 
 
-def deploy(*stacks: str, toolkit_stack_name: str, **context: str) -> Job:
+def deploy(
+    *stacks: str,
+    toolkit_stack_name: str,
+    wait_for_stack_assume_role: str = None,
+    wait_for_stack_account_id: str = None,
+    **context: str,
+) -> Job:
     stacks_string = " ".join(stacks)
+
+    wait_for_stack_options = ""
+    if wait_for_stack_assume_role:
+        wait_for_stack_options += f" --assume_role {wait_for_stack_assume_role}"
+        if wait_for_stack_account_id:
+            wait_for_stack_options += f" --assume_role_account_id {wait_for_stack_account_id}"
+    elif wait_for_stack_account_id:
+        warnings.warn("`wait_for_stack_account_id` has no effects without `wait_for_stack_assume_role`")
+
     return Job(
         name="cdk",
         namespace="deploy",
         script=[
             "pip3 install gcip",
-            f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'",
+            f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'{wait_for_stack_options}",
             "cdk deploy --strict --require-approval 'never'"
             f" --toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}",
         ],

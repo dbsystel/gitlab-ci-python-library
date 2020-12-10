@@ -1,3 +1,5 @@
+import pytest
+
 from gcip import Pipeline
 from tests import conftest
 from gcip.jobs import cdk
@@ -37,3 +39,30 @@ def test_diff_deploy_with_context() -> None:
     )
 
     conftest.check(pipeline.render())
+
+
+def test_deploy_with_assume_role() -> None:
+    pipeline = Pipeline()
+    pipeline.add_jobs(
+        cdk.deploy(
+            "teststack",
+            toolkit_stack_name="CDKToolkit",
+            wait_for_stack_assume_role="MasterOfDesaster",
+        ),
+        namespace="local-role",
+    )
+    pipeline.add_jobs(
+        cdk.deploy(
+            "teststack",
+            toolkit_stack_name="CDKToolkit",
+            wait_for_stack_assume_role="MasterOfDesaster",
+            wait_for_stack_account_id="1234567890",
+        ),
+        namespace="remote-role",
+    )
+    conftest.check(pipeline.render())
+
+
+def test_assume_role_warning() -> None:
+    with pytest.warns(UserWarning, match="`wait_for_stack_account_id` has no effects without `wait_for_stack_assume_role`"):
+        cdk.deploy("teststack", toolkit_stack_name="CDKToolkit", wait_for_stack_account_id="MasterOfDesaster")

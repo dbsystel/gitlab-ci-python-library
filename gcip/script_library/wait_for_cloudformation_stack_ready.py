@@ -26,9 +26,37 @@ if __name__ == "__main__":
         dest="wait_seconds",
         help="The number of seconds to wait before checking stack status again. Default=30",
     )
+    argparser.add_argument(
+        "--assume-role",
+        dest="assume_role",
+        help="The IAM role to execute this script with.",
+    )
+    argparser.add_argument(
+        "--assume-role-account-id",
+        dest="assume_role_account_id",
+        help="The account Id the `--assume-role` resides in.",
+    )
     args = argparser.parse_args()
 
-    cfn = boto3.client('cloudformation')
+    if args.assume_role:
+        assume_role_account_id = args.assume_role_account_id
+        if not assume_role_account_id:
+            assume_role_account_id = boto3.client('sts').get_caller_identity().get('Account')
+
+        sts_client = boto3.client('sts')
+        assumed_role_object = sts_client.assume_role(
+            RoleArn=f"arn:aws:iam::{assume_role_account_id}:role/{args.assume_role}",
+            RoleSessionName="AssumeRoleSession1",
+        )
+        credentials = assumed_role_object['Credentials']
+        session = boto3.session.Session(
+            aws_access_key_id=credentials['AccessKeyId'],
+            aws_secret_access_key=credentials['SecretAccessKey'],
+            aws_session_token=credentials['SessionToken'],
+        )
+        cfn = session.client('cloudformation')
+    else:
+        cfn = boto3.client('cloudformation')
 
     # everything but DELETE_COMPLETE
     stack_status_filter = [
