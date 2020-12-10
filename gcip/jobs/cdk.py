@@ -52,9 +52,9 @@ def deploy(
 
     wait_for_stack_options = ""
     if wait_for_stack_assume_role:
-        wait_for_stack_options += f" --assume_role {wait_for_stack_assume_role}"
+        wait_for_stack_options += f" --assume-role {wait_for_stack_assume_role}"
         if wait_for_stack_account_id:
-            wait_for_stack_options += f" --assume_role_account_id {wait_for_stack_account_id}"
+            wait_for_stack_options += f" --assume-role-account-id {wait_for_stack_account_id}"
     elif wait_for_stack_account_id:
         warnings.warn("`wait_for_stack_account_id` has no effects without `wait_for_stack_assume_role`")
 
