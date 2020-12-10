@@ -15,6 +15,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 def diff_deploy(
     *stacks: str,
     toolkit_stack_name: str,
+    wait_for_stack: bool = True,
     wait_for_stack_assume_role: Optional[str] = None,
     wait_for_stack_account_id: Optional[str] = None,
     **context: str,
@@ -26,6 +27,7 @@ def diff_deploy(
         cdk.deploy(
             *stacks,
             toolkit_stack_name=toolkit_stack_name,
+            wait_for_stack=wait_for_stack,
             wait_for_stack_assume_role=wait_for_stack_assume_role,
             wait_for_stack_account_id=wait_for_stack_account_id,
             **context,
