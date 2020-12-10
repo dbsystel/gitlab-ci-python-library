@@ -6,7 +6,7 @@ deploy-cdk-local-role:
   script:
   - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
-    'teststack' --assume_role MasterOfDesaster
+    'teststack' --assume-role MasterOfDesaster
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name CDKToolkit
     teststack
 deploy-cdk-remote-role:
@@ -14,6 +14,6 @@ deploy-cdk-remote-role:
   script:
   - pip3 install gcip
   - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
-    'teststack' --assume_role MasterOfDesaster --assume_role_account_id 1234567890
+    'teststack' --assume-role MasterOfDesaster --assume-role-account-id 1234567890
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name CDKToolkit
     teststack
