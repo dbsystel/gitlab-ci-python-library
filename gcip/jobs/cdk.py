@@ -1,5 +1,5 @@
 import warnings
-from typing import Dict
+from typing import Dict, Optional
 
 from .._core.job import Job
 
@@ -44,8 +44,8 @@ def diff(*stacks: str, **context: str) -> Job:
 def deploy(
     *stacks: str,
     toolkit_stack_name: str,
-    wait_for_stack_assume_role: str = None,
-    wait_for_stack_account_id: str = None,
+    wait_for_stack_assume_role: Optional[str] = None,
+    wait_for_stack_account_id: Optional[str] = None,
     **context: str,
 ) -> Job:
     stacks_string = " ".join(stacks)
