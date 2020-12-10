@@ -92,7 +92,10 @@ if __name__ == "__main__":
                     if stack_name in stack["StackName"]:
                         stacks.append(stack["StackName"])
         else:
-            stacks.append(stack_id)
+            for ppage in cfn.get_paginator("list_stacks").paginate(StackStatusFilter=stack_status_filter):
+                for stack in ppage.get("StackSummaries"):
+                    if stack_id == stack["StackName"]:
+                        stacks.append(stack_id)
 
     print(f"waiting for stacks to complete: {stacks}")
 
