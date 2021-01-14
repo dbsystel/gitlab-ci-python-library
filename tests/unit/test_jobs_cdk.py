@@ -66,3 +66,12 @@ def test_deploy_with_assume_role() -> None:
 def test_assume_role_warning() -> None:
     with pytest.warns(UserWarning, match="`wait_for_stack_account_id` has no effects without `wait_for_stack_assume_role`"):
         cdk.deploy("teststack", toolkit_stack_name="CDKToolkit", wait_for_stack_account_id="MasterOfDesaster")
+
+
+def test_options() -> None:
+    pipeline = Pipeline()
+    pipeline.add_jobs(
+        cdk.diff("teststack", synth_options="-v", diff_options="-o"),
+        cdk.deploy("teststack", toolkit_stack_name="CDKToolkit", options="-i")
+    )
+    conftest.check(pipeline.render())

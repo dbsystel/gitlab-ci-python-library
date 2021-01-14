@@ -29,14 +29,20 @@ def _context_options(context_dict: Dict[str, str]) -> str:
     return " ".join(f"-c {key}={value}" for key, value in context_dict.items()) + " "
 
 
-def diff(*stacks: str, **context: str) -> Job:
+def _space(string: str) -> str:
+    if string:
+        return f"{string} "
+    return ""
+
+
+def diff(*stacks: str, synth_options: str = "", diff_options: str = "", **context: str) -> Job:
     stacks_string = " ".join(stacks)
     return Job(
         name="cdk",
         namespace="diff",
         script=[
-            f"cdk synth {stacks_string}",
-            f"cdk diff {_context_options(context)}{stacks_string}",
+            f"cdk synth {_space(synth_options)}{stacks_string}",
+            f"cdk diff {_space(diff_options)}{_context_options(context)}{stacks_string}",
         ],
     )
 
@@ -47,6 +53,7 @@ def deploy(
     wait_for_stack: bool = True,
     wait_for_stack_assume_role: Optional[str] = None,
     wait_for_stack_account_id: Optional[str] = None,
+    options: str = "",
     **context: str,
 ) -> Job:
     stacks_string = " ".join(stacks)
@@ -55,8 +62,8 @@ def deploy(
         name="cdk",
         namespace="deploy",
         script=[
-            "cdk deploy --strict --require-approval 'never'"
-            f" --toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}",
+            f"cdk deploy --strict --require-approval 'never' {_space(options)}"
+            f"--toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}",
         ],
     )
 

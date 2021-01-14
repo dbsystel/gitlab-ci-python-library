@@ -18,10 +18,13 @@ def diff_deploy(
     wait_for_stack: bool = True,
     wait_for_stack_assume_role: Optional[str] = None,
     wait_for_stack_account_id: Optional[str] = None,
+    synth_options: str = "",
+    diff_options: str = "",
+    deploy_options: str = "",
     **context: str,
 ) -> JobSequence:
     sequence = JobSequence()
-    diff_job = cdk.diff(*stacks, **context)
+    diff_job = cdk.diff(*stacks, synth_options=synth_options, diff_options=diff_options, **context)
     sequence.add_jobs(
         diff_job,
         cdk.deploy(
@@ -30,6 +33,7 @@ def diff_deploy(
             wait_for_stack=wait_for_stack,
             wait_for_stack_assume_role=wait_for_stack_assume_role,
             wait_for_stack_account_id=wait_for_stack_account_id,
+            options=deploy_options,
             **context,
         ).add_needs(diff_job),
     )
