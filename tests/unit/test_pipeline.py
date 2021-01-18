@@ -8,6 +8,7 @@ from gcip import (
 )
 from tests import conftest
 from gcip.job_sequences import cdk
+import tempfile
 
 
 def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
@@ -67,3 +68,10 @@ def test_includes_pipeline():
     pipeline = gcip.Pipeline(includes=[first_include, second_include])
     pipeline.add_include(IncludeTemplate("Template-Include-File.yml"))
     conftest.check(pipeline.render())
+
+
+def test_write_yaml():
+    pipeline = gcip.Pipeline()
+    pipeline.add_jobs(gcip.Job(script="testjob", namespace="test"))
+    target = tempfile.TemporaryFile()
+    pipeline.write_yaml(target.name)
