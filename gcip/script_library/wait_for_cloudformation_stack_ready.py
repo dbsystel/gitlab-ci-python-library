@@ -1,8 +1,8 @@
 import argparse
 from time import sleep
-from botocore.config import Config
 
 import boto3  # type: ignore
+from botocore.config import Config
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
