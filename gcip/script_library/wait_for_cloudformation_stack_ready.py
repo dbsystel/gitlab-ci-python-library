@@ -1,5 +1,6 @@
 import argparse
 from time import sleep
+from botocore.config import Config
 
 import boto3  # type: ignore
 
@@ -38,6 +39,11 @@ if __name__ == "__main__":
     )
     args = argparser.parse_args()
 
+    config = Config(retries={
+        'max_attempts': 15,
+        'mode': 'standard'
+    })
+
     if args.assume_role:
         assume_role_account_id = args.assume_role_account_id
         if not assume_role_account_id:
@@ -54,9 +60,9 @@ if __name__ == "__main__":
             aws_secret_access_key=credentials['SecretAccessKey'],
             aws_session_token=credentials['SessionToken'],
         )
-        cfn = session.client('cloudformation')
+        cfn = session.client('cloudformation', config=config)
     else:
-        cfn = boto3.client('cloudformation')
+        cfn = boto3.client('cloudformation', config=config)
 
     # everything but DELETE_COMPLETE
     stack_status_filter = [
@@ -101,6 +107,7 @@ if __name__ == "__main__":
 
     def stack_in_progress() -> bool:
         for stack in stacks:
+            sleep(0.5)  # prevent API rate limiting when iterating through many stacks
             if "IN_PROGRESS" in cfn.describe_stacks(StackName=stack)["Stacks"][0]["StackStatus"]:
                 return True
         return False
