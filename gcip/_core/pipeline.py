@@ -62,7 +62,7 @@ class Pipeline(JobSequence):
         import yaml
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
 
-    def write_yaml(self, filename: str = "generated-config.yml"):
+    def write_yaml(self, filename: str = "generated-config.yml") -> None:
         import yaml
         with open(filename, "w") as generated_config:
             generated_config.write(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))

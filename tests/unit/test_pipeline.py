@@ -1,3 +1,5 @@
+import tempfile
+
 import gcip
 from gcip import (
     IncludeLocal,
@@ -8,7 +10,6 @@ from gcip import (
 )
 from tests import conftest
 from gcip.job_sequences import cdk
-import tempfile
 
 
 def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
