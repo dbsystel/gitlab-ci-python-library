@@ -42,7 +42,7 @@ class Need(object):
         self._artifacts = artifacts
 
         if self._project and not self._ref:
-            self._ref = "master"
+            self._ref = "main"
 
     def render(self) -> Dict[str, Union[str, bool]]:
         """

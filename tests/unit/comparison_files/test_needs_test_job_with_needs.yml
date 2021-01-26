@@ -12,7 +12,7 @@ depending-job:
   - job: job2
     artifacts: true
     project: foo/bar
-    ref: master
+    ref: main
   - job: testjob
     artifacts: true
   stage: depending_job

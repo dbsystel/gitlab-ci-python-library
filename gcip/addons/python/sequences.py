@@ -53,6 +53,7 @@ def full_stack(
 
     pages_sphinx = python.pages_sphinx()
     pages_sphinx.append_rules(
+        rules.on_main(),
         rules.on_master(),
         rules.on_tags(),
     )

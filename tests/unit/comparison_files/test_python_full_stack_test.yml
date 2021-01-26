@@ -41,6 +41,9 @@ build-pages-python-sphinx:
   - pip3 install --upgrade -r docs/requirements.txt
   - sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}
   rules:
+  - if: $CI_COMMIT_BRANCH == "main"
+    when: on_success
+    allow_failure: false
   - if: $CI_COMMIT_BRANCH == "master"
     when: on_success
     allow_failure: false

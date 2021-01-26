@@ -17,6 +17,14 @@ def not_on_branch(branch_name: str) -> Rule:
     return Rule(if_statement=f'$CI_COMMIT_BRANCH != "{branch_name}"')
 
 
+def on_main() -> Rule:
+    return on_branch("main")
+
+
+def not_on_main() -> Rule:
+    return not_on_branch("main")
+
+
 def on_master() -> Rule:
     return on_branch("master")
 

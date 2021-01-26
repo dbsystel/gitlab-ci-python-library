@@ -690,8 +690,8 @@ Following sub chapters provide an example for one asset out of every module.
 # ./tests/unit/test_readme_assets_scripts.py
 
 import gcip
-from gcip import scripts
 from tests import conftest
+from gcip.addons.gitlab import job_scripts as scripts
 
 
 def test():
@@ -712,7 +712,7 @@ stages:
 print-date:
   stage: print_date
   script:
-  - git clone --branch master --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git
+  - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git
 
 ```
 
@@ -725,7 +725,7 @@ print-date:
 
 import gcip
 from tests import conftest
-from gcip.jobs import python
+from gcip.addons.python import jobs as python
 
 
 def test():
@@ -760,7 +760,7 @@ lint-flake8:
 
 import gcip
 from tests import conftest
-from gcip.job_sequences import cdk
+from gcip.addons.cdk import sequences as cdk
 
 
 def test():
@@ -791,7 +791,7 @@ deploy-cdk:
   stage: deploy
   script:
   - pip3 install gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
+  - python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names
     'my-cdk-stack'
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
     my-cdk-stack
@@ -806,8 +806,8 @@ deploy-cdk:
 # ./tests/unit/test_readme_assets_rules.py
 
 import gcip
-from gcip import rules
 from tests import conftest
+from gcip.lib import rules
 
 
 def test():
