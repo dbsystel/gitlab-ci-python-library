@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from typing import Dict, Optional
 
-from ..helpers import is_valid_url
+from ..tools.url import is_valid_url
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"

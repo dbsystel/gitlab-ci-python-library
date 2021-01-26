@@ -1,6 +1,6 @@
 from gcip import Pipeline
 from tests import conftest
-from gcip.job_sequences import cdk
+from gcip.addons.cdk import sequences as cdk
 
 
 def test_diff_deploy_multiple_stacks() -> None:

@@ -5,11 +5,11 @@ from gcip import (
     IncludeLocal,
     IncludeRemote,
     IncludeTemplate,
-    rules,
-    scripts,
 )
 from tests import conftest
-from gcip.job_sequences import cdk
+from gcip.lib import rules
+from gcip.addons.cdk import sequences as cdk
+from gcip.addons.gitlab import job_scripts
 
 
 def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
@@ -47,7 +47,7 @@ def test_full_pipeline_yaml_output():
     pipeline = gcip.Pipeline()
     pipeline.initialize_image("python:3.9-slim")
     pipeline.prepend_scripts(
-        scripts.clone_repository("otherproject/configuration"),
+        job_scripts.clone_repository("otherproject/configuration"),
         "./install-dependencies.sh",
     )
     pipeline.add_tags("environment-iat")

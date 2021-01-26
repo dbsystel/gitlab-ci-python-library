@@ -2,7 +2,7 @@ import os
 
 import setuptools
 
-from gcip.script_library import (
+from gcip.tools import (
     evaluate_git_tag_pep404_conformity as pep404,
 )
 

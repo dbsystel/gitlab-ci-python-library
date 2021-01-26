@@ -1,7 +1,8 @@
 from typing import Optional
 
-from ..jobs import cdk
-from .._core.job_sequence import JobSequence
+from gcip._core.job_sequence import JobSequence
+
+from . import jobs as cdk
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"

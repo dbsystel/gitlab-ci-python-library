@@ -1,6 +1,6 @@
 import gcip
-from gcip import rules
 from tests import conftest
+from gcip.lib import rules
 
 
 def test():

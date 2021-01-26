@@ -1,6 +1,6 @@
 import gcip
-from gcip import scripts
 from tests import conftest
+from gcip.addons.gitlab import job_scripts as scripts
 
 
 def test():

@@ -1,5 +1,5 @@
 from gcip import Pipeline
-from gcip.job_sequences import python
+from gcip.addons.python import sequences as python
 
 pipeline = Pipeline()
 pipeline.initialize_image("<docker-image-with-cdk-and-python>")

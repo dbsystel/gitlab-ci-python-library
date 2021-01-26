@@ -1,5 +1,7 @@
-from .. import rules, scripts
-from .._core.job import Job
+from gcip.lib import rules
+from gcip._core.job import Job
+
+from . import job_scripts as scripts
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -97,7 +99,7 @@ def evaluate_git_tag_pep404_conformity() -> Job:
         namespace="test",
         script=[
             "pip3 install --upgrade gcip",
-            "python3 -m gcip.script_library.evaluate_git_tag_pep404_conformity",
+            "python3 -m gcip.tools.evaluate_git_tag_pep404_conformity",
         ],
     )
     job.append_rules(rules.on_tags())

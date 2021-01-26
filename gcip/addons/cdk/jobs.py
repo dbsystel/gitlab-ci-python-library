@@ -1,7 +1,7 @@
 import warnings
 from typing import Dict, Optional
 
-from .._core.job import Job
+from gcip._core.job import Job
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -78,7 +78,7 @@ def deploy(
 
         job.prepend_scripts(
             "pip3 install gcip",
-            f"python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'{wait_for_stack_options}",
+            f"python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names '{stacks_string}'{wait_for_stack_options}",
         )
 
     return job

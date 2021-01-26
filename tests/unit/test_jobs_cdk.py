@@ -2,7 +2,7 @@ import pytest
 
 from gcip import Pipeline
 from tests import conftest
-from gcip.jobs import cdk
+from gcip.addons.cdk import jobs as cdk
 
 
 def test_bootstrap() -> None:

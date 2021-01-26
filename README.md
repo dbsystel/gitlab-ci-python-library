@@ -6,18 +6,37 @@ Furthermore the Gitlab Ci Python Library is called _gcip_.
 
 [[_TOC_]]
 
+# Code documentation
+
+This page holds the user documentation of gcip.
+
+For the code documentation please proceed to the [README.md within the gcip folder](./gcip/README.md)
+
 # Configuring your project to use gcip
 
 Create a `.gitlab-ci.yaml` with following static content:
 
 ```
 ---
-variables:
-  GCIP_VERSION: "<gcip release>"
+generate-pipeline:
+  stage: build
+  image: python:3
+  script:
+    - pip3 install -r requirements.txt
+    - python3 .gitlab-ci.py > generated-config.yml
+  artifacts:
+    paths:
+      - generated-config.yml
 
-include:
-  - project: gitlab-ci-python-library
-    file: gcip-pipeline.yml
+run-pipeline:
+  stage: deploy
+  needs:
+    - generate-pipeline
+  trigger:
+    include:
+      - artifact: generated-config.yml
+        job: generate-pipeline
+    strategy: depend
 ```
 
 Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.

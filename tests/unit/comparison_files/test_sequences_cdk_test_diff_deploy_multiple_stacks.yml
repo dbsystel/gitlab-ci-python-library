@@ -13,7 +13,7 @@ deploy-cdk:
   stage: deploy
   script:
   - pip3 install gcip
-  - python3 -m gcip.script_library.wait_for_cloudformation_stack_ready --stack-names
+  - python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names
     'stack1 stack2'
   - cdk deploy --strict --require-approval 'never' --toolkit-stack-name toolkit-stack
     stack1 stack2

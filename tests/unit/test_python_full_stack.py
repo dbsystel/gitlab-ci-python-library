@@ -1,6 +1,6 @@
 import gcip
 from tests import conftest
-from gcip.job_sequences import python
+from gcip.addons.python import sequences as python
 
 
 def test():

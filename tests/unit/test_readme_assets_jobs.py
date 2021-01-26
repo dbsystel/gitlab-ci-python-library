@@ -1,6 +1,6 @@
 import gcip
 from tests import conftest
-from gcip.jobs import python
+from gcip.addons.python import jobs as python
 
 
 def test():

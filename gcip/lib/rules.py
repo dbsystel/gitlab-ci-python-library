@@ -1,4 +1,4 @@
-from ._core.rule import Rule
+from gcip._core.rule import Rule
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"

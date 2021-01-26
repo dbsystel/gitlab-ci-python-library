@@ -1,7 +1,8 @@
 import pytest
 
-from gcip import Job, Rule, Pipeline, JobSequence, rules
+from gcip import Job, Rule, Pipeline, JobSequence
 from tests import conftest
+from gcip.lib import rules
 
 
 @pytest.fixture

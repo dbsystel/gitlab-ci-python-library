@@ -1,8 +1,9 @@
 from typing import Optional
 
-from .. import rules
-from ..jobs import python
-from .._core.job_sequence import JobSequence
+from gcip.lib import rules
+from gcip._core.job_sequence import JobSequence
+
+from . import jobs as python
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
