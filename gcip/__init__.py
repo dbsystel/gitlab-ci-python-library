@@ -22,6 +22,7 @@ from ._core.include import (  # noqa
 )
 # yapf: disable
 from ._core.pipeline import Pipeline  # noqa
+from ._core.environment import GitlabCiEnv  # noqa
 from ._core.job_sequence import JobSequence  # noqa
 
 __author__ = "Thomas Steinbach"
