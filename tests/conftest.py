@@ -4,6 +4,9 @@ import pathlib
 
 import yaml
 
+os.environ["CI_COMMIT_REF_SLUG"] = "my-feature-branch"
+os.environ["CI_PROJECT_PATH"] = "my/awsome/project/dir"
+
 
 def check(output: str) -> bool:
     yaml_output = yaml.safe_dump(output, default_flow_style=False, sort_keys=False)
