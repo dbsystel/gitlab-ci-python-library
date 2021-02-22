@@ -1,0 +1,10 @@
+stages:
+- single_stage
+single-stage-cachejob1:
+  stage: single_stage
+  script:
+  - date
+single-stage-cachejob2:
+  stage: single_stage
+  script:
+  - date
