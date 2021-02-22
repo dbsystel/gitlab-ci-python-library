@@ -15,6 +15,8 @@ from typing import (
 )
 from operator import itemgetter
 
+from gcip._core.cache import Cache
+
 from . import OrderedSetType
 from .need import Need
 from .rule import Rule
@@ -49,6 +51,7 @@ class Job():
         self._needs: List[Union[Need, Job, JobSequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
+        self._cache: Optional[Cache] = None,
         self._parents: List[JobSequence] = list()
         self._original: Optional[Job]
         """Only set if you get a :meth:`copy()` of this job"""
@@ -122,6 +125,18 @@ class Job():
             self._artifacts_paths[path] = None
         return self
 
+    def set_cache(self, cache: Cache) -> Job:
+        """Sets the cache for the Job.
+
+        Args:
+            cache (Cache): Cache to use for this Job.
+
+        Returns:
+            JobSequence: Returns actual self.
+        """
+        self._cache = cache
+        return self
+
     def append_rules(self, *rules: Rule) -> Job:
         self._rules.extend(rules)
         return self
@@ -161,6 +176,7 @@ class Job():
         job.add_variables(**copy.deepcopy(self._variables))
         job.add_tags(*list(self._tags.keys()))
         job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+        job.set_cache(self._cache)
         job.append_rules(*self._rules)
         job.add_needs(*self._needs)
         job._parents = self._parents.copy()
@@ -220,6 +236,9 @@ class Job():
             rendered_job.update({"artifacts": {
                 "paths": list(self._artifacts_paths.keys()),
             }})
+
+        if self._cache:
+            rendered_job.update({"cache": self._cache.render()})
 
         if self._tags.keys():
             rendered_job["tags"] = list(self._tags.keys())
@@ -314,6 +333,9 @@ class TriggerJob(Job):
 
         if "artifacts" in rendered_job:
             rendered_job.pop("artifacts")
+
+        if "cache" in rendered_job:
+            rendered_job.pop("cache")
 
         trigger: Dict[str, Union[str, List[Dict[str, str]]]] = {}
 

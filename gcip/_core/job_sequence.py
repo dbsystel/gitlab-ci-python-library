@@ -10,6 +10,8 @@ from typing import (
     TypedDict,
 )
 
+from gcip._core.cache import Cache
+
 from . import OrderedSetType
 from .job import Job
 from .need import Need
@@ -43,6 +45,8 @@ class JobSequence():
         self._tags_for_initialization: OrderedSetType = {}
         self._tags_for_replacement: OrderedSetType = {}
         self._artifacts_paths: OrderedSetType = {}
+        self._cache: Optional[Cache] = None
+        self._cache_for_initialization: Optional[Cache] = None
         self._scripts_to_prepend: List[str] = []
         self._scripts_to_append: List[str] = []
         self._rules_to_append: List[Rule] = []
@@ -91,6 +95,31 @@ class JobSequence():
                              to all downstream :class:`Job` s.
         """
         self._variables_for_replacement.update(variables)
+        return self
+
+    def set_cache(self, cache: Cache) -> JobSequence:
+        """Sets the cache for the corresponding JobSequence.
+        This means if us set the cache you will override the cache configured on the job level.
+
+        Args:
+            cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+        Returns:
+            JobSequence: Returns actual self.
+        """
+        self._cache = cache
+        return self
+
+    def initialize_cache(self, cache: Cache) -> JobSequence:
+        """Initializes a cache if a job does not has a cache configured.
+
+        Args:
+            cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+        Returns:
+            JobSequence: Returns actual self.
+        """
+        self._cache_for_initialization = cache
         return self
 
     def add_tags(self, *tags: str) -> JobSequence:
@@ -280,6 +309,10 @@ class JobSequence():
             if self._variables_for_replacement:
                 job._variables = copy.deepcopy(self._variables_for_replacement)
             job.add_variables(**copy.deepcopy(self._variables))
+
+            if self._cache_for_initialization and not job._cache:
+                job._cache = copy.deepcopy(self._cache_for_initialization)
+            job.set_cache(copy.deepcopy(self._cache))
 
             if self._tags_for_initialization and not job._tags:
                 job._tags = copy.deepcopy(self._tags_for_initialization)

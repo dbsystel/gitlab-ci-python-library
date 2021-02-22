@@ -11,7 +11,13 @@ from ._core.job import (  # noqa
 )
 from ._core.need import Need  # noqa
 # yapf: disable
-from ._core.rule import Rule  # noqa
+from ._core.rule import Rule, WhenStatement  # noqa
+# yapf: disable
+from ._core.cache import (  # noqa
+    Cache,
+    CacheKey,
+    CachePolicy,
+)
 # yapf: disable
 from ._core.include import (  # noqa
     IncludeFile,
