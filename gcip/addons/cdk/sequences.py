@@ -26,7 +26,7 @@ def diff_deploy(
 ) -> JobSequence:
     sequence = JobSequence()
     diff_job = cdk.diff(*stacks, synth_options=synth_options, diff_options=diff_options, **context)
-    sequence.add_jobs(
+    sequence.add_children(
         diff_job,
         cdk.deploy(
             *stacks,

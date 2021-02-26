@@ -5,7 +5,6 @@ class GitLabCiEnv():
     """
     Gitlab CI Environment variables.
     """
-
     @staticmethod
     def CHAT_CHANNEL() -> str:
         """
@@ -78,6 +77,7 @@ class GitLabCiEnv():
         return os.environ["CI_COMMIT_DESCRIPTION"]
 
         """
+
     @staticmethod
     def CI_COMMIT_MESSAGE() -> str:
         """
@@ -365,6 +365,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_IID"]
 
         """
+
     @staticmethod
     def CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY() -> str:
         """
@@ -378,6 +379,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY"]
 
         """
+
     @staticmethod
     def CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY() -> str:
         """
@@ -391,6 +393,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY"]
 
         """
+
     @staticmethod
     def CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME() -> str:
         """
@@ -403,6 +406,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME"]
 
         """
+
     @staticmethod
     def CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA() -> str:
         """
@@ -416,6 +420,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA"]
 
         """
+
     @staticmethod
     def CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME() -> str:
         """
@@ -428,6 +433,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME"]
 
         """
+
     @staticmethod
     def CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA() -> str:
         """
@@ -441,6 +447,7 @@ class GitLabCiEnv():
         return os.environ["CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA"]
 
         """
+
     @staticmethod
     def CI_HAS_OPEN_REQUIREMENTS() -> str:
         """
@@ -528,6 +535,7 @@ class GitLabCiEnv():
         return os.environ["CI_JOB_STATUS"]
 
         """
+
     @staticmethod
     def CI_JOB_TOKEN() -> str:
         """
@@ -586,6 +594,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_ASSIGNEES"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_ID() -> str:
         """
@@ -622,6 +631,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_LABELS"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_MILESTONE() -> str:
         """
@@ -634,6 +644,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_MILESTONE"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_PROJECT_ID() -> str:
         """
@@ -646,6 +657,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_PROJECT_ID"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_PROJECT_PATH() -> str:
         """
@@ -659,6 +671,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_PROJECT_PATH"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_PROJECT_URL() -> str:
         """
@@ -672,6 +685,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_PROJECT_URL"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_REF_PATH() -> str:
         """
@@ -684,6 +698,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_REF_PATH"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_SOURCE_BRANCH_NAME() -> str:
         """
@@ -696,6 +711,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_SOURCE_BRANCH_SHA() -> str:
         """
@@ -709,6 +725,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_SOURCE_BRANCH_SHA"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_SOURCE_PROJECT_ID() -> str:
         """
@@ -721,6 +738,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_ID"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_SOURCE_PROJECT_PATH() -> str:
         """
@@ -733,6 +751,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_PATH"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_SOURCE_PROJECT_URL() -> str:
         """
@@ -745,6 +764,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_URL"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_TARGET_BRANCH_NAME() -> str:
         """
@@ -757,6 +777,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_TARGET_BRANCH_NAME"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_TARGET_BRANCH_SHA() -> str:
         """
@@ -770,6 +791,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_TARGET_BRANCH_SHA"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_TITLE() -> str:
         """
@@ -782,6 +804,7 @@ class GitLabCiEnv():
         return os.environ["CI_MERGE_REQUEST_TITLE"]
 
         """
+
     @staticmethod
     def CI_MERGE_REQUEST_EVENT_TYPE() -> str:
         """
@@ -889,6 +912,7 @@ class GitLabCiEnv():
         return os.environ["CI_PIPELINE_SOURCE"]
 
         """
+
     @staticmethod
     def CI_PIPELINE_TRIGGERED() -> str:
         """

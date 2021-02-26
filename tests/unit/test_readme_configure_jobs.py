@@ -14,6 +14,6 @@ def test():
     job.add_artifacts_paths("binaries/", ".config")
     job.append_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
-    pipeline.add_jobs(job)
+    pipeline.add_children(job)
 
     conftest.check(pipeline.render())

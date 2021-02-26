@@ -40,7 +40,7 @@ def full_stack(
     Define your password outside the pipeline, e.g. as secret variable in the Gitlab CI/CD settings section.
     """
     sequence = JobSequence()
-    sequence.add_jobs(
+    sequence.add_children(
         python.isort(),
         python.flake8(),
         python.pytest(),
@@ -49,7 +49,7 @@ def full_stack(
     )
 
     if mypy_package_dir:
-        sequence.add_jobs(python.mypy(mypy_package_dir))
+        sequence.add_children(python.mypy(mypy_package_dir))
 
     pages_sphinx = python.pages_sphinx()
     pages_sphinx.append_rules(
@@ -57,17 +57,17 @@ def full_stack(
         rules.on_master(),
         rules.on_tags(),
     )
-    sequence.add_jobs(pages_sphinx)
+    sequence.add_children(pages_sphinx)
 
     twine_upload_dev = python.twine_upload(dev_repository_url, dev_user, varname_dev_password)
     twine_upload_dev.append_rules(
         rules.on_tags().never(),
         rules.on_success(),
     )
-    sequence.add_jobs(twine_upload_dev, name="dev")
+    sequence.add_children(twine_upload_dev, name="dev")
 
     twine_upload_stable = python.twine_upload(stable_repository_url, stable_user, varname_stable_password)
     twine_upload_stable.append_rules(rules.on_tags())
-    sequence.add_jobs(twine_upload_stable, name="stable")
+    sequence.add_children(twine_upload_stable, name="stable")
 
     return sequence

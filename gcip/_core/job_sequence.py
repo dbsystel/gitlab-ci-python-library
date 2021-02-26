@@ -55,21 +55,13 @@ class JobSequence():
     def _add_parent(self, parent: JobSequence) -> None:
         self._parents.append(parent)
 
-    def add_sequences(self, *job_sequences: JobSequence, namespace: Optional[str] = None, name: Optional[str] = None) -> JobSequence:
-        for sequence in job_sequences:
-            sequence._add_parent(self)
+    def add_children(
+        self, *jobs_or_sequences: Union[Job, JobSequence], namespace: Optional[str] = None, name: Optional[str] = None
+    ) -> JobSequence:
+        for child in jobs_or_sequences:
+            child._add_parent(self)
             self._children.append({
-                "object": sequence,
-                "namespace": namespace,
-                "name": name
-            })
-        return self
-
-    def add_jobs(self, *jobs: Job, namespace: Optional[str] = None, name: Optional[str] = None) -> JobSequence:
-        for job in jobs:
-            job._add_parent(self)
-            self._children.append({
-                "object": job,
+                "object": child,
                 "namespace": namespace,
                 "name": name
             })

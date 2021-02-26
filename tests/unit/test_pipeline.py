@@ -19,25 +19,25 @@ def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
 def environment_pipeline(environment: str) -> gcip.JobSequence:
     env_pipe = gcip.JobSequence()
 
-    env_pipe.add_sequences(myapp_diff_deploy(environment, "project-resources"), namespace="project_resources")
+    env_pipe.add_children(myapp_diff_deploy(environment, "project-resources"), namespace="project_resources")
 
     if environment == "unstable":
-        env_pipe.add_sequences(myapp_diff_deploy(environment, "windows-vm-bucket"), namespace="windows_vm_bucket")
+        env_pipe.add_children(myapp_diff_deploy(environment, "windows-vm-bucket"), namespace="windows_vm_bucket")
         update_image_job = gcip.Job(namespace="update-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}")
         update_image_job.append_rules(rules.on_merge_request_events().never(), gcip.Rule(if_statement="$IMAGE_SOURCE_PASSWORD"))
-        env_pipe.add_jobs(update_image_job)
+        env_pipe.add_children(update_image_job)
     else:
-        env_pipe.add_jobs(gcip.Job(namespace="copy-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}"))
+        env_pipe.add_children(gcip.Job(namespace="copy-windows-vm-image", script=f"python3 update_windows_vm_image.py {environment}"))
 
     if environment == "dev":
-        env_pipe.add_sequences(
+        env_pipe.add_children(
             myapp_diff_deploy(environment, "windows-vm-instances-barista"), namespace="windows_vm_intances", name="barista"
         )
-        env_pipe.add_sequences(
+        env_pipe.add_children(
             myapp_diff_deploy(environment, "windows-vm-instances-impala"), namespace="windows_vm_intances", name="impala"
         )
     else:
-        env_pipe.add_sequences(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
+        env_pipe.add_children(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
 
     return env_pipe
 
@@ -58,7 +58,7 @@ def test_full_pipeline_yaml_output():
             env_pipe.add_variables(MYPROJECT_RELEASE_VERSION=">=0.dev")
         else:
             env_pipe.add_variables(MYPROJECT_RELEASE_VERSION="==0.0.dev10")
-        pipeline.add_sequences(env_pipe, namespace=environment)
+        pipeline.add_children(env_pipe, namespace=environment)
 
     conftest.check(pipeline.render())
 
@@ -73,6 +73,6 @@ def test_includes_pipeline():
 
 def test_write_yaml():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(gcip.Job(script="testjob", namespace="test"))
+    pipeline.add_children(gcip.Job(script="testjob", namespace="test"))
     target = tempfile.TemporaryFile()
     pipeline.write_yaml(target.name)

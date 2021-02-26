@@ -4,7 +4,7 @@ from tests import conftest
 
 def test():
     pipeline = Pipeline()
-    pipeline.add_jobs(TriggerJob(
+    pipeline.add_children(TriggerJob(
         namespace="trigger-banana",
         project="myteam/banana",
         branch="test",

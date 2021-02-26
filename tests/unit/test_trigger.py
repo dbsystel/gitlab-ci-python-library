@@ -56,5 +56,5 @@ def test_trigger_job_keywords():
     trigger_job.add_artifacts_paths("binaries/", ".config")
 
     pipeline = Pipeline()
-    pipeline.add_jobs(trigger_job)
+    pipeline.add_children(trigger_job)
     conftest.check(pipeline.render())

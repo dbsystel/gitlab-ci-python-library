@@ -11,6 +11,6 @@ def test():
     )
 
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(job)
+    pipeline.add_children(job)
 
     conftest.check(pipeline.render())

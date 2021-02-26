@@ -7,7 +7,7 @@ from gcip.addons.cdk import jobs as cdk
 
 def test_bootstrap() -> None:
     pipeline = Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         cdk.bootstrap(
             aws_account_id="1234567890",
             aws_region="net-wunderland-1",
@@ -16,7 +16,7 @@ def test_bootstrap() -> None:
         ),
         namespace="dev"
     )
-    pipeline.add_jobs(
+    pipeline.add_children(
         cdk.bootstrap(
             aws_account_id="1234567890",
             aws_region="net-wunderland-1",
@@ -33,7 +33,7 @@ def test_bootstrap() -> None:
 
 def test_diff_deploy_with_context() -> None:
     pipeline = Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         cdk.diff("teststack", foo="bar", abra="kadabra"),
         cdk.deploy("teststack", toolkit_stack_name="CDKToolkit", foo="bar", abra="kadabra"),
     )
@@ -43,7 +43,7 @@ def test_diff_deploy_with_context() -> None:
 
 def test_deploy_with_assume_role() -> None:
     pipeline = Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         cdk.deploy(
             "teststack",
             toolkit_stack_name="CDKToolkit",
@@ -51,7 +51,7 @@ def test_deploy_with_assume_role() -> None:
         ),
         namespace="local-role",
     )
-    pipeline.add_jobs(
+    pipeline.add_children(
         cdk.deploy(
             "teststack",
             toolkit_stack_name="CDKToolkit",
@@ -70,7 +70,7 @@ def test_assume_role_warning() -> None:
 
 def test_options() -> None:
     pipeline = Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         cdk.diff("teststack", synth_options="-v", diff_options="-o"),
         cdk.deploy("teststack", toolkit_stack_name="CDKToolkit", options="-i")
     )

@@ -10,6 +10,6 @@ def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
         for service in ["service1", "service2"]:
-            pipeline.add_jobs(job_for(f"{service}_{env}"), namespace=env, name=service)
+            pipeline.add_children(job_for(f"{service}_{env}"), namespace=env, name=service)
 
     conftest.check(pipeline.render())

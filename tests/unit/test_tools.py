@@ -6,7 +6,8 @@ from gcip.tools import (
 
 
 # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-@pytest.mark.parametrize("version, expected", [
+@pytest.mark.parametrize(
+    "version, expected", [
         ("0.0.4", True),
         ("1.2.3", True),
         ("10.20.30", True),

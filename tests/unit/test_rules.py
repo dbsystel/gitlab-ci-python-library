@@ -14,7 +14,7 @@ def test_on_success():
     pipeline = Pipeline()
     job = Job(namespace="testjob", script="foo")
     job.append_rules(rules.on_success())
-    pipeline.add_jobs(job)
+    pipeline.add_children(job)
 
     conftest.check(pipeline.render())
 
@@ -26,7 +26,7 @@ def test_rule_order():
     sequence.append_rules(Rule(if_statement="2"))
 
     job = Job(namespace="testjob", script="foo")
-    sequence.add_jobs(job)
+    sequence.add_children(job)
 
     job.append_rules(Rule(if_statement="a"), Rule(if_statement="b"))
     job.prepend_rules(Rule(if_statement="c"), Rule(if_statement="d"))
@@ -40,7 +40,7 @@ def test_rule_order():
     sequence.append_rules(Rule(if_statement="5"))
     sequence.prepend_rules(Rule(if_statement="6"))
 
-    pipeline.add_sequences(sequence)
+    pipeline.add_children(sequence)
 
     conftest.check(pipeline.render())
 
@@ -48,7 +48,7 @@ def test_rule_order():
 def test_init_empty_rules(testjob):
     pipeline = Pipeline()
     pipeline.initialize_rules(Rule(if_statement="foo"), Rule(if_statement="bar"))
-    pipeline.add_jobs(testjob)
+    pipeline.add_children(testjob)
     conftest.check(pipeline.render())
 
 
@@ -56,7 +56,7 @@ def test_init_non_empty_rules(testjob):
     pipeline = Pipeline()
     pipeline.initialize_rules(Rule(if_statement="foo"), Rule(if_statement="bar"))
     testjob.append_rules(Rule(if_statement="keep"), Rule(if_statement="those"), Rule(if_statement="rules"))
-    pipeline.add_jobs(testjob)
+    pipeline.add_children(testjob)
     conftest.check(pipeline.render())
 
 
@@ -64,5 +64,5 @@ def test_override_rules(testjob):
     pipeline = Pipeline()
     pipeline.override_rules(Rule(if_statement="new"), Rule(if_statement="values"))
     testjob.append_rules(Rule(if_statement="replace"), Rule(if_statement="those"), Rule(if_statement="rules"))
-    pipeline.add_jobs(testjob)
+    pipeline.add_children(testjob)
     conftest.check(pipeline.render())

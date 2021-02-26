@@ -9,6 +9,6 @@ def job_for(environment: str) -> gcip.Job:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_jobs(job_for(env), namespace=env)
+        pipeline.add_children(job_for(env), namespace=env)
 
     conftest.check(pipeline.render())

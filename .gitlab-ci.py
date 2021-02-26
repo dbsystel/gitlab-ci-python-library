@@ -5,7 +5,7 @@ pipeline = Pipeline()
 pipeline.initialize_image("<docker-image-with-cdk-and-python>")
 pipeline.add_tags("environment-prd")
 
-pipeline.add_sequences(
+pipeline.add_children(
     python.full_stack(
         dev_repository_url="<pypi-repo-url-dev>",
         dev_user="$ARTIFACTORY_DEV_USER",

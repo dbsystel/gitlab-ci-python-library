@@ -6,7 +6,7 @@ from gcip.addons.python import sequences as python
 def test():
     pipeline = gcip.Pipeline()
 
-    pipeline.add_sequences(
+    pipeline.add_children(
         python.full_stack(
             dev_repository_url="https://my.artifactory.net/pypi/dev-repository",
             dev_user="$ARTIFACTORY_DEV_USER",
@@ -22,7 +22,7 @@ def test():
 
 def test_with_mypy():
     pipeline = gcip.Pipeline()
-    pipeline.add_sequences(
+    pipeline.add_children(
         python.full_stack(
             dev_repository_url="https://my.artifactory.net/pypi/dev-repository",
             dev_user="$ARTIFACTORY_DEV_USER",

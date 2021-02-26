@@ -9,7 +9,7 @@ from tests import conftest
 
 def test():
     pipeline = Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         TriggerJob(
             namespace="trigger-subpipe",
             includes=IncludeLocal("./my-subpipe.yml"),

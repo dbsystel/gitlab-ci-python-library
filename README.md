@@ -65,7 +65,7 @@ from tests import conftest
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(gcip.Job(namespace="print_date", script="date"))
+    pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
 
     conftest.check(pipeline.render())
 
@@ -113,7 +113,7 @@ def test():
     job.add_artifacts_paths("binaries/", ".config")
     job.append_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
 
-    pipeline.add_jobs(job)
+    pipeline.add_children(job)
 
     conftest.check(pipeline.render())
 
@@ -173,7 +173,7 @@ def test():
     job1 = gcip.Job(namespace="job1", script="script1.sh")
     job1.prepend_scripts("from-job-1.sh")
 
-    job_sequence.add_jobs(
+    job_sequence.add_children(
         job1,
         gcip.Job(namespace="job2", script="script2.sh"),
     )
@@ -181,7 +181,7 @@ def test():
     job_sequence.prepend_scripts("from-sequence.sh")
 
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(job_sequence)
+    pipeline.add_children(job_sequence)
 
     conftest.check(pipeline.render())
 
@@ -225,16 +225,16 @@ from tests import conftest
 
 def test():
     sequence_a = gcip.JobSequence()
-    sequence_a.add_jobs(gcip.Job(namespace="job1", script="script1.sh"))
+    sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence-a.sh")
 
     sequence_b = gcip.JobSequence()
-    sequence_b.add_sequences(sequence_a)
-    sequence_b.add_jobs(gcip.Job(namespace="job2", script="script2.sh"))
+    sequence_b.add_children(sequence_a)
+    sequence_b.add_children(gcip.Job(namespace="job2", script="script2.sh"))
     sequence_b.prepend_scripts("from-sequence-b.sh")
 
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(sequence_b)
+    pipeline.add_children(sequence_b)
 
     conftest.check(pipeline.render())
 
@@ -279,12 +279,12 @@ from tests import conftest
 
 def test():
     sequence_a = gcip.JobSequence()
-    sequence_a.add_jobs(gcip.Job(namespace="job1", script="script1.sh"))
+    sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence.sh")
 
     pipeline = gcip.Pipeline()
-    pipeline.add_sequences(sequence_a)
-    pipeline.add_jobs(gcip.Job(namespace="job2", script="script2.sh"))
+    pipeline.add_children(sequence_a)
+    pipeline.add_children(gcip.Job(namespace="job2", script="script2.sh"))
     pipeline.prepend_scripts("from-pipeline.sh")
 
     conftest.check(pipeline.render())
@@ -331,7 +331,7 @@ def job_for(environment: str) -> gcip.Job:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_jobs(job_for(env))
+        pipeline.add_children(job_for(env))
 
     conftest.check(pipeline.render())
 
@@ -381,7 +381,7 @@ def job_for(environment: str) -> gcip.Job:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_jobs(job_for(env), namespace=env)
+        pipeline.add_children(job_for(env), namespace=env)
 
     conftest.check(pipeline.render())
 
@@ -427,7 +427,7 @@ from tests import conftest
 
 def environment_pipeline(environment: str) -> gcip.JobSequence:
     sequence = gcip.JobSequence()
-    sequence.add_jobs(
+    sequence.add_children(
         gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
         gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
     )
@@ -437,7 +437,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_sequences(environment_pipeline(env), namespace=env)
+        pipeline.add_children(environment_pipeline(env), namespace=env)
 
     conftest.check(pipeline.render())
 
@@ -498,7 +498,7 @@ from tests import conftest
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         gcip.Job(name="job1", namespace="single-stage", script="date"),
         gcip.Job(name="job2", namespace="single-stage", script="date"),
     )
@@ -567,7 +567,7 @@ from tests import conftest
 
 def environment_pipeline(environment: str) -> gcip.JobSequence:
     sequence = gcip.JobSequence()
-    sequence.add_jobs(
+    sequence.add_children(
         gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
         gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
     )
@@ -577,7 +577,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
 def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
-        pipeline.add_sequences(environment_pipeline(env), name=env)
+        pipeline.add_children(environment_pipeline(env), name=env)
 
     conftest.check(pipeline.render())
 
@@ -634,7 +634,7 @@ def test():
     pipeline = gcip.Pipeline()
     for env in ["development", "test"]:
         for service in ["service1", "service2"]:
-            pipeline.add_jobs(job_for(f"{service}_{env}"), namespace=env, name=service)
+            pipeline.add_children(job_for(f"{service}_{env}"), namespace=env, name=service)
 
     conftest.check(pipeline.render())
 
@@ -696,7 +696,7 @@ from gcip.addons.gitlab import job_scripts as scripts
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(gcip.Job(namespace="print_date", script=scripts.clone_repository("path/to/group")))
+    pipeline.add_children(gcip.Job(namespace="print_date", script=scripts.clone_repository("path/to/group")))
 
     conftest.check(pipeline.render())
 
@@ -730,7 +730,7 @@ from gcip.addons.python import jobs as python
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(python.flake8())
+    pipeline.add_children(python.flake8())
 
     conftest.check(pipeline.render())
 
@@ -765,7 +765,7 @@ from gcip.addons.cdk import sequences as cdk
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(cdk.diff_deploy("my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+    pipeline.add_children(cdk.diff_deploy("my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
 
     conftest.check(pipeline.render())
 
@@ -818,7 +818,7 @@ def test():
     )
 
     pipeline = gcip.Pipeline()
-    pipeline.add_jobs(job)
+    pipeline.add_children(job)
 
     conftest.check(pipeline.render())
 
@@ -900,7 +900,7 @@ def test():
     pipeline = Pipeline()
 
     # yapf: disable
-    pipeline.add_jobs(
+    pipeline.add_children(
         Job(namespace="print_date", script="date")
         .set_image("docker/image:example")
         .prepend_scripts("./before-script.sh")
@@ -941,7 +941,7 @@ from tests import conftest
 
 def test():
     pipeline = Pipeline()
-    pipeline.add_jobs(TriggerJob(
+    pipeline.add_children(TriggerJob(
         namespace="trigger-banana",
         project="myteam/banana",
         branch="test",
@@ -986,7 +986,7 @@ from tests import conftest
 
 def test():
     pipeline = Pipeline()
-    pipeline.add_jobs(
+    pipeline.add_children(
         TriggerJob(
             namespace="trigger-subpipe",
             includes=IncludeLocal("./my-subpipe.yml"),

@@ -6,7 +6,7 @@ def test():
     pipeline = Pipeline()
 
     # yapf: disable
-    pipeline.add_jobs(
+    pipeline.add_children(
         Job(namespace="print_date", script="date")
         .set_image("docker/image:example")
         .prepend_scripts("./before-script.sh")

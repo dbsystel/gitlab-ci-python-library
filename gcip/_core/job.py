@@ -36,9 +36,9 @@ class Job():
     def __init__(
         self,
         *args: Any,
+        script: Union[AnyStr, List[str]],
         name: Optional[str] = None,
         namespace: Optional[str] = None,
-        script: Union[AnyStr, List[str]],
     ):
         self._stage = ""
         self._name = ""
