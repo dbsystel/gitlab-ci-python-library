@@ -9,8 +9,9 @@ def test_cache_policies():
         assert member in expected_members
 
 
-def test_default_cache_key():
+def test_default_cache_key_matches_ci_commit_ref_slug():
     cache_key = CacheKey()
+    # `os.environ["CI_COMMIT_REF_SLUG"] = "my-feature-branch"` is set in conftest.py
     expected_render = {"key": "my-feature-branch"}
     assert expected_render == cache_key.render()
     assert cache_key.key == "my-feature-branch"
@@ -18,7 +19,7 @@ def test_default_cache_key():
     assert cache_key.prefix is None
 
 
-def test_cache_key_with_key():
+def test_cache_key_with_custom_value():
     cache_key = CacheKey(key="mykey")
     expected_render = {"key": "mykey"}
     assert expected_render == cache_key.render()
