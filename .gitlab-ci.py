@@ -1,9 +1,9 @@
 from gcip import (
-    Rules,
     Pipeline,
     TriggerJob,
     TriggerStrategy,
 )
+from gcip.lib import rules
 from setup import get_version
 from gcip.addons.python import sequences as python
 
@@ -29,7 +29,7 @@ trigger_custom_gcip_library_job = TriggerJob(
     strategy=TriggerStrategy.DEPEND,
 )
 trigger_custom_gcip_library_job.add_variables(CUSTOM_GCIP_LIB_UPSTREAM_GCIP_VERSION=get_version())
-trigger_custom_gcip_library_job.add_rules(Rules.on_tags().never(), Rules.on_main())
+trigger_custom_gcip_library_job.append_rules(rules.on_tags().never(), rules.on_main())
 pipeline.add_children(trigger_custom_gcip_library_job)
 
 pipeline.print_yaml()
