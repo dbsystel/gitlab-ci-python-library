@@ -39,11 +39,7 @@ class CacheKey():
 
         if self._key and self._files:
             raise ValueError("Parameters key and files are mutually exclusive.")
-
-        if self._key and self._prefix:
-            raise ValueError("Parameter 'prefix' not allowed together with 'prefix'.")
-
-        if self._prefix and not self._files:
+        elif self._prefix and not self._files:
             raise ValueError("Parameter 'prefix' can only be used together with 'files'.")
 
         if self._files is None and self._key is None:
