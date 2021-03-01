@@ -12,7 +12,7 @@ def test_cache_policies():
 def test_default_cache_key_matches_ci_commit_ref_slug():
     cache_key = CacheKey()
     # `os.environ["CI_COMMIT_REF_SLUG"] = "my-feature-branch"` is set in conftest.py
-    expected_render = {"key": "my-feature-branch"}
+    expected_render = "my-feature-branch"
     assert expected_render == cache_key.render()
     assert cache_key.key == "my-feature-branch"
     assert cache_key.files is None
@@ -21,7 +21,7 @@ def test_default_cache_key_matches_ci_commit_ref_slug():
 
 def test_cache_key_with_custom_value():
     cache_key = CacheKey(key="mykey")
-    expected_render = {"key": "mykey"}
+    expected_render = "mykey"
     assert expected_render == cache_key.render()
     assert cache_key.key == "mykey"
     assert cache_key.files is None
@@ -30,7 +30,7 @@ def test_cache_key_with_custom_value():
 
 def test_cache_key_with_files():
     cache_key = CacheKey(files=["filea", "fileb", "filec"])
-    expected_render = {"key": {"files": ["filea", "fileb", "filec"]}}
+    expected_render = {"files": ["filea", "fileb", "filec"]}
     assert expected_render == cache_key.render()
     assert cache_key.key is None
     assert cache_key.files == ["filea", "fileb", "filec"]
@@ -39,7 +39,7 @@ def test_cache_key_with_files():
 
 def test_cache_key_files_prefix():
     cache_key = CacheKey(files=["filea", "fileb", "filec"], prefix="myprefix")
-    expected_render = {"key": {"files": ["filea", "fileb", "filec"], "prefix": "myprefix"}}
+    expected_render = {"files": ["filea", "fileb", "filec"], "prefix": "myprefix"}
     assert expected_render == cache_key.render()
     assert cache_key.key is None
     assert cache_key.files == ["filea", "fileb", "filec"]
@@ -59,7 +59,7 @@ def test_cache():
     cache = Cache(paths=["path1", "path/two", "./path/three"])
     expected_render = {"key": "my-feature-branch", "paths": ["./path1", "./path/two", "./path/three"]}
     assert expected_render == cache.render()
-    assert cache.cache_key.render() == {"key": "my-feature-branch"}
+    assert cache.cache_key.render() == "my-feature-branch"
     assert cache.paths == ["./path1", "./path/two", "./path/three"]
     assert cache.policy is None
     assert cache.untracked is None
@@ -82,7 +82,7 @@ def test_full_featured_cache():
         policy="pull"
     )
     assert expected_render == cache.render()
-    assert cache.cache_key.render() == {"key": "mykey"}
+    assert cache.cache_key.render() == "mykey"
     assert cache.paths == ["./path1", "./path/two", "./path/three"]
     assert cache.policy.value == "pull"
     assert cache.untracked is True

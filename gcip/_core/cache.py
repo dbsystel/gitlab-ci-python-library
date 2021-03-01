@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from typing import Any, Dict, List, Union, Optional
+from typing import Dict, List, Union, Optional
 
 from gcip._core.rule import WhenStatement
 from gcip._core.environment import GitLabCiEnv
@@ -65,38 +65,33 @@ class CacheKey():
     def prefix(self) -> str:
         return self._prefix
 
-    def render(self) -> Dict[str, Any]:
+    def render(self) -> Union[str, Dict[str, dict]]:
         """Renders the class into a python dictionary.
 
         Example1:
         python```
-        ck = CacheKey(key="mycachekey")
-        rendered = ck.render()
-        print(rendered)
-            -> {'key': 'mycachekey'}
+        print(CacheKey(key="mycachekey").render())
+            -> 'mycachekey'
         ```
         Example2:
         python```
-        ck = CacheKey(files=["requirements.txt", "setup.py"], prefix="myprefix")
-        rendered = ck.render()
-        print(rendered)
-            -> {'key': 'mycachekey'}
+        print(CacheKey(files=["requirements.txt", "setup.py"], prefix="myprefix").render())
+            -> {'files': ['requirements.txt', 'setup.py'], 'prefix': 'myprefix'}
         ```
 
         Returns:
             Dict[str, Any]: Dictionary representing a cache object in Gitlab CI.
         """
-        rendered = {}
         if self._key:
-            rendered["key"] = self._key
+            rendered = self._key
         else:
-            rendered["key"] = {}
+            rendered = {}
 
         if self._files:
-            rendered["key"]["files"] = self._files
+            rendered["files"] = self._files
 
         if self._prefix:
-            rendered["key"]["prefix"] = self._prefix
+            rendered["prefix"] = self._prefix
         return rendered
 
 
@@ -134,7 +129,9 @@ class Cache():
         # Prepend ./ to path to clearify that cache paths
         # are relative to CI_PROJECT_PATH
         for path in paths:
-            path.removeprefix(GitLabCiEnv.CI_PROJECT_PATH())
+            if path.startswith(GitLabCiEnv.CI_PROJECT_PATH()):
+                path = path[len(GitLabCiEnv.CI_PROJECT_PATH()):]
+
             if not path.startswith("./"):
                 path = "./" + path
             self._paths.append(path)
@@ -180,6 +177,6 @@ class Cache():
             rendered["untracked"] = self._untracked
         if self._policy:
             rendered["policy"] = self._policy.value
-        rendered.update(self._cache_key.render())
+        rendered["key"] = self._cache_key.render()
 
         return rendered
