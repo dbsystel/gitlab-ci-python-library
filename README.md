@@ -848,7 +848,7 @@ print-date:
 # Do more with Python
 
 NOTE: **Please note regarding the current version of gcip**
-Currently not all functinality of Gitlab CI is provided by gcip. In the following section is described that you don't need all
+Currently not all functionality of Gitlab CI is provided by gcip. In the following section is described that you don't need all
 the functionality from Gitlab CI, as you can cover some of this in Python. But some functionality must be part of gcip, like
 configure caching or artifacts, which isn't implemented yet.
 
