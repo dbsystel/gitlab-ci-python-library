@@ -20,9 +20,9 @@ def get_version() -> str:
     if ci_commit_tag is not None and pep404.is_canonical(ci_commit_tag):
         return ci_commit_tag
 
-    ci_pipeline_id = os.getenv('CI_PIPELINE_ID')
-    if ci_pipeline_id is not None:
-        return f"0.0.{ci_pipeline_id}"
+    version_from_pipeline = os.getenv('GCIP_VERSION')
+    if version_from_pipeline is not None:
+        return version_from_pipeline
 
     return "0.0.0"
 
