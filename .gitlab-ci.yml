@@ -1,4 +1,7 @@
 ---
+variables:
+  GCIP_VERSION: "0.0.$CI_PIPELINE_ID"
+
 generate-pipeline:
   stage: build
   image: python:3.9-slim
@@ -28,7 +31,7 @@ trigger_custom_gcip_library:
     branch: main
     strategy: depend
   variables:
-    CUSTOM_GCIP_LIB_UPSTREAM_GCIP_VERSION: "0.0.$CI_PIPELINE_ID"
+    CUSTOM_GCIP_LIB_UPSTREAM_GCIP_VERSION: "$GCIP_VERSION"
   rules:
     - if: $CI_COMMIT_TAG
       when: never
