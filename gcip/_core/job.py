@@ -50,7 +50,7 @@ class Job():
         self._needs: List[Union[Need, Job, JobSequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
-        self._cache: Optional[Cache] = None,
+        self._cache: Optional[Cache] = None
         self._parents: List[JobSequence] = list()
         self._original: Optional[Job]
         """Only set if you get a :meth:`copy()` of this job"""
