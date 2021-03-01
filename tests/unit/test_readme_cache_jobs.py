@@ -9,6 +9,6 @@ def test():
     cachejob2 = gcip.Job(name="cachejob2", namespace="single-stage", script="date")
     cachejob1.set_cache(cache)
     cachejob2.set_cache(cache)
-    pipeline.add_jobs(cachejob1, cachejob2)
+    pipeline.add_children(cachejob1, cachejob2)
 
     conftest.check(pipeline.render())
