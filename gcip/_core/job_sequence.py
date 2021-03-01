@@ -10,12 +10,11 @@ from typing import (
     TypedDict,
 )
 
-from gcip._core.cache import Cache
-
 from . import OrderedSetType
 from .job import Job
 from .need import Need
 from .rule import Rule
+from .cache import Cache
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -99,25 +98,25 @@ class JobSequence():
 
     def set_cache(self, cache: Cache) -> JobSequence:
         """Sets the cache for the corresponding JobSequence.
-        This means if us set the cache you will override the cache configured on the job level.
+        This will override any previously set chaches on this sequence or child sequences/jobs.
 
         Args:
             cache (Cache): Cache to use for the JobSequence and its Jobs.
 
         Returns:
-            JobSequence: Returns actual self.
+            JobSequence: Returns the modified Sequence object.
         """
         self._cache = cache
         return self
 
     def initialize_cache(self, cache: Cache) -> JobSequence:
-        """Initializes a cache if a job does not has a cache configured.
+        """Sets the cache of child sequences/jobs only  if not set before.
 
         Args:
             cache (Cache): Cache to use for the JobSequence and its Jobs.
 
         Returns:
-            JobSequence: Returns actual self.
+            JobSequence: Returns the modified Sequence object.
         """
         self._cache_for_initialization = cache
         return self

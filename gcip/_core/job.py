@@ -15,11 +15,10 @@ from typing import (
 )
 from operator import itemgetter
 
-from gcip._core.cache import Cache
-
 from . import OrderedSetType
 from .need import Need
 from .rule import Rule
+from .cache import Cache
 from .include import _Include
 
 if TYPE_CHECKING:
@@ -132,7 +131,7 @@ class Job():
             cache (Cache): Cache to use for this Job.
 
         Returns:
-            JobSequence: Returns actual self.
+            JobSequence: Returns the modified :class:`Job` object.
         """
         self._cache = cache
         return self

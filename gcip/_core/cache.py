@@ -22,8 +22,8 @@ class CacheKey():
 
         Args:
             key (Optional[str], optional): Name of the key, used to share the cache with jobs, exclusive with `files`.
-            You can just create an empty object, the `key` will be initialized with GitLabCiEnv.CI_COMMIT_REF_SLUG().
-            Defaults to None.
+            Defaults to GitLabCiEnv.CI_COMMIT_REF_SLUG() if neither `key` nor `file` is set.
+
             files (Optional[list], optional): Files which can be used to create the cache key, exclusive to `keys`. Defaults to None.
             prefix (Optional[str], optional): Prefix prefixed given `files` to allow creation of caches for branches. Defaults to None.
 
@@ -38,7 +38,7 @@ class CacheKey():
         self._prefix = prefix
 
         if self._key and self._files:
-            raise ValueError("Parameters key and files are exclusive.")
+            raise ValueError("Parameters key and files are mutually exclusive.")
 
         if self._key and self._prefix:
             raise ValueError("Parameter 'prefix' not allowed together with 'prefix'.")
@@ -55,7 +55,7 @@ class CacheKey():
             self._key.replace("/", "_")
 
             if re.match(r"^\.*$", self._key):
-                raise ValueError("Only '.' in cache key.")
+                raise ValueError("The cache key cannot be a value only made of '.'")
 
     @property
     def key(self) -> str:
