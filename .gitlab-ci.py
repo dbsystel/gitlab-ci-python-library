@@ -1,10 +1,6 @@
-from gcip import (
-    Pipeline,
-    TriggerJob,
-    TriggerStrategy,
-)
-from gcip.lib import rules
+from gcip import Pipeline, TriggerJob, TriggerStrategy
 from setup import get_version
+from gcip.lib import rules
 from gcip.addons.python import sequences as python
 
 pipeline = Pipeline()
