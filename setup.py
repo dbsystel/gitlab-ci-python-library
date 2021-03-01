@@ -20,9 +20,9 @@ def get_version() -> str:
     if ci_commit_tag is not None and pep404.is_canonical(ci_commit_tag):
         return ci_commit_tag
 
-    version_from_pipeline = os.getenv('GCIP_VERSION')
-    if version_from_pipeline is not None:
-        return version_from_pipeline
+    ci_pipeline_id = os.getenv('CI_PIPELINE_ID')
+    if ci_pipeline_id is not None:
+        return f"0.0.{ci_pipeline_id}"
 
     return "0.0.0"
 
@@ -30,19 +30,20 @@ def get_version() -> str:
 with open("README.md") as fp:
     long_description_from_readme = fp.read()
 
-setuptools.setup(
-    name="gcip",
-    version=get_version(),
-    description="The Gitlab CI Python Library",
-    long_description=long_description_from_readme,
-    long_description_content_type="text/markdown",
-    author="Thomas Steinbach",
-    author_email="thomas.t.steinbach@deutschebahn.com",
-    url=os.getenv("CI_PROJECT_URL"),
-    packages=setuptools.find_packages(exclude=("tests*", )),
-    include_package_data=True,
-    python_requires="~=3.7",
-    install_requires=[
-        "pyaml~=20.4",
-    ],
-)
+if __name__ == '__main__':
+    setuptools.setup(
+        name="gcip",
+        version=get_version(),
+        description="The Gitlab CI Python Library",
+        long_description=long_description_from_readme,
+        long_description_content_type="text/markdown",
+        author="Thomas Steinbach",
+        author_email="thomas.t.steinbach@deutschebahn.com",
+        url=os.getenv("CI_PROJECT_URL"),
+        packages=setuptools.find_packages(exclude=("tests*", )),
+        include_package_data=True,
+        python_requires="~=3.7",
+        install_requires=[
+            "pyaml~=20.4",
+        ],
+    )

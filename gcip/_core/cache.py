@@ -170,7 +170,9 @@ class Cache():
         Returns:
             Dict[str, Union[str, list]]: Configuration of a GitLab cache.
         """
-        rendered = {"paths": self._paths}
+        rendered = {
+            "paths": self._paths
+        }
         if self._when:
             rendered["when"] = self._when.value
         if self._untracked:

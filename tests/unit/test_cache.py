@@ -30,7 +30,9 @@ def test_cache_key_with_custom_value():
 
 def test_cache_key_with_files():
     cache_key = CacheKey(files=["filea", "fileb", "filec"])
-    expected_render = {"files": ["filea", "fileb", "filec"]}
+    expected_render = {
+        "files": ["filea", "fileb", "filec"]
+    }
     assert expected_render == cache_key.render()
     assert cache_key.key is None
     assert cache_key.files == ["filea", "fileb", "filec"]
@@ -39,7 +41,10 @@ def test_cache_key_with_files():
 
 def test_cache_key_files_prefix():
     cache_key = CacheKey(files=["filea", "fileb", "filec"], prefix="myprefix")
-    expected_render = {"files": ["filea", "fileb", "filec"], "prefix": "myprefix"}
+    expected_render = {
+        "files": ["filea", "fileb", "filec"],
+        "prefix": "myprefix"
+    }
     assert expected_render == cache_key.render()
     assert cache_key.key is None
     assert cache_key.files == ["filea", "fileb", "filec"]
@@ -57,7 +62,10 @@ def test_cache_key_exceptions():
 
 def test_cache():
     cache = Cache(paths=["path1", "path/two", "./path/three"])
-    expected_render = {"key": "my-feature-branch", "paths": ["./path1", "./path/two", "./path/three"]}
+    expected_render = {
+        "key": "my-feature-branch",
+        "paths": ["./path1", "./path/two", "./path/three"]
+    }
     assert expected_render == cache.render()
     assert cache.cache_key.render() == "my-feature-branch"
     assert cache.paths == ["./path1", "./path/two", "./path/three"]
@@ -74,13 +82,7 @@ def test_full_featured_cache():
         when=WhenStatement.ON_FAILURE,
         policy=CachePolicy.PULL
     )
-    expected_render = dict(
-        key="mykey",
-        paths=["./path1", "./path/two", "./path/three"],
-        untracked=True,
-        when="on_failure",
-        policy="pull"
-    )
+    expected_render = dict(key="mykey", paths=["./path1", "./path/two", "./path/three"], untracked=True, when="on_failure", policy="pull")
     assert expected_render == cache.render()
     assert cache.cache_key.render() == "mykey"
     assert cache.paths == ["./path1", "./path/two", "./path/three"]

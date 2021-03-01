@@ -1,4 +1,10 @@
-from gcip import Pipeline
+from gcip import (
+    Rules,
+    Pipeline,
+    TriggerJob,
+    TriggerStrategy,
+)
+from setup import get_version
 from gcip.addons.python import sequences as python
 
 pipeline = Pipeline()
@@ -15,5 +21,15 @@ pipeline.add_children(
         varname_stable_password="$ARTIFACTORY_PRD_PASSWORD",
     )
 )
+
+trigger_custom_gcip_library_job = TriggerJob(
+    namespace="trigger-custom-gcip-library",
+    project="otherproject/custom-gcip-library",
+    branch="main",
+    strategy=TriggerStrategy.DEPEND,
+)
+trigger_custom_gcip_library_job.add_variables(CUSTOM_GCIP_LIB_UPSTREAM_GCIP_VERSION=get_version())
+trigger_custom_gcip_library_job.add_rules(Rules.on_tags().never(), Rules.on_main())
+pipeline.add_children(trigger_custom_gcip_library_job)
 
 pipeline.print_yaml()

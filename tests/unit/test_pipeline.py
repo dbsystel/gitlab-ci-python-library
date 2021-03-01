@@ -33,9 +33,7 @@ def environment_pipeline(environment: str) -> gcip.JobSequence:
         env_pipe.add_children(
             myapp_diff_deploy(environment, "windows-vm-instances-barista"), namespace="windows_vm_intances", name="barista"
         )
-        env_pipe.add_children(
-            myapp_diff_deploy(environment, "windows-vm-instances-impala"), namespace="windows_vm_intances", name="impala"
-        )
+        env_pipe.add_children(myapp_diff_deploy(environment, "windows-vm-instances-impala"), namespace="windows_vm_intances", name="impala")
     else:
         env_pipe.add_children(myapp_diff_deploy(environment, "windows-vm-instances"), namespace="windows_vm_intances")
 
