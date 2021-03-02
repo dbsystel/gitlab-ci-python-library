@@ -124,7 +124,7 @@ class Job():
             self._artifacts_paths[path] = None
         return self
 
-    def set_cache(self, cache: Cache) -> Job:
+    def set_cache(self, cache: Optional[Cache]) -> Job:
         """Sets the cache for the Job.
 
         Args:
@@ -133,7 +133,8 @@ class Job():
         Returns:
             JobSequence: Returns the modified :class:`Job` object.
         """
-        self._cache = cache
+        if cache:
+            self._cache = cache
         return self
 
     def append_rules(self, *rules: Rule) -> Job:

@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from typing import Dict, List, Union, Optional
+from typing import Any, Dict, List, Union, Optional
 
 from gcip._core.rule import WhenStatement
 from gcip._core.environment import GitLabCiEnv
@@ -15,7 +15,7 @@ class CachePolicy(Enum):
 
 
 class CacheKey():
-    def __init__(self, key: Optional[str] = None, files: Optional[list] = None, prefix: Optional[str] = None) -> None:
+    def __init__(self, key: Optional[str] = None, files: Optional[List[str]] = None, prefix: Optional[str] = None) -> None:
         """Creates an object which represents an `key` within cache.
 
         For more information what a `cache` and its `key` is see: https://docs.gitlab.com/ee/ci/yaml/README.html#cachekey
@@ -54,18 +54,18 @@ class CacheKey():
                 raise ValueError("The cache key cannot be a value only made of '.'")
 
     @property
-    def key(self) -> str:
+    def key(self) -> Optional[str]:
         return self._key
 
     @property
-    def files(self) -> list:
+    def files(self) -> Optional[List[str]]:
         return self._files
 
     @property
-    def prefix(self) -> str:
+    def prefix(self) -> Optional[str]:
         return self._prefix
 
-    def render(self) -> Union[str, Dict[str, dict]]:
+    def render(self) -> Union[str, Dict[str, Union[List[str], str]]]:
         """Renders the class into a python dictionary.
 
         Example1:
@@ -80,18 +80,17 @@ class CacheKey():
         ```
 
         Returns:
-            Dict[str, Any]: Dictionary representing a cache object in Gitlab CI.
+            Union[str, Dict[str, Union[List[str], str]]]: Representing a cache object in Gitlab CI.
         """
+        rendered: Union[str, Dict[str, Union[List[str], str]]]
         if self._key:
             rendered = self._key
         else:
             rendered = {}
-
-        if self._files:
-            rendered["files"] = self._files
-
-        if self._prefix:
-            rendered["prefix"] = self._prefix
+            if self._files:
+                rendered["files"] = self._files
+            if self._prefix:
+                rendered["prefix"] = self._prefix
         return rendered
 
 
@@ -120,7 +119,6 @@ class Cache():
             ValueError: When unallowed WhenStatements are used.
         """
         self._paths = []
-        self._cache_key = cache_key
         self._untracked = untracked
         self._when = when
         self._policy = policy
@@ -137,7 +135,9 @@ class Cache():
             self._paths.append(path)
 
         # Get default CacheKey = GitLabCiEnv.CI_COMMIT_REF_SLUG()
-        if not self._cache_key:
+        if cache_key:
+            self._cache_key = cache_key
+        else:
             self._cache_key = CacheKey()
 
         allowed_when_statements = [WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS]
@@ -164,12 +164,13 @@ class Cache():
     def policy(self) -> Optional[CachePolicy]:
         return self._policy
 
-    def render(self) -> Dict[str, Union[str, list]]:
+    def render(self) -> Dict[str, Any]:
         """Rendering method to rendere object into GitLab CI object.
 
         Returns:
             Dict[str, Union[str, list]]: Configuration of a GitLab cache.
         """
+        rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
         rendered = {
             "paths": self._paths
         }
