@@ -15,7 +15,8 @@ pipeline.add_children(
         stable_repository_url="<pypi-repo-url-stable>",
         stable_user="$ARTIFACTORY_PRD_USER",
         varname_stable_password="$ARTIFACTORY_PRD_PASSWORD",
-    )
+        mypy_package_dir="./gcip"
+    ),
 )
 
 trigger_custom_gcip_library_job = TriggerJob(
