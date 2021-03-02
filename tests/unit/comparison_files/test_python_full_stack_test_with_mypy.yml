@@ -39,7 +39,7 @@ test-mypy:
   stage: test
   script:
   - pip3 install --upgrade mypy
-  - mypy package_dir
+  - mypy test_package_dir
 build-pages-python-sphinx:
   stage: build
   script:
