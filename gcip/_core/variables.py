@@ -1,7 +1,7 @@
 import os
 
 
-class GitLabCiEnv():
+class PredefinedVariables():
     """
     Gitlab CI Environment variables.
     """

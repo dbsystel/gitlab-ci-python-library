@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Any, Dict, List, Union, Optional
 
 from gcip._core.rule import WhenStatement
-from gcip._core.environment import GitLabCiEnv
+from gcip._core.variables import PredefinedVariables
 
 
 class CachePolicy(Enum):
@@ -22,7 +22,7 @@ class CacheKey():
 
         Args:
             key (Optional[str], optional): Name of the key, used to share the cache with jobs, exclusive with `files`.
-            Defaults to GitLabCiEnv.CI_COMMIT_REF_SLUG() if neither `key` nor `file` is set.
+            Defaults to PredefinedVariables.CI_COMMIT_REF_SLUG() if neither `key` nor `file` is set.
 
             files (Optional[list], optional): Files which can be used to create the cache key, exclusive to `keys`. Defaults to None.
             prefix (Optional[str], optional): Prefix prefixed given `files` to allow creation of caches for branches. Defaults to None.
@@ -43,7 +43,7 @@ class CacheKey():
             raise ValueError("Parameter 'prefix' can only be used together with 'files'.")
 
         if self._files is None and self._key is None:
-            self._key = GitLabCiEnv.CI_COMMIT_REF_SLUG()
+            self._key = PredefinedVariables.CI_COMMIT_REF_SLUG()
 
         if self._key:
             # Forward slash not allowed for cache key,
@@ -127,14 +127,14 @@ class Cache():
         # Prepend ./ to path to clearify that cache paths
         # are relative to CI_PROJECT_PATH
         for path in paths:
-            if path.startswith(GitLabCiEnv.CI_PROJECT_PATH()):
-                path = path[len(GitLabCiEnv.CI_PROJECT_PATH()):]
+            if path.startswith(PredefinedVariables.CI_PROJECT_PATH()):
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH()):]
 
             if not path.startswith("./"):
                 path = "./" + path
             self._paths.append(path)
 
-        # Get default CacheKey = GitLabCiEnv.CI_COMMIT_REF_SLUG()
+        # Get default CacheKey = PredefinedVariables.CI_COMMIT_REF_SLUG()
         if cache_key:
             self._cache_key = cache_key
         else:
