@@ -4,7 +4,16 @@ single-stage-cachejob1:
   stage: single_stage
   script:
   - date
+  cache:
+    paths: &id001
+    - ./dir1
+    - ./dir2
+    - ./dir3/subdir
+    key: my-feature-branch
 single-stage-cachejob2:
   stage: single_stage
   script:
   - date
+  cache:
+    paths: *id001
+    key: my-feature-branch
