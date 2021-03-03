@@ -9,10 +9,10 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 def pip_install_requirements(requirements_file: str = "requirements.txt") -> str:
     """
-    Runs `pip3 install --upgrade -r {requirements_file}`
+    Runs `pip3 install --upgrade -v -r {requirements_file}`
 
     * Requires to have access to the `{requirements_file}` in the working directory.
 
     :arg requirements_file: Defaults to `requirements.txt`
     """
-    return f"pip3 install --upgrade -r {requirements_file}"
+    return f"pip3 install --upgrade -v -r {requirements_file}"
