@@ -1,3 +1,5 @@
+import os
+
 from gcip import Pipeline, TriggerJob, TriggerStrategy
 from setup import get_version
 from gcip.lib import rules
@@ -28,5 +30,9 @@ trigger_custom_gcip_library_job = TriggerJob(
 trigger_custom_gcip_library_job.add_variables(CUSTOM_GCIP_LIB_UPSTREAM_GCIP_VERSION=get_version())
 trigger_custom_gcip_library_job.append_rules(rules.on_tags().never(), rules.on_main())
 pipeline.add_children(trigger_custom_gcip_library_job)
+
+# preserve variables in child pipeline
+# workaround for https://gitlab.com/gitlab-org/gitlab/-/issues/213729
+pipeline.prepend_scripts(f"export GCIP_VERSION='{os.getenv('GCIP_VERSION')}'", )
 
 pipeline.print_yaml()
