@@ -43,7 +43,7 @@ class CacheKey():
             raise ValueError("Parameter 'prefix' can only be used together with 'files'.")
 
         if self._files is None and self._key is None:
-            self._key = PredefinedVariables.CI_COMMIT_REF_SLUG()
+            self._key = PredefinedVariables.CI_COMMIT_REF_SLUG
 
         if self._key:
             # Forward slash not allowed for cache key,
@@ -127,14 +127,14 @@ class Cache():
         # Prepend ./ to path to clearify that cache paths
         # are relative to CI_PROJECT_PATH
         for path in paths:
-            if path.startswith(PredefinedVariables.CI_PROJECT_PATH()):
-                path = path[len(PredefinedVariables.CI_PROJECT_PATH()):]
+            if path.startswith(PredefinedVariables.CI_PROJECT_PATH):
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH):]
 
             if not path.startswith("./"):
                 path = "./" + path
             self._paths.append(path)
 
-        # Get default CacheKey = PredefinedVariables.CI_COMMIT_REF_SLUG()
+        # Get default CacheKey = PredefinedVariables.CI_COMMIT_REF_SLUG
         if cache_key:
             self._cache_key = cache_key
         else:
