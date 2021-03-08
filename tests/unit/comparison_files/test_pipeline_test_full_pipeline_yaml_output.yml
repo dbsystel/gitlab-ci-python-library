@@ -22,7 +22,8 @@ stages:
 - diff_windows_vm_intances_iat
 - deploy_windows_vm_intances_iat
 diff-cdk-project-resources-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_project_resources_unstable
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -34,7 +35,8 @@ diff-cdk-project-resources-unstable:
   tags:
   - environment-iat
 deploy-cdk-project-resources-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-project-resources-unstable
     artifacts: true
@@ -52,7 +54,8 @@ deploy-cdk-project-resources-unstable:
   tags:
   - environment-iat
 diff-cdk-windows-vm-bucket-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_windows_vm_bucket_unstable
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -64,7 +67,8 @@ diff-cdk-windows-vm-bucket-unstable:
   tags:
   - environment-iat
 deploy-cdk-windows-vm-bucket-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-windows-vm-bucket-unstable
     artifacts: true
@@ -82,7 +86,8 @@ deploy-cdk-windows-vm-bucket-unstable:
   tags:
   - environment-iat
 update-windows-vm-image-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: update_windows_vm_image_unstable
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -100,7 +105,8 @@ update-windows-vm-image-unstable:
   tags:
   - environment-iat
 diff-cdk-windows-vm-intances-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_windows_vm_intances_unstable
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -112,7 +118,8 @@ diff-cdk-windows-vm-intances-unstable:
   tags:
   - environment-iat
 deploy-cdk-windows-vm-intances-unstable:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-windows-vm-intances-unstable
     artifacts: true
@@ -130,7 +137,8 @@ deploy-cdk-windows-vm-intances-unstable:
   tags:
   - environment-iat
 diff-cdk-project-resources-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_project_resources_dev
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -142,7 +150,8 @@ diff-cdk-project-resources-dev:
   tags:
   - environment-iat
 deploy-cdk-project-resources-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-project-resources-dev
     artifacts: true
@@ -160,7 +169,8 @@ deploy-cdk-project-resources-dev:
   tags:
   - environment-iat
 copy-windows-vm-image-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: copy_windows_vm_image_dev
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -171,7 +181,8 @@ copy-windows-vm-image-dev:
   tags:
   - environment-iat
 diff-cdk-windows-vm-intances-barista-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_windows_vm_intances_dev
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -183,7 +194,8 @@ diff-cdk-windows-vm-intances-barista-dev:
   tags:
   - environment-iat
 deploy-cdk-windows-vm-intances-barista-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-windows-vm-intances-barista-dev
     artifacts: true
@@ -201,7 +213,8 @@ deploy-cdk-windows-vm-intances-barista-dev:
   tags:
   - environment-iat
 diff-cdk-windows-vm-intances-impala-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_windows_vm_intances_dev
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -213,7 +226,8 @@ diff-cdk-windows-vm-intances-impala-dev:
   tags:
   - environment-iat
 deploy-cdk-windows-vm-intances-impala-dev:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-windows-vm-intances-impala-dev
     artifacts: true
@@ -231,7 +245,8 @@ deploy-cdk-windows-vm-intances-impala-dev:
   tags:
   - environment-iat
 diff-cdk-project-resources-tst:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_project_resources_tst
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -243,7 +258,8 @@ diff-cdk-project-resources-tst:
   tags:
   - environment-iat
 deploy-cdk-project-resources-tst:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-project-resources-tst
     artifacts: true
@@ -261,7 +277,8 @@ deploy-cdk-project-resources-tst:
   tags:
   - environment-iat
 copy-windows-vm-image-tst:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: copy_windows_vm_image_tst
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -272,7 +289,8 @@ copy-windows-vm-image-tst:
   tags:
   - environment-iat
 diff-cdk-windows-vm-intances-tst:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_windows_vm_intances_tst
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -284,7 +302,8 @@ diff-cdk-windows-vm-intances-tst:
   tags:
   - environment-iat
 deploy-cdk-windows-vm-intances-tst:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-windows-vm-intances-tst
     artifacts: true
@@ -302,7 +321,8 @@ deploy-cdk-windows-vm-intances-tst:
   tags:
   - environment-iat
 diff-cdk-project-resources-iat:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_project_resources_iat
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -314,7 +334,8 @@ diff-cdk-project-resources-iat:
   tags:
   - environment-iat
 deploy-cdk-project-resources-iat:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-project-resources-iat
     artifacts: true
@@ -332,7 +353,8 @@ deploy-cdk-project-resources-iat:
   tags:
   - environment-iat
 copy-windows-vm-image-iat:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: copy_windows_vm_image_iat
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -343,7 +365,8 @@ copy-windows-vm-image-iat:
   tags:
   - environment-iat
 diff-cdk-windows-vm-intances-iat:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   stage: diff_windows_vm_intances_iat
   script:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/otherproject/configuration.git
@@ -355,7 +378,8 @@ diff-cdk-windows-vm-intances-iat:
   tags:
   - environment-iat
 deploy-cdk-windows-vm-intances-iat:
-  image: python:3.9-slim
+  image:
+    name: python:3.9-slim
   needs:
   - job: diff-cdk-windows-vm-intances-iat
     artifacts: true

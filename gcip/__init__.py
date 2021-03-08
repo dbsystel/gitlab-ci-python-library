@@ -19,6 +19,8 @@ from ._core.cache import (  # noqa
     CachePolicy,
 )
 # yapf: disable
+from ._core.image import Image  # noqa
+# yapf: disable
 from ._core.include import (  # noqa
     IncludeFile,
     IncludeLocal,

@@ -19,6 +19,7 @@ from . import OrderedSetType
 from .need import Need
 from .rule import Rule
 from .cache import Cache
+from .image import Image
 from .include import _Include
 
 if TYPE_CHECKING:
@@ -43,7 +44,7 @@ class Job():
     ):
         self._stage = ""
         self._name = ""
-        self._image: Optional[str] = None
+        self._image: Optional[Image] = None
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
@@ -149,8 +150,21 @@ class Job():
         self._needs.extend(needs)
         return self
 
-    def set_image(self, image: Optional[str]) -> Job:
+    def set_image(self, image: Optional[Union[Image, str]]) -> Job:
+        """Sets the image of this job.
+
+        For a simple container image you can provide the origin of the image.
+        If you want to set the entrypoint, you have to provide an Image object instead.
+
+        Args:
+            image (Optional[Union[Image, str]]): Can be either `string` or `Image`.
+
+        Returns:
+            Job: Returns the modified :class:`Job` object.
+        """
         if image:
+            if isinstance(image, str):
+                image = Image(image)
             self._image = image
         return self
 
@@ -190,7 +204,7 @@ class Job():
         rendered_job: Dict[str, Any] = {}
 
         if self._image:
-            rendered_job.update({"image": self._image})
+            rendered_job.update({"image": self._image.render()})
 
         if self._needs:
             need_jobs: List[Job] = list()

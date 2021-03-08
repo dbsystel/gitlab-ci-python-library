@@ -15,6 +15,7 @@ from .job import Job
 from .need import Need
 from .rule import Rule
 from .cache import Cache
+from .image import Image
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -35,8 +36,8 @@ class JobSequence():
     def __init__(self) -> None:
         super().__init__()
         self._children: List[ChildDict] = list()
-        self._image_for_initialization: Optional[str] = None
-        self._image_for_replacement: Optional[str] = None
+        self._image_for_initialization: Optional[Union[Image, str]] = None
+        self._image_for_replacement: Optional[Union[Image, str]] = None
         self._variables: Dict[str, str] = {}
         self._variables_for_initialization: Dict[str, str] = {}
         self._variables_for_replacement: Dict[str, str] = {}
@@ -203,19 +204,29 @@ class JobSequence():
         self._scripts_to_append.extend(scripts)
         return self
 
-    def initialize_image(self, image: str) -> JobSequence:
-        """
+    def initialize_image(self, image: Union[Image, str]) -> JobSequence:
+        """Initializes given `image` to all downstream `Job`s which do not have
+        an `image` set.
+
         Args:
-            image (str): The image to set for all downstream :class:`Job` s only if not already set.
+            image (Union[Image, str]): The image to set to all downstream :class:`Job`'s.
+
+        Returns:
+            JobSequence: Modified `sequence` object.
         """
         if image:
             self._image_for_initialization = image
         return self
 
-    def override_image(self, image: str) -> JobSequence:
-        """
+    def override_image(self, image: Union[Image, str]) -> JobSequence:
+        """Initializes and override's `image` to all downstream `Job`s.
+        In consequence, all downstream `Job`s will be started with `image`.
+
         Args:
-            image (str): The image to set for all downstream :class:`Job` s.
+            image (str): The image to set for all downstream :class:`Job`'s.
+
+        Returns:
+            JobSequence: Modified `sequence` object.
         """
         if image:
             self._image_for_replacement = image

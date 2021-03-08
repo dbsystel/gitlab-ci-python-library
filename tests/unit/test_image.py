@@ -1,32 +1,15 @@
-import pytest
-
-from gcip import Job, Pipeline
-from tests import conftest
+from gcip import Image
 
 
-@pytest.fixture
-def testjob():
-    return Job(namespace="testjob", script="foobar")
+def test_image_class_only_with_image():
+    image = Image("alpine:3")
+    assert image.image == "alpine:3"
+    assert image.entrypoint is None
+    assert image.render() == {"name": "alpine:3"}
 
 
-def test_init_unset_image(testjob):
-    pipeline = Pipeline()
-    pipeline.initialize_image("foobar")
-    pipeline.add_children(testjob)
-    conftest.check(pipeline.render())
-
-
-def test_init_set_image(testjob):
-    pipeline = Pipeline()
-    pipeline.initialize_image("unwanted-image")
-    testjob.set_image("keep-this-image")
-    pipeline.add_children(testjob)
-    conftest.check(pipeline.render())
-
-
-def test_override_image(testjob):
-    pipeline = Pipeline()
-    pipeline.override_image("wanted-image")
-    testjob.set_image("replace-this-image")
-    pipeline.add_children(testjob)
-    conftest.check(pipeline.render())
+def test_image_class_with_entrypoint():
+    image = Image("alpine:3", ["/bin/sh", "-c", "cat", "/etc/os-release"])
+    assert image.image == "alpine:3"
+    assert image.entrypoint == ["/bin/sh", "-c", "cat", "/etc/os-release"]
+    assert image.render() == {"name": "alpine:3", "entrypoint": ["/bin/sh", "-c", "cat", "/etc/os-release"]}

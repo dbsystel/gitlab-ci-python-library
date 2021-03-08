@@ -1,7 +1,8 @@
 stages:
 - print_date
 print-date:
-  image: docker/image:example
+  image:
+    name: docker/image:example
   stage: print_date
   script:
   - ./before-script.sh

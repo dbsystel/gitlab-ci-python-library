@@ -1,7 +1,8 @@
 stages:
 - testjob
 testjob:
-  image: keep-this-image
+  image:
+    name: keep-this-image
   stage: testjob
   script:
   - foobar
