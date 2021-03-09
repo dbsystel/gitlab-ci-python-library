@@ -13,8 +13,8 @@ class Image():
         self._entrypoint = entrypoint
 
     @property
-    def image(self) -> str:
-        """Image URL"""
+    def name(self) -> str:
+        """Image name"""
         return self._name
 
     @property
