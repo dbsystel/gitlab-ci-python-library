@@ -5,7 +5,7 @@ A Python Library for creating dynamic pipelines for Gitlab CI in Python.
 
 Furthermore the Gitlab Ci Python Library is called _gcip_.
 
-[[_TOC_]]
+:toc:
 
 = Code documentation
 
@@ -58,17 +58,7 @@ print the resulting pipeline to STDOUT with `pipeline.print_yaml()`.
 
 [source,py]
 ----
-# ./tests/unit/test_readme_pipe_with_one_job.py
-
-import gcip
-from tests import conftest
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
-
-    conftest.check(pipeline.render())
+include::./tests/unit/test_readme_pipe_with_one_job.py
 ----
 
 Remember: As stated in the <<hints-regarding-the-following-examples,hints regarding the examples>>,
