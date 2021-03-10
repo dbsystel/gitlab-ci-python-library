@@ -60,7 +60,7 @@ print the resulting pipeline to STDOUT with `pipeline.print_yaml()`.
 
 [source,py]
 ----
-include::./tests/unit/test_readme_pipe_with_one_job.py[]
+include::tests/unit/test_readme_pipe_with_one_job.py[]
 ----
 
 Remember: As stated in the <<hints-regarding-the-following-examples,hints regarding the examples>>,
