@@ -1,11 +1,13 @@
 = Gitlab CI Python Library
 :doctype: book
+:toc:
+:toc-placement!:
 
 A Python Library for creating dynamic pipelines for Gitlab CI in Python.
 
 Furthermore the Gitlab Ci Python Library is called _gcip_.
 
-:toc:
+toc::[]
 
 == Code documentation
 
