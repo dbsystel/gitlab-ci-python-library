@@ -58,7 +58,7 @@ print the resulting pipeline to STDOUT with `pipeline.print_yaml()`.
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 include::tests/unit/test_readme_pipe_with_one_job.py[]
 ----
@@ -86,7 +86,7 @@ Jobs can be configured by calling following methods:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_configure_jobs.py
 
@@ -152,7 +152,7 @@ A job sequence has the same configuration methods as shown in the previous examp
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_bundling_jobs.py
 
@@ -208,7 +208,7 @@ job2:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_stacking_sequences.py
 
@@ -262,7 +262,7 @@ stacking other sequences.
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_pipelines_are_sequences.py
 
@@ -309,7 +309,7 @@ job2:
 
 Assume you want to reuse a parameterized job. Following link:./tests/unit/test_readme_missing_namespace.py[Input] is an *incorrect* example:
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_missing_namespace.py
 
@@ -359,7 +359,7 @@ the jobs (sequences) added but not to the jobs (and sequences) already contained
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_namespace_job.py
 
@@ -410,7 +410,7 @@ allows that all jobs of the sequence are populated per environment.
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_namespace_sequence.py
 
@@ -481,7 +481,7 @@ only the `name` of a job but not its `stage`.
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_parallel_jobs.py
 
@@ -550,7 +550,7 @@ and instead of using the `namespace` when adding the sequence several times to t
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_parallel_sequence.py
 
@@ -611,7 +611,7 @@ Here an Example:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_mix_namespace_and_name.py
 
@@ -678,7 +678,7 @@ Following sub chapters provide an example for one asset out of every module.
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_assets_scripts.py
 
@@ -712,7 +712,7 @@ print-date:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_assets_jobs.py
 
@@ -747,7 +747,7 @@ lint-flake8:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_assets_job_sequences.py
 
@@ -794,7 +794,7 @@ deploy-cdk:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_assets_rules.py
 
@@ -881,7 +881,7 @@ string multiple modifications methods together. Here an example for the job conf
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_string_together_job_configurations.py
 
@@ -925,7 +925,7 @@ Here an example for triggering another pipeline:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_trigger_project_pipeline.py
 
@@ -965,7 +965,7 @@ Here an example for triggering a child pipeline:
 
 *Input:*
 
-[source,py]
+[source,python]
 ----
 # ./tests/unit/test_readme_trigger_child_pipeline.py
 
