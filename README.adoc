@@ -7,13 +7,13 @@ Furthermore the Gitlab Ci Python Library is called _gcip_.
 
 :toc:
 
-= Code documentation
+== Code documentation
 
 This page holds the user documentation of gcip.
 
 For the code documentation please proceed to the xref:./gcip/README.adoc[README.md within the gcip folder]
 
-= Configuring your project to use gcip
+== Configuring your project to use gcip
 
 Create a `.gitlab-ci.yaml` with following static content:
 
@@ -42,7 +42,7 @@ run-pipeline:
 
 Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
 
-= Hints regarding the following examples
+== Hints regarding the following examples
 
 All the code examples in the following chapters are made for also be run with Pytest.
 Thus to use the code for your real life Gitlab CI pipeline you have to change the following:
@@ -52,7 +52,7 @@ Thus to use the code for your real life Gitlab CI pipeline you have to change th
 * Instead of routing the pipeline output to the test method (`conftest.check(pipeline.render())`)
 print the resulting pipeline to STDOUT with `pipeline.print_yaml()`.
 
-= Create a pipeline with one job
+== Create a pipeline with one job
 
 *Input:*
 
@@ -78,7 +78,7 @@ print-date:
   - date
 ----
 
-= Configure jobs
+== Configure jobs
 
 Jobs can be configured by calling following methods:
 
@@ -143,7 +143,7 @@ print-date:
   - europe
 ----
 
-= Bundling jobs as sequence
+== Bundling jobs as sequence
 
 You can bundle jobs to a sequence to apply a common configuration for all jobs included.
 A job sequence has the same configuration methods as shown in the previous example for jobs.
@@ -202,7 +202,7 @@ job2:
   - script2.sh
 ----
 
-= Stacking sequences
+== Stacking sequences
 
 *Input:*
 
@@ -252,7 +252,7 @@ job2:
   - script2.sh
 ----
 
-= Pipelines are sequences
+== Pipelines are sequences
 
 Pipelines are a extended version of sequences and have all their abilities
 (plus piplipe specific abilities), like their configuration options and
@@ -303,7 +303,7 @@ job2:
   - script2.sh
 ----
 
-= Namespaces allow reuse of jobs and sequences
+== Namespaces allow reuse of jobs and sequences
 
 Assume you want to reuse a parameterized job. Following link:./tests/unit/test_readme_missing_namespace.py[Input] is an *incorrect* example:
 
@@ -353,7 +353,7 @@ both methods accept the `namespace` parameter, you should use to modify the name
 The value of `namespaces` will be appended to the jobs `name` and `stage`. This only applies to
 the jobs (sequences) added but not to the jobs (and sequences) already contained in the sequence.
 
-== Reuse jobs
+=== Reuse jobs
 
 *Input:*
 
@@ -399,7 +399,7 @@ do-something-test:
   - ./do-something-on.sh test
 ----
 
-= Reuse sequences
+== Reuse sequences
 
 Namespacing is much more useful for reusing sequences. You can define a whole
 Gitlab CI pipeline within a sequence and reuse that sequence per environment.
@@ -462,7 +462,7 @@ job2-test:
   - job-2-on-test
 ----
 
-= Parallelization - name, namespace (and stage)
+== Parallelization - name, namespace (and stage)
 
 As you may have mentioned from the previous examples, all jobs have a distinct stage and thus run in sequence.
 This is because `namespace` will always extend the jobs `name` and `stage`. This applies to all `namespace`
@@ -475,7 +475,7 @@ This is possible by setting equal values for the `namespace` paramter but provid
 `name` parameter when creating jobs or adding them to sequences. The value of the `name` parameter will extend
 only the `name` of a job but not its `stage`.
 
-== `name` parameter when creating jobs
+=== `name` parameter when creating jobs
 
 *Input:*
 
@@ -541,7 +541,7 @@ Sorry - that was a lot of theory - but simply keep in mind when creating Jobs:
 * Set different values for the `name` parameters but equal values for the `namespace` parameters when creating distinct jobs which will run in parallel (equal stage) but defining the name of the stage.
 * Setting different values for both parameters is nonsense and will lead to the first result of distinct jobs which will run in sequence.
 
-== `name` parameter when adding jobs (and sequences) to sequences
+=== `name` parameter when adding jobs (and sequences) to sequences
 
 Lets take the sequence example from the chapter <<namespaces-allow-reuse-of-jobs-and-sequence,Namespaces allow reuse of jobs and sequence>>
 and instead of using the `namespace` when adding the sequence several times to the pipeline we now use the `name` parameter.
@@ -659,7 +659,7 @@ update-service-test-service2:
   - ./update-service.sh service2_test
 ----
 
-= Batteries included
+== Batteries included
 
 Until here you have learned everything about the logical functionality of gcip. But gcip does
 also contain a library of predefined assets you can use for building your pipelines. Those
@@ -672,7 +672,7 @@ assets are contained in the following modules named by their type:
 
 Following sub chapters provide an example for one asset out of every module.
 
-== scripts
+=== scripts
 
 *Input:*
 
@@ -706,7 +706,7 @@ print-date:
   - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git
 ----
 
-== jobs
+=== jobs
 
 *Input:*
 
@@ -741,7 +741,7 @@ lint-flake8:
   - flake8
 ----
 
-== job_sequences
+=== job_sequences
 
 *Input:*
 
@@ -788,7 +788,7 @@ deploy-cdk:
     my-cdk-stack
 ----
 
-== rules
+=== rules
 
 *Input:*
 
@@ -835,7 +835,7 @@ print-date:
     allow_failure: false
 ----
 
-= Do more with Python
+== Do more with Python
 
 NOTE: *Please note regarding the current version of gcip*
 Currently not all functionality of Gitlab CI is provided by gcip. In the following section is described that you don't need all
@@ -868,11 +868,11 @@ some ideas:
 * Use if-then-else expressions to create jobs within job sequences depending on environment information or requirements.
 * Access information from outside your pipeline script you use for decision making inside your pipeline script.
 
-= Beyond the basics
+== Beyond the basics
 
 This chapter covers further abilities of GCIP which suffices to be read after the basics.
 
-== string Job / JobSequence modifications together
+=== string Job / JobSequence modifications together
 
 Every modification method of Job and JobSequence returns the appropriate Job / JobSequence object. Thus you can
 string multiple modifications methods together. Here an example for the job configuration.
@@ -915,7 +915,7 @@ def test():
 
 The same works with sequences.
 
-== TriggerJobs
+=== TriggerJobs
 
 Besides normal Jobs with GCIP you can define TriggerJobs which either run another projects pipeline or a child-pipeline.
 
@@ -1005,13 +1005,13 @@ trigger-subpipe:
   stage: trigger_subpipe
 ----
 
-= Authors
+== Authors
 
 GCIP was created by link:mailto:thomas.t.steinbach@deutschebahn.com[Thomas Steinbach] in 2020.
 
 Thanks to initial contributions from link:mailto:daniel.von-essen@deutschebahn.com[Daniel von Eßen]
 
-= Licence
+== Licence
 
 The content of this repository is licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 license].
 
