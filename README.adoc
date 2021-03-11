@@ -3,7 +3,7 @@
 
 A Python Library for creating dynamic pipelines for Gitlab CI.
 
-link:./docs/user/index.html[User Documentation] | link:./docs/api/index.html[API Reference]
+https://dbsystel.github.io/gitlab-ci-python-library/user/index.html[User Documentation] | https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html[API Reference]
 
 With the gcip and the ease and power of Python you can write Gitlab CI pipelines
 of any complexity in well manageable Python code.
@@ -54,10 +54,10 @@ Do you really want to see the link:docs/user/readme-pipeline-complex.yaml[genera
 
 == Documentation
 
-Please read the link:./docs/user/index.html[User Documentation] to get a quick introduction into most
+Please read the https://dbsystel.github.io/gitlab-ci-python-library/user/index.html[User Documentation] to get a quick introduction into most
 features of the gcip.
 
-You can consult the link:./docs/api/index.html[API Reference] to get an overview of all classes and methods
+You can consult the https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html[API Reference] to get an overview of all classes and methods
 and a deeper view into their paramters.
 
 

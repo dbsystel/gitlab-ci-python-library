@@ -1,4 +1,4 @@
-= gcip Documenatation
+= gcip Documentation
 :doctype: book
 
 The Gitlab CI Python Library Documentation
