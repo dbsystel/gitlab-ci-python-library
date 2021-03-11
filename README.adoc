@@ -50,7 +50,7 @@ for environment in ("develop", "test", "production"):
 pipeline.write_yaml("generated-config.yml")
 ----
 
-Do you really want to see the link:docs/user/readme-pipeline-complex.yaml[generated-config.yml] ? :)
+Do you really want to see the link:docs/user/generated-config.yml[generated-config.yml] ? :)
 
 == Documentation
 
