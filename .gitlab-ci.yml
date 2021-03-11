@@ -1,7 +1,4 @@
 ---
-variables:
-  GCIP_VERSION: "0.0.$CI_PIPELINE_ID"
-
 generate-pipeline:
   stage: build
   image: python:3.9-slim
