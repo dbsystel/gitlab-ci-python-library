@@ -59,7 +59,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#test" class="md-skip">
+        <a href="#gcip-api-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -87,7 +87,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Test
+              gcip API reference
             
           </span>
         </div>
@@ -830,6 +830,21 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure-and-terminology-of-artifacts" class="md-nav__link">
+    project structure and terminology of artifacts
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -848,8 +863,53 @@
                   
                 
                 
-                <h1 id="test">Test</h1>
-<p>Welcome</p>
+                <h1 id="gcip-api-reference">gcip API reference</h1>
+<h2 id="project-structure-and-terminology-of-artifacts">project structure and terminology of artifacts</h2>
+<p>To keep this source code folder as clean as possible, all code files are sorted into one of these folders:</p>
+<ul>
+<li>core</li>
+<li>lib</li>
+<li>tools</li>
+<li>addons</li>
+</ul>
+<p>The <strong>core</strong> folder contains, as the name implies, all the core components that represent Gitlab CI objects in Python.
+You need to know that all class names from all Python modules within the <code>core</code> folder are mapped to the gcip
+root module. This is done within the <code>__init__.py</code> of the gcip folder. Instead of <code>import gcip.core.job.Job</code>
+you should <code>import gcip.Job</code>. You should import all classes of the <code>core</code> folder the same way.</p>
+<p>Always remember:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Dos:</span>
+<span class="kn">from</span> <span class="nn">gcip</span> <span class="kn">import</span> <span class="n">Pipeline</span><span class="p">,</span> <span class="n">Job</span><span class="p">,</span> <span class="n">Sequence</span>  <span class="c1"># ... and so on</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Dont&#39;s</span>
+<span class="kn">from</span> <span class="nn">gcip.core</span> <span class="kn">import</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">job</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">()</span>
+</code></pre></div>
+
+<p>The <strong>lib</strong> folder contains all higher level objects which are derived from the <em>core</em> objects. For example: <code>gcip.Rule</code>
+from <code>gcip.core.rule</code> is the general Gitlab CI Rule representation, whereas <code>core.rules</code> contains some convenient
+predefined Rule instances like <code>on_main()</code> or <code>on_tags()</code>.</p>
+<p>The <strong>tools</strong> folder contains all code which is used by the library code but does not represent any Gitlab CI specific
+functionality. This directory also contains scripts which could be run on their own and are supposed to be called
+by Gitlab CI jobs during the pipeline execution. For example <code>gcip.tools.url.is_valid_url(str)</code> which, as the name implies,
+checks if <code>str</code> is a valid url.</p>
+<p>The <strong>addons</strong> folder also contains code which extends the core components in form of higher level objects that provide
+functionality for a specific use case. A use case could be <em>python</em>, <em>ruby</em>, <em>cloudformation</em>, <em>ansible</em> et cetera.
+Every subdirectory of <em>addons</em> has the name of such a use case. The name <em>addons</em> is chosen by the intention that
+in future the subdirectories will be outsourced into separate projects. This could be the case when the core library
+is stable enough to not hinder the development of the downstream addons projects and the addons were too many to
+be maintained within the core library. However at this point the project is small enough to provide the core and
+add on functionality in an easy to use all-in-one package.</p>
+<p>We also use a following naming conventions throughout the library:</p>
+<ul>
+<li>Files called <em>job_scripts.py</em> hold functions that return strings, which could be used as command within
+Gitlab CI jobs.</li>
+<li>Directories called <em>tools</em> hold Python scripts which could be called by Gitlab CI jobs during the pipeline
+execution. They will be called directly from the Gitlab CI Python library, e.g. <code>python3 -m gcip.path.to.script</code>.</li>
+</ul>
                 
               
               
