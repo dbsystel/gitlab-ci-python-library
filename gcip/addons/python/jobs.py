@@ -1,5 +1,5 @@
 from gcip.lib import rules
-from gcip._core.job import Job
+from gcip.core.job import Job
 
 from . import job_scripts as scripts
 

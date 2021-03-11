@@ -2,8 +2,8 @@ import re
 from enum import Enum
 from typing import Any, Dict, List, Union, Optional
 
-from gcip._core.rule import WhenStatement
-from gcip._core.variables import PredefinedVariables
+from gcip.core.rule import WhenStatement
+from gcip.core.variables import PredefinedVariables
 
 
 class CachePolicy(Enum):

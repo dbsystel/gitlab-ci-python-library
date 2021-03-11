@@ -1,7 +1,7 @@
 import warnings
 from typing import Dict, Optional
 
-from gcip._core.job import Job
+from gcip.core.job import Job
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from gcip._core.job_sequence import JobSequence
+from gcip.core.job_sequence import JobSequence
 
 from . import jobs as cdk
 

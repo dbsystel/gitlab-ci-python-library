@@ -4,24 +4,24 @@ from pkg_resources import (
 )
 
 # yapf: disable
-from ._core.job import (  # noqa
+from .core.job import (  # noqa
     Job,
     TriggerJob,
     TriggerStrategy,
 )
-from ._core.need import Need  # noqa
+from .core.need import Need  # noqa
 # yapf: disable
-from ._core.rule import Rule, WhenStatement  # noqa
+from .core.rule import Rule, WhenStatement  # noqa
 # yapf: disable
-from ._core.cache import (  # noqa
+from .core.cache import (  # noqa
     Cache,
     CacheKey,
     CachePolicy,
 )
 # yapf: disable
-from ._core.image import Image  # noqa
+from .core.image import Image  # noqa
 # yapf: disable
-from ._core.include import (  # noqa
+from .core.include import (  # noqa
     IncludeFile,
     IncludeLocal,
     IncludeRemote,
@@ -29,9 +29,9 @@ from ._core.include import (  # noqa
     IncludeTemplate,
 )
 # yapf: disable
-from ._core.pipeline import Pipeline  # noqa
-from ._core.variables import PredefinedVariables  # noqa
-from ._core.job_sequence import JobSequence  # noqa
+from .core.pipeline import Pipeline  # noqa
+from .core.variables import PredefinedVariables  # noqa
+from .core.job_sequence import JobSequence  # noqa
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
