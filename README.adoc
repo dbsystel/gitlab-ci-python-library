@@ -50,7 +50,9 @@ for environment in ("develop", "test", "production"):
 pipeline.write_yaml("generated-config.yml")
 ----
 
-Do you really want to see the link:docs/readme-pipeline-complex.yaml[generated-config.yml] ? :)
+Do you really want to see the link:docs/user/readme-pipeline-complex.yaml[generated-config.yml] ? :)
+
+== Documentation
 
 Please read the link:./docs/user/index.html[User Documentation] to get a quick introduction into most
 features of the gcip.
