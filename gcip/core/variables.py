@@ -10,7 +10,7 @@ class EnvProxy():
         self.key = key
 
     def __get__(self, obj: Any, objtype: Any = None) -> str:
-        return os.environ[self.key]
+        return os.getenv(self.key)
 
 
 class PredefinedVariables():

@@ -106,7 +106,7 @@ class Cache():
         """Creates
 
         Args:
-            paths (List[str]): Paths to create the cache to.
+            paths: Paths to create the cache to.
             cache_key (Optional[CacheKey], optional): Cache key which is used to share the cache.
             If None, cache_key will be initialized with an empty CacheKey. See class CacheKey
             untracked (Optional[bool], optional): If true, cache will cache all untracked files within project path. Defaults to None.

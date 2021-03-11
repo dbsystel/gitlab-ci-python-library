@@ -35,6 +35,12 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 class Job():
+    """Represents a Gitlab CI Job
+
+    Attributes:
+        script: The script to be executed.
+        name: The name of the job.
+    """
     def __init__(
         self,
         *args: Any,

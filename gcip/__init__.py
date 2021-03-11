@@ -1,3 +1,8 @@
+"""
+# GCIP Code Documentation
+
+This is the API documentation of the Gitlab CI Python Library.
+"""
 from pkg_resources import (
     DistributionNotFound as _DistributionNotFound,
     get_distribution as _get_distribution,
