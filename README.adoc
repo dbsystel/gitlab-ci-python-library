@@ -61,6 +61,12 @@ You can consult the https://dbsystel.github.io/gitlab-ci-python-library/api/gcip
 and a deeper view into their paramters.
 
 
+== Why is this Gitlab Project hosted on Github?
+
+The https://github.com/dbsystel[DB Systel GmbH] organization sponsoring this project is currently only present on Github.
+This may be change in future.
+
+
 == Author
 
 gcip was created by link:mailto:thomas.t.steinbach@deutschebahn.com[Thomas Steinbach] in 2020.
