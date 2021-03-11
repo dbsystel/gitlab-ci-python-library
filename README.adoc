@@ -1,0 +1,74 @@
+= gcip - The Gitlab CI Python Library
+:doctype: book
+
+A Python Library for creating dynamic pipelines for Gitlab CI.
+
+https://dbsystel.github.io/gitlab-ci-python-library/user/index.html[User Documentation] | https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html[API Reference]
+
+With the gcip and the ease and power of Python you can write Gitlab CI pipelines
+of any complexity in well manageable Python code.
+
+A simple starting pipeline could look like following:
+
+[source,python]
+----
+from gcip import Pipeline, Job
+
+pipeline = Pipeline()
+pipeline.add_children(Job(namespace="build", script="docker build ."))
+pipeline.write_yaml()
+----
+
+Here is a prospect of how you can handle complex pipelines in Python:
+
+[source,python]
+----
+from gcip import Pipeline, JobSequence, Job
+from gcip.addons.gitlab import job_scripts as gitlab
+
+
+def get_build_deploy_sequence(environment: str):
+    return JobSequence().add_children(
+        Job(namespace="build", script=f"docker build -t myimage-{environment} ."),
+        Job(namespace="deploy", script=["docker login", f"docker push myimage-{environment}"]),
+    )
+
+
+pipeline = Pipeline()
+pipeline.initialize_image("my/enterprise/build-image:stable")
+
+for environment in ("develop", "test", "production"):
+    jobs = get_build_deploy_sequence(environment)
+    jobs.prepend_scripts(
+        gitlab.clone_repository(path="projectx/configuration", branch=environment),
+        f"source {environment}.env",
+    )
+    jobs.add_tags(environment)
+
+    pipeline.add_children(jobs, namespace=environment)
+
+pipeline.write_yaml("generated-config.yml")
+----
+
+Do you really want to see the link:docs/user/generated-config.yml[generated-config.yml] ? :)
+
+== Documentation
+
+Please read the https://dbsystel.github.io/gitlab-ci-python-library/user/index.html[User Documentation] to get a quick introduction into most
+features of the gcip.
+
+You can consult the https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html[API Reference] to get an overview of all classes and methods
+and a deeper view into their paramters.
+
+
+== Author
+
+gcip was created by link:mailto:thomas.t.steinbach@deutschebahn.com[Thomas Steinbach] in 2020.
+
+Thanks to initial contributions from link:mailto:daniel.von-essen@deutschebahn.com[Daniel von Eßen]
+
+== Licence
+
+The content of this repository is licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 license].
+
+Copyright DB Systel GmbH

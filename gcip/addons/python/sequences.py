@@ -1,7 +1,7 @@
 from typing import Optional
 
 from gcip.lib import rules
-from gcip._core.job_sequence import JobSequence
+from gcip.core.job_sequence import JobSequence
 
 from . import jobs as python
 
@@ -24,7 +24,7 @@ def full_stack(
     mypy_package_dir: Optional[str] = None,
 ) -> JobSequence:
     """
-    Returns a pipeline containing all jobs from `gcip.jobs.python`:
+    Returns a pipeline containing all jobs from `gcip.addons.python.jobs`:
         * isort
         * flake8
         * pytest
