@@ -592,9 +592,7 @@ your real pipeline code must end with <code>pipeline.print_yaml()</code> instead
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_pipe_with_one_job_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - print_date
 print-date:
   stage: print_date
@@ -615,9 +613,7 @@ print-date:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_configure_jobs.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -647,12 +643,11 @@ That means you can prepend/append/add a single script/variable/tag/&#8230;&#8203
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_configure_jobs_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - print_date
 print-date:
-  image: docker/image:example
+  image:
+    name: docker/image:example
   stage: print_date
   script:
   - ./before-script.sh
@@ -688,9 +683,7 @@ A job sequence has the same configuration methods as shown in the previous examp
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_bundling_jobs.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -722,9 +715,7 @@ as well as a common configuration from their sequence (<code>job_sequence.prepen
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_bundling_jobs_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - job1
 - job2
 job1:
@@ -750,9 +741,7 @@ job2:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_stacking_sequences.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -777,9 +766,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_stacking_sequences_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - job1
 - job2
 job1:
@@ -810,9 +797,7 @@ stacking other sequences.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_pipelines_are_sequences.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -834,9 +819,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_pipelines_are_sequences_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - job1
 - job2
 job1:
@@ -862,9 +845,7 @@ job2:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_missing_namespace.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -885,9 +866,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_missing_namespace_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - do_something
 do-something:
   stage: do_something
@@ -924,9 +903,7 @@ the jobs (sequences) added but not to the jobs (and sequences) already contained
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_namespace_job.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -951,9 +928,7 @@ Thus in the output we correctly populate the one job per environment:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_namespace_job_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - do_something_development
 - do_something_test
 do-something-development:
@@ -983,9 +958,7 @@ allows that all jobs of the sequence are populated per environment.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_namespace_sequence.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -1011,9 +984,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_namespace_sequence_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - job1_development
 - job2_development
 - job1_test
@@ -1062,9 +1033,7 @@ only the <code>name</code> of a job but not its <code>stage</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_parallel_jobs.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -1083,9 +1052,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_parallel_jobs_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - single_stage
 single-stage-job1:
   stage: single_stage
@@ -1150,9 +1117,7 @@ and instead of using the <code>namespace</code> when adding the sequence several
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_parallel_sequence.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -1182,9 +1147,7 @@ not the stage names.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_parallel_sequence_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - job1
 - job2
 job1-development:
@@ -1215,9 +1178,7 @@ Here an Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_mix_namespace_and_name.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -1242,9 +1203,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_mix_namespace_and_name_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - update_service_development
 - update_service_test
 update-service-development-service1:
@@ -1302,9 +1261,7 @@ assets are contained in the following modules named by their type:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_assets_scripts.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 from gcip.addons.gitlab import job_scripts as scripts
 
@@ -1321,9 +1278,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_assets_scripts_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - print_date
 print-date:
   stage: print_date
@@ -1339,9 +1294,7 @@ print-date:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_assets_jobs.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 from gcip.addons.python import jobs as python
 
@@ -1358,9 +1311,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_assets_jobs_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - lint
 lint-flake8:
   stage: lint
@@ -1377,9 +1328,7 @@ lint-flake8:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_assets_job_sequences.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 from gcip.addons.cdk import sequences as cdk
 
@@ -1396,9 +1345,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_assets_job_sequences_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - diff
 - deploy
 diff-cdk:
@@ -1427,9 +1374,7 @@ deploy-cdk:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_assets_rules.py
-
-import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 from gcip.lib import rules
 
@@ -1452,9 +1397,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_assets_rules_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - print_date
 print-date:
   stage: print_date
@@ -1569,9 +1512,7 @@ string multiple modifications methods together. Here an example for the job conf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_string_together_job_configurations.py
-
-from gcip import Job, Rule, Pipeline
+<pre class="highlight"><code class="language-python" data-lang="python">from gcip import Job, Rule, Pipeline
 from tests import conftest
 
 
@@ -1599,7 +1540,30 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_string_together_job_configurations_test.py</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
+- print_date
+print-date:
+  image:
+    name: docker/image:example
+  stage: print_date
+  script:
+  - ./before-script.sh
+  - date
+  - ./after-script.sh
+  variables:
+    USER: Max Power
+    URL: https://example.com
+  rules:
+  - if: $MY_VARIABLE_IS_PRESENT
+    when: on_success
+    allow_failure: false
+  artifacts:
+    paths:
+    - binaries/
+    - .config
+  tags:
+  - test
+  - europe</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1619,20 +1583,20 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_trigger_project_pipeline.py
-
-from gcip import Pipeline, TriggerJob, TriggerStrategy
+<pre class="highlight"><code class="language-python" data-lang="python">from gcip import Pipeline, TriggerJob, TriggerStrategy
 from tests import conftest
 
 
 def test():
     pipeline = Pipeline()
-    pipeline.add_children(TriggerJob(
-        namespace="trigger-banana",
-        project="myteam/banana",
-        branch="test",
-        strategy=TriggerStrategy.DEPEND,
-    ))
+    pipeline.add_children(
+        TriggerJob(
+            namespace="trigger-banana",
+            project="myteam/banana",
+            branch="test",
+            strategy=TriggerStrategy.DEPEND,
+        )
+    )
 
     conftest.check(pipeline.render())</code></pre>
 </div>
@@ -1642,9 +1606,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_trigger_project_pipeline_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - trigger_banana
 trigger-banana:
   trigger:
@@ -1662,9 +1624,7 @@ trigger-banana:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python"># ./tests/unit/test_readme_trigger_child_pipeline.py
-
-from gcip import (
+<pre class="highlight"><code class="language-python" data-lang="python">from gcip import (
     Pipeline,
     TriggerJob,
     IncludeLocal,
@@ -1691,9 +1651,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml"># ./tests/unit/comparison_files/test_readme_trigger_child_pipeline_test.yml
-
-stages:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
 - trigger_subpipe
 trigger-subpipe:
   trigger:
@@ -1731,7 +1689,7 @@ trigger-subpipe:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-10 23:01:50 +0100
+Last updated 2021-03-11 09:26:02 +0100
 </div>
 </div>
 </body>

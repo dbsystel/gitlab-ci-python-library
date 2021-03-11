@@ -70,14 +70,7 @@ your real pipeline code must end with `pipeline.print_yaml()` instead of `confte
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_pipe_with_one_job_test.yml
-
-stages:
-- print_date
-print-date:
-  stage: print_date
-  script:
-  - date
+include::tests/unit/comparison_files/test_readme_pipe_with_one_job_test.yml[]
 ----
 
 == Configure jobs
@@ -88,27 +81,7 @@ Jobs can be configured by calling following methods:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_configure_jobs.py
-
-import gcip
-from tests import conftest
-
-
-def test():
-    pipeline = gcip.Pipeline()
-
-    job = gcip.Job(namespace="print_date", script="date")
-    job.set_image("docker/image:example")
-    job.prepend_scripts("./before-script.sh")
-    job.append_scripts("./after-script.sh")
-    job.add_variables(USER="Max Power", URL="https://example.com")
-    job.add_tags("test", "europe")
-    job.add_artifacts_paths("binaries/", ".config")
-    job.append_rules(gcip.Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
-
-    pipeline.add_children(job)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_configure_jobs.py[]
 ----
 
 The `prepend_scripts`, `append_scripts` and all `add_*` methods allow an arbitrary number of positional arguments.
@@ -118,31 +91,7 @@ That means you can prepend/append/add a single script/variable/tag/... or a list
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_configure_jobs_test.yml
-
-stages:
-- print_date
-print-date:
-  image: docker/image:example
-  stage: print_date
-  script:
-  - ./before-script.sh
-  - date
-  - ./after-script.sh
-  variables:
-    USER: Max Power
-    URL: https://example.com
-  rules:
-  - if: $MY_VARIABLE_IS_PRESENT
-    when: on_success
-    allow_failure: false
-  artifacts:
-    paths:
-    - binaries/
-    - .config
-  tags:
-  - test
-  - europe
+include::tests/unit/comparison_files/test_readme_configure_jobs_test.yml[]
 ----
 
 == Bundling jobs as sequence
@@ -154,29 +103,7 @@ A job sequence has the same configuration methods as shown in the previous examp
 
 [source,python]
 ----
-# ./tests/unit/test_readme_bundling_jobs.py
-
-import gcip
-from tests import conftest
-
-
-def test():
-    job_sequence = gcip.JobSequence()
-
-    job1 = gcip.Job(namespace="job1", script="script1.sh")
-    job1.prepend_scripts("from-job-1.sh")
-
-    job_sequence.add_children(
-        job1,
-        gcip.Job(namespace="job2", script="script2.sh"),
-    )
-
-    job_sequence.prepend_scripts("from-sequence.sh")
-
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(job_sequence)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_bundling_jobs.py[]
 ----
 
 As you will see in the output, jobs can have their own configuration (`+job1.prepend_scripts(...+`)
@@ -186,22 +113,7 @@ as well as a common configuration from their sequence (`+job_sequence.prepend_sc
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_bundling_jobs_test.yml
-
-stages:
-- job1
-- job2
-job1:
-  stage: job1
-  script:
-  - from-sequence.sh
-  - from-job-1.sh
-  - script1.sh
-job2:
-  stage: job2
-  script:
-  - from-sequence.sh
-  - script2.sh
+include::tests/unit/comparison_files/test_readme_bundling_jobs_test.yml[]
 ----
 
 == Stacking sequences
@@ -210,48 +122,14 @@ job2:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_stacking_sequences.py
-
-import gcip
-from tests import conftest
-
-
-def test():
-    sequence_a = gcip.JobSequence()
-    sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
-    sequence_a.prepend_scripts("from-sequence-a.sh")
-
-    sequence_b = gcip.JobSequence()
-    sequence_b.add_children(sequence_a)
-    sequence_b.add_children(gcip.Job(namespace="job2", script="script2.sh"))
-    sequence_b.prepend_scripts("from-sequence-b.sh")
-
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(sequence_b)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_stacking_sequences.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_stacking_sequences_test.yml
-
-stages:
-- job1
-- job2
-job1:
-  stage: job1
-  script:
-  - from-sequence-b.sh
-  - from-sequence-a.sh
-  - script1.sh
-job2:
-  stage: job2
-  script:
-  - from-sequence-b.sh
-  - script2.sh
+include::tests/unit/comparison_files/test_readme_stacking_sequences_test.yml[]
 ----
 
 == Pipelines are sequences
@@ -264,45 +142,14 @@ stacking other sequences.
 
 [source,python]
 ----
-# ./tests/unit/test_readme_pipelines_are_sequences.py
-
-import gcip
-from tests import conftest
-
-
-def test():
-    sequence_a = gcip.JobSequence()
-    sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
-    sequence_a.prepend_scripts("from-sequence.sh")
-
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(sequence_a)
-    pipeline.add_children(gcip.Job(namespace="job2", script="script2.sh"))
-    pipeline.prepend_scripts("from-pipeline.sh")
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_pipelines_are_sequences.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_pipelines_are_sequences_test.yml
-
-stages:
-- job1
-- job2
-job1:
-  stage: job1
-  script:
-  - from-pipeline.sh
-  - from-sequence.sh
-  - script1.sh
-job2:
-  stage: job2
-  script:
-  - from-pipeline.sh
-  - script2.sh
+include::tests/unit/comparison_files/test_readme_pipelines_are_sequences_test.yml[]
 ----
 
 == Namespaces allow reuse of jobs and sequences
@@ -311,36 +158,14 @@ Assume you want to reuse a parameterized job. Following link:./tests/unit/test_r
 
 [source,python]
 ----
-# ./tests/unit/test_readme_missing_namespace.py
-
-import gcip
-from tests import conftest
-
-
-def job_for(environment: str) -> gcip.Job:
-    return gcip.Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(job_for(env))
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_missing_namespace.py[]
 ----
 
 The output is obviously *wrong* as we expect two jobs but just get one:
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_missing_namespace_test.yml
-
-stages:
-- do_something
-do-something:
-  stage: do_something
-  script:
-  - ./do-something-on.sh test
+include::tests/unit/comparison_files/test_readme_missing_namespace_test.yml[]
 ----
 
 This is because both jobs were added with an identical name to the pipeline. The second job will
@@ -361,22 +186,7 @@ the jobs (sequences) added but not to the jobs (and sequences) already contained
 
 [source,python]
 ----
-# ./tests/unit/test_readme_namespace_job.py
-
-import gcip
-from tests import conftest
-
-
-def job_for(environment: str) -> gcip.Job:
-    return gcip.Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(job_for(env), namespace=env)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_namespace_job.py[]
 ----
 
 Mention that we added both jobs with a different `namespace` to the sequence.
@@ -386,19 +196,7 @@ Thus in the output we correctly populate the one job per environment:
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_namespace_job_test.yml
-
-stages:
-- do_something_development
-- do_something_test
-do-something-development:
-  stage: do_something_development
-  script:
-  - ./do-something-on.sh development
-do-something-test:
-  stage: do_something_test
-  script:
-  - ./do-something-on.sh test
+include::tests/unit/comparison_files/test_readme_namespace_job_test.yml[]
 ----
 
 == Reuse sequences
@@ -412,56 +210,14 @@ allows that all jobs of the sequence are populated per environment.
 
 [source,python]
 ----
-# ./tests/unit/test_readme_namespace_sequence.py
-
-import gcip
-from tests import conftest
-
-
-def environment_pipeline(environment: str) -> gcip.JobSequence:
-    sequence = gcip.JobSequence()
-    sequence.add_children(
-        gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
-        gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
-    )
-    return sequence
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(environment_pipeline(env), namespace=env)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_namespace_sequence.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_namespace_sequence_test.yml
-
-stages:
-- job1_development
-- job2_development
-- job1_test
-- job2_test
-job1-development:
-  stage: job1_development
-  script:
-  - job-1-on-development
-job2-development:
-  stage: job2_development
-  script:
-  - job-2-on-development
-job1-test:
-  stage: job1_test
-  script:
-  - job-1-on-test
-job2-test:
-  stage: job2_test
-  script:
-  - job-2-on-test
+include::tests/unit/comparison_files/test_readme_namespace_sequence_test.yml[]
 ----
 
 == Parallelization - name, namespace (and stage)
@@ -483,38 +239,14 @@ only the `name` of a job but not its `stage`.
 
 [source,python]
 ----
-# ./tests/unit/test_readme_parallel_jobs.py
-
-import gcip
-from tests import conftest
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(
-        gcip.Job(name="job1", namespace="single-stage", script="date"),
-        gcip.Job(name="job2", namespace="single-stage", script="date"),
-    )
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_parallel_jobs.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_parallel_jobs_test.yml
-
-stages:
-- single_stage
-single-stage-job1:
-  stage: single_stage
-  script:
-  - date
-single-stage-job2:
-  stage: single_stage
-  script:
-  - date
+include::tests/unit/comparison_files/test_readme_parallel_jobs_test.yml[]
 ----
 
 This time we have chosen an equal value for `namespace`, such that the ``stage``s of both jobs will be set equally. To avoid that also the
@@ -552,27 +284,7 @@ and instead of using the `namespace` when adding the sequence several times to t
 
 [source,python]
 ----
-# ./tests/unit/test_readme_parallel_sequence.py
-
-import gcip
-from tests import conftest
-
-
-def environment_pipeline(environment: str) -> gcip.JobSequence:
-    sequence = gcip.JobSequence()
-    sequence.add_children(
-        gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
-        gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
-    )
-    return sequence
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(environment_pipeline(env), name=env)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_parallel_sequence.py[]
 ----
 
 Now the environments run in parallel, because just the job names are populated per environment but
@@ -582,27 +294,7 @@ not the stage names.
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_parallel_sequence_test.yml
-
-stages:
-- job1
-- job2
-job1-development:
-  stage: job1
-  script:
-  - job-1-on-development
-job2-development:
-  stage: job2
-  script:
-  - job-2-on-development
-job1-test:
-  stage: job1
-  script:
-  - job-1-on-test
-job2-test:
-  stage: job2
-  script:
-  - job-2-on-test
+include::tests/unit/comparison_files/test_readme_parallel_sequence_test.yml[]
 ----
 
 You can also mix the usage of `namespace` and `name`. This makes sense when adding lots of jobs
@@ -613,23 +305,7 @@ Here an Example:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_mix_namespace_and_name.py
-
-import gcip
-from tests import conftest
-
-
-def job_for(service: str) -> gcip.Job:
-    return gcip.Job(namespace="update_service", script=f"./update-service.sh {service}")
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        for service in ["service1", "service2"]:
-            pipeline.add_children(job_for(f"{service}_{env}"), namespace=env, name=service)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_mix_namespace_and_name.py[]
 ----
 
 As output we get two services updated in parallel but in consecutive stages.
@@ -638,27 +314,7 @@ As output we get two services updated in parallel but in consecutive stages.
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_mix_namespace_and_name_test.yml
-
-stages:
-- update_service_development
-- update_service_test
-update-service-development-service1:
-  stage: update_service_development
-  script:
-  - ./update-service.sh service1_development
-update-service-development-service2:
-  stage: update_service_development
-  script:
-  - ./update-service.sh service2_development
-update-service-test-service1:
-  stage: update_service_test
-  script:
-  - ./update-service.sh service1_test
-update-service-test-service2:
-  stage: update_service_test
-  script:
-  - ./update-service.sh service2_test
+include::tests/unit/comparison_files/test_readme_mix_namespace_and_name_test.yml[]
 ----
 
 == Batteries included
@@ -680,32 +336,14 @@ Following sub chapters provide an example for one asset out of every module.
 
 [source,python]
 ----
-# ./tests/unit/test_readme_assets_scripts.py
-
-import gcip
-from tests import conftest
-from gcip.addons.gitlab import job_scripts as scripts
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(gcip.Job(namespace="print_date", script=scripts.clone_repository("path/to/group")))
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_assets_scripts.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_assets_scripts_test.yml
-
-stages:
-- print_date
-print-date:
-  stage: print_date
-  script:
-  - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git
+include::tests/unit/comparison_files/test_readme_assets_scripts_test.yml[]
 ----
 
 === jobs
@@ -714,33 +352,14 @@ print-date:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_assets_jobs.py
-
-import gcip
-from tests import conftest
-from gcip.addons.python import jobs as python
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(python.flake8())
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_assets_jobs.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_assets_jobs_test.yml
-
-stages:
-- lint
-lint-flake8:
-  stage: lint
-  script:
-  - pip3 install --upgrade flake8
-  - flake8
+include::tests/unit/comparison_files/test_readme_assets_jobs_test.yml[]
 ----
 
 === job_sequences
@@ -749,45 +368,14 @@ lint-flake8:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_assets_job_sequences.py
-
-import gcip
-from tests import conftest
-from gcip.addons.cdk import sequences as cdk
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(cdk.diff_deploy("my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_assets_job_sequences.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_assets_job_sequences_test.yml
-
-stages:
-- diff
-- deploy
-diff-cdk:
-  stage: diff
-  script:
-  - cdk synth my-cdk-stack
-  - cdk diff my-cdk-stack
-deploy-cdk:
-  needs:
-  - job: diff-cdk
-    artifacts: true
-  stage: deploy
-  script:
-  - pip3 install gcip
-  - python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names
-    'my-cdk-stack'
-  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
-    my-cdk-stack
+include::tests/unit/comparison_files/test_readme_assets_job_sequences_test.yml[]
 ----
 
 === rules
@@ -796,45 +384,14 @@ deploy-cdk:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_assets_rules.py
-
-import gcip
-from tests import conftest
-from gcip.lib import rules
-
-
-def test():
-    job = gcip.Job(namespace="print_date", script="date")
-    job.append_rules(
-        rules.on_merge_request_events().never(),
-        rules.on_master(),
-    )
-
-    pipeline = gcip.Pipeline()
-    pipeline.add_children(job)
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_assets_rules.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_assets_rules_test.yml
-
-stages:
-- print_date
-print-date:
-  stage: print_date
-  script:
-  - date
-  rules:
-  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    when: never
-    allow_failure: false
-  - if: $CI_COMMIT_BRANCH == "master"
-    when: on_success
-    allow_failure: false
+include::tests/unit/comparison_files/test_readme_assets_rules_test.yml[]
 ----
 
 == Do more with Python
@@ -883,36 +440,14 @@ string multiple modifications methods together. Here an example for the job conf
 
 [source,python]
 ----
-# ./tests/unit/test_readme_string_together_job_configurations.py
-
-from gcip import Job, Rule, Pipeline
-from tests import conftest
-
-
-def test():
-    pipeline = Pipeline()
-
-    # yapf: disable
-    pipeline.add_children(
-        Job(namespace="print_date", script="date")
-        .set_image("docker/image:example")
-        .prepend_scripts("./before-script.sh")
-        .append_scripts("./after-script.sh")
-        .add_variables(USER="Max Power", URL="https://example.com")
-        .add_tags("test", "europe")
-        .add_artifacts_paths("binaries/", ".config")
-        .append_rules(Rule(if_statement="$MY_VARIABLE_IS_PRESENT"))
-    )
-    # yapf: enable
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_string_together_job_configurations.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_string_together_job_configurations_test.py
+include::tests/unit/comparison_files/test_readme_string_together_job_configurations_test.yml[]
 ----
 
 The same works with sequences.
@@ -927,38 +462,14 @@ Here an example for triggering another pipeline:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_trigger_project_pipeline.py
-
-from gcip import Pipeline, TriggerJob, TriggerStrategy
-from tests import conftest
-
-
-def test():
-    pipeline = Pipeline()
-    pipeline.add_children(TriggerJob(
-        namespace="trigger-banana",
-        project="myteam/banana",
-        branch="test",
-        strategy=TriggerStrategy.DEPEND,
-    ))
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_trigger_project_pipeline.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_trigger_project_pipeline_test.yml
-
-stages:
-- trigger_banana
-trigger-banana:
-  trigger:
-    project: myteam/banana
-    branch: test
-    strategy: depend
-  stage: trigger_banana
+include::tests/unit/comparison_files/test_readme_trigger_project_pipeline_test.yml[]
 ----
 
 Here an example for triggering a child pipeline:
@@ -967,44 +478,14 @@ Here an example for triggering a child pipeline:
 
 [source,python]
 ----
-# ./tests/unit/test_readme_trigger_child_pipeline.py
-
-from gcip import (
-    Pipeline,
-    TriggerJob,
-    IncludeLocal,
-    TriggerStrategy,
-)
-from tests import conftest
-
-
-def test():
-    pipeline = Pipeline()
-    pipeline.add_children(
-        TriggerJob(
-            namespace="trigger-subpipe",
-            includes=IncludeLocal("./my-subpipe.yml"),
-            strategy=TriggerStrategy.DEPEND,
-        )
-    )
-
-    conftest.check(pipeline.render())
+include::tests/unit/test_readme_trigger_child_pipeline.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-# ./tests/unit/comparison_files/test_readme_trigger_child_pipeline_test.yml
-
-stages:
-- trigger_subpipe
-trigger-subpipe:
-  trigger:
-    include:
-    - local: ./my-subpipe.yml
-    strategy: depend
-  stage: trigger_subpipe
+include::tests/unit/comparison_files/test_readme_trigger_child_pipeline_test.yml[]
 ----
 
 == Authors
