@@ -58,7 +58,7 @@ class Pipeline(JobSequence):
     def add_include(self, include: Include) -> None:
         self._includes.append(include)
 
-    def print_yaml(self) -> None:
+    def dump_yaml(self) -> None:
         import yaml
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
 
