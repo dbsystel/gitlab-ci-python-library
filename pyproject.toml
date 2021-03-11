@@ -1,0 +1,9 @@
+[tool.portray]
+output_dir = "docs/api"
+modules = ["gcip"]
+
+[[tool.portray.mkdocs.nav]]
+Home = "docs/portray/README.md"
+
+[[tool.portray.mkdocs.nav]]
+Contributing = "CONTRIBUTING.md"

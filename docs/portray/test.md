@@ -1,6 +1,6 @@
-= gcip repository documentation
+# gcip repository documentation
 
-== project structure and terminology of artifacts
+## project structure and terminology of artifacts
 
 To keep this source code folder as clean as possible, all code files are sorted into one of these folders:
 
