@@ -40,7 +40,7 @@ __maintainer__ = &#39;Thomas Steinbach&#39;
 __email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
-class _Include(metaclass=ABCMeta):
+class Include(metaclass=ABCMeta):
 
     _rendered_include: Dict[str, str]
 
@@ -48,14 +48,14 @@ class _Include(metaclass=ABCMeta):
         return self._rendered_include
 
 
-class IncludeLocal(_Include):
+class IncludeLocal(Include):
     def __init__(self, local: str) -&gt; None:
         self._rendered_include = {
             &#34;local&#34;: local
         }
 
 
-class IncludeFile(_Include):
+class IncludeFile(Include):
     def __init__(
         self,
         file: str,
@@ -70,7 +70,7 @@ class IncludeFile(_Include):
             self._rendered_include[&#34;ref&#34;] = ref
 
 
-class IncludeRemote(_Include):
+class IncludeRemote(Include):
     def __init__(self, remote: str) -&gt; None:
         if not is_valid_url(remote):
             raise ValueError(f&#34;`remote` is not a valid URL: {remote}&#34;)
@@ -80,14 +80,14 @@ class IncludeRemote(_Include):
         }
 
 
-class IncludeTemplate(_Include):
+class IncludeTemplate(Include):
     def __init__(self, template: str):
         self._rendered_include = {
             &#34;template&#34;: template
         }
 
 
-class IncludeArtifact(_Include):
+class IncludeArtifact(Include):
     &#34;&#34;&#34;for triggering a child pipeline with generated configuration file&#34;&#34;&#34;
     def __init__(self, job: str, artifact: str):
         self._rendered_include = {
@@ -105,6 +105,47 @@ class IncludeArtifact(_Include):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="gcip.core.include.Include"><code class="flex name class">
+<span>class <span class="ident">Include</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Include(metaclass=ABCMeta):
+
+    _rendered_include: Dict[str, str]
+
+    def render(self) -&gt; Dict[str, str]:
+        return self._rendered_include</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gcip.core.include.IncludeArtifact" href="#gcip.core.include.IncludeArtifact">IncludeArtifact</a></li>
+<li><a title="gcip.core.include.IncludeFile" href="#gcip.core.include.IncludeFile">IncludeFile</a></li>
+<li><a title="gcip.core.include.IncludeLocal" href="#gcip.core.include.IncludeLocal">IncludeLocal</a></li>
+<li><a title="gcip.core.include.IncludeRemote" href="#gcip.core.include.IncludeRemote">IncludeRemote</a></li>
+<li><a title="gcip.core.include.IncludeTemplate" href="#gcip.core.include.IncludeTemplate">IncludeTemplate</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="gcip.core.include.Include.render"><code class="name flex">
+<span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[str, str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def render(self) -&gt; Dict[str, str]:
+    return self._rendered_include</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="gcip.core.include.IncludeArtifact"><code class="flex name class">
 <span>class <span class="ident">IncludeArtifact</span></span>
 <span>(</span><span>job: str, artifact: str)</span>
@@ -115,7 +156,7 @@ class IncludeArtifact(_Include):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class IncludeArtifact(_Include):
+<pre><code class="python">class IncludeArtifact(Include):
     &#34;&#34;&#34;for triggering a child pipeline with generated configuration file&#34;&#34;&#34;
     def __init__(self, job: str, artifact: str):
         self._rendered_include = {
@@ -125,7 +166,7 @@ class IncludeArtifact(_Include):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>gcip.core.include._Include</li>
+<li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
 </dd>
 <dt id="gcip.core.include.IncludeFile"><code class="flex name class">
@@ -138,7 +179,7 @@ class IncludeArtifact(_Include):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class IncludeFile(_Include):
+<pre><code class="python">class IncludeFile(Include):
     def __init__(
         self,
         file: str,
@@ -154,7 +195,7 @@ class IncludeArtifact(_Include):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>gcip.core.include._Include</li>
+<li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
 </dd>
 <dt id="gcip.core.include.IncludeLocal"><code class="flex name class">
@@ -167,7 +208,7 @@ class IncludeArtifact(_Include):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class IncludeLocal(_Include):
+<pre><code class="python">class IncludeLocal(Include):
     def __init__(self, local: str) -&gt; None:
         self._rendered_include = {
             &#34;local&#34;: local
@@ -175,7 +216,7 @@ class IncludeArtifact(_Include):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>gcip.core.include._Include</li>
+<li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
 </dd>
 <dt id="gcip.core.include.IncludeRemote"><code class="flex name class">
@@ -188,7 +229,7 @@ class IncludeArtifact(_Include):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class IncludeRemote(_Include):
+<pre><code class="python">class IncludeRemote(Include):
     def __init__(self, remote: str) -&gt; None:
         if not is_valid_url(remote):
             raise ValueError(f&#34;`remote` is not a valid URL: {remote}&#34;)
@@ -199,7 +240,7 @@ class IncludeArtifact(_Include):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>gcip.core.include._Include</li>
+<li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
 </dd>
 <dt id="gcip.core.include.IncludeTemplate"><code class="flex name class">
@@ -212,7 +253,7 @@ class IncludeArtifact(_Include):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class IncludeTemplate(_Include):
+<pre><code class="python">class IncludeTemplate(Include):
     def __init__(self, template: str):
         self._rendered_include = {
             &#34;template&#34;: template
@@ -220,7 +261,7 @@ class IncludeArtifact(_Include):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>gcip.core.include._Include</li>
+<li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
 </dd>
 </dl>
@@ -239,6 +280,12 @@ class IncludeArtifact(_Include):
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></code></h4>
+<ul class="">
+<li><code><a title="gcip.core.include.Include.render" href="#gcip.core.include.Include.render">render</a></code></li>
+</ul>
+</li>
 <li>
 <h4><code><a title="gcip.core.include.IncludeArtifact" href="#gcip.core.include.IncludeArtifact">IncludeArtifact</a></code></h4>
 </li>

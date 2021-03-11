@@ -1,9 +1,11 @@
-= GCIP - The Gitlab CI Python Library
+= gcip - The Gitlab CI Python Library
 :doctype: book
 
 A Python Library for creating dynamic pipelines for Gitlab CI.
 
-With the GCIP and the ease and power of Python you can write Gitlab CI pipelines
+link:./docs/user/index.html[User Documentation] | link:./docs/api/index.html[API Reference]
+
+With the gcip and the ease and power of Python you can write Gitlab CI pipelines
 of any complexity in well manageable Python code.
 
 A simple starting pipeline could look like following:
@@ -50,10 +52,16 @@ pipeline.write_yaml("generated-config.yml")
 
 Do you really want to see the link:docs/readme-pipeline-complex.yaml[generated-config.yml] ? :)
 
+Please read the link:./docs/user/index.html[User Documentation] to get a quick introduction into most
+features of the gcip.
+
+You can consult the link:./docs/api/index.html[API Reference] to get an overview of all classes and methods
+and a deeper view into their paramters.
+
 
 == Author
 
-GCIP was created by link:mailto:thomas.t.steinbach@deutschebahn.com[Thomas Steinbach] in 2020.
+gcip was created by link:mailto:thomas.t.steinbach@deutschebahn.com[Thomas Steinbach] in 2020.
 
 Thanks to initial contributions from link:mailto:daniel.von-essen@deutschebahn.com[Daniel von Eßen]
 

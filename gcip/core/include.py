@@ -12,7 +12,7 @@ __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
-class _Include(metaclass=ABCMeta):
+class Include(metaclass=ABCMeta):
 
     _rendered_include: Dict[str, str]
 
@@ -20,14 +20,14 @@ class _Include(metaclass=ABCMeta):
         return self._rendered_include
 
 
-class IncludeLocal(_Include):
+class IncludeLocal(Include):
     def __init__(self, local: str) -> None:
         self._rendered_include = {
             "local": local
         }
 
 
-class IncludeFile(_Include):
+class IncludeFile(Include):
     def __init__(
         self,
         file: str,
@@ -42,7 +42,7 @@ class IncludeFile(_Include):
             self._rendered_include["ref"] = ref
 
 
-class IncludeRemote(_Include):
+class IncludeRemote(Include):
     def __init__(self, remote: str) -> None:
         if not is_valid_url(remote):
             raise ValueError(f"`remote` is not a valid URL: {remote}")
@@ -52,14 +52,14 @@ class IncludeRemote(_Include):
         }
 
 
-class IncludeTemplate(_Include):
+class IncludeTemplate(Include):
     def __init__(self, template: str):
         self._rendered_include = {
             "template": template
         }
 
 
-class IncludeArtifact(_Include):
+class IncludeArtifact(Include):
     """for triggering a child pipeline with generated configuration file"""
     def __init__(self, job: str, artifact: str):
         self._rendered_include = {

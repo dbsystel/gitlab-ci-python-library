@@ -20,7 +20,7 @@ from .need import Need
 from .rule import Rule
 from .cache import Cache
 from .image import Image
-from .include import _Include
+from .include import Include
 
 if TYPE_CHECKING:
     from .job_sequence import JobSequence
@@ -261,7 +261,7 @@ class Job():
 
 
 class TriggerStrategy(Enum):
-    """Class with static values for ``TriggerStrategy`` used together with :class:`gcip.Trigger`. To construct an object."""
+    """Class with static values for ``TriggerStrategy`` used together with :class:`gcip.core.job.TriggerJob`. To construct an object."""
     DEPEND = "depend"
 
 
@@ -273,7 +273,7 @@ class TriggerJob(Job):
         namespace: Optional[str] = None,
         project: Optional[str] = None,
         branch: Optional[str] = None,
-        includes: Union[_Include, List[_Include], None] = None,
+        includes: Union[Include, List[Include], None] = None,
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -> None:
@@ -287,7 +287,7 @@ class TriggerJob(Job):
             project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
                 e.g 'team1/project1'. Defaults to None.
             branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[_Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
+            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
             strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
                 If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
 
@@ -309,7 +309,7 @@ class TriggerJob(Job):
 
         if not includes:
             self._includes = None
-        elif isinstance(includes, _Include):
+        elif isinstance(includes, Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             if len(includes) > 3:

@@ -29,7 +29,7 @@
 <pre><code class="python">from typing import Any, Dict, List, Union, Optional
 
 from . import OrderedSetType
-from .include import _Include
+from .include import Include
 from .job_sequence import JobSequence
 
 __author__ = &#34;Thomas Steinbach&#34;
@@ -42,28 +42,28 @@ __email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
 class Pipeline(JobSequence):
-    def __init__(self, *, includes: Optional[Union[_Include, List[_Include]]] = None):
+    def __init__(self, *, includes: Optional[Union[Include, List[Include]]] = None):
         &#34;&#34;&#34;
         Pipeline class creates an empty Gitlab pipeline.
 
         Args:
-            includes (Optional[Union[_Include, List[_Include]]]): You can add global Gitlab includes.
+            includes (Optional[Union[Include, List[Include]]]): You can add global Gitlab includes.
                 See `Gitlab CI Reference include`_. Defaults to None.
 
         Raises:
-            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`_Includes`
+            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`Includes`
 
         .. _Gitlab CI Reference include:
            https://docs.gitlab.com/ee/ci/yaml/#include
         &#34;&#34;&#34;
         if not includes:
             self._includes = []
-        elif isinstance(includes, _Include):
+        elif isinstance(includes, Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             self._includes = includes
         else:
-            raise ValueError(&#34;Parameter include must of type gcip._Include or List[gcip._Include]&#34;)
+            raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
     def render(self) -&gt; Dict[str, Any]:
@@ -83,7 +83,7 @@ class Pipeline(JobSequence):
             pipline[job.name] = job.render()
         return pipline
 
-    def add_include(self, include: _Include) -&gt; None:
+    def add_include(self, include: Include) -&gt; None:
         self._includes.append(include)
 
     def print_yaml(self) -&gt; None:
@@ -107,20 +107,20 @@ class Pipeline(JobSequence):
 <dl>
 <dt id="gcip.core.pipeline.Pipeline"><code class="flex name class">
 <span>class <span class="ident">Pipeline</span></span>
-<span>(</span><span>*, includes: Union[gcip.core.include._Include, List[gcip.core.include._Include], NoneType] = None)</span>
+<span>(</span><span>*, includes: Union[<a title="gcip.core.include.Include" href="include.html#gcip.core.include.Include">Include</a>, List[<a title="gcip.core.include.Include" href="include.html#gcip.core.include.Include">Include</a>], NoneType] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Pipeline class creates an empty Gitlab pipeline.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>includes</code></strong> :&ensp;<code>Optional[Union[_Include, List[_Include]]]</code></dt>
+<dt><strong><code>includes</code></strong> :&ensp;<code>Optional[Union[Include, List[Include]]]</code></dt>
 <dd>You can add global Gitlab includes.
 See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>ValueError</code></dt>
-<dd>If <code>includes</code> is not of type :class:<code>list</code> or :class:<code>list</code> of :class:<code>_Includes</code></dd>
+<dd>If <code>includes</code> is not of type :class:<code>list</code> or :class:<code>list</code> of :class:<code>Includes</code></dd>
 </dl>
 <p>.. _Gitlab CI Reference include:
 <a href="https://docs.gitlab.com/ee/ci/yaml/#include">https://docs.gitlab.com/ee/ci/yaml/#include</a></p></div>
@@ -129,28 +129,28 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Pipeline(JobSequence):
-    def __init__(self, *, includes: Optional[Union[_Include, List[_Include]]] = None):
+    def __init__(self, *, includes: Optional[Union[Include, List[Include]]] = None):
         &#34;&#34;&#34;
         Pipeline class creates an empty Gitlab pipeline.
 
         Args:
-            includes (Optional[Union[_Include, List[_Include]]]): You can add global Gitlab includes.
+            includes (Optional[Union[Include, List[Include]]]): You can add global Gitlab includes.
                 See `Gitlab CI Reference include`_. Defaults to None.
 
         Raises:
-            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`_Includes`
+            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`Includes`
 
         .. _Gitlab CI Reference include:
            https://docs.gitlab.com/ee/ci/yaml/#include
         &#34;&#34;&#34;
         if not includes:
             self._includes = []
-        elif isinstance(includes, _Include):
+        elif isinstance(includes, Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             self._includes = includes
         else:
-            raise ValueError(&#34;Parameter include must of type gcip._Include or List[gcip._Include]&#34;)
+            raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
     def render(self) -&gt; Dict[str, Any]:
@@ -170,7 +170,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
             pipline[job.name] = job.render()
         return pipline
 
-    def add_include(self, include: _Include) -&gt; None:
+    def add_include(self, include: Include) -&gt; None:
         self._includes.append(include)
 
     def print_yaml(self) -&gt; None:
@@ -189,7 +189,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <h3>Methods</h3>
 <dl>
 <dt id="gcip.core.pipeline.Pipeline.add_include"><code class="name flex">
-<span>def <span class="ident">add_include</span></span>(<span>self, include: gcip.core.include._Include) ‑> NoneType</span>
+<span>def <span class="ident">add_include</span></span>(<span>self, include: <a title="gcip.core.include.Include" href="include.html#gcip.core.include.Include">Include</a>) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -197,7 +197,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_include(self, include: _Include) -&gt; None:
+<pre><code class="python">def add_include(self, include: Include) -&gt; None:
     self._includes.append(include)</code></pre>
 </details>
 </dd>

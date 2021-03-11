@@ -48,7 +48,7 @@ from .need import Need
 from .rule import Rule
 from .cache import Cache
 from .image import Image
-from .include import _Include
+from .include import Include
 
 if TYPE_CHECKING:
     from .job_sequence import JobSequence
@@ -289,7 +289,7 @@ class Job():
 
 
 class TriggerStrategy(Enum):
-    &#34;&#34;&#34;Class with static values for ``TriggerStrategy`` used together with :class:`gcip.Trigger`. To construct an object.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class with static values for ``TriggerStrategy`` used together with :class:`gcip.core.job.TriggerJob`. To construct an object.&#34;&#34;&#34;
     DEPEND = &#34;depend&#34;
 
 
@@ -301,7 +301,7 @@ class TriggerJob(Job):
         namespace: Optional[str] = None,
         project: Optional[str] = None,
         branch: Optional[str] = None,
-        includes: Union[_Include, List[_Include], None] = None,
+        includes: Union[Include, List[Include], None] = None,
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -&gt; None:
@@ -315,7 +315,7 @@ class TriggerJob(Job):
             project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
                 e.g &#39;team1/project1&#39;. Defaults to None.
             branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[_Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
+            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
             strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
                 If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
 
@@ -337,7 +337,7 @@ class TriggerJob(Job):
 
         if not includes:
             self._includes = None
-        elif isinstance(includes, _Include):
+        elif isinstance(includes, Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             if len(includes) &gt; 3:
@@ -959,7 +959,7 @@ If you want to set the entrypoint, you have to provide an Image object instead.<
 </dd>
 <dt id="gcip.core.job.TriggerJob"><code class="flex name class">
 <span>class <span class="ident">TriggerJob</span></span>
-<span>(</span><span>*args: Any, name: Optional[str] = None, namespace: Optional[str] = None, project: Optional[str] = None, branch: Optional[str] = None, includes: Union[_Include, List[_Include], None] = None, strategy: Optional[<a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a>] = None, **kwargs: Mapping[Any, Any])</span>
+<span>(</span><span>*args: Any, name: Optional[str] = None, namespace: Optional[str] = None, project: Optional[str] = None, branch: Optional[str] = None, includes: Union[Include, List[Include], None] = None, strategy: Optional[<a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a>] = None, **kwargs: Mapping[Any, Any])</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class to create a Gitlab CI Trigger.</p>
@@ -971,7 +971,7 @@ If you want to set the entrypoint, you have to provide an Image object instead.<
 e.g 'team1/project1'. Defaults to None.</dd>
 <dt><strong><code>branch</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>If <code>project</code> is given, you can specify which branch of <code>project</code> to trigger. Defaults to None.</dd>
-<dt><strong><code>includes</code></strong> :&ensp;<code>Optional[List[_Include]]</code></dt>
+<dt><strong><code>includes</code></strong> :&ensp;<code>Optional[List[Include]]</code></dt>
 <dd>Used to create Parent-child pipeline trigger, exclusiv to <code>project</code>. Defaults to None.</dd>
 <dt><strong><code>strategy</code></strong> :&ensp;<code>Optional[<a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a>]</code></dt>
 <dd>Strategy of how the job behaves from the upstream pipeline.
@@ -996,7 +996,7 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
         namespace: Optional[str] = None,
         project: Optional[str] = None,
         branch: Optional[str] = None,
-        includes: Union[_Include, List[_Include], None] = None,
+        includes: Union[Include, List[Include], None] = None,
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -&gt; None:
@@ -1010,7 +1010,7 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
             project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
                 e.g &#39;team1/project1&#39;. Defaults to None.
             branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[_Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
+            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
             strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
                 If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
 
@@ -1032,7 +1032,7 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 
         if not includes:
             self._includes = None
-        elif isinstance(includes, _Include):
+        elif isinstance(includes, Include):
             self._includes = [includes]
         elif isinstance(includes, list):
             if len(includes) &gt; 3:
@@ -1196,13 +1196,13 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Class with static values for <code><a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a></code> used together with :class:<code>gcip.Trigger</code>. To construct an object.</p></div>
+<div class="desc"><p>Class with static values for <code><a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a></code> used together with :class:<code><a title="gcip.core.job.TriggerJob" href="#gcip.core.job.TriggerJob">TriggerJob</a></code>. To construct an object.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TriggerStrategy(Enum):
-    &#34;&#34;&#34;Class with static values for ``TriggerStrategy`` used together with :class:`gcip.Trigger`. To construct an object.&#34;&#34;&#34;
+    &#34;&#34;&#34;Class with static values for ``TriggerStrategy`` used together with :class:`gcip.core.job.TriggerJob`. To construct an object.&#34;&#34;&#34;
     DEPEND = &#34;depend&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>

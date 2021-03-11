@@ -52,7 +52,7 @@ def full_stack(
     mypy_package_dir: Optional[str] = None,
 ) -&gt; JobSequence:
     &#34;&#34;&#34;
-    Returns a pipeline containing all jobs from `gcip.jobs.python`:
+    Returns a pipeline containing all jobs from `gcip.addons.python.jobs`:
         * isort
         * flake8
         * pytest
@@ -112,7 +112,7 @@ def full_stack(
 <span>def <span class="ident">full_stack</span></span>(<span>dev_repository_url: str, dev_user: str, varname_dev_password: str, stable_repository_url: str, stable_user: str, varname_stable_password: str, mypy_package_dir: Optional[str] = None) ‑> <a title="gcip.core.job_sequence.JobSequence" href="../../core/job_sequence.html#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a pipeline containing all jobs from <code>gcip.jobs.python</code>:
+<div class="desc"><p>Returns a pipeline containing all jobs from <code><a title="gcip.addons.python.jobs" href="jobs.html">gcip.addons.python.jobs</a></code>:
 * isort
 * flake8
 * pytest
@@ -139,7 +139,7 @@ Define your password outside the pipeline, e.g. as secret variable in the Gitlab
     mypy_package_dir: Optional[str] = None,
 ) -&gt; JobSequence:
     &#34;&#34;&#34;
-    Returns a pipeline containing all jobs from `gcip.jobs.python`:
+    Returns a pipeline containing all jobs from `gcip.addons.python.jobs`:
         * isort
         * flake8
         * pytest

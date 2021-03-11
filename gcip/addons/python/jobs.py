@@ -73,7 +73,7 @@ def isort() -> Job:
 
 def pytest() -> Job:
     """
-    Runs `pytest` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
+    Runs `pytest` and installs project requirements before (`scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `pytest`
     """
@@ -92,7 +92,7 @@ def evaluate_git_tag_pep404_conformity() -> Job:
     Checks if the current pipelines `$CI_COMMIT_TAG` validates to a valid Python package version according to
     https://www.python.org/dev/peps/pep-0440
 
-    This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`gcip.rules.only_tags()`).
+    This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`rules.only_tags()`).
     """
     job = Job(
         name="evaluate_git_tag_pep404_conformity",
@@ -108,7 +108,8 @@ def evaluate_git_tag_pep404_conformity() -> Job:
 
 def bdist_wheel() -> Job:
     """
-    Runs `python3 setup.py bdist_wheel` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
+    Runs `python3 setup.py bdist_wheel` and installs project requirements
+    before (`scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `setuptools`
     * Creates artifacts under the path `dist/`
@@ -128,7 +129,7 @@ def bdist_wheel() -> Job:
 def pages_sphinx() -> Job:
     """
     Runs `sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}` and installs project requirements
-    before (`gcip.scripts.pip_install_requirements()`)
+    before (`scripts.pip_install_requirements()`)
 
     * Requires a `docs/requirements.txt` in your project folder` containing at least `sphinx`
     * Creates it artifacts for Gitlab Pages under `pages`
@@ -158,7 +159,7 @@ def twine_upload(
     python3 -m twine upload --non-interactive --disable-progress-bar dist/*
     ```
 
-    * Requires artifacts from a build job under `dist/` (e.g. from `gcip.jobs.python.bdist_wheel()`)
+    * Requires artifacts from a build job under `dist/` (e.g. from `bdist_wheel()`)
 
     :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
     :arg user: The name of the user to access the PyPI repository.

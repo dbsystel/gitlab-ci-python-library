@@ -101,7 +101,7 @@ def isort() -&gt; Job:
 
 def pytest() -&gt; Job:
     &#34;&#34;&#34;
-    Runs `pytest` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
+    Runs `pytest` and installs project requirements before (`scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `pytest`
     &#34;&#34;&#34;
@@ -120,7 +120,7 @@ def evaluate_git_tag_pep404_conformity() -&gt; Job:
     Checks if the current pipelines `$CI_COMMIT_TAG` validates to a valid Python package version according to
     https://www.python.org/dev/peps/pep-0440
 
-    This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`gcip.rules.only_tags()`).
+    This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`rules.only_tags()`).
     &#34;&#34;&#34;
     job = Job(
         name=&#34;evaluate_git_tag_pep404_conformity&#34;,
@@ -136,7 +136,8 @@ def evaluate_git_tag_pep404_conformity() -&gt; Job:
 
 def bdist_wheel() -&gt; Job:
     &#34;&#34;&#34;
-    Runs `python3 setup.py bdist_wheel` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
+    Runs `python3 setup.py bdist_wheel` and installs project requirements
+    before (`scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `setuptools`
     * Creates artifacts under the path `dist/`
@@ -156,7 +157,7 @@ def bdist_wheel() -&gt; Job:
 def pages_sphinx() -&gt; Job:
     &#34;&#34;&#34;
     Runs `sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}` and installs project requirements
-    before (`gcip.scripts.pip_install_requirements()`)
+    before (`scripts.pip_install_requirements()`)
 
     * Requires a `docs/requirements.txt` in your project folder` containing at least `sphinx`
     * Creates it artifacts for Gitlab Pages under `pages`
@@ -186,7 +187,7 @@ def twine_upload(
     python3 -m twine upload --non-interactive --disable-progress-bar dist/*
     ```
 
-    * Requires artifacts from a build job under `dist/` (e.g. from `gcip.jobs.python.bdist_wheel()`)
+    * Requires artifacts from a build job under `dist/` (e.g. from `bdist_wheel()`)
 
     :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
     :arg user: The name of the user to access the PyPI repository.
@@ -224,7 +225,8 @@ def twine_upload(
 <span>def <span class="ident">bdist_wheel</span></span>(<span>) ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Runs <code>python3 setup.py <a title="gcip.addons.python.jobs.bdist_wheel" href="#gcip.addons.python.jobs.bdist_wheel">bdist_wheel()</a></code> and installs project requirements before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
+<div class="desc"><p>Runs <code>python3 setup.py <a title="gcip.addons.python.jobs.bdist_wheel" href="#gcip.addons.python.jobs.bdist_wheel">bdist_wheel()</a></code> and installs project requirements
+before (<code>scripts.pip_install_requirements()</code>)</p>
 <ul>
 <li>Requires a <code>requirements.txt</code> in your project folder containing at least <code>setuptools</code></li>
 <li>Creates artifacts under the path <code>dist/</code></li>
@@ -235,7 +237,8 @@ def twine_upload(
 </summary>
 <pre><code class="python">def bdist_wheel() -&gt; Job:
     &#34;&#34;&#34;
-    Runs `python3 setup.py bdist_wheel` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
+    Runs `python3 setup.py bdist_wheel` and installs project requirements
+    before (`scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `setuptools`
     * Creates artifacts under the path `dist/`
@@ -258,7 +261,7 @@ def twine_upload(
 <dd>
 <div class="desc"><p>Checks if the current pipelines <code>$CI_COMMIT_TAG</code> validates to a valid Python package version according to
 <a href="https://www.python.org/dev/peps/pep-0440">https://www.python.org/dev/peps/pep-0440</a></p>
-<p>This job already contains a rule to only run when a <code>$CI_COMMIT_TAG</code> is present (<code>gcip.rules.only_tags()</code>).</p></div>
+<p>This job already contains a rule to only run when a <code>$CI_COMMIT_TAG</code> is present (<code>rules.only_tags()</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -268,7 +271,7 @@ def twine_upload(
     Checks if the current pipelines `$CI_COMMIT_TAG` validates to a valid Python package version according to
     https://www.python.org/dev/peps/pep-0440
 
-    This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`gcip.rules.only_tags()`).
+    This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`rules.only_tags()`).
     &#34;&#34;&#34;
     job = Job(
         name=&#34;evaluate_git_tag_pep404_conformity&#34;,
@@ -392,7 +395,7 @@ mypy package_dir
 </code></dt>
 <dd>
 <div class="desc"><p>Runs <code>sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}</code> and installs project requirements
-before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
+before (<code>scripts.pip_install_requirements()</code>)</p>
 <ul>
 <li>Requires a <code>docs/requirements.txt</code> in your project folder<code> containing at least </code>sphinx`</li>
 <li>Creates it artifacts for Gitlab Pages under <code>pages</code></li>
@@ -404,7 +407,7 @@ before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
 <pre><code class="python">def pages_sphinx() -&gt; Job:
     &#34;&#34;&#34;
     Runs `sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}` and installs project requirements
-    before (`gcip.scripts.pip_install_requirements()`)
+    before (`scripts.pip_install_requirements()`)
 
     * Requires a `docs/requirements.txt` in your project folder` containing at least `sphinx`
     * Creates it artifacts for Gitlab Pages under `pages`
@@ -425,7 +428,7 @@ before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
 <span>def <span class="ident">pytest</span></span>(<span>) ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Runs <code><a title="gcip.addons.python.jobs.pytest" href="#gcip.addons.python.jobs.pytest">pytest()</a></code> and installs project requirements before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
+<div class="desc"><p>Runs <code><a title="gcip.addons.python.jobs.pytest" href="#gcip.addons.python.jobs.pytest">pytest()</a></code> and installs project requirements before (<code>scripts.pip_install_requirements()</code>)</p>
 <ul>
 <li>Requires a <code>requirements.txt</code> in your project folder containing at least <code><a title="gcip.addons.python.jobs.pytest" href="#gcip.addons.python.jobs.pytest">pytest()</a></code></li>
 </ul></div>
@@ -435,7 +438,7 @@ before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
 </summary>
 <pre><code class="python">def pytest() -&gt; Job:
     &#34;&#34;&#34;
-    Runs `pytest` and installs project requirements before (`gcip.scripts.pip_install_requirements()`)
+    Runs `pytest` and installs project requirements before (`scripts.pip_install_requirements()`)
 
     * Requires a `requirements.txt` in your project folder containing at least `pytest`
     &#34;&#34;&#34;
@@ -458,7 +461,7 @@ before (<code>gcip.scripts.pip_install_requirements()</code>)</p>
 python3 -m twine upload --non-interactive --disable-progress-bar dist/*
 </code></pre>
 <ul>
-<li>Requires artifacts from a build job under <code>dist/</code> (e.g. from <code>gcip.jobs.python.bdist_wheel()</code>)</li>
+<li>Requires artifacts from a build job under <code>dist/</code> (e.g. from <code><a title="gcip.addons.python.jobs.bdist_wheel" href="#gcip.addons.python.jobs.bdist_wheel">bdist_wheel()</a></code>)</li>
 </ul>
 <p>:arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
 :arg user: The name of the user to access the PyPI repository.
@@ -482,7 +485,7 @@ Define your password outside the pipeline, e.g. as secret variable in the Gitlab
     python3 -m twine upload --non-interactive --disable-progress-bar dist/*
     ```
 
-    * Requires artifacts from a build job under `dist/` (e.g. from `gcip.jobs.python.bdist_wheel()`)
+    * Requires artifacts from a build job under `dist/` (e.g. from `bdist_wheel()`)
 
     :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
     :arg user: The name of the user to access the PyPI repository.
