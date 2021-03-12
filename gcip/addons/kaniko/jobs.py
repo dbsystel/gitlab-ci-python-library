@@ -88,6 +88,9 @@ def execute(
 
     executor_cmd: List[str] = ["executor"]
 
+    if not context and PredefinedVariables.CI_PROJECT_DIR:
+        context = PredefinedVariables.CI_PROJECT_DIR
+
     if context:
         if context.endswith("/"):
             context = context[:-1]
@@ -101,6 +104,9 @@ def execute(
 
     if verbosity:
         executor_cmd.append(f"--verbosity {verbosity}")
+
+    if not dockerfile and PredefinedVariables.CI_PROJECT_DIR:
+        dockerfile = f"{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile"
 
     if dockerfile:
         executor_cmd.append(f"--dockerfile {dockerfile}")
