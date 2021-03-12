@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Union, Optional
 from . import OrderedSetType
 from .include import Include
 from .job_sequence import JobSequence
+from .service import Service
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -28,6 +29,8 @@ class Pipeline(JobSequence):
         .. _Gitlab CI Reference include:
            https://docs.gitlab.com/ee/ci/yaml/#include
         """
+        self._services: List[Service] = list()
+
         if not includes:
             self._includes = []
         elif isinstance(includes, Include):
@@ -38,9 +41,14 @@ class Pipeline(JobSequence):
             raise ValueError("Parameter include must of type gcip.Include or List[gcip.Include]")
         super().__init__()
 
+    def add_service(self, service: Union[str, Service]):
+        if isinstance(service, str):
+            service = Service(service)
+        self._services.append(service)
+
     def render(self) -> Dict[str, Any]:
         stages: OrderedSetType = {}
-        pipline: Dict[str, Any] = {}
+        pipeline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
 
         for job in job_copies:
@@ -48,12 +56,15 @@ class Pipeline(JobSequence):
             stages[job.stage] = None
 
         if self._includes:
-            pipline["include"] = [include.render() for include in self._includes]
+            pipeline["include"] = [include.render() for include in self._includes]
 
-        pipline["stages"] = list(stages.keys())
+        if self._services:
+            pipeline["services"] = [service.render() for service in self._services]
+
+        pipeline["stages"] = list(stages.keys())
         for job in job_copies:
-            pipline[job.name] = job.render()
-        return pipline
+            pipeline[job.name] = job.render()
+        return pipeline
 
     def add_include(self, include: Include) -> None:
         self._includes.append(include)

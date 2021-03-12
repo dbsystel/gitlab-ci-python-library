@@ -4,6 +4,7 @@ from gcip.addons.python import jobs as python
 
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
+pipeline.add_service("docker:dind")
 
 pipeline.add_children(
     python.isort(),

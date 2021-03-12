@@ -48,7 +48,7 @@ def build(
         name="docker",
         namespace="build",
         script=f"docker build -t {_fq_image_name} {context}",
-    )
+    ).add_variables(DOCKER_DRIVER="overlay2", DOCKER_TLS_CERTDIR="")
 
 
 def push(
