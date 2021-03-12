@@ -20,7 +20,7 @@ def build(
     *,
     repository: str,
     tag: Optional[str] = None,
-    context: Optional[str] = ".",
+    context: str = ".",
 ) -> Job:
     """Runs [```docker build```](https://docs.docker.com/engine/reference/commandline/build/)
 
@@ -35,7 +35,7 @@ def build(
         repository (str): The Docker repository name ```([<registry>/]<image>)```.
         tag (Optional[str]): A Docker image tag applied to the image. Defaults to `None` which no tag is provided
             to the docker build command. Docker should then apply the default tag ```latest```.
-        context (Optional[str]): The Docker build context (the directory containing the Dockerfile). Defaults to
+        context (str): The Docker build context (the directory containing the Dockerfile). Defaults to
             the current directory `.`.
 
     Returns:
@@ -55,7 +55,7 @@ def push(
     *,
     registry: Optional[str] = None,
     image: str,
-    tag: Optional[str] = "latest",
+    tag: Optional[str] = None,
     user_env_var: Optional[str] = None,
     login_env_var: Optional[str] = None,
 ) -> Job:
