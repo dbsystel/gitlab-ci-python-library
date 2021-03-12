@@ -1,20 +1,27 @@
 from gcip import Pipeline
-from gcip.addons.python import sequences as python
+from gcip.addons.python import jobs as python
+from gcip.addons.docker import jobs as docker
+from gcip import PredefinedVariables
 
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
-pipeline.add_tags("environment-prd")
 
 pipeline.add_children(
-    python.full_stack(
-        dev_repository_url="<pypi-repo-url-dev>",
-        dev_user="$ARTIFACTORY_DEV_USER",
-        varname_dev_password="$ARTIFACTORY_DEV_PASSWORD",
-        stable_repository_url="<pypi-repo-url-stable>",
-        stable_user="$ARTIFACTORY_PRD_USER",
-        varname_stable_password="$ARTIFACTORY_PRD_PASSWORD",
-        mypy_package_dir="./gcip"
-    ),
+    python.isort(),
+    python.flake8(),
+    python.pytest(),
+    python.evaluate_git_tag_pep404_conformity(),
+    docker.build(repository="thomass/gcip", tag=PredefinedVariables.CI_COMMIT_REF_SLUG),
 )
+
+if PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "master":
+    pipeline.add_children(
+        docker.push(
+            image="thomass/gcip",
+            tag=PredefinedVariables.CI_COMMIT_REF_SLUG,
+            user_env_var="DOCKER_USER",
+            login_env_var="DOCKER_LOGIN",
+        )
+    )
 
 pipeline.write_yaml()

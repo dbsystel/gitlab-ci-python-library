@@ -4,12 +4,10 @@ generate-pipeline:
   image: python:3.9-slim
   script:
     - pip3 install -r requirements.txt
-    - python3 .gitlab-ci.py > generated-config.yml
+    - python3 .gitlab-ci.py
   artifacts:
     paths:
       - generated-config.yml
-  tags:
-    - environment-prd
 
 run-pipeline:
   stage: deploy
