@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /workdir
 
-ENTRYPOINT /usr/src/app/docker/entrypoint.sh
+CMD /usr/src/app/docker/gcip.sh
