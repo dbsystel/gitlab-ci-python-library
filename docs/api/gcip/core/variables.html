@@ -27,7 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import os
-from typing import Any
+from typing import Any, Optional
 
 
 # In Python &gt;= 3.9 it is also possible to use @classmethods and @property
@@ -37,7 +37,7 @@ class EnvProxy():
     def __init__(self, key: str) -&gt; None:
         self.key = key
 
-    def __get__(self, obj: Any, objtype: Any = None) -&gt; str:
+    def __get__(self, obj: Any, objtype: Any = None) -&gt; Optional[str]:
         return os.getenv(self.key)
 
 
@@ -1192,7 +1192,7 @@ class PredefinedVariables():
     def __init__(self, key: str) -&gt; None:
         self.key = key
 
-    def __get__(self, obj: Any, objtype: Any = None) -&gt; str:
+    def __get__(self, obj: Any, objtype: Any = None) -&gt; Optional[str]:
         return os.getenv(self.key)</code></pre>
 </details>
 </dd>

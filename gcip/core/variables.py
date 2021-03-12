@@ -1,5 +1,5 @@
 import os
-from typing import Any
+from typing import Any, Optional
 
 
 # In Python >= 3.9 it is also possible to use @classmethods and @property
@@ -9,7 +9,7 @@ class EnvProxy():
     def __init__(self, key: str) -> None:
         self.key = key
 
-    def __get__(self, obj: Any, objtype: Any = None) -> str:
+    def __get__(self, obj: Any, objtype: Any = None) -> Optional[str]:
         return os.getenv(self.key)
 
 
