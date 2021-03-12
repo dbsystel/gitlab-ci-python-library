@@ -12,7 +12,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = Image("gcr.io/kaniko-project/executor:latest", entrypoint=[""]),
+    gitlab_executor_image: Optional[Union[Image, str]] = Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""]),
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
