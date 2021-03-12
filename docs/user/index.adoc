@@ -17,16 +17,25 @@ For the code documentation please proceed to the xref:./gcip/README.adoc[README.
 
 == Configuring your project to use gcip
 
-Create a `.gitlab-ci.yaml` with following static content:
+Your Gitlab project needs these two files:
+
+____
+MyProject
+├ .gitlab-ci.py
+└ .gitlab-ci.yml
+____
+
+The  `.gitlab-ci.yml` is the file you already know. It's only task is to
+render and trigger the child Pipeline created with the Gitlab CI Python Library.
+Latter is written into the `.gitlab-ci.py`. Here is how your `.gitlab-ci.yml` should
+look like:
 
 ----
 ---
 generate-pipeline:
   stage: build
-  image: python:3
-  script:
-    - pip3 install -r requirements.txt
-    - python3 .gitlab-ci.py > generated-config.yml
+  image: thomass/gcip:0.3.0
+  script: /usr/src/app/docker/gcip.sh
   artifacts:
     paths:
       - generated-config.yml
@@ -42,17 +51,43 @@ run-pipeline:
     strategy: depend
 ----
 
-Your gcip pipeline code then goes into a file named `.gitlab-ci.py`.
+Your gcip pipeline code then goes into the file named `.gitlab-ci.py`. The following
+chapers show to crete the pipeline code.
 
 == Hints regarding the following examples
 
 All the code examples in the following chapters are made for also be run with Pytest.
-Thus to use the code for your real life Gitlab CI pipeline you have to change the following:
+For instance a code example could look like following:
+
+----
+import gcip
+from tests import conftest
+
+
+def test():
+    pipeline = gcip.Pipeline()
+    pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+
+    conftest.check(pipeline.render())
+----
+
+To transform this pytest into a valid `.gitlab-ci.py` file your have to:
 
 * Omit the import `from tests import conftest`.
 * Put your pipeline code plain into the Python script and not within the `def test():` method.
-* Instead of routing the pipeline output to the test method (`conftest.check(pipeline.render())`)
-print the resulting pipeline to STDOUT with `pipeline.print_yaml()`.
+* Instead of testing rendered pipelin with `conftest.check(pipeline.render())` you have to
+  write the `generated-pipeline.yml` with `pipeline.write_yaml()`.
+
+The real `.gitlab-ci.py` code derived from the example would look like following:
+
+----
+from tests import conftest
+
+pipeline = gcip.Pipeline()
+pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+
+pipeline.write_yaml()
+----
 
 == Create a pipeline with one job
 
@@ -64,7 +99,7 @@ include::../../tests/unit/test_readme_pipe_with_one_job.py[]
 ----
 
 Remember: As stated in the <<hints-regarding-the-following-examples,hints regarding the examples>>,
-your real pipeline code must end with `pipeline.print_yaml()` instead of `conftest.check(pipeline.render())`!
+your real pipeline code must end with `pipeline.write_yaml()` instead of `conftest.check(pipeline.render())`!
 
 *Output:*
 
