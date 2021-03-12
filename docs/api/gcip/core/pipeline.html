@@ -30,6 +30,7 @@
 
 from . import OrderedSetType
 from .include import Include
+from .service import Service
 from .job_sequence import JobSequence
 
 __author__ = &#34;Thomas Steinbach&#34;
@@ -56,6 +57,8 @@ class Pipeline(JobSequence):
         .. _Gitlab CI Reference include:
            https://docs.gitlab.com/ee/ci/yaml/#include
         &#34;&#34;&#34;
+        self._services: List[Service] = list()
+
         if not includes:
             self._includes = []
         elif isinstance(includes, Include):
@@ -66,9 +69,14 @@ class Pipeline(JobSequence):
             raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
+    def add_service(self, service: Union[str, Service]):
+        if isinstance(service, str):
+            service = Service(service)
+        self._services.append(service)
+
     def render(self) -&gt; Dict[str, Any]:
         stages: OrderedSetType = {}
-        pipline: Dict[str, Any] = {}
+        pipeline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
 
         for job in job_copies:
@@ -76,12 +84,15 @@ class Pipeline(JobSequence):
             stages[job.stage] = None
 
         if self._includes:
-            pipline[&#34;include&#34;] = [include.render() for include in self._includes]
+            pipeline[&#34;include&#34;] = [include.render() for include in self._includes]
 
-        pipline[&#34;stages&#34;] = list(stages.keys())
+        if self._services:
+            pipeline[&#34;services&#34;] = [service.render() for service in self._services]
+
+        pipeline[&#34;stages&#34;] = list(stages.keys())
         for job in job_copies:
-            pipline[job.name] = job.render()
-        return pipline
+            pipeline[job.name] = job.render()
+        return pipeline
 
     def add_include(self, include: Include) -&gt; None:
         self._includes.append(include)
@@ -143,6 +154,8 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
         .. _Gitlab CI Reference include:
            https://docs.gitlab.com/ee/ci/yaml/#include
         &#34;&#34;&#34;
+        self._services: List[Service] = list()
+
         if not includes:
             self._includes = []
         elif isinstance(includes, Include):
@@ -153,9 +166,14 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
             raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
+    def add_service(self, service: Union[str, Service]):
+        if isinstance(service, str):
+            service = Service(service)
+        self._services.append(service)
+
     def render(self) -&gt; Dict[str, Any]:
         stages: OrderedSetType = {}
-        pipline: Dict[str, Any] = {}
+        pipeline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
 
         for job in job_copies:
@@ -163,12 +181,15 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
             stages[job.stage] = None
 
         if self._includes:
-            pipline[&#34;include&#34;] = [include.render() for include in self._includes]
+            pipeline[&#34;include&#34;] = [include.render() for include in self._includes]
 
-        pipline[&#34;stages&#34;] = list(stages.keys())
+        if self._services:
+            pipeline[&#34;services&#34;] = [service.render() for service in self._services]
+
+        pipeline[&#34;stages&#34;] = list(stages.keys())
         for job in job_copies:
-            pipline[job.name] = job.render()
-        return pipline
+            pipeline[job.name] = job.render()
+        return pipeline
 
     def add_include(self, include: Include) -&gt; None:
         self._includes.append(include)
@@ -201,6 +222,21 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
     self._includes.append(include)</code></pre>
 </details>
 </dd>
+<dt id="gcip.core.pipeline.Pipeline.add_service"><code class="name flex">
+<span>def <span class="ident">add_service</span></span>(<span>self, service: Union[str, <a title="gcip.core.service.Service" href="service.html#gcip.core.service.Service">Service</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_service(self, service: Union[str, Service]):
+    if isinstance(service, str):
+        service = Service(service)
+    self._services.append(service)</code></pre>
+</details>
+</dd>
 <dt id="gcip.core.pipeline.Pipeline.dump_yaml"><code class="name flex">
 <span>def <span class="ident">dump_yaml</span></span>(<span>self) ‑> NoneType</span>
 </code></dt>
@@ -226,7 +262,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 </summary>
 <pre><code class="python">def render(self) -&gt; Dict[str, Any]:
     stages: OrderedSetType = {}
-    pipline: Dict[str, Any] = {}
+    pipeline: Dict[str, Any] = {}
     job_copies = self.populated_jobs
 
     for job in job_copies:
@@ -234,12 +270,15 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
         stages[job.stage] = None
 
     if self._includes:
-        pipline[&#34;include&#34;] = [include.render() for include in self._includes]
+        pipeline[&#34;include&#34;] = [include.render() for include in self._includes]
 
-    pipline[&#34;stages&#34;] = list(stages.keys())
+    if self._services:
+        pipeline[&#34;services&#34;] = [service.render() for service in self._services]
+
+    pipeline[&#34;stages&#34;] = list(stages.keys())
     for job in job_copies:
-        pipline[job.name] = job.render()
-    return pipline</code></pre>
+        pipeline[job.name] = job.render()
+    return pipeline</code></pre>
 </details>
 </dd>
 <dt id="gcip.core.pipeline.Pipeline.write_yaml"><code class="name flex">
@@ -297,6 +336,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <h4><code><a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></code></h4>
 <ul class="">
 <li><code><a title="gcip.core.pipeline.Pipeline.add_include" href="#gcip.core.pipeline.Pipeline.add_include">add_include</a></code></li>
+<li><code><a title="gcip.core.pipeline.Pipeline.add_service" href="#gcip.core.pipeline.Pipeline.add_service">add_service</a></code></li>
 <li><code><a title="gcip.core.pipeline.Pipeline.dump_yaml" href="#gcip.core.pipeline.Pipeline.dump_yaml">dump_yaml</a></code></li>
 <li><code><a title="gcip.core.pipeline.Pipeline.render" href="#gcip.core.pipeline.Pipeline.render">render</a></code></li>
 <li><code><a title="gcip.core.pipeline.Pipeline.write_yaml" href="#gcip.core.pipeline.Pipeline.write_yaml">write_yaml</a></code></li>

@@ -1,6 +1,6 @@
-from typing import Dict, List, Optional
+from typing import Dict, List, Union, Optional
 
-from gcip import Job, PredefinedVariables
+from gcip import Job, Image, PredefinedVariables
 
 __author__ = "Daniel von Eßen"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -12,7 +12,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 def execute(
-    gitlab_executor_image: Optional[str] = "gcr.io/kaniko-project/executor:latest",
+    gitlab_executor_image: Optional[Union[Image, str]] = Image("gcr.io/kaniko-project/executor:latest", entrypoint=[""]),
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
@@ -35,8 +35,8 @@ def execute(
     `my_awsome_feature` the image
 
     Args:
-        gitlab_executor_image (str): The Gitlab executor image this `gcip.core.job.Job` should run with. Must contain the kaniko
-            ```executor``` binary. If set to `None`, no image will be set for this job.
+        gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
+            Must contain the kaniko ```executor``` binary. If set to `None`, no image will be set for this job.
             Defaults to ```gcr.io/kaniko-project/executor:latest```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
