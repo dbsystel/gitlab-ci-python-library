@@ -1,3 +1,5 @@
+"""The core module contains all direct [Gitlab CI keyword](https://docs.gitlab.com/ee/ci/yaml/) representations."""
+
 from typing import Dict
 
 __author__ = "Thomas Steinbach"

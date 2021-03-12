@@ -1,3 +1,6 @@
+"""This module represents the Gitlab CI [cache](https://docs.gitlab.com/ee/ci/yaml/#cache) keyword
+"""
+
 import re
 from enum import Enum
 from typing import Any, Dict, List, Union, Optional
@@ -7,32 +10,46 @@ from gcip.core.variables import PredefinedVariables
 
 
 class CachePolicy(Enum):
-    """Static cache policies.
-    Used to initialize policy in conjunction with Cache object.
+    """This class represents the [cache:policy](https://docs.gitlab.com/ee/ci/yaml/#cachepolicy) keyword.
+
+    The policy determines if a Job can modify the cache or read him only.
     """
+
     PULL_PUSH = "pull-push"
+    """
+    The default behavior of a caching job is to download the files at the start of execution, and to
+    re-upload them at the end. Any changes made by the job are persisted for future runs.
+    """
+
     PULL = "pull"
+    """
+    If you know the job does not alter the cached files, you can skip the upload step by setting this policy in the job specification.
+    """
 
 
 class CacheKey():
+    """This class represents the [cache:key](https://docs.gitlab.com/ee/ci/yaml/#cachekey) keyword.
+
+    Gitlab CI documentation: _"The key keyword defines the affinity of caching between jobs. You can have a single cache for
+    all jobs, cache per-job, cache per-branch, or any other way that fits your workflow."_
+
+    Args:
+        key (Optional[str], optional): The key is the unique id of the cache. `gcip.core.job.Job`s referencing caches with the same key are
+            sharing the cache contents. Mutually exclusive with `files`. Defaults to
+            `gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG` if neither `key` nor `files` is set.
+        files (Optional[list], optional): A set of files is another way to define a caches unique id. Jobs referencing caches with the same
+            set of files are sharing the cache contents. The [cache:key:files](https://docs.gitlab.com/ee/ci/yaml/#cachekeyfiles) keyword
+            extends the cache:key functionality by making it easier to reuse some caches, and rebuild them less often, which speeds up
+            subsequent pipeline runs. Mutually exclusive with `keys`. Defaults to None.
+        prefix (Optional[str], optional): Prefix prefixed given `files` to allow creation of caches for branches. Defaults to None.
+
+    Raises:
+        ValueError: If both `key` and `files` are provided.
+        ValueError: If both `key` and `prefix` are provided.
+        ValueError: If `prefix` but not `files` is provided.
+        ValueError: If `key` is only made out of dots '.'.
+    """
     def __init__(self, key: Optional[str] = None, files: Optional[List[str]] = None, prefix: Optional[str] = None) -> None:
-        """Creates an object which represents an `key` within cache.
-
-        For more information what a `cache` and its `key` is see: https://docs.gitlab.com/ee/ci/yaml/README.html#cachekey
-
-        Args:
-            key (Optional[str], optional): Name of the key, used to share the cache with jobs, exclusive with `files`.
-            Defaults to PredefinedVariables.CI_COMMIT_REF_SLUG() if neither `key` nor `file` is set.
-
-            files (Optional[list], optional): Files which can be used to create the cache key, exclusive to `keys`. Defaults to None.
-            prefix (Optional[str], optional): Prefix prefixed given `files` to allow creation of caches for branches. Defaults to None.
-
-        Raises:
-            ValueError: If `key` and `files` are given at the same time.
-            ValueError: If `key` and `prefix` are given at the same time.
-            ValueError: If `prefix` and not `files` is given.
-            ValueError: If `key` contains only out of dots '.'.
-        """
         self._key = key
         self._files = files
         self._prefix = prefix
@@ -55,32 +72,41 @@ class CacheKey():
 
     @property
     def key(self) -> Optional[str]:
+        """... as originally passed to the __init__-method"""
         return self._key
 
     @property
     def files(self) -> Optional[List[str]]:
+        """... as originally passed to the __init__-method"""
         return self._files
 
     @property
     def prefix(self) -> Optional[str]:
+        """... as originally passed to the __init__-method"""
         return self._prefix
 
     def render(self) -> Union[str, Dict[str, Union[List[str], str]]]:
-        """Renders the class into a python dictionary.
+        """Renders the class as string or dict
 
-        Example1:
-        python```
-        print(CacheKey(key="mycachekey").render())
-            -> 'mycachekey'
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab.ci pipeline.
+
+        `cache:key` example:
+
         ```
-        Example2:
-        python```
+        print(CacheKey(key="mycachekey").render())
+        -> 'mycachekey'
+        ```
+
+        `cache:key:files` example:
+
+        ```
         print(CacheKey(files=["requirements.txt", "setup.py"], prefix="myprefix").render())
-            -> {'files': ['requirements.txt', 'setup.py'], 'prefix': 'myprefix'}
+        -> {'files': ['requirements.txt', 'setup.py'], 'prefix': 'myprefix'}
         ```
 
         Returns:
-            Union[str, Dict[str, Union[List[str], str]]]: Representing a cache object in Gitlab CI.
+            Union[str, Dict[str, Union[List[str], str]]]: A string or dictionary prepresenting the cache object in Gitlab CI.
         """
         rendered: Union[str, Dict[str, Union[List[str], str]]]
         if self._key:
@@ -95,6 +121,24 @@ class CacheKey():
 
 
 class Cache():
+    """This class represents the [cache](https://docs.gitlab.com/ee/ci/yaml/#cache) keyword.
+
+    Gitlab CI documentation: _"Use cache to specify a list of files and directories to cache between `gcip.core.job.Job`s.
+    [...] Caching is shared between `gcip.core.pipeline.Pipeline`s and `gcip.core.job.Job`s. Caches are restored before artifacts."_
+
+    Args:
+        paths List[str]: Paths to create the cache to.
+        cache_key (Optional[CacheKey], optional): Cache key which is used to share the cache.
+            If None, cache_key will be initialized with an empty CacheKey. See class CacheKey
+        untracked (Optional[bool], optional): If true, cache will cache all untracked files within project path. Defaults to None.
+        when (Optional[WhenStatement], optional): Defines when to save the cache, depending on job status.
+            Possible values are WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS Defaults to None.
+        policy (Optional[CachePolicy], optional): There are two policies, pull and push-pull.
+            Use pull policy if you know, that the job does not alter the files within the cache. Defaults to None.
+
+    Raises:
+        ValueError: When unallowed WhenStatements are used.
+    """
     def __init__(
         self,
         paths: List[str],
@@ -103,21 +147,6 @@ class Cache():
         when: Optional[WhenStatement] = None,
         policy: Optional[CachePolicy] = None,
     ) -> None:
-        """Creates
-
-        Args:
-            paths: Paths to create the cache to.
-            cache_key (Optional[CacheKey], optional): Cache key which is used to share the cache.
-            If None, cache_key will be initialized with an empty CacheKey. See class CacheKey
-            untracked (Optional[bool], optional): If true, cache will cache all untracked files within project path. Defaults to None.
-            when (Optional[WhenStatement], optional): Defines when to save the cache, depending on job status.
-            Possible values are WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS Defaults to None.
-            policy (Optional[CachePolicy], optional): There are two policies, pull and push-pull.
-            Use pull policy if you know, that the job does not alter the files within the cache. Defaults to None.
-
-        Raises:
-            ValueError: When unallowed WhenStatements are used.
-        """
         self._paths = []
         self._untracked = untracked
         self._when = when
