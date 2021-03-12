@@ -1,0 +1,1359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>gcip.core.job_sequence API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>gcip.core.job_sequence</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+import copy
+from typing import (
+    Set,
+    Dict,
+    List,
+    Union,
+    Optional,
+    TypedDict,
+)
+
+from . import OrderedSetType
+from .job import Job
+from .need import Need
+from .rule import Rule
+from .cache import Cache
+from .image import Image
+
+__author__ = &#34;Thomas Steinbach&#34;
+__copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
+__credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
+# SPDX-License-Identifier: Apache-2.0
+__license__ = &#39;Apache-2.0&#39;
+__maintainer__ = &#39;Thomas Steinbach&#39;
+__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+
+
+class ChildDict(TypedDict):
+    object: Union[Job, JobSequence]
+    namespace: Optional[str]
+    name: Optional[str]
+
+
+class JobSequence():
+    def __init__(self) -&gt; None:
+        super().__init__()
+        self._children: List[ChildDict] = list()
+        self._image_for_initialization: Optional[Union[Image, str]] = None
+        self._image_for_replacement: Optional[Union[Image, str]] = None
+        self._variables: Dict[str, str] = {}
+        self._variables_for_initialization: Dict[str, str] = {}
+        self._variables_for_replacement: Dict[str, str] = {}
+        self._tags: OrderedSetType = {}
+        self._tags_for_initialization: OrderedSetType = {}
+        self._tags_for_replacement: OrderedSetType = {}
+        self._artifacts_paths: OrderedSetType = {}
+        self._cache: Optional[Cache] = None
+        self._cache_for_initialization: Optional[Cache] = None
+        self._scripts_to_prepend: List[str] = []
+        self._scripts_to_append: List[str] = []
+        self._rules_to_append: List[Rule] = []
+        self._rules_to_prepend: List[Rule] = []
+        self._rules_for_initialization: List[Rule] = []
+        self._rules_for_replacement: List[Rule] = []
+        self._needs: List[Union[Job, Need]] = []
+        self._parents: List[JobSequence] = list()
+
+    def _add_parent(self, parent: JobSequence) -&gt; None:
+        self._parents.append(parent)
+
+    def add_children(
+        self, *jobs_or_sequences: Union[Job, JobSequence], namespace: Optional[str] = None, name: Optional[str] = None
+    ) -&gt; JobSequence:
+        for child in jobs_or_sequences:
+            child._add_parent(self)
+            self._children.append({
+                &#34;object&#34;: child,
+                &#34;namespace&#34;: namespace,
+                &#34;name&#34;: name
+            })
+        return self
+
+    def add_variables(self, **variables: str) -&gt; JobSequence:
+        self._variables.update(variables)
+        return self
+
+    def initialize_variables(self, **variables: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`initialize_tags` but for variales.
+
+        Args:
+            variables (str): A keyword argument list which key-value-pairs will be applied as variable-value-pairs
+                             to all downstream :class:`Job` s without variables already set.
+        &#34;&#34;&#34;
+        self._variables_for_initialization.update(variables)
+        return self
+
+    def override_variables(self, **variables: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`override_tags` but for variables.
+
+        Args:
+            variables (str): A keyword argument list which key-value-pairs will be set as variable-value-pairs
+                             to all downstream :class:`Job` s.
+        &#34;&#34;&#34;
+        self._variables_for_replacement.update(variables)
+        return self
+
+    def set_cache(self, cache: Cache) -&gt; JobSequence:
+        &#34;&#34;&#34;Sets the cache for the corresponding JobSequence.
+        This will override any previously set chaches on this sequence or child sequences/jobs.
+
+        Args:
+            cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+        Returns:
+            JobSequence: Returns the modified Sequence object.
+        &#34;&#34;&#34;
+        self._cache = cache
+        return self
+
+    def initialize_cache(self, cache: Cache) -&gt; JobSequence:
+        &#34;&#34;&#34;Sets the cache of child sequences/jobs only  if not set before.
+
+        Args:
+            cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+        Returns:
+            JobSequence: Returns the modified Sequence object.
+        &#34;&#34;&#34;
+        self._cache_for_initialization = cache
+        return self
+
+    def add_tags(self, *tags: str) -&gt; JobSequence:
+        for tag in tags:
+            self._tags[tag] = None
+        return self
+
+    def initialize_tags(self, *tags: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Adds tags to downstream :class:`Job` s only if they haven&#39;t tags added yet.
+
+        :meth:`initialize_tags` would be extended by :meth:`add_tags` and overridden
+        by :meth:`override_tags` if one of the other methods is called too.
+
+        Args:
+            tags (str): One or more strings that will be applied to :class:`Job` s with empty tag list.
+        &#34;&#34;&#34;
+        for tag in tags:
+            self._tags_for_initialization[tag] = None
+        return self
+
+    def override_tags(self, *tags: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Will replace all tags from downstream :class:`Job` s.
+
+        :meth:`override_tags` will also override tags set by :meth:`initialize_tags`
+        but be extended by :meth:`add_tags` when one of the other methods is called too.
+
+        Args:
+            tags (str): One or more strings that will be set as tags to all downstream :class:`Job` s.
+        &#34;&#34;&#34;
+        for tag in tags:
+            self._tags_for_replacement[tag] = None
+        return self
+
+    def add_artifacts_paths(self, *paths: str) -&gt; JobSequence:
+        for path in paths:
+            self._artifacts_paths[path] = None
+        return self
+
+    def append_rules(self, *rules: Rule) -&gt; JobSequence:
+        self._rules_to_append.extend(rules)
+        return self
+
+    def prepend_rules(self, *rules: Rule) -&gt; JobSequence:
+        self._rules_to_prepend = list(rules) + self._rules_to_prepend
+        return self
+
+    def initialize_rules(self, *rules: Rule) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`initialize_tags` but for rules.
+
+        Args:
+            rules (Rule): A list of :class:`Rule` s that will be applied to :class:`Job` s with empty rules list.
+        &#34;&#34;&#34;
+        self._rules_for_initialization.extend(rules)
+        return self
+
+    def override_rules(self, *rules: Rule) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`override_tags` but for rules.
+
+        Args:
+            rules (Rule): A list of :class:`Rule` s that will be replace all downstream :class:`Job` s rules.
+        &#34;&#34;&#34;
+        self._rules_for_replacement.extend(rules)
+        return self
+
+    def add_needs(self, *needs: Union[Job, Need]) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
+        the same stage.
+        &#34;&#34;&#34;
+        self._needs.extend(needs)
+        return self
+
+    def prepend_scripts(self, *scripts: str) -&gt; JobSequence:
+        self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
+        return self
+
+    def append_scripts(self, *scripts: str) -&gt; JobSequence:
+        self._scripts_to_append.extend(scripts)
+        return self
+
+    def initialize_image(self, image: Union[Image, str]) -&gt; JobSequence:
+        &#34;&#34;&#34;Initializes given `image` to all downstream `Job`s which do not have
+        an `image` set.
+
+        Args:
+            image (Union[Image, str]): The image to set to all downstream :class:`Job`&#39;s.
+
+        Returns:
+            JobSequence: Modified `sequence` object.
+        &#34;&#34;&#34;
+        if image:
+            self._image_for_initialization = image
+        return self
+
+    def override_image(self, image: Union[Image, str]) -&gt; JobSequence:
+        &#34;&#34;&#34;Initializes and override&#39;s `image` to all downstream `Job`s.
+        In consequence, all downstream `Job`s will be started with `image`.
+
+        Args:
+            image (str): The image to set for all downstream :class:`Job`&#39;s.
+
+        Returns:
+            JobSequence: Modified `sequence` object.
+        &#34;&#34;&#34;
+        if image:
+            self._image_for_replacement = image
+        return self
+
+    def _get_all_instance_names(self, child: Union[Job, JobSequence]) -&gt; Set[str]:
+        instance_names: Set[str] = set()
+        for parent in self._parents:
+            instance_names.update(parent._get_all_instance_names(self))
+
+        child_instance_names: Set[str] = set()
+        child_instance_name: str
+        for item in self._children:
+            if item[&#34;object&#34;] == child:
+                if item[&#34;namespace&#34;] is not None:
+                    if item[&#34;name&#34;]:
+                        child_instance_name = f&#34;{item[&#39;namespace&#39;]}-{item[&#39;name&#39;]}&#34;
+                    else:
+                        child_instance_name = item[&#34;namespace&#34;]
+                elif item[&#34;name&#34;] is not None:
+                    child_instance_name = item[&#34;name&#34;]
+                else:
+                    child_instance_name = &#34;#unset#&#34;
+
+                # all job names have &#39;-&#39; instead of &#39;_&#39;
+                child_instance_names.add(child_instance_name.replace(&#34;_&#34;, &#34;-&#34;))
+
+        return_values: Set[str] = set()
+        # add instane names of this sequence to all instance
+        # names of its children
+        if instance_names:
+            for child_instance_name in child_instance_names:
+                for instance_name in instance_names:
+                    return_values.add(f&#34;{child_instance_name}-{instance_name}&#34;)
+        else:
+            return_values = child_instance_names
+
+        return return_values
+
+    @property
+    def last_jobs_executed(self) -&gt; List[Job]:
+        all_jobs = self.populated_jobs
+        stages: Dict[str, None] = {}
+        for job in all_jobs:
+            # use the keys of dictionary as ordered set
+            stages[job.stage] = None
+
+        last_stage = list(stages.keys())[-1]
+        last_executed_jobs: List[Job] = list()
+        for job in all_jobs:
+            if job._stage == last_stage:
+                if job._original:
+                    last_executed_jobs.append(job._original)
+                else:
+                    raise AttributeError(&#34;job._original is None, because the job is not a copy of another job&#34;)
+
+        return last_executed_jobs
+
+    @property
+    def populated_jobs(self) -&gt; List[Job]:
+        all_jobs: List[Job] = []
+        for child in self._children:
+            if isinstance(child[&#34;object&#34;], JobSequence):
+                for job_copy in child[&#34;object&#34;].populated_jobs:
+                    job_copy._extend_namespace(child[&#34;namespace&#34;])
+                    job_copy._extend_name(child[&#34;name&#34;])
+                    all_jobs.append(job_copy)
+            elif isinstance(child[&#34;object&#34;], Job):
+                job_copy = child[&#34;object&#34;].copy()
+                job_copy._extend_namespace(child[&#34;namespace&#34;])
+                job_copy._extend_name(child[&#34;name&#34;])
+                all_jobs.append(job_copy)
+
+        if len(all_jobs) &gt; 0:
+            first_job = all_jobs[0]
+            first_job.add_needs(*self._needs)
+            for job in all_jobs[1:]:
+                if job._stage == first_job.stage:
+                    job.add_needs(*self._needs)
+
+        for job in all_jobs:
+
+            if self._image_for_initialization and not job._image:
+                job.set_image(self._image_for_initialization)
+            if self._image_for_replacement:
+                job.set_image(self._image_for_replacement)
+
+            if self._variables_for_initialization and not job._variables:
+                job._variables = copy.deepcopy(self._variables_for_initialization)
+            if self._variables_for_replacement:
+                job._variables = copy.deepcopy(self._variables_for_replacement)
+            job.add_variables(**copy.deepcopy(self._variables))
+
+            if self._cache_for_initialization and not job._cache:
+                job._cache = copy.deepcopy(self._cache_for_initialization)
+            job.set_cache(copy.deepcopy(self._cache))
+
+            if self._tags_for_initialization and not job._tags:
+                job._tags = copy.deepcopy(self._tags_for_initialization)
+            if self._tags_for_replacement:
+                job._tags = copy.deepcopy(self._tags_for_replacement)
+            job.add_tags(*list(self._tags.keys()))
+
+            job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+
+            if self._rules_for_initialization and not job._rules:
+                job._rules = copy.deepcopy(self._rules_for_initialization)
+            if self._rules_for_replacement:
+                job._rules = copy.deepcopy(self._rules_for_replacement)
+            job.append_rules(*self._rules_to_append)
+            job.prepend_rules(*self._rules_to_prepend)
+
+            job.prepend_scripts(*self._scripts_to_prepend)
+            job.append_scripts(*self._scripts_to_append)
+
+        return all_jobs</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="gcip.core.job_sequence.ChildDict"><code class="flex name class">
+<span>class <span class="ident">ChildDict</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChildDict(TypedDict):
+    object: Union[Job, JobSequence]
+    namespace: Optional[str]
+    name: Optional[str]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="gcip.core.job_sequence.ChildDict.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="gcip.core.job_sequence.ChildDict.namespace"><code class="name">var <span class="ident">namespace</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="gcip.core.job_sequence.ChildDict.object"><code class="name">var <span class="ident">object</span> : Union[<a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a>, <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence"><code class="flex name class">
+<span>class <span class="ident">JobSequence</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JobSequence():
+    def __init__(self) -&gt; None:
+        super().__init__()
+        self._children: List[ChildDict] = list()
+        self._image_for_initialization: Optional[Union[Image, str]] = None
+        self._image_for_replacement: Optional[Union[Image, str]] = None
+        self._variables: Dict[str, str] = {}
+        self._variables_for_initialization: Dict[str, str] = {}
+        self._variables_for_replacement: Dict[str, str] = {}
+        self._tags: OrderedSetType = {}
+        self._tags_for_initialization: OrderedSetType = {}
+        self._tags_for_replacement: OrderedSetType = {}
+        self._artifacts_paths: OrderedSetType = {}
+        self._cache: Optional[Cache] = None
+        self._cache_for_initialization: Optional[Cache] = None
+        self._scripts_to_prepend: List[str] = []
+        self._scripts_to_append: List[str] = []
+        self._rules_to_append: List[Rule] = []
+        self._rules_to_prepend: List[Rule] = []
+        self._rules_for_initialization: List[Rule] = []
+        self._rules_for_replacement: List[Rule] = []
+        self._needs: List[Union[Job, Need]] = []
+        self._parents: List[JobSequence] = list()
+
+    def _add_parent(self, parent: JobSequence) -&gt; None:
+        self._parents.append(parent)
+
+    def add_children(
+        self, *jobs_or_sequences: Union[Job, JobSequence], namespace: Optional[str] = None, name: Optional[str] = None
+    ) -&gt; JobSequence:
+        for child in jobs_or_sequences:
+            child._add_parent(self)
+            self._children.append({
+                &#34;object&#34;: child,
+                &#34;namespace&#34;: namespace,
+                &#34;name&#34;: name
+            })
+        return self
+
+    def add_variables(self, **variables: str) -&gt; JobSequence:
+        self._variables.update(variables)
+        return self
+
+    def initialize_variables(self, **variables: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`initialize_tags` but for variales.
+
+        Args:
+            variables (str): A keyword argument list which key-value-pairs will be applied as variable-value-pairs
+                             to all downstream :class:`Job` s without variables already set.
+        &#34;&#34;&#34;
+        self._variables_for_initialization.update(variables)
+        return self
+
+    def override_variables(self, **variables: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`override_tags` but for variables.
+
+        Args:
+            variables (str): A keyword argument list which key-value-pairs will be set as variable-value-pairs
+                             to all downstream :class:`Job` s.
+        &#34;&#34;&#34;
+        self._variables_for_replacement.update(variables)
+        return self
+
+    def set_cache(self, cache: Cache) -&gt; JobSequence:
+        &#34;&#34;&#34;Sets the cache for the corresponding JobSequence.
+        This will override any previously set chaches on this sequence or child sequences/jobs.
+
+        Args:
+            cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+        Returns:
+            JobSequence: Returns the modified Sequence object.
+        &#34;&#34;&#34;
+        self._cache = cache
+        return self
+
+    def initialize_cache(self, cache: Cache) -&gt; JobSequence:
+        &#34;&#34;&#34;Sets the cache of child sequences/jobs only  if not set before.
+
+        Args:
+            cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+        Returns:
+            JobSequence: Returns the modified Sequence object.
+        &#34;&#34;&#34;
+        self._cache_for_initialization = cache
+        return self
+
+    def add_tags(self, *tags: str) -&gt; JobSequence:
+        for tag in tags:
+            self._tags[tag] = None
+        return self
+
+    def initialize_tags(self, *tags: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Adds tags to downstream :class:`Job` s only if they haven&#39;t tags added yet.
+
+        :meth:`initialize_tags` would be extended by :meth:`add_tags` and overridden
+        by :meth:`override_tags` if one of the other methods is called too.
+
+        Args:
+            tags (str): One or more strings that will be applied to :class:`Job` s with empty tag list.
+        &#34;&#34;&#34;
+        for tag in tags:
+            self._tags_for_initialization[tag] = None
+        return self
+
+    def override_tags(self, *tags: str) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Will replace all tags from downstream :class:`Job` s.
+
+        :meth:`override_tags` will also override tags set by :meth:`initialize_tags`
+        but be extended by :meth:`add_tags` when one of the other methods is called too.
+
+        Args:
+            tags (str): One or more strings that will be set as tags to all downstream :class:`Job` s.
+        &#34;&#34;&#34;
+        for tag in tags:
+            self._tags_for_replacement[tag] = None
+        return self
+
+    def add_artifacts_paths(self, *paths: str) -&gt; JobSequence:
+        for path in paths:
+            self._artifacts_paths[path] = None
+        return self
+
+    def append_rules(self, *rules: Rule) -&gt; JobSequence:
+        self._rules_to_append.extend(rules)
+        return self
+
+    def prepend_rules(self, *rules: Rule) -&gt; JobSequence:
+        self._rules_to_prepend = list(rules) + self._rules_to_prepend
+        return self
+
+    def initialize_rules(self, *rules: Rule) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`initialize_tags` but for rules.
+
+        Args:
+            rules (Rule): A list of :class:`Rule` s that will be applied to :class:`Job` s with empty rules list.
+        &#34;&#34;&#34;
+        self._rules_for_initialization.extend(rules)
+        return self
+
+    def override_rules(self, *rules: Rule) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Works like :meth:`override_tags` but for rules.
+
+        Args:
+            rules (Rule): A list of :class:`Rule` s that will be replace all downstream :class:`Job` s rules.
+        &#34;&#34;&#34;
+        self._rules_for_replacement.extend(rules)
+        return self
+
+    def add_needs(self, *needs: Union[Job, Need]) -&gt; JobSequence:
+        &#34;&#34;&#34;
+        Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
+        the same stage.
+        &#34;&#34;&#34;
+        self._needs.extend(needs)
+        return self
+
+    def prepend_scripts(self, *scripts: str) -&gt; JobSequence:
+        self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
+        return self
+
+    def append_scripts(self, *scripts: str) -&gt; JobSequence:
+        self._scripts_to_append.extend(scripts)
+        return self
+
+    def initialize_image(self, image: Union[Image, str]) -&gt; JobSequence:
+        &#34;&#34;&#34;Initializes given `image` to all downstream `Job`s which do not have
+        an `image` set.
+
+        Args:
+            image (Union[Image, str]): The image to set to all downstream :class:`Job`&#39;s.
+
+        Returns:
+            JobSequence: Modified `sequence` object.
+        &#34;&#34;&#34;
+        if image:
+            self._image_for_initialization = image
+        return self
+
+    def override_image(self, image: Union[Image, str]) -&gt; JobSequence:
+        &#34;&#34;&#34;Initializes and override&#39;s `image` to all downstream `Job`s.
+        In consequence, all downstream `Job`s will be started with `image`.
+
+        Args:
+            image (str): The image to set for all downstream :class:`Job`&#39;s.
+
+        Returns:
+            JobSequence: Modified `sequence` object.
+        &#34;&#34;&#34;
+        if image:
+            self._image_for_replacement = image
+        return self
+
+    def _get_all_instance_names(self, child: Union[Job, JobSequence]) -&gt; Set[str]:
+        instance_names: Set[str] = set()
+        for parent in self._parents:
+            instance_names.update(parent._get_all_instance_names(self))
+
+        child_instance_names: Set[str] = set()
+        child_instance_name: str
+        for item in self._children:
+            if item[&#34;object&#34;] == child:
+                if item[&#34;namespace&#34;] is not None:
+                    if item[&#34;name&#34;]:
+                        child_instance_name = f&#34;{item[&#39;namespace&#39;]}-{item[&#39;name&#39;]}&#34;
+                    else:
+                        child_instance_name = item[&#34;namespace&#34;]
+                elif item[&#34;name&#34;] is not None:
+                    child_instance_name = item[&#34;name&#34;]
+                else:
+                    child_instance_name = &#34;#unset#&#34;
+
+                # all job names have &#39;-&#39; instead of &#39;_&#39;
+                child_instance_names.add(child_instance_name.replace(&#34;_&#34;, &#34;-&#34;))
+
+        return_values: Set[str] = set()
+        # add instane names of this sequence to all instance
+        # names of its children
+        if instance_names:
+            for child_instance_name in child_instance_names:
+                for instance_name in instance_names:
+                    return_values.add(f&#34;{child_instance_name}-{instance_name}&#34;)
+        else:
+            return_values = child_instance_names
+
+        return return_values
+
+    @property
+    def last_jobs_executed(self) -&gt; List[Job]:
+        all_jobs = self.populated_jobs
+        stages: Dict[str, None] = {}
+        for job in all_jobs:
+            # use the keys of dictionary as ordered set
+            stages[job.stage] = None
+
+        last_stage = list(stages.keys())[-1]
+        last_executed_jobs: List[Job] = list()
+        for job in all_jobs:
+            if job._stage == last_stage:
+                if job._original:
+                    last_executed_jobs.append(job._original)
+                else:
+                    raise AttributeError(&#34;job._original is None, because the job is not a copy of another job&#34;)
+
+        return last_executed_jobs
+
+    @property
+    def populated_jobs(self) -&gt; List[Job]:
+        all_jobs: List[Job] = []
+        for child in self._children:
+            if isinstance(child[&#34;object&#34;], JobSequence):
+                for job_copy in child[&#34;object&#34;].populated_jobs:
+                    job_copy._extend_namespace(child[&#34;namespace&#34;])
+                    job_copy._extend_name(child[&#34;name&#34;])
+                    all_jobs.append(job_copy)
+            elif isinstance(child[&#34;object&#34;], Job):
+                job_copy = child[&#34;object&#34;].copy()
+                job_copy._extend_namespace(child[&#34;namespace&#34;])
+                job_copy._extend_name(child[&#34;name&#34;])
+                all_jobs.append(job_copy)
+
+        if len(all_jobs) &gt; 0:
+            first_job = all_jobs[0]
+            first_job.add_needs(*self._needs)
+            for job in all_jobs[1:]:
+                if job._stage == first_job.stage:
+                    job.add_needs(*self._needs)
+
+        for job in all_jobs:
+
+            if self._image_for_initialization and not job._image:
+                job.set_image(self._image_for_initialization)
+            if self._image_for_replacement:
+                job.set_image(self._image_for_replacement)
+
+            if self._variables_for_initialization and not job._variables:
+                job._variables = copy.deepcopy(self._variables_for_initialization)
+            if self._variables_for_replacement:
+                job._variables = copy.deepcopy(self._variables_for_replacement)
+            job.add_variables(**copy.deepcopy(self._variables))
+
+            if self._cache_for_initialization and not job._cache:
+                job._cache = copy.deepcopy(self._cache_for_initialization)
+            job.set_cache(copy.deepcopy(self._cache))
+
+            if self._tags_for_initialization and not job._tags:
+                job._tags = copy.deepcopy(self._tags_for_initialization)
+            if self._tags_for_replacement:
+                job._tags = copy.deepcopy(self._tags_for_replacement)
+            job.add_tags(*list(self._tags.keys()))
+
+            job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+
+            if self._rules_for_initialization and not job._rules:
+                job._rules = copy.deepcopy(self._rules_for_initialization)
+            if self._rules_for_replacement:
+                job._rules = copy.deepcopy(self._rules_for_replacement)
+            job.append_rules(*self._rules_to_append)
+            job.prepend_rules(*self._rules_to_prepend)
+
+            job.prepend_scripts(*self._scripts_to_prepend)
+            job.append_scripts(*self._scripts_to_append)
+
+        return all_jobs</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="gcip.core.pipeline.Pipeline" href="pipeline.html#gcip.core.pipeline.Pipeline">Pipeline</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="gcip.core.job_sequence.JobSequence.last_jobs_executed"><code class="name">var <span class="ident">last_jobs_executed</span> : List[<a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def last_jobs_executed(self) -&gt; List[Job]:
+    all_jobs = self.populated_jobs
+    stages: Dict[str, None] = {}
+    for job in all_jobs:
+        # use the keys of dictionary as ordered set
+        stages[job.stage] = None
+
+    last_stage = list(stages.keys())[-1]
+    last_executed_jobs: List[Job] = list()
+    for job in all_jobs:
+        if job._stage == last_stage:
+            if job._original:
+                last_executed_jobs.append(job._original)
+            else:
+                raise AttributeError(&#34;job._original is None, because the job is not a copy of another job&#34;)
+
+    return last_executed_jobs</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.populated_jobs"><code class="name">var <span class="ident">populated_jobs</span> : List[<a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def populated_jobs(self) -&gt; List[Job]:
+    all_jobs: List[Job] = []
+    for child in self._children:
+        if isinstance(child[&#34;object&#34;], JobSequence):
+            for job_copy in child[&#34;object&#34;].populated_jobs:
+                job_copy._extend_namespace(child[&#34;namespace&#34;])
+                job_copy._extend_name(child[&#34;name&#34;])
+                all_jobs.append(job_copy)
+        elif isinstance(child[&#34;object&#34;], Job):
+            job_copy = child[&#34;object&#34;].copy()
+            job_copy._extend_namespace(child[&#34;namespace&#34;])
+            job_copy._extend_name(child[&#34;name&#34;])
+            all_jobs.append(job_copy)
+
+    if len(all_jobs) &gt; 0:
+        first_job = all_jobs[0]
+        first_job.add_needs(*self._needs)
+        for job in all_jobs[1:]:
+            if job._stage == first_job.stage:
+                job.add_needs(*self._needs)
+
+    for job in all_jobs:
+
+        if self._image_for_initialization and not job._image:
+            job.set_image(self._image_for_initialization)
+        if self._image_for_replacement:
+            job.set_image(self._image_for_replacement)
+
+        if self._variables_for_initialization and not job._variables:
+            job._variables = copy.deepcopy(self._variables_for_initialization)
+        if self._variables_for_replacement:
+            job._variables = copy.deepcopy(self._variables_for_replacement)
+        job.add_variables(**copy.deepcopy(self._variables))
+
+        if self._cache_for_initialization and not job._cache:
+            job._cache = copy.deepcopy(self._cache_for_initialization)
+        job.set_cache(copy.deepcopy(self._cache))
+
+        if self._tags_for_initialization and not job._tags:
+            job._tags = copy.deepcopy(self._tags_for_initialization)
+        if self._tags_for_replacement:
+            job._tags = copy.deepcopy(self._tags_for_replacement)
+        job.add_tags(*list(self._tags.keys()))
+
+        job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
+
+        if self._rules_for_initialization and not job._rules:
+            job._rules = copy.deepcopy(self._rules_for_initialization)
+        if self._rules_for_replacement:
+            job._rules = copy.deepcopy(self._rules_for_replacement)
+        job.append_rules(*self._rules_to_append)
+        job.prepend_rules(*self._rules_to_prepend)
+
+        job.prepend_scripts(*self._scripts_to_prepend)
+        job.append_scripts(*self._scripts_to_append)
+
+    return all_jobs</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="gcip.core.job_sequence.JobSequence.add_artifacts_paths"><code class="name flex">
+<span>def <span class="ident">add_artifacts_paths</span></span>(<span>self, *paths: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_artifacts_paths(self, *paths: str) -&gt; JobSequence:
+    for path in paths:
+        self._artifacts_paths[path] = None
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.add_children"><code class="name flex">
+<span>def <span class="ident">add_children</span></span>(<span>self, *jobs_or_sequences: Union[Job, <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a>], namespace: Optional[str] = None, name: Optional[str] = None) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_children(
+    self, *jobs_or_sequences: Union[Job, JobSequence], namespace: Optional[str] = None, name: Optional[str] = None
+) -&gt; JobSequence:
+    for child in jobs_or_sequences:
+        child._add_parent(self)
+        self._children.append({
+            &#34;object&#34;: child,
+            &#34;namespace&#34;: namespace,
+            &#34;name&#34;: name
+        })
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.add_needs"><code class="name flex">
+<span>def <span class="ident">add_needs</span></span>(<span>self, *needs: Union[Job, Need]) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Only the first job of the sequence get the <code>need</code> appended to, as well as all following jobs with
+the same stage.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_needs(self, *needs: Union[Job, Need]) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
+    the same stage.
+    &#34;&#34;&#34;
+    self._needs.extend(needs)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.add_tags"><code class="name flex">
+<span>def <span class="ident">add_tags</span></span>(<span>self, *tags: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_tags(self, *tags: str) -&gt; JobSequence:
+    for tag in tags:
+        self._tags[tag] = None
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.add_variables"><code class="name flex">
+<span>def <span class="ident">add_variables</span></span>(<span>self, **variables: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_variables(self, **variables: str) -&gt; JobSequence:
+    self._variables.update(variables)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.append_rules"><code class="name flex">
+<span>def <span class="ident">append_rules</span></span>(<span>self, *rules: Rule) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_rules(self, *rules: Rule) -&gt; JobSequence:
+    self._rules_to_append.extend(rules)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.append_scripts"><code class="name flex">
+<span>def <span class="ident">append_scripts</span></span>(<span>self, *scripts: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_scripts(self, *scripts: str) -&gt; JobSequence:
+    self._scripts_to_append.extend(scripts)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.initialize_cache"><code class="name flex">
+<span>def <span class="ident">initialize_cache</span></span>(<span>self, cache: Cache) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the cache of child sequences/jobs only
+if not set before.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cache</code></strong> :&ensp;<code>Cache</code></dt>
+<dd>Cache to use for the JobSequence and its Jobs.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></code></dt>
+<dd>Returns the modified Sequence object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_cache(self, cache: Cache) -&gt; JobSequence:
+    &#34;&#34;&#34;Sets the cache of child sequences/jobs only  if not set before.
+
+    Args:
+        cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+    Returns:
+        JobSequence: Returns the modified Sequence object.
+    &#34;&#34;&#34;
+    self._cache_for_initialization = cache
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.initialize_image"><code class="name flex">
+<span>def <span class="ident">initialize_image</span></span>(<span>self, image: Union[Image, str]) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initializes given <code>image</code> to all downstream <code>Job</code>s which do not have
+an <code>image</code> set.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>image</code></strong> :&ensp;<code>Union[Image, str]</code></dt>
+<dd>The image to set to all downstream :class:<code>Job</code>'s.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></code></dt>
+<dd>Modified <code>sequence</code> object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_image(self, image: Union[Image, str]) -&gt; JobSequence:
+    &#34;&#34;&#34;Initializes given `image` to all downstream `Job`s which do not have
+    an `image` set.
+
+    Args:
+        image (Union[Image, str]): The image to set to all downstream :class:`Job`&#39;s.
+
+    Returns:
+        JobSequence: Modified `sequence` object.
+    &#34;&#34;&#34;
+    if image:
+        self._image_for_initialization = image
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.initialize_rules"><code class="name flex">
+<span>def <span class="ident">initialize_rules</span></span>(<span>self, *rules: Rule) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Works like :meth:<code>initialize_tags</code> but for rules.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rules</code></strong> :&ensp;<code>Rule</code></dt>
+<dd>A list of :class:<code>Rule</code> s that will be applied to :class:<code>Job</code> s with empty rules list.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_rules(self, *rules: Rule) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Works like :meth:`initialize_tags` but for rules.
+
+    Args:
+        rules (Rule): A list of :class:`Rule` s that will be applied to :class:`Job` s with empty rules list.
+    &#34;&#34;&#34;
+    self._rules_for_initialization.extend(rules)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.initialize_tags"><code class="name flex">
+<span>def <span class="ident">initialize_tags</span></span>(<span>self, *tags: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds tags to downstream :class:<code>Job</code> s only if they haven't tags added yet.</p>
+<p>:meth:<code>initialize_tags</code> would be extended by :meth:<code>add_tags</code> and overridden
+by :meth:<code>override_tags</code> if one of the other methods is called too.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>tags</code></strong> :&ensp;<code>str</code></dt>
+<dd>One or more strings that will be applied to :class:<code>Job</code> s with empty tag list.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_tags(self, *tags: str) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Adds tags to downstream :class:`Job` s only if they haven&#39;t tags added yet.
+
+    :meth:`initialize_tags` would be extended by :meth:`add_tags` and overridden
+    by :meth:`override_tags` if one of the other methods is called too.
+
+    Args:
+        tags (str): One or more strings that will be applied to :class:`Job` s with empty tag list.
+    &#34;&#34;&#34;
+    for tag in tags:
+        self._tags_for_initialization[tag] = None
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.initialize_variables"><code class="name flex">
+<span>def <span class="ident">initialize_variables</span></span>(<span>self, **variables: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Works like :meth:<code>initialize_tags</code> but for variales.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>variables</code></strong> :&ensp;<code>str</code></dt>
+<dd>A keyword argument list which key-value-pairs will be applied as variable-value-pairs
+to all downstream :class:<code>Job</code> s without variables already set.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initialize_variables(self, **variables: str) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Works like :meth:`initialize_tags` but for variales.
+
+    Args:
+        variables (str): A keyword argument list which key-value-pairs will be applied as variable-value-pairs
+                         to all downstream :class:`Job` s without variables already set.
+    &#34;&#34;&#34;
+    self._variables_for_initialization.update(variables)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.override_image"><code class="name flex">
+<span>def <span class="ident">override_image</span></span>(<span>self, image: Union[Image, str]) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Initializes and override's <code>image</code> to all downstream <code>Job</code>s.
+In consequence, all downstream <code>Job</code>s will be started with <code>image</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>image</code></strong> :&ensp;<code>str</code></dt>
+<dd>The image to set for all downstream :class:<code>Job</code>'s.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></code></dt>
+<dd>Modified <code>sequence</code> object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def override_image(self, image: Union[Image, str]) -&gt; JobSequence:
+    &#34;&#34;&#34;Initializes and override&#39;s `image` to all downstream `Job`s.
+    In consequence, all downstream `Job`s will be started with `image`.
+
+    Args:
+        image (str): The image to set for all downstream :class:`Job`&#39;s.
+
+    Returns:
+        JobSequence: Modified `sequence` object.
+    &#34;&#34;&#34;
+    if image:
+        self._image_for_replacement = image
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.override_rules"><code class="name flex">
+<span>def <span class="ident">override_rules</span></span>(<span>self, *rules: Rule) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Works like :meth:<code>override_tags</code> but for rules.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rules</code></strong> :&ensp;<code>Rule</code></dt>
+<dd>A list of :class:<code>Rule</code> s that will be replace all downstream :class:<code>Job</code> s rules.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def override_rules(self, *rules: Rule) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Works like :meth:`override_tags` but for rules.
+
+    Args:
+        rules (Rule): A list of :class:`Rule` s that will be replace all downstream :class:`Job` s rules.
+    &#34;&#34;&#34;
+    self._rules_for_replacement.extend(rules)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.override_tags"><code class="name flex">
+<span>def <span class="ident">override_tags</span></span>(<span>self, *tags: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Will replace all tags from downstream :class:<code>Job</code> s.</p>
+<p>:meth:<code>override_tags</code> will also override tags set by :meth:<code>initialize_tags</code>
+but be extended by :meth:<code>add_tags</code> when one of the other methods is called too.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>tags</code></strong> :&ensp;<code>str</code></dt>
+<dd>One or more strings that will be set as tags to all downstream :class:<code>Job</code> s.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def override_tags(self, *tags: str) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Will replace all tags from downstream :class:`Job` s.
+
+    :meth:`override_tags` will also override tags set by :meth:`initialize_tags`
+    but be extended by :meth:`add_tags` when one of the other methods is called too.
+
+    Args:
+        tags (str): One or more strings that will be set as tags to all downstream :class:`Job` s.
+    &#34;&#34;&#34;
+    for tag in tags:
+        self._tags_for_replacement[tag] = None
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.override_variables"><code class="name flex">
+<span>def <span class="ident">override_variables</span></span>(<span>self, **variables: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Works like :meth:<code>override_tags</code> but for variables.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>variables</code></strong> :&ensp;<code>str</code></dt>
+<dd>A keyword argument list which key-value-pairs will be set as variable-value-pairs
+to all downstream :class:<code>Job</code> s.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def override_variables(self, **variables: str) -&gt; JobSequence:
+    &#34;&#34;&#34;
+    Works like :meth:`override_tags` but for variables.
+
+    Args:
+        variables (str): A keyword argument list which key-value-pairs will be set as variable-value-pairs
+                         to all downstream :class:`Job` s.
+    &#34;&#34;&#34;
+    self._variables_for_replacement.update(variables)
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.prepend_rules"><code class="name flex">
+<span>def <span class="ident">prepend_rules</span></span>(<span>self, *rules: Rule) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepend_rules(self, *rules: Rule) -&gt; JobSequence:
+    self._rules_to_prepend = list(rules) + self._rules_to_prepend
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.prepend_scripts"><code class="name flex">
+<span>def <span class="ident">prepend_scripts</span></span>(<span>self, *scripts: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepend_scripts(self, *scripts: str) -&gt; JobSequence:
+    self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
+    return self</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job_sequence.JobSequence.set_cache"><code class="name flex">
+<span>def <span class="ident">set_cache</span></span>(<span>self, cache: Cache) ‑> <a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the cache for the corresponding JobSequence.
+This will override any previously set chaches on this sequence or child sequences/jobs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cache</code></strong> :&ensp;<code>Cache</code></dt>
+<dd>Cache to use for the JobSequence and its Jobs.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></code></dt>
+<dd>Returns the modified Sequence object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cache(self, cache: Cache) -&gt; JobSequence:
+    &#34;&#34;&#34;Sets the cache for the corresponding JobSequence.
+    This will override any previously set chaches on this sequence or child sequences/jobs.
+
+    Args:
+        cache (Cache): Cache to use for the JobSequence and its Jobs.
+
+    Returns:
+        JobSequence: Returns the modified Sequence object.
+    &#34;&#34;&#34;
+    self._cache = cache
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="gcip.core" href="index.html">gcip.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="gcip.core.job_sequence.ChildDict" href="#gcip.core.job_sequence.ChildDict">ChildDict</a></code></h4>
+<ul class="">
+<li><code><a title="gcip.core.job_sequence.ChildDict.name" href="#gcip.core.job_sequence.ChildDict.name">name</a></code></li>
+<li><code><a title="gcip.core.job_sequence.ChildDict.namespace" href="#gcip.core.job_sequence.ChildDict.namespace">namespace</a></code></li>
+<li><code><a title="gcip.core.job_sequence.ChildDict.object" href="#gcip.core.job_sequence.ChildDict.object">object</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="gcip.core.job_sequence.JobSequence" href="#gcip.core.job_sequence.JobSequence">JobSequence</a></code></h4>
+<ul class="">
+<li><code><a title="gcip.core.job_sequence.JobSequence.add_artifacts_paths" href="#gcip.core.job_sequence.JobSequence.add_artifacts_paths">add_artifacts_paths</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.add_children" href="#gcip.core.job_sequence.JobSequence.add_children">add_children</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.add_needs" href="#gcip.core.job_sequence.JobSequence.add_needs">add_needs</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.add_tags" href="#gcip.core.job_sequence.JobSequence.add_tags">add_tags</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.add_variables" href="#gcip.core.job_sequence.JobSequence.add_variables">add_variables</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.append_rules" href="#gcip.core.job_sequence.JobSequence.append_rules">append_rules</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.append_scripts" href="#gcip.core.job_sequence.JobSequence.append_scripts">append_scripts</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_cache" href="#gcip.core.job_sequence.JobSequence.initialize_cache">initialize_cache</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_image" href="#gcip.core.job_sequence.JobSequence.initialize_image">initialize_image</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_rules" href="#gcip.core.job_sequence.JobSequence.initialize_rules">initialize_rules</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_tags" href="#gcip.core.job_sequence.JobSequence.initialize_tags">initialize_tags</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_variables" href="#gcip.core.job_sequence.JobSequence.initialize_variables">initialize_variables</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.last_jobs_executed" href="#gcip.core.job_sequence.JobSequence.last_jobs_executed">last_jobs_executed</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_image" href="#gcip.core.job_sequence.JobSequence.override_image">override_image</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_rules" href="#gcip.core.job_sequence.JobSequence.override_rules">override_rules</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_tags" href="#gcip.core.job_sequence.JobSequence.override_tags">override_tags</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_variables" href="#gcip.core.job_sequence.JobSequence.override_variables">override_variables</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.populated_jobs" href="#gcip.core.job_sequence.JobSequence.populated_jobs">populated_jobs</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.prepend_rules" href="#gcip.core.job_sequence.JobSequence.prepend_rules">prepend_rules</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.prepend_scripts" href="#gcip.core.job_sequence.JobSequence.prepend_scripts">prepend_scripts</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.set_cache" href="#gcip.core.job_sequence.JobSequence.set_cache">set_cache</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
