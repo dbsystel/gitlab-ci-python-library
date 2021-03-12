@@ -40,7 +40,7 @@ __email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
 def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:latest&#34;, entrypoint=[&#34;&#34;]),
+    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;]),
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
@@ -116,6 +116,9 @@ def execute(
 
     executor_cmd: List[str] = [&#34;executor&#34;]
 
+    if not context and PredefinedVariables.CI_PROJECT_DIR:
+        context = PredefinedVariables.CI_PROJECT_DIR
+
     if context:
         if context.endswith(&#34;/&#34;):
             context = context[:-1]
@@ -129,6 +132,9 @@ def execute(
 
     if verbosity:
         executor_cmd.append(f&#34;--verbosity {verbosity}&#34;)
+
+    if not dockerfile and PredefinedVariables.CI_PROJECT_DIR:
+        dockerfile = f&#34;{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile&#34;
 
     if dockerfile:
         executor_cmd.append(f&#34;--dockerfile {dockerfile}&#34;)
@@ -163,11 +169,9 @@ def execute(
         job.prepend_scripts(&#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;credsStore\\&#34;:\\&#34;ecr-login\\&#34;}&#34; &gt; /kaniko/.docker/config.json&#39;)
 
     if dockerhub_user_env_var and dockerhub_login_env_var:
-        # auth=$(echo &#34;$DOCKER_USER:$DOCKER_LOGIN&#34; | base64)
-        auth = f&#39;$(echo &#34;${dockerhub_user_env_var}:${dockerhub_login_env_var}&#34; | base64)&#39;
         job.prepend_scripts(
-            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;auth\\&#34;:\\&#34;&#39; + auth +
-            &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
+            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;username\\&#34;:\\&#34;$&#39; +
+            dockerhub_user_env_var + &#39;\\&#34;,\\&#34;password\\&#34;:\\&#34;$&#39; + dockerhub_login_env_var + &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
         )
 
     job.append_scripts(&#34; &#34;.join(executor_cmd), &#34;rm -rf /kaniko/.docker/config.json&#34;)
@@ -249,7 +253,7 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:latest&#34;, entrypoint=[&#34;&#34;]),
+    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;]),
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
@@ -325,6 +329,9 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
 
     executor_cmd: List[str] = [&#34;executor&#34;]
 
+    if not context and PredefinedVariables.CI_PROJECT_DIR:
+        context = PredefinedVariables.CI_PROJECT_DIR
+
     if context:
         if context.endswith(&#34;/&#34;):
             context = context[:-1]
@@ -338,6 +345,9 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
 
     if verbosity:
         executor_cmd.append(f&#34;--verbosity {verbosity}&#34;)
+
+    if not dockerfile and PredefinedVariables.CI_PROJECT_DIR:
+        dockerfile = f&#34;{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile&#34;
 
     if dockerfile:
         executor_cmd.append(f&#34;--dockerfile {dockerfile}&#34;)
@@ -372,11 +382,9 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
         job.prepend_scripts(&#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;credsStore\\&#34;:\\&#34;ecr-login\\&#34;}&#34; &gt; /kaniko/.docker/config.json&#39;)
 
     if dockerhub_user_env_var and dockerhub_login_env_var:
-        # auth=$(echo &#34;$DOCKER_USER:$DOCKER_LOGIN&#34; | base64)
-        auth = f&#39;$(echo &#34;${dockerhub_user_env_var}:${dockerhub_login_env_var}&#34; | base64)&#39;
         job.prepend_scripts(
-            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;auth\\&#34;:\\&#34;&#39; + auth +
-            &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
+            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;username\\&#34;:\\&#34;$&#39; +
+            dockerhub_user_env_var + &#39;\\&#34;,\\&#34;password\\&#34;:\\&#34;$&#39; + dockerhub_login_env_var + &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
         )
 
     job.append_scripts(&#34; &#34;.join(executor_cmd), &#34;rm -rf /kaniko/.docker/config.json&#34;)

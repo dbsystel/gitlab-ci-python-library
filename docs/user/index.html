@@ -510,17 +510,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_configuring_your_project_to_use_gcip">Configuring your project to use gcip</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create a <code>.gitlab-ci.yaml</code> with following static content:</p>
+<p>Your Gitlab project needs these two files:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>MyProject
+├ .gitlab-ci.py
+└ .gitlab-ci.yml</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The  <code>.gitlab-ci.yml</code> is the file you already know. It&#8217;s only task is to
+render and trigger the child Pipeline created with the Gitlab CI Python Library.
+Latter is written into the <code>.gitlab-ci.py</code>. Here is how your <code>.gitlab-ci.yml</code> should
+look like:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre>---
 generate-pipeline:
   stage: build
-  image: python:3
-  script:
-    - pip3 install -r requirements.txt
-    - python3 .gitlab-ci.py &gt; generated-config.yml
+  image: thomass/gcip:0.3.0
+  script: /usr/src/app/docker/gcip.sh
   artifacts:
     paths:
       - generated-config.yml
@@ -537,7 +550,8 @@ run-pipeline:
 </div>
 </div>
 <div class="paragraph">
-<p>Your gcip pipeline code then goes into a file named <code>.gitlab-ci.py</code>.</p>
+<p>Your gcip pipeline code then goes into the file named <code>.gitlab-ci.py</code>. The following
+chapers show to crete the pipeline code.</p>
 </div>
 </div>
 </div>
@@ -546,7 +560,23 @@ run-pipeline:
 <div class="sectionbody">
 <div class="paragraph">
 <p>All the code examples in the following chapters are made for also be run with Pytest.
-Thus to use the code for your real life Gitlab CI pipeline you have to change the following:</p>
+For instance a code example could look like following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>import gcip
+from tests import conftest
+
+
+def test():
+    pipeline = gcip.Pipeline()
+    pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+
+    conftest.check(pipeline.render())</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To transform this pytest into a valid <code>.gitlab-ci.py</code> file your have to:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -557,10 +587,23 @@ Thus to use the code for your real life Gitlab CI pipeline you have to change th
 <p>Put your pipeline code plain into the Python script and not within the <code>def test():</code> method.</p>
 </li>
 <li>
-<p>Instead of routing the pipeline output to the test method (<code>conftest.check(pipeline.render())</code>)
-print the resulting pipeline to STDOUT with <code>pipeline.print_yaml()</code>.</p>
+<p>Instead of testing rendered pipelin with <code>conftest.check(pipeline.render())</code> you have to
+write the <code>generated-pipeline.yml</code> with <code>pipeline.write_yaml()</code>.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>The real <code>.gitlab-ci.py</code> code derived from the example would look like following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>from tests import conftest
+
+pipeline = gcip.Pipeline()
+pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+
+pipeline.write_yaml()</pre>
+</div>
 </div>
 </div>
 </div>
@@ -585,7 +628,7 @@ def test():
 </div>
 <div class="paragraph">
 <p>Remember: As stated in the <a href="#hints-regarding-the-following-examples">hints regarding the examples</a>,
-your real pipeline code must end with <code>pipeline.print_yaml()</code> instead of <code>conftest.check(pipeline.render())</code>!</p>
+your real pipeline code must end with <code>pipeline.write_yaml()</code> instead of <code>conftest.check(pipeline.render())</code>!</p>
 </div>
 <div class="paragraph">
 <p><strong>Output:</strong></p>
@@ -1689,7 +1732,7 @@ trigger-subpipe:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-11 13:42:37 +0100
+Last updated 2021-03-12 22:24:00 +0100
 </div>
 </div>
 </body>
