@@ -2,8 +2,8 @@ from typing import Any, Dict, List, Union, Optional
 
 from . import OrderedSetType
 from .include import Include
-from .job_sequence import JobSequence
 from .service import Service
+from .job_sequence import JobSequence
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
