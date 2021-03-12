@@ -1,4 +1,4 @@
-from gcip import Pipeline, JobSequence, Job
+from gcip import Job, Pipeline, JobSequence
 from gcip.addons.gitlab import job_scripts as gitlab
 
 

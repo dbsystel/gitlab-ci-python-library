@@ -3,8 +3,9 @@
 Those require [Docker to be installed](https://docs.docker.com/engine/install/) on the Gitlab runner.
 """
 
-from gcip.core.job import Job
 from typing import Optional
+
+from gcip.core.job import Job
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"

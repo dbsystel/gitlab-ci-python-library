@@ -70,11 +70,7 @@ from .core.need import Need  # noqa
 # yapf: disable
 from .core.rule import Rule, WhenStatement  # noqa
 # yapf: disable
-from .core.cache import (  # noqa
-    Cache,
-    CacheKey,
-    CachePolicy,
-)
+from .core.cache import Cache, CacheKey, CachePolicy  # noqa
 # yapf: disable
 from .core.image import Image  # noqa
 # yapf: disable

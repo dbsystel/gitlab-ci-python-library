@@ -1,7 +1,6 @@
-from gcip import Pipeline
-from gcip.addons.python import jobs as python
+from gcip import Pipeline, PredefinedVariables
 from gcip.addons.docker import jobs as docker
-from gcip import PredefinedVariables
+from gcip.addons.python import jobs as python
 
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
