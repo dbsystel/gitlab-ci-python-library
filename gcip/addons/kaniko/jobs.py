@@ -135,11 +135,9 @@ def execute(
         job.prepend_scripts('mkdir -p /kaniko/.docker && echo "{\\"credsStore\\":\\"ecr-login\\"}" > /kaniko/.docker/config.json')
 
     if dockerhub_user_env_var and dockerhub_login_env_var:
-        # auth=$(echo "$DOCKER_USER:$DOCKER_LOGIN" | base64)
-        auth = f'$(echo "${dockerhub_user_env_var}:${dockerhub_login_env_var}" | base64)'
         job.prepend_scripts(
-            'mkdir -p /kaniko/.docker && echo "{\\"auths\\":{\\"https://index.docker.io/v1/\\":{\\"auth\\":\\"' + auth +
-            '\\"}}}" > /kaniko/.docker/config.json'
+            'mkdir -p /kaniko/.docker && echo "{\\"auths\\":{\\"https://index.docker.io/v1/\\":{\\"username\\":\\"$' +
+            dockerhub_user_env_var + '\\",\\"password\\":\\"$' + dockerhub_login_env_var + '\\"}}}" > /kaniko/.docker/config.json'
         )
 
     job.append_scripts(" ".join(executor_cmd), "rm -rf /kaniko/.docker/config.json")
