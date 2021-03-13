@@ -19,6 +19,7 @@ For the code documentation please proceed to the xref:./gcip/README.adoc[README.
 
 Your Gitlab project needs these two files:
 
+[source]
 ____
 MyProject
 ├ .gitlab-ci.py
@@ -30,6 +31,7 @@ render and trigger the child Pipeline created with the Gitlab CI Python Library.
 Latter is written into the `.gitlab-ci.py`. Here is how your `.gitlab-ci.yml` should
 look like:
 
+[source,yaml]
 ----
 ---
 generate-pipeline:
@@ -59,6 +61,7 @@ chapers show to crete the pipeline code.
 All the code examples in the following chapters are made for also be run with Pytest.
 For instance a code example could look like following:
 
+[source,python]
 ----
 import gcip
 from tests import conftest
@@ -80,6 +83,7 @@ To transform this pytest into a valid `.gitlab-ci.py` file your have to:
 
 The real `.gitlab-ci.py` code derived from the example would look like following:
 
+[source,python]
 ----
 from tests import conftest
 

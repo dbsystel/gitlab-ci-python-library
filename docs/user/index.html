@@ -529,7 +529,7 @@ look like:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>---
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">---
 generate-pipeline:
   stage: build
   image: thomass/gcip:0.3.0
@@ -546,7 +546,7 @@ run-pipeline:
     include:
       - artifact: generated-config.yml
         job: generate-pipeline
-    strategy: depend</pre>
+    strategy: depend</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -564,7 +564,7 @@ For instance a code example could look like following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>import gcip
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
 from tests import conftest
 
 
@@ -572,7 +572,7 @@ def test():
     pipeline = gcip.Pipeline()
     pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
 
-    conftest.check(pipeline.render())</pre>
+    conftest.check(pipeline.render())</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -597,12 +597,12 @@ write the <code>generated-pipeline.yml</code> with <code>pipeline.write_yaml()</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>from tests import conftest
+<pre class="highlight"><code class="language-python" data-lang="python">from tests import conftest
 
 pipeline = gcip.Pipeline()
 pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
 
-pipeline.write_yaml()</pre>
+pipeline.write_yaml()</code></pre>
 </div>
 </div>
 </div>
@@ -1732,7 +1732,7 @@ trigger-subpipe:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-12 22:24:00 +0100
+Last updated 2021-03-13 15:39:41 +0100
 </div>
 </div>
 </body>

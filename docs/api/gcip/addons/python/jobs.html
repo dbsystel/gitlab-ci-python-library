@@ -125,12 +125,10 @@ def evaluate_git_tag_pep404_conformity() -&gt; Job:
     job = Job(
         name=&#34;evaluate_git_tag_pep404_conformity&#34;,
         namespace=&#34;test&#34;,
-        script=[
-            &#34;pip3 install --upgrade gcip&#34;,
-            &#34;python3 -m gcip.tools.evaluate_git_tag_pep404_conformity&#34;,
-        ],
+        script=&#34;python3 -m gcip.tools.evaluate_git_tag_pep404_conformity&#34;,
     )
     job.append_rules(rules.on_tags())
+    job.set_image(&#34;thomass/gcip:0.3.0&#34;)
     return job
 
 
@@ -276,12 +274,10 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
     job = Job(
         name=&#34;evaluate_git_tag_pep404_conformity&#34;,
         namespace=&#34;test&#34;,
-        script=[
-            &#34;pip3 install --upgrade gcip&#34;,
-            &#34;python3 -m gcip.tools.evaluate_git_tag_pep404_conformity&#34;,
-        ],
+        script=&#34;python3 -m gcip.tools.evaluate_git_tag_pep404_conformity&#34;,
     )
     job.append_rules(rules.on_tags())
+    job.set_image(&#34;thomass/gcip:0.3.0&#34;)
     return job</code></pre>
 </details>
 </dd>
