@@ -82,6 +82,9 @@ def execute(
     if image_name is None:
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
+    if not image_tag and PredefinedVariables.CI_COMMIT_REF_SLUG:
+        image_tag = PredefinedVariables.CI_COMMIT_REF_SLUG
+
     image_tag_postfix = ""
     if image_tag:
         image_tag_postfix = f":{image_tag}"
