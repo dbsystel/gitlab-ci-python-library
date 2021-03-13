@@ -97,12 +97,10 @@ def evaluate_git_tag_pep404_conformity() -> Job:
     job = Job(
         name="evaluate_git_tag_pep404_conformity",
         namespace="test",
-        script=[
-            "pip3 install --upgrade gcip",
-            "python3 -m gcip.tools.evaluate_git_tag_pep404_conformity",
-        ],
+        script="python3 -m gcip.tools.evaluate_git_tag_pep404_conformity",
     )
     job.append_rules(rules.on_tags())
+    job.set_image("thomass/gcip:0.3.0")
     return job
 
 

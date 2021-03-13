@@ -19,9 +19,10 @@ test-pytest:
   - pip3 install --upgrade -v -r requirements.txt
   - pytest
 test-evaluate-git-tag-pep404-conformity:
+  image:
+    name: thomass/gcip:0.3.0
   stage: test
   script:
-  - pip3 install --upgrade gcip
   - python3 -m gcip.tools.evaluate_git_tag_pep404_conformity
   rules:
   - if: $CI_COMMIT_TAG
