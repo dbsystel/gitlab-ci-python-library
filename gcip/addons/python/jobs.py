@@ -89,7 +89,7 @@ def pytest() -> Job:
     )
 
 
-def evaluate_git_tag_pep404_conformity() -> Job:
+def evaluate_git_tag_pep440_conformity() -> Job:
     """
     Checks if the current pipelines `$CI_COMMIT_TAG` validates to a valid Python package version according to
     https://www.python.org/dev/peps/pep-0440
@@ -97,9 +97,9 @@ def evaluate_git_tag_pep404_conformity() -> Job:
     This job already contains a rule to only run when a `$CI_COMMIT_TAG` is present (`rules.only_tags()`).
     """
     job = Job(
-        name="evaluate_git_tag_pep404_conformity",
+        name="evaluate_git_tag_pep440_conformity",
         namespace="test",
-        script="python3 -m gcip.tools.evaluate_git_tag_pep404_conformity",
+        script="python3 -m gcip.tools.evaluate_git_tag_pep440_conformity",
     )
     job.append_rules(rules.on_tags())
     job.set_image("thomass/gcip:0.3.0")

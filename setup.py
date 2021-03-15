@@ -3,7 +3,7 @@ import os
 import setuptools
 
 from gcip.tools import (
-    evaluate_git_tag_pep404_conformity as pep404,
+    evaluate_git_tag_pep440_conformity as pep440,
 )
 
 __author__ = "Thomas Steinbach"
@@ -17,7 +17,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 def get_version() -> str:
     ci_commit_tag = os.getenv("CI_COMMIT_TAG")
-    if ci_commit_tag is not None and pep404.is_canonical(ci_commit_tag):
+    if ci_commit_tag is not None and pep440.is_canonical(ci_commit_tag):
         return ci_commit_tag
 
     version_from_pipeline = os.getenv('GCIP_VERSION')
