@@ -20,7 +20,7 @@ pipeline.add_children(
 
 if PredefinedVariables.CI_COMMIT_TAG:
     pipeline.add_children(
-        python.evaluate_git_tag_pep404_conformity(),
+        python.evaluate_git_tag_pep440_conformity(),
         python.twine_upload(),
     )
 

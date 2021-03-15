@@ -44,7 +44,7 @@ def full_stack(
         python.isort(),
         python.flake8(),
         python.pytest(),
-        python.evaluate_git_tag_pep404_conformity(),
+        python.evaluate_git_tag_pep440_conformity(),
         python.bdist_wheel(),
     )
 

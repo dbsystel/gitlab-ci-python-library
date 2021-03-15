@@ -13,9 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* **BREAKING:** The signature of `gcip.addons.python.jobs.twine_upload() has changed. The parameters `twine_repository_url`,
+* **BREAKING:** The signature of `gcip.addons.python.jobs.twine_upload()` has changed. The parameters `twine_repository_url`,
   `twine_username_env_var` and `twine_username_env_var` substitute the parameters `repository_url`, `user` and `varname_password`.
   Check the API documentation for the new parameters.
+* **BREAKING:** Renamed all occurences of `pep404` to `pep440` as PEP 440 is the right specification number.
 
 ## [Template]
 
