@@ -34,14 +34,14 @@ class CacheKey():
     all jobs, cache per-job, cache per-branch, or any other way that fits your workflow."_
 
     Args:
-        key (Optional[str], optional): The key is the unique id of the cache. `gcip.core.job.Job`s referencing caches with the same key are
+        key (Optional[str]): The key is the unique id of the cache. `gcip.core.job.Job`s referencing caches with the same key are
             sharing the cache contents. Mutually exclusive with `files`. Defaults to
             `gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG` if neither `key` nor `files` is set.
-        files (Optional[list], optional): A set of files is another way to define a caches unique id. Jobs referencing caches with the same
+        files (Optional[list]): A set of files is another way to define a caches unique id. Jobs referencing caches with the same
             set of files are sharing the cache contents. The [cache:key:files](https://docs.gitlab.com/ee/ci/yaml/#cachekeyfiles) keyword
             extends the cache:key functionality by making it easier to reuse some caches, and rebuild them less often, which speeds up
             subsequent pipeline runs. Mutually exclusive with `keys`. Defaults to None.
-        prefix (Optional[str], optional): Prefix prefixed given `files` to allow creation of caches for branches. Defaults to None.
+        prefix (Optional[str]): Prefix prefixed given `files` to allow creation of caches for branches. Defaults to None.
 
     Raises:
         ValueError: If both `key` and `files` are provided.
@@ -72,38 +72,24 @@ class CacheKey():
 
     @property
     def key(self) -> Optional[str]:
-        """... as originally passed to the __init__-method"""
+        """Equals the identical Class argument."""
         return self._key
 
     @property
     def files(self) -> Optional[List[str]]:
-        """... as originally passed to the __init__-method"""
+        """Equals the identical Class argument."""
         return self._files
 
     @property
     def prefix(self) -> Optional[str]:
-        """... as originally passed to the __init__-method"""
+        """Equals the identical Class argument."""
         return self._prefix
 
     def render(self) -> Union[str, Dict[str, Union[List[str], str]]]:
-        """Renders the class as string or dict
+        """Renders the class as string or dict.
 
         The rendered representation is used by the gcip to dump it
-        in YAML format as part of the .gitlab.ci pipeline.
-
-        `cache:key` example:
-
-        ```
-        print(CacheKey(key="mycachekey").render())
-        -> 'mycachekey'
-        ```
-
-        `cache:key:files` example:
-
-        ```
-        print(CacheKey(files=["requirements.txt", "setup.py"], prefix="myprefix").render())
-        -> {'files': ['requirements.txt', 'setup.py'], 'prefix': 'myprefix'}
-        ```
+        in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Returns:
             Union[str, Dict[str, Union[List[str], str]]]: A string or dictionary prepresenting the cache object in Gitlab CI.
@@ -127,13 +113,13 @@ class Cache():
     [...] Caching is shared between `gcip.core.pipeline.Pipeline`s and `gcip.core.job.Job`s. Caches are restored before artifacts."_
 
     Args:
-        paths List[str]: Paths to create the cache to.
-        cache_key (Optional[CacheKey], optional): Cache key which is used to share the cache.
+        paths (List[str]): Paths to create the cache to.
+        cache_key (Optional[CacheKey]): Cache key which is used to share the cache.
             If None, cache_key will be initialized with an empty CacheKey. See class CacheKey
-        untracked (Optional[bool], optional): If true, cache will cache all untracked files within project path. Defaults to None.
-        when (Optional[WhenStatement], optional): Defines when to save the cache, depending on job status.
+        untracked (Optional[bool]): If true, cache will cache all untracked files within project path. Defaults to None.
+        when (Optional[WhenStatement]): Defines when to save the cache, depending on job status.
             Possible values are WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS Defaults to None.
-        policy (Optional[CachePolicy], optional): There are two policies, pull and push-pull.
+        policy (Optional[CachePolicy]): There are two policies, pull and push-pull.
             Use pull policy if you know, that the job does not alter the files within the cache. Defaults to None.
 
     Raises:
@@ -175,22 +161,27 @@ class Cache():
 
     @property
     def paths(self) -> List[str]:
+        """Equals the identical Class argument."""
         return self._paths
 
     @property
     def cache_key(self) -> CacheKey:
+        """Equals the identical Class argument."""
         return self._cache_key
 
     @property
     def untracked(self) -> Optional[bool]:
+        """Equals the identical Class argument."""
         return self._untracked
 
     @property
     def when(self) -> Optional[WhenStatement]:
+        """Equals the identical Class argument."""
         return self._when
 
     @property
     def policy(self) -> Optional[CachePolicy]:
+        """Equals the identical Class argument."""
         return self._policy
 
     def render(self) -> Dict[str, Any]:
