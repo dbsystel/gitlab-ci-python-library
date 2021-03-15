@@ -9,9 +9,7 @@ pipeline.add_children(
     python.isort(),
     python.flake8(),
     python.pytest(),
-    python.evaluate_git_tag_pep404_conformity(),
     python.bdist_wheel(),
-    python.twine_upload(),
     kaniko.execute(
         image_name="thomass/gcip",
         enable_push=(PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main"),
@@ -19,5 +17,11 @@ pipeline.add_children(
         dockerhub_login_env_var="DOCKER_LOGIN",
     ),
 )
+
+if PredefinedVariables.CI_COMMIT_TAG:
+    pipeline.add_children(
+        python.evaluate_git_tag_pep404_conformity(),
+        python.twine_upload(),
+    )
 
 pipeline.write_yaml()
