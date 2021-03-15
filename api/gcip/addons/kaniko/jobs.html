@@ -95,7 +95,7 @@ def execute(
             Defaults to `None` which skips the docker login attempt.
 
     Returns:
-        Job: gcip.Job will be returned to create container images.
+        Job: gcip.Job will be returned to create container images with ```name=kaniko``` and ```namespace=execute```.
     &#34;&#34;&#34;
 
     if ecr_login and (dockerhub_user_env_var or dockerhub_login_env_var):
@@ -253,7 +253,7 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd>gcip.Job will be returned to create container images.</dd>
+<dd>gcip.Job will be returned to create container images with <code>name=kaniko</code> and <code>namespace=execute</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -315,7 +315,7 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
             Defaults to `None` which skips the docker login attempt.
 
     Returns:
-        Job: gcip.Job will be returned to create container images.
+        Job: gcip.Job will be returned to create container images with ```name=kaniko``` and ```namespace=execute```.
     &#34;&#34;&#34;
 
     if ecr_login and (dockerhub_user_env_var or dockerhub_login_env_var):

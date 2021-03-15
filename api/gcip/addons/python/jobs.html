@@ -26,7 +26,9 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from gcip.lib import rules
+<pre><code class="python">from typing import Optional
+
+from gcip.lib import rules
 from gcip.core.job import Job
 
 from . import job_scripts as scripts
@@ -173,9 +175,9 @@ def pages_sphinx() -&gt; Job:
 
 
 def twine_upload(
-    repository_url: str,
-    user: str,
-    varname_password: str,
+    twine_repository_url: str,
+    twine_username_env_var: Optional[str] = &#34;TWINE_USERNAME&#34;,
+    twine_password_env_var: Optional[str] = &#34;TWINE_PASSWORD&#34;,
 ) -&gt; Job:
     &#34;&#34;&#34;
     Runs:
@@ -187,15 +189,14 @@ def twine_upload(
 
     * Requires artifacts from a build job under `dist/` (e.g. from `bdist_wheel()`)
 
-    :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
-    :arg user: The name of the user to access the PyPI repository.
-    :arg varname_password: The name of the environment variable delivering the password to access the PyPI repository.
-    If not existent, automatically a &#34;$&#34; will be prepended to the string. DO NOT DEFINE THE PASSWORD WITHIN THE PIPELINE.
-    Define your password outside the pipeline, e.g. as secret variable in the Gitlab CI/CD settings section.
+    Args:
+        twine_repository_url (str): The URL to the PyPI repository the python artifacts will be deployed to. Defaults
+            to `None`, which means the package is published to `https://pypi.org`.
+        twine_username_env_var (Optional[str]): The name of the environment variable, which contains the username value.
+            **DO NOT PROVIDE THE USERNAME VALUE ITSELF!** This would be a security issue! Defaults to `TWINE_USERNAME`.
+        twine_password_env_var (Optional[str]): The name of the environment variable, which contains the password.
+            **DO NOT PROVIDE THE LOGIN VALUE ITSELF!** This would be a security issue! Defaults to `TWINE_PASSWORD`.
     &#34;&#34;&#34;
-    if not varname_password.startswith(&#34;$&#34;):
-        varname_password = &#34;$&#34; + varname_password
-
     job = Job(
         name=&#34;twine_upload&#34;,
         namespace=&#34;deploy&#34;,
@@ -205,10 +206,13 @@ def twine_upload(
         ],
     )
     job.add_variables(
-        TWINE_REPOSITORY_URL=repository_url,
-        TWINE_USERNAME=user,
-        TWINE_PASSWORD=varname_password,
+        TWINE_USERNAME=f&#34;${twine_username_env_var}&#34;,
+        TWINE_PASSWORD=f&#34;${twine_password_env_var}&#34;,
     )
+
+    if twine_repository_url:
+        job.add_variables(TWINE_REPOSITORY_URL=twine_repository_url)
+
     return job</code></pre>
 </details>
 </section>
@@ -449,7 +453,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
 </details>
 </dd>
 <dt id="gcip.addons.python.jobs.twine_upload"><code class="name flex">
-<span>def <span class="ident">twine_upload</span></span>(<span>repository_url: str, user: str, varname_password: str) ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
+<span>def <span class="ident">twine_upload</span></span>(<span>twine_repository_url: str, twine_username_env_var: Optional[str] = 'TWINE_USERNAME', twine_password_env_var: Optional[str] = 'TWINE_PASSWORD') ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Runs:</p>
@@ -459,19 +463,26 @@ python3 -m twine upload --non-interactive --disable-progress-bar dist/*
 <ul>
 <li>Requires artifacts from a build job under <code>dist/</code> (e.g. from <code><a title="gcip.addons.python.jobs.bdist_wheel" href="#gcip.addons.python.jobs.bdist_wheel">bdist_wheel()</a></code>)</li>
 </ul>
-<p>:arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
-:arg user: The name of the user to access the PyPI repository.
-:arg varname_password: The name of the environment variable delivering the password to access the PyPI repository.
-If not existent, automatically a "$" will be prepended to the string. DO NOT DEFINE THE PASSWORD WITHIN THE PIPELINE.
-Define your password outside the pipeline, e.g. as secret variable in the Gitlab CI/CD settings section.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>twine_repository_url</code></strong> :&ensp;<code>str</code></dt>
+<dd>The URL to the PyPI repository the python artifacts will be deployed to. Defaults
+to <code>None</code>, which means the package is published to <code>https://pypi.org</code>.</dd>
+<dt><strong><code>twine_username_env_var</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>The name of the environment variable, which contains the username value.
+<strong>DO NOT PROVIDE THE USERNAME VALUE ITSELF!</strong> This would be a security issue! Defaults to <code>TWINE_USERNAME</code>.</dd>
+<dt><strong><code>twine_password_env_var</code></strong> :&ensp;<code>Optional[str]</code></dt>
+<dd>The name of the environment variable, which contains the password.
+<strong>DO NOT PROVIDE THE LOGIN VALUE ITSELF!</strong> This would be a security issue! Defaults to <code>TWINE_PASSWORD</code>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def twine_upload(
-    repository_url: str,
-    user: str,
-    varname_password: str,
+    twine_repository_url: str,
+    twine_username_env_var: Optional[str] = &#34;TWINE_USERNAME&#34;,
+    twine_password_env_var: Optional[str] = &#34;TWINE_PASSWORD&#34;,
 ) -&gt; Job:
     &#34;&#34;&#34;
     Runs:
@@ -483,15 +494,14 @@ Define your password outside the pipeline, e.g. as secret variable in the Gitlab
 
     * Requires artifacts from a build job under `dist/` (e.g. from `bdist_wheel()`)
 
-    :arg repository_url: The URL to the PyPI repository the python artifacts will be deployed to.
-    :arg user: The name of the user to access the PyPI repository.
-    :arg varname_password: The name of the environment variable delivering the password to access the PyPI repository.
-    If not existent, automatically a &#34;$&#34; will be prepended to the string. DO NOT DEFINE THE PASSWORD WITHIN THE PIPELINE.
-    Define your password outside the pipeline, e.g. as secret variable in the Gitlab CI/CD settings section.
+    Args:
+        twine_repository_url (str): The URL to the PyPI repository the python artifacts will be deployed to. Defaults
+            to `None`, which means the package is published to `https://pypi.org`.
+        twine_username_env_var (Optional[str]): The name of the environment variable, which contains the username value.
+            **DO NOT PROVIDE THE USERNAME VALUE ITSELF!** This would be a security issue! Defaults to `TWINE_USERNAME`.
+        twine_password_env_var (Optional[str]): The name of the environment variable, which contains the password.
+            **DO NOT PROVIDE THE LOGIN VALUE ITSELF!** This would be a security issue! Defaults to `TWINE_PASSWORD`.
     &#34;&#34;&#34;
-    if not varname_password.startswith(&#34;$&#34;):
-        varname_password = &#34;$&#34; + varname_password
-
     job = Job(
         name=&#34;twine_upload&#34;,
         namespace=&#34;deploy&#34;,
@@ -501,10 +511,13 @@ Define your password outside the pipeline, e.g. as secret variable in the Gitlab
         ],
     )
     job.add_variables(
-        TWINE_REPOSITORY_URL=repository_url,
-        TWINE_USERNAME=user,
-        TWINE_PASSWORD=varname_password,
+        TWINE_USERNAME=f&#34;${twine_username_env_var}&#34;,
+        TWINE_PASSWORD=f&#34;${twine_password_env_var}&#34;,
     )
+
+    if twine_repository_url:
+        job.add_variables(TWINE_REPOSITORY_URL=twine_repository_url)
+
     return job</code></pre>
 </details>
 </dd>
