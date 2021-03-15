@@ -12,3 +12,7 @@ __pycache__/
 *$py.class
 
 .DS_Store
+
+# generated documenation
+*.html
+docs/api
