@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * The CHANGELOG.md itself.
+* Bug, Feature and Pull request templates (#9)
 
 ### Changed
 
