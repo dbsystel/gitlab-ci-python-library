@@ -36,7 +36,7 @@ look like:
 ---
 generate-pipeline:
   stage: build
-  image: thomass/gcip:0.3.0
+  image: thomass/gcip:0.4.1
   script: /usr/src/app/docker/gcip.sh
   artifacts:
     paths:
