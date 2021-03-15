@@ -152,7 +152,8 @@ def execute(
             dockerhub_user_env_var + '\\",\\"password\\":\\"$' + dockerhub_login_env_var + '\\"}}}" > /kaniko/.docker/config.json'
         )
 
-    job.append_scripts(" ".join(executor_cmd), "rm -rf /kaniko/.docker/config.json")
+    job.append_scripts(" ".join(executor_cmd))
+    job.append_scripts("rm -rf /kaniko/.docker/config.json")
 
     if gitlab_executor_image:
         job.set_image(gitlab_executor_image)
