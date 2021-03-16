@@ -72,7 +72,7 @@ def full_stack(
         python.isort(),
         python.flake8(),
         python.pytest(),
-        python.evaluate_git_tag_pep404_conformity(),
+        python.evaluate_git_tag_pep440_conformity(),
         python.bdist_wheel(),
     )
 
@@ -159,7 +159,7 @@ Define your password outside the pipeline, e.g. as secret variable in the Gitlab
         python.isort(),
         python.flake8(),
         python.pytest(),
-        python.evaluate_git_tag_pep404_conformity(),
+        python.evaluate_git_tag_pep440_conformity(),
         python.bdist_wheel(),
     )
 

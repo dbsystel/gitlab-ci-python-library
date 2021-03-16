@@ -277,7 +277,7 @@ class JobSequence():
                 elif item[&#34;name&#34;] is not None:
                     child_instance_name = item[&#34;name&#34;]
                 else:
-                    child_instance_name = &#34;#unset#&#34;
+                    child_instance_name = &#34;&#34;
 
                 # all job names have &#39;-&#39; instead of &#39;_&#39;
                 child_instance_names.add(child_instance_name.replace(&#34;_&#34;, &#34;-&#34;))
@@ -288,7 +288,10 @@ class JobSequence():
         if instance_names:
             for child_instance_name in child_instance_names:
                 for instance_name in instance_names:
-                    return_values.add(f&#34;{child_instance_name}-{instance_name}&#34;)
+                    if child_instance_name:
+                        return_values.add(f&#34;{child_instance_name}-{instance_name}&#34;)
+                    else:
+                        return_values.add(instance_name)
         else:
             return_values = child_instance_names
 
@@ -653,7 +656,7 @@ dict(one=1, two=2)</p></div>
                 elif item[&#34;name&#34;] is not None:
                     child_instance_name = item[&#34;name&#34;]
                 else:
-                    child_instance_name = &#34;#unset#&#34;
+                    child_instance_name = &#34;&#34;
 
                 # all job names have &#39;-&#39; instead of &#39;_&#39;
                 child_instance_names.add(child_instance_name.replace(&#34;_&#34;, &#34;-&#34;))
@@ -664,7 +667,10 @@ dict(one=1, two=2)</p></div>
         if instance_names:
             for child_instance_name in child_instance_names:
                 for instance_name in instance_names:
-                    return_values.add(f&#34;{child_instance_name}-{instance_name}&#34;)
+                    if child_instance_name:
+                        return_values.add(f&#34;{child_instance_name}-{instance_name}&#34;)
+                    else:
+                        return_values.add(instance_name)
         else:
             return_values = child_instance_names
 
