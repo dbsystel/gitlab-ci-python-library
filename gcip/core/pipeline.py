@@ -41,10 +41,21 @@ class Pipeline(Sequence):
             raise ValueError("Parameter include must of type gcip.Include or List[gcip.Include]")
         super().__init__()
 
-    def add_service(self, service: Union[str, Service]):
-        if isinstance(service, str):
-            service = Service(service)
-        self._services.append(service)
+    def add_services(self, *services: Union[str, Service]):
+        """Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
+
+        Args:
+            *services (Rule): If strings are provided, then for every string a `Service(string)` will be created.
+                Use objects of the `gcip.core.service.Service` class directly for more complex service configurations.
+
+        Returns:
+            `Pipeline`: The modified `Pipeline` object.
+        """
+        for service in services:
+            if isinstance(service, str):
+                service = Service(service)
+            self._services.append(service)
+        return self
 
     def render(self) -> Dict[str, Any]:
         stages: OrderedSetType = {}
