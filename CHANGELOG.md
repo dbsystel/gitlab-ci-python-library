@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added config.yml to .github dir to force using issue templates.
 * Added gitlab_ci_environment_variables monkeypatch fixture. It allows patching environment variables.
 * Added gitlab_ci_environmnet_variables fixture to tests.
+### Changed
+
+* Changed behavior how PredefinedVariables is handling environment variables.
+  PredefinedVariables knows which environment variables are always present or under certain circumstances,
+  like merge requests or if GitLab container registry is present.
+  Variables marked with limited availabilty within official documentation returns String or None.
+  All variables which are documented as always present return String.
 
 ## [0.5.0] - 2021-03-16
 
