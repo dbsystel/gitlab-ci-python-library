@@ -369,10 +369,20 @@ class Job():
         return instance_names
 
     def copy(self) -> Job:
-        """Returns a independent, deep copy object of this job."""
+        """Returns an independent, deep copy object of this job.
+
+        Returns:
+            `Job`: A copy of this job which, when modified, has no effects on this source job.
+        """
         return self._copy_into(Job(name="<set in _copy_into()", script=copy.deepcopy(self._scripts)))
 
     def _copy_into(self, job: Job) -> Job:
+        """Utility method to create a independent copy of a `Job`.
+
+        Because the __init__() method of `Job` is doing some blackbox operations, we cannot simply
+        create a Job copy with the construtor. This method helps to copy attribute by attribute
+        to an empty Job object. The attributes are deep copys itself.
+        """
         job._original = self
         job._name = self._name
         job._stage = self._stage
@@ -389,6 +399,14 @@ class Job():
         return job
 
     def render(self) -> Dict[str, Any]:
+        """Return a representation of this Job object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Return:
+            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
+        """
         from .sequence import \
             Sequence  # late import to avoid circular dependencies
 
@@ -452,11 +470,45 @@ class Job():
 
 
 class TriggerStrategy(Enum):
-    """Class with static values for ``TriggerStrategy`` used together with :class:`gcip.core.job.TriggerJob`. To construct an object."""
+    """This class represents the [trigger:strategy](https://docs.gitlab.com/ee/ci/yaml/README.html#linking-pipelines-with-triggerstrategy)
+    keyword."""
+
     DEPEND = "depend"
+    """Use this strategy to force the `TriggerJob` to wait for the downstream (multi-project or child) pipeline to complete."""
 
 
 class TriggerJob(Job):
+    """This class represents the [trigger](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger) job.
+
+    Jobs with trigger can only use a [limited set of keywords](https://docs.gitlab.com/ee/ci/multi_project_pipelines.html#limitations).
+    For example, you can’t run commands with `script`.
+
+    Simple example:
+
+    ```python
+    trigger_job = TriggerJob(
+        namespace="trigger-other-job",
+        project="myteam/other-project",
+        branch="main",
+        strategy=TriggerStrategy.DEPEND,
+    )
+    trigger_job.append_rules(rules.on_tags().never(), rules.on_main())
+    ```
+
+    Args:
+        project (Optional[str]): The full name of another Gitlab project to trigger (multi-project pipeline trigger)
+            Mutually exclusive with `includes`. Defaults to None.
+        branch (Optional[str]): The branch of `project` the pipeline should be triggered of. Defaults to None.
+        includes (Optional[List[Include]]): Include a pipeline to trigger (Parent-child pipeline trigger)
+            Mutually exclusiv with `project`. Defaults to None.
+        strategy (Optional[TriggerStrategy]): Determines if the result of this pipeline depends on the triggered downstream pipeline
+            (use `TriggerStrategy.DEPEND`) or if just "fire and forget" the downstream pipeline (use `None`). Defaults to None.
+
+    Raises:
+        ValueError: If both `project` and `includes` are given.
+        ValueError: When the limit of three child pipelines is exceeded. See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html
+            for more information.
+    """
     def __init__(
         self,
         *args: Any,
@@ -468,24 +520,6 @@ class TriggerJob(Job):
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -> None:
-        """
-        Class to create a Gitlab CI Trigger.
-
-        You can create either a "Parent-child" or a "Multi-project" pipeline trigger.
-
-
-        Args:
-            project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
-                e.g 'team1/project1'. Defaults to None.
-            branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
-            strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
-                If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
-
-        Raises:
-            ValueError: If ``project`` and ``includes`` is given at the same time.
-            ValueError: There is a Gitlab CI limitation, in "Parent-child" pipelines it is only allowed to add max. three includes.
-        """
 
         if includes and project:
             raise ValueError(("You cannot specify 'include' and 'project' together. Either 'include' or 'project' is possible."))
