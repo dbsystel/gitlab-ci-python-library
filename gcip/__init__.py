@@ -30,7 +30,7 @@ from gcip.core import pipeline, job
 pipeline = pipeline.Pipeline()
 ```
 
-The **lib** folder contains all higher level objects which are derived from the ```core``` objects. For example: `gcip.Rule`
+The **lib** folder contains all higher level objects which are derived from the ```core``` objects. For example: ```gcip.Rule```
 from _gcip.core.rule_ is the general Gitlab CI Rule representation, whereas ```core.rules``` contains some convenient
 predefined Rule instances like ```on_main()``` or ```on_tags()```.
 
