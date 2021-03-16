@@ -175,7 +175,7 @@ def pages_sphinx() -&gt; Job:
 
 
 def twine_upload(
-    twine_repository_url: str,
+    twine_repository_url: Optional[str] = None,
     twine_username_env_var: Optional[str] = &#34;TWINE_USERNAME&#34;,
     twine_password_env_var: Optional[str] = &#34;TWINE_PASSWORD&#34;,
 ) -&gt; Job:
@@ -453,7 +453,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
 </details>
 </dd>
 <dt id="gcip.addons.python.jobs.twine_upload"><code class="name flex">
-<span>def <span class="ident">twine_upload</span></span>(<span>twine_repository_url: str, twine_username_env_var: Optional[str] = 'TWINE_USERNAME', twine_password_env_var: Optional[str] = 'TWINE_PASSWORD') ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
+<span>def <span class="ident">twine_upload</span></span>(<span>twine_repository_url: Optional[str] = None, twine_username_env_var: Optional[str] = 'TWINE_USERNAME', twine_password_env_var: Optional[str] = 'TWINE_PASSWORD') ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Runs:</p>
@@ -480,7 +480,7 @@ to <code>None</code>, which means the package is published to <code>https://pypi
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def twine_upload(
-    twine_repository_url: str,
+    twine_repository_url: Optional[str] = None,
     twine_username_env_var: Optional[str] = &#34;TWINE_USERNAME&#34;,
     twine_password_env_var: Optional[str] = &#34;TWINE_PASSWORD&#34;,
 ) -&gt; Job:
