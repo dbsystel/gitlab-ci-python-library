@@ -1,6 +1,8 @@
 from typing import Dict, List, Union, Optional
 
-from gcip import Job, Image, PredefinedVariables
+from gcip.core.job import Job
+from gcip.core.image import Image
+from gcip.core.variables import PredefinedVariables
 
 __author__ = "Daniel von Eßen"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -19,14 +21,14 @@ def execute(
     registries: List[str] = list(),
     tar_path: Optional[str] = None,
     build_args: Dict[str, str] = {},
-    build_target: str = None,
+    build_target: Optional[str] = None,
     dockerfile: Optional[str] = None,
     enable_push: bool = False,
     verbosity: Optional[str] = None,
     ecr_login: bool = False,
     dockerhub_user_env_var: Optional[str] = None,
     dockerhub_login_env_var: Optional[str] = None,
-):
+) -> Job:
     """
     Creates a job which builds container images.
 
