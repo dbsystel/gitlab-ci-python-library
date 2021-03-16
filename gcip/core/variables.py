@@ -394,7 +394,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY", always_available=False)  # noqa
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY", always_available=False)  # noqa yapf: disable
     """
     The source repository name of the pull request if the pipelines are
     for external pull requests. Available only if only
@@ -406,7 +406,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY", always_available=False)  # noqa
+    CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY", always_available=False)  # noqa yapf: disable
     """
     The target repository name of the pull request if the pipelines
     are for external pull requests. Available only if only
@@ -418,7 +418,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME", always_available=False)  # noqa
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME", always_available=False)  # noqa yapf: disable
     """
     The source branch name of the pull request if the pipelines are for
     external pull requests. Available only if only [external_pull_requests]
@@ -429,7 +429,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA", always_available=False)  # noqa
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA", always_available=False)  # noqa yapf: disable
     """
     The HEAD SHA of the source branch of the pull request if the pipelines
     are for external pull requests. Available only if only
@@ -441,7 +441,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME", always_available=False)  # noqa
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME", always_available=False)  # noqa yapf: disable
     """
     The target branch name of the pull request if the pipelines are for
     external pull requests. Available only if only [external_pull_requests]
@@ -452,7 +452,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA", always_available=False)  # noqa
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA: Optional[str] = EnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA", always_available=False)  # noqa yapf: disable
     """
     The HEAD SHA of the target branch of the pull request if the pipelines
     are for external pull requests. Available only if only
