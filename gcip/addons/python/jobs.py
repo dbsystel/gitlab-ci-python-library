@@ -147,7 +147,7 @@ def pages_sphinx() -> Job:
 
 
 def twine_upload(
-    twine_repository_url: str,
+    twine_repository_url: Optional[str] = None,
     twine_username_env_var: Optional[str] = "TWINE_USERNAME",
     twine_password_env_var: Optional[str] = "TWINE_PASSWORD",
 ) -> Job:
