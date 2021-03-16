@@ -1,6 +1,86 @@
-"""Testdocumentation
+"""This module represents the Gitlab CI [Job](https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords)
 
-for job
+It contains the general `Job` class as well as a special `TriggerJob` class. The latter one is a subclass
+of `Job` but has on the one hand reduced capabilities, on the other hand it has the additional functionality
+to trigger other pipelines.
+
+Here is a simple example how you define and use a `Job`:
+
+```python
+from gcip import Pipeline, Job
+
+pipeline = Pipeline()
+job = Job(namespace="build", script="build my artefact")
+pipeline.add_children(job, name="artifact")
+pipeline.write_yaml()
+
+# stages:
+#   - build
+# build-artifact:
+#   stage: build
+#   script: build my artifact
+```
+
+A `Job` has always a `script` and at least one of `namespace` and `name`.
+The `namespace` will be used for the name of the stage of the job and the
+job name itself, whereas `name` is only used for the job`s name. When adding
+a job to a `gcip.core.pipeline.Pipeline` or a `gcip.core.sequence.Sequence`
+you can and should define a `name` or `namespace` too. This is how you
+distinguish between two jobs of the same kind added to a pipeline:
+
+```python
+def create_build_job(artifact: str) -> Job:
+    return Job(namespace="build", script=f"build my {artifact}")
+
+pipeline.add_children(create_build_job("foo"), name="bar")
+pipeline.add_children(create_build_job("john"), name="deere")
+
+# stages:
+#   - build
+# build-bar:
+#   stage: build
+#   script: build my foo
+# build-deere:
+#     stage: build
+#     script: build my john
+```
+
+Again `name` or `namespace` decide whether to add the string to the
+stage of a job or not:
+
+```python
+def create_build_job(artifact: str) -> Job:
+    return Job(namespace="build", script=f"build my {artifact}")
+
+pipeline.add_children(create_build_job("foo"), namespace="bar")
+pipeline.add_children(create_build_job("john"), namespace="deere")
+
+# stages:
+#   - build_bar
+#   - build_deere
+# build-bar:
+#   stage: build_bar
+#   script: build my foo
+# build-deere:
+#     stage: build_deere
+#     script: build my john
+```
+
+This also decides whether to run the jobs in parralel or sequential. When using
+`namespace` and adding the string also to the jobs stage the stages for both jobs
+differ. When using `name` only the name of the jobs differ but the name of the stage
+remains the same.
+
+An `Job` object has a lot of methods for further configuration of typical Gitlab CI
+[Job keywords]/https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords), like
+configuring tags, rules, variables and so on. Methods with names staring with..
+
+* **`set_*`** will initally set or overwrite any previous setting, like `set_image()`
+* **`add_*`** will append a value to previous ones, like `add_tags()`
+* **`append_*`** will do the same as `add_*`, but for values where order matters. So it
+   explicitly adds a value to the end of a list of previous values, like `append_rules()`
+* **`prepend_*`** is the counterpart to `append_*` and will add a value to the beginning
+  of a list of previous values, like `prepend_rules()`
 """
 
 from __future__ import annotations
@@ -40,15 +120,19 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 class Job():
-    """Represents a Gitlab CI Job
+    """This class represents the Gitlab CI [Job](https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords)
 
     Attributes:
-        script: The script to be executed.
-        name: The name of the job.
+        script (Union[AnyStr, List[str]]): The [script(s)](https://docs.gitlab.com/ee/ci/yaml/README.html#script) to be executed.
+        name (Optional[str]): The name of the job. In opposite to `namespace` only the name is set and not the stage of the job.
+            If `name` is set, than the jobs stage has no value, which defaults to the 'test' stage.
+            Either `name` or `namespace` must be set. Defaults to `None`.
+        namespace (Optional[str]): The name and stage of the job. In opposite to `name` also the jobs stage will be setup with this value.
+            Either `name` or `namespace` must be set. Defaults to `None`.
     """
     def __init__(
         self,
-        *args: Any,
+        *,
         script: Union[AnyStr, List[str]],
         name: Optional[str] = None,
         namespace: Optional[str] = None,
@@ -92,72 +176,149 @@ class Job():
 
     @property
     def name(self) -> str:
+        """The name of the Job
+
+        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        populate the job name depending on their names. That means you can be sure to get the jobs
+        final name when rendered.
+        """
         return self._name
 
     @property
     def stage(self) -> str:
+        """The [stage](https://docs.gitlab.com/ee/ci/yaml/README.html#stage) of the Job
+
+        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        populate the job stage depending on their namespaces. That means you can be sure to get the jobs
+        final stage when rendered.
+        """
         return self._stage
 
     def _extend_name(self, name: Optional[str]) -> None:
+        """This method is used by `gcip.core.job.Sequence`s to populate the jobs name."""
         if name:
             self._name += "-" + name.replace("_", "-")
 
     def _extend_stage(self, stage: Optional[str]) -> None:
+        """This method is used by `gcip.core.job.Sequence`s to populate the jobs stage."""
         if stage:
             self._stage += "_" + stage.replace("-", "_")
 
     def _extend_namespace(self, namespace: Optional[str]) -> None:
+        """This method is used by `gcip.core.job.Sequence`s to populate the jobs name and stage."""
         if namespace:
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
     def _add_parent(self, parent: JobSequence) -> None:
+        """This method is called by `gcip.core.job.Sequence`s when the job is added to that sequence.
+
+        The job needs to know its parents when `_get_all_instance_names()` is called.
+        """
         self._parents.append(parent)
 
     def prepend_scripts(self, *scripts: str) -> Job:
+        """Inserts one or more [script](https://docs.gitlab.com/ee/ci/yaml/README.html#script)s before the current scripts.
+
+        Returns:
+            `Job`: The modified `Job` object.
+        """
         self._scripts = list(scripts) + self._scripts
         return self
 
     def append_scripts(self, *scripts: str) -> Job:
+        """Adds one or more [script](https://docs.gitlab.com/ee/ci/yaml/README.html#script)s after the current scripts.
+
+        Returns:
+            `Job`: The modified `Job` object.
+        """
         self._scripts.extend(scripts)
         return self
 
     def add_variables(self, **variables: str) -> Job:
+        """Adds one or more [variables](https://docs.gitlab.com/ee/ci/yaml/README.html#variables), each as keyword argument,
+        to the job.
+
+        Args:
+            **variables (str): Each variable would be provided as keyword argument:
+        ```
+        job.add_variables(GREETING="hello", LANGUAGE="python")
+        ```
+
+        Returns:
+            `Job`: The modified `Job` object.
+        """
         self._variables.update(variables)
         return self
 
     def add_tags(self, *tags: str) -> Job:
+        """Adds one or more [tags](https://docs.gitlab.com/ee/ci/yaml/README.html#tags) to the job.
+
+        Returns:
+            `Job`: The modified `Job` object.
+        """
         for tag in tags:
             self._tags[tag] = None
         return self
 
     def add_artifacts_paths(self, *paths: str) -> Job:
+        """Adds one or more [artifact:paths](https://docs.gitlab.com/ee/ci/yaml/README.html#artifactspaths) to the job.
+
+        Returns:
+            `Job`: The modified `Job` object.
+        """
         for path in paths:
             self._artifacts_paths[path] = None
         return self
 
     def set_cache(self, cache: Optional[Cache]) -> Job:
-        """Sets the cache for the Job.
+        """Sets the [cache](https://docs.gitlab.com/ee/ci/yaml/README.html#cache) of the Job.
+
+        Any previous values will be overwritten.
 
         Args:
-            cache (Cache): Cache to use for this Job.
+            cache (Optional[Cache]): See `gcip.core.cache.Cache` class.
 
         Returns:
-            JobSequence: Returns the modified :class:`Job` object.
+            JobSequence: Returns the modified `Job` object.
         """
         if cache:
             self._cache = cache
         return self
 
     def append_rules(self, *rules: Rule) -> Job:
+        """Adds one or more  [rule](https://docs.gitlab.com/ee/ci/yaml/README.html#rules)s behind the current rules of the job.
+
+        Args:
+            *rules (Rule): See `gcip.core.rule.Rule` class.
+
+        Returns:
+            JobSequence: Returns the modified `Job` object.
+        """
         self._rules.extend(rules)
         return self
 
     def prepend_rules(self, *rules: Rule) -> Job:
+        """Inserts one or more  [rule](https://docs.gitlab.com/ee/ci/yaml/README.html#rules)s before the current rules of the job.
+
+        Args:
+            *rules (Rule): See `gcip.core.rule.Rule` class.
+
+        Returns:
+            JobSequence: Returns the modified `Job` object.
+        """
         self._rules = list(rules) + self._rules
         return self
 
     def add_needs(self, *needs: Union[Need, Job, JobSequence]) -> Job:
+        """Add one or more [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) to the job.
+
+        Args:
+            *needs (Union[Need, Job, JobSequence]):
+
+        Returns:
+            JobSequence: Returns the modified `Job` object.
+        """
         self._needs.extend(needs)
         return self
 
@@ -180,17 +341,36 @@ class Job():
         return self
 
     def _get_all_instance_names(self) -> Set[str]:
+        """Query all the possible names this job can have by residing within parent `gcip.core.sequence.Sequence`s.
+
+        The possible image names are built by the `name` of this job plus all the possible prefix values from
+        parent parent `gcip.core.sequence.Sequence`s. The prefix values from parent sequences are their names
+        prefixed with the names of the parent parent sequences and so on.
+
+        Imagine Job `A` resides within following sequenes:
+
+        ```
+        B:
+          A
+        C:
+          D:
+            A
+        ```
+
+        Then the instance names of `A` would be `A-B` and `A-D-C`.
+        """
         instance_names: Set[str] = set()
         for parent in self._parents:
             for postfix in parent._get_all_instance_names(self):
                 if postfix:
-                    instance_names.add(f"{self._name}-{postfix}".replace("-#unset#", ""))
+                    instance_names.add(f"{self._name}-{postfix}")
                 else:
                     instance_names.add(self._name)
         return instance_names
 
     def copy(self) -> Job:
-        return self._copy_into(Job(name=".", script=copy.deepcopy(self._scripts)))
+        """Returns a independent, deep copy object of this job."""
+        return self._copy_into(Job(name="<set in _copy_into()", script=copy.deepcopy(self._scripts)))
 
     def _copy_into(self, job: Job) -> Job:
         job._original = self

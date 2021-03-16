@@ -1,4 +1,28 @@
 """This module represents the Gitlab CI [cache](https://docs.gitlab.com/ee/ci/yaml/#cache) keyword
+
+Simple example:
+
+```
+from gcip import Job, Cache
+
+job1 = Job(namespace="buildit", script="build my app")
+job1.set_cache(Cache(["file1.txt", "file2.txt", "path/to/file3.txt"]))
+```
+
+More complex example:
+
+```
+from gcip import Job, Cache, CacheKey, CachePolicy, WhenStatement
+
+files = ["file1.txt", "file2.txt", "path/to/file3.txt"]
+
+job1 = Job(namespace="buildit", script="build my app")
+job1.set_cache(Cache(
+    files,
+    cache_key=CacheKey(files=files),
+    when=WhenStatement.ALWAYS,
+    policy=CachePolicy.PULL_PUSH))
+```
 """
 
 import re
@@ -49,7 +73,7 @@ class CacheKey():
         ValueError: If `prefix` but not `files` is provided.
         ValueError: If `key` is only made out of dots '.'.
     """
-    def __init__(self, key: Optional[str] = None, files: Optional[List[str]] = None, prefix: Optional[str] = None) -> None:
+    def __init__(self, key: Optional[str] = None, *, files: Optional[List[str]] = None, prefix: Optional[str] = None) -> None:
         self._key = key
         self._files = files
         self._prefix = prefix
@@ -113,21 +137,24 @@ class Cache():
     [...] Caching is shared between `gcip.core.pipeline.Pipeline`s and `gcip.core.job.Job`s. Caches are restored before artifacts."_
 
     Args:
-        paths (List[str]): Paths to create the cache to.
-        cache_key (Optional[CacheKey]): Cache key which is used to share the cache.
-            If None, cache_key will be initialized with an empty CacheKey. See class CacheKey
-        untracked (Optional[bool]): If true, cache will cache all untracked files within project path. Defaults to None.
-        when (Optional[WhenStatement]): Defines when to save the cache, depending on job status.
-            Possible values are WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS Defaults to None.
-        policy (Optional[CachePolicy]): There are two policies, pull and push-pull.
-            Use pull policy if you know, that the job does not alter the files within the cache. Defaults to None.
+        paths (str): Use the [paths directive](https://docs.gitlab.com/ee/ci/yaml/#cachepaths) to choose which
+            files or directories to cache. Could be one or more path strings.
+        cache_key (Optional[CacheKey]): The key keyword defines the affinity of caching between jobs.
+            Defaults to `CacheKey` with default arguments.
+        untracked (Optional[bool]): Set the [untracked keyword](https://docs.gitlab.com/ee/ci/yaml/#cacheuntracked) to `True` to cache
+            all files that are untracked in your Git repository. Defaults to None (unset).
+        when (Optional[WhenStatement]): [This keyword](https://docs.gitlab.com/ee/ci/yaml/#cachewhen) defines when to save the cache,
+            depending on job status. Possible values are `gcip.core.rule.WhenStatement.ON_SUCCESS`,
+            `gcip.core.rule.WhenStatement.ON_FAILURE`, `gcip.core.rule.WhenStatement.ALWAYS`. Defaults to None (unset).
+        policy (Optional[CachePolicy]): The `CachePolicy` determines if a Job can modify the cache or read him only.
+            Defaults to None (unset).
 
     Raises:
-        ValueError: When unallowed WhenStatements are used.
+        ValueError: For unsupported values for the `when` parameter.
     """
     def __init__(
         self,
-        paths: List[str],
+        paths: str,
         cache_key: Optional[CacheKey] = None,
         untracked: Optional[bool] = None,
         when: Optional[WhenStatement] = None,
@@ -185,10 +212,13 @@ class Cache():
         return self._policy
 
     def render(self) -> Dict[str, Any]:
-        """Rendering method to rendere object into GitLab CI object.
+        """Renders the class as string or dict.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Returns:
-            Dict[str, Union[str, list]]: Configuration of a GitLab cache.
+            Dict[str, Any]: Configuration of a GitLab cache.
         """
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
         rendered = {

@@ -249,7 +249,7 @@ class JobSequence():
                 elif item["name"] is not None:
                     child_instance_name = item["name"]
                 else:
-                    child_instance_name = "#unset#"
+                    child_instance_name = ""
 
                 # all job names have '-' instead of '_'
                 child_instance_names.add(child_instance_name.replace("_", "-"))
@@ -260,7 +260,10 @@ class JobSequence():
         if instance_names:
             for child_instance_name in child_instance_names:
                 for instance_name in instance_names:
-                    return_values.add(f"{child_instance_name}-{instance_name}")
+                    if child_instance_name:
+                        return_values.add(f"{child_instance_name}-{instance_name}")
+                    else:
+                        return_values.add(instance_name)
         else:
             return_values = child_instance_names
 
