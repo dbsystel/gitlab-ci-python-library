@@ -35,6 +35,7 @@ def gitlab_ci_environment_variables(monkeypatch):
     https://docs.pytest.org/en/stable/monkeypatch.html
     https://docs.pytest.org/en/stable/monkeypatch.html#monkeypatching-environment-variables
     """
+    monkeypatch.setenv("CI", "true")  # indicate we are running within a (fake) pipeline
     monkeypatch.setenv("CI_PROJECT_NAME", "gitlab-ci-project")
     monkeypatch.setenv("CI_PROJECT_PATH", "my/awsome/project")
     monkeypatch.setenv("CI_COMMIT_REF_SLUG", "my-awsome-feature-branch")
