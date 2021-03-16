@@ -1,0 +1,3345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>gcip.core.variables API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>gcip.core.variables</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+from typing import Any, Optional
+
+
+# In Python &gt;= 3.9 it is also possible to use @classmethods and @property
+# together, so that there are no parantheses necessarry.
+# See https://stackoverflow.com/questions/128573/using-property-on-classmethods´
+class EnvProxy():
+    def __init__(self, key: str) -&gt; None:
+        self.key = key
+
+    def __get__(self, obj: Any, objtype: Any = None) -&gt; Optional[str]:
+        return os.getenv(self.key)
+
+
+class PredefinedVariables():
+    &#34;&#34;&#34;
+    Gitlab CI predefined variables.
+    https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+    &#34;&#34;&#34;
+
+    CHAT_CHANNEL = EnvProxy(&#34;CHAT_CHANNEL&#34;)
+    &#34;&#34;&#34;
+    Source chat channel which triggered the ChatOps command.
+
+    Added in GitLab 10.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CHAT_INPUT = EnvProxy(&#34;CHAT_INPUT&#34;)
+    &#34;&#34;&#34;
+    Additional arguments passed in the ChatOps command.
+
+    Added in GitLab 10.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI = EnvProxy(&#34;CI&#34;)
+    &#34;&#34;&#34;
+    Mark that job is executed in CI environment.
+
+    Added in GitLab all
+    Available in GitLab Runner 0.4
+    &#34;&#34;&#34;
+
+    CI_API_V4_URL = EnvProxy(&#34;CI_API_V4_URL&#34;)
+    &#34;&#34;&#34;
+    The GitLab API v4 root URL.
+
+    Added in GitLab 11.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_BUILDS_DIR = EnvProxy(&#34;CI_BUILDS_DIR&#34;)
+    &#34;&#34;&#34;
+    Top-level directory where builds are executed.
+
+    Added in GitLab all
+    Available in GitLab Runner 11.10
+    &#34;&#34;&#34;
+
+    CI_COMMIT_BEFORE_SHA = EnvProxy(&#34;CI_COMMIT_BEFORE_SHA&#34;)
+    &#34;&#34;&#34;
+    The previous latest commit present on a branch. Is always
+    0000000000000000000000000000000000000000 in pipelines for merge requests.
+
+    Added in GitLab 11.2
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_DESCRIPTION = EnvProxy(&#34;CI_COMMIT_DESCRIPTION&#34;)
+    &#34;&#34;&#34;
+    The description of the commit the message without first line,
+    if the title is shorter than 100 characters; full message in other case.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_COMMIT_MESSAGE = EnvProxy(&#34;CI_COMMIT_MESSAGE&#34;)
+    &#34;&#34;&#34;
+    The full commit message.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_REF_NAME = EnvProxy(&#34;CI_COMMIT_REF_NAME&#34;)
+    &#34;&#34;&#34;
+    The branch or tag name for which project is built.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_REF_PROTECTED = EnvProxy(&#34;CI_COMMIT_REF_PROTECTED&#34;)
+    &#34;&#34;&#34;
+    true if the job is running on a protected reference, false if not.
+
+    Added in GitLab 11.11
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_REF_SLUG = EnvProxy(&#34;CI_COMMIT_REF_SLUG&#34;)
+    &#34;&#34;&#34;
+    $CI_COMMIT_REF_NAME in lowercase, shortened to 63 bytes,
+    and with everything except 0-9 and a-z replaced with -.
+    No leading / trailing -. Use in URLs, host names and domain names.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_SHA = EnvProxy(&#34;CI_COMMIT_SHA&#34;)
+    &#34;&#34;&#34;
+    The commit revision for which project is built.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_SHORT_SHA = EnvProxy(&#34;CI_COMMIT_SHORT_SHA&#34;)
+    &#34;&#34;&#34;
+    The first eight characters of CI_COMMIT_SHA.
+
+    Added in GitLab 11.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_BRANCH = EnvProxy(&#34;CI_COMMIT_BRANCH&#34;)
+    &#34;&#34;&#34;
+    The commit branch name. Present in branch pipelines,
+    including pipelines for the default branch.
+    Not present in merge request pipelines or tag pipelines.
+
+    Added in GitLab 12.6
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_COMMIT_TAG = EnvProxy(&#34;CI_COMMIT_TAG&#34;)
+    &#34;&#34;&#34;
+    The commit tag name. Present only when building tags.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_COMMIT_TITLE = EnvProxy(&#34;CI_COMMIT_TITLE&#34;)
+    &#34;&#34;&#34;
+    The title of the commit - the full first line of the message.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_TIMESTAMP = EnvProxy(&#34;CI_COMMIT_TIMESTAMP&#34;)
+    &#34;&#34;&#34;
+    The timestamp of the commit in the ISO 8601 format.
+
+    Added in GitLab 13.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_CONCURRENT_ID = EnvProxy(&#34;CI_CONCURRENT_ID&#34;)
+    &#34;&#34;&#34;
+    Unique ID of build execution in a single executor.
+
+    Added in GitLab all
+    Available in GitLab Runner 11.10
+    &#34;&#34;&#34;
+
+    CI_CONCURRENT_PROJECT_ID = EnvProxy(&#34;CI_CONCURRENT_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    Unique ID of build execution in a single executor and project.
+
+    Added in GitLab all
+    Available in GitLab Runner 11.10
+    &#34;&#34;&#34;
+
+    CI_CONFIG_PATH = EnvProxy(&#34;CI_CONFIG_PATH&#34;)
+    &#34;&#34;&#34;
+    The path to CI configuration file. Defaults to .gitlab-ci.yml.
+
+    Added in GitLab 9.4
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_DEBUG_TRACE = EnvProxy(&#34;CI_DEBUG_TRACE&#34;)
+    &#34;&#34;&#34;
+    Whether debug logging (tracing) is enabled.
+
+    Added in GitLab all
+    Available in GitLab Runner 1.7
+    &#34;&#34;&#34;
+
+    CI_DEFAULT_BRANCH = EnvProxy(&#34;CI_DEFAULT_BRANCH&#34;)
+    &#34;&#34;&#34;
+    The name of the default branch for the project.
+
+    Added in GitLab 12.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX = EnvProxy(&#34;CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX&#34;)
+    &#34;&#34;&#34;
+    The image prefix for pulling images through the Dependency Proxy.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_SERVER = EnvProxy(&#34;CI_DEPENDENCY_PROXY_SERVER&#34;)
+    &#34;&#34;&#34;
+    The server for logging in to the Dependency Proxy. This is equivalent to $CI_SERVER_HOST:$CI_SERVER_PORT.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_PASSWORD = EnvProxy(&#34;CI_DEPENDENCY_PROXY_PASSWORD&#34;)
+    &#34;&#34;&#34;
+    The password to use to pull images through the Dependency Proxy.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_USER = EnvProxy(&#34;CI_DEPENDENCY_PROXY_USER&#34;)
+    &#34;&#34;&#34;
+    The username to use to pull images through the Dependency Proxy.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPLOY_FREEZE = EnvProxy(&#34;CI_DEPLOY_FREEZE&#34;)
+    &#34;&#34;&#34;
+    Included with the value true if the pipeline runs during a deploy freeze window.
+
+    Added in GitLab 13.2
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPLOY_PASSWORD = EnvProxy(&#34;CI_DEPLOY_PASSWORD&#34;)
+    &#34;&#34;&#34;
+    Authentication password of the GitLab Deploy Token,
+    only present if the Project has one related.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPLOY_USER = EnvProxy(&#34;CI_DEPLOY_USER&#34;)
+    &#34;&#34;&#34;
+    Authentication username of the GitLab Deploy Token,
+    only present if the Project has one related.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DISPOSABLE_ENVIRONMENT = EnvProxy(&#34;CI_DISPOSABLE_ENVIRONMENT&#34;)
+    &#34;&#34;&#34;
+    Marks that the job is executed in a disposable environment
+    (something that is created only for this job and disposed of/destroyed
+    after the execution - all executors except shell and ssh).
+    If the environment is disposable, it is set to true,
+    otherwise it is not defined at all.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.1
+    &#34;&#34;&#34;
+
+    CI_ENVIRONMENT_NAME = EnvProxy(&#34;CI_ENVIRONMENT_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of the environment for this job.
+    Only present if environment:name is set.
+
+    Added in GitLab 8.15
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_ENVIRONMENT_SLUG = EnvProxy(&#34;CI_ENVIRONMENT_SLUG&#34;)
+    &#34;&#34;&#34;
+    A simplified version of the environment name,
+    suitable for inclusion in DNS, URLs, Kubernetes labels, and so on.
+    Only present if environment:name is set.
+
+    Added in GitLab 8.15
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_ENVIRONMENT_URL = EnvProxy(&#34;CI_ENVIRONMENT_URL&#34;)
+    &#34;&#34;&#34;
+    The URL of the environment for this job.
+    Only present if environment:url is set.
+
+    Added in GitLab 9.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_IID = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_IID&#34;)
+    &#34;&#34;&#34;
+    Pull Request ID from GitHub if the pipelines are for
+    external pull requests.
+    Available only if only [external_pull_requests] or
+    rules syntax is used and the pull request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY&#34;)
+    &#34;&#34;&#34;
+    The source repository name of the pull request if the pipelines are
+    for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and
+    the pull request is open.
+
+    Added in GitLab 13.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY&#34;)
+    &#34;&#34;&#34;
+    The target repository name of the pull request if the pipelines
+    are for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and the pull
+    request is open.
+
+    Added in GitLab 13.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The source branch name of the pull request if the pipelines are for
+    external pull requests. Available only if only [external_pull_requests]
+    or rules syntax is used and the pull request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the source branch of the pull request if the pipelines
+    are for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and the pull
+    request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The target branch name of the pull request if the pipelines are for
+    external pull requests. Available only if only [external_pull_requests]
+    or rules syntax is used and the pull request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the target branch of the pull request if the pipelines
+    are for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and the pull
+    request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_HAS_OPEN_REQUIREMENTS = EnvProxy(&#34;CI_HAS_OPEN_REQUIREMENTS&#34;)
+    &#34;&#34;&#34;
+    Included with the value true only if the pipeline’s project has any
+    open requirements. Not included if there are no open requirements for
+    the pipeline’s project.
+
+    Added in GitLab 13.1
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_OPEN_MERGE_REQUESTS = EnvProxy(&#34;CI_OPEN_MERGE_REQUESTS&#34;)
+    &#34;&#34;&#34;
+    Available in branch and merge request pipelines. Contains a
+    comma-separated list of up to four merge requests that use the current
+    branch and project as the merge request source.
+    For example gitlab-org/gitlab!333,gitlab-org/gitlab-foss!11.
+
+    Added in GitLab 13.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_ID = EnvProxy(&#34;CI_JOB_ID&#34;)
+    &#34;&#34;&#34;
+    The unique ID of the current job that GitLab CI/CD uses internally.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_IMAGE = EnvProxy(&#34;CI_JOB_IMAGE&#34;)
+    &#34;&#34;&#34;
+    The name of the image running the CI job.
+
+    Added in GitLab 12.9
+    Available in GitLab Runner 12.9
+    &#34;&#34;&#34;
+
+    CI_JOB_MANUAL = EnvProxy(&#34;CI_JOB_MANUAL&#34;)
+    &#34;&#34;&#34;
+    The flag to indicate that job was manually started.
+
+    Added in GitLab 8.12
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_NAME = EnvProxy(&#34;CI_JOB_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of the job as defined in .gitlab-ci.yml.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_JOB_STAGE = EnvProxy(&#34;CI_JOB_STAGE&#34;)
+    &#34;&#34;&#34;
+    The name of the stage as defined in .gitlab-ci.yml.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_JOB_STATUS = EnvProxy(&#34;CI_JOB_STATUS&#34;)
+    &#34;&#34;&#34;
+    The state of the job as each runner stage is executed.
+    Use with after_script where CI_JOB_STATUS can be either success,
+    failed or canceled.
+
+    Added in GitLab all
+    Available in GitLab Runner 13.5
+
+    &#34;&#34;&#34;
+
+    CI_JOB_TOKEN = EnvProxy(&#34;CI_JOB_TOKEN&#34;)
+    &#34;&#34;&#34;
+    Token used for authenticating with a few API endpoints and downloading
+    dependent repositories. The token is valid as long as the job is running.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 1.2
+    &#34;&#34;&#34;
+
+    CI_JOB_JWT = EnvProxy(&#34;CI_JOB_JWT&#34;)
+    &#34;&#34;&#34;
+    RS256 JSON web token that can be used for authenticating with third
+    party systems that support JWT authentication, for example HashiCorp’s Vault.
+
+    Added in GitLab 12.10
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_URL = EnvProxy(&#34;CI_JOB_URL&#34;)
+    &#34;&#34;&#34;
+    Job details URL.
+
+    Added in GitLab 11.1
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_KUBERNETES_ACTIVE = EnvProxy(&#34;CI_KUBERNETES_ACTIVE&#34;)
+    &#34;&#34;&#34;
+    Included with the value true only if the pipeline has a Kubernetes
+    cluster available for deployments. Not included if no cluster is available.
+    Can be used as an alternative to only:kubernetes/except:kubernetes
+    with rules:if.
+
+    Added in GitLab 13.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_ASSIGNEES = EnvProxy(&#34;CI_MERGE_REQUEST_ASSIGNEES&#34;)
+    &#34;&#34;&#34;
+    Comma-separated list of username(s) of assignee(s) for the merge request
+    if the pipelines are for merge requests.
+    Available only if only [merge_requests] or rules syntax is used and the
+    merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_ID = EnvProxy(&#34;CI_MERGE_REQUEST_ID&#34;)
+    &#34;&#34;&#34;
+    The instance-level ID of the merge request. Only available if the
+    pipelines are for merge requests and the merge request is created.
+    This is a unique ID across all projects on GitLab.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_IID = EnvProxy(&#34;CI_MERGE_REQUEST_IID&#34;)
+    &#34;&#34;&#34;
+    The project-level IID (internal ID) of the merge request.
+    Only available If the pipelines are for merge requests and the merge
+    request is created. This ID is unique for the current project.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_LABELS = EnvProxy(&#34;CI_MERGE_REQUEST_LABELS&#34;)
+    &#34;&#34;&#34;
+    Comma-separated label names of the merge request if the pipelines are
+    for merge requests. Available only if only [merge_requests] or rules
+    syntax is used and the merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_MILESTONE = EnvProxy(&#34;CI_MERGE_REQUEST_MILESTONE&#34;)
+    &#34;&#34;&#34;
+    The milestone title of the merge request if the pipelines are for merge
+    requests. Available only if only [merge_requests] or rules syntax is
+    used and the merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_PROJECT_ID = EnvProxy(&#34;CI_MERGE_REQUEST_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    The ID of the project of the merge request if the pipelines are for
+    merge requests. Available only if only [merge_requests] or rules syntax
+    is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_PROJECT_PATH = EnvProxy(&#34;CI_MERGE_REQUEST_PROJECT_PATH&#34;)
+    &#34;&#34;&#34;
+    The path of the project of the merge request if the pipelines are for
+    merge requests (for example namespace/awesome-project). Available only
+    if only [merge_requests] or rules syntax is used and the merge request
+    is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_PROJECT_URL = EnvProxy(&#34;CI_MERGE_REQUEST_PROJECT_URL&#34;)
+    &#34;&#34;&#34;
+    The URL of the project of the merge request if the pipelines are for
+    merge requests (for example http://192.168.10.15:3000/namespace/awesome-project).
+    Available only if only [merge_requests] or rules syntax is used and the merge
+    request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_REF_PATH = EnvProxy(&#34;CI_MERGE_REQUEST_REF_PATH&#34;)
+    &#34;&#34;&#34;
+    The ref path of the merge request if the pipelines are for merge requests.
+    (for example refs/merge-requests/1/head). Available only if only
+    [merge_requests] or rules syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_BRANCH_NAME = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The source branch name of the merge request if the pipelines are for
+    merge requests. Available only if only [merge_requests] or rules syntax
+    is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_BRANCH_SHA = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the source branch of the merge request if the pipelines
+    are for merge requests. Available only if only [merge_requests] or rules
+    syntax is used, the merge request is created, and the pipeline is a
+    merged result pipeline.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_PROJECT_ID = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    The ID of the source project of the merge request if the pipelines are
+    for merge requests. Available only if only [merge_requests] or rules
+    syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_PROJECT_PATH = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_PROJECT_PATH&#34;)
+    &#34;&#34;&#34;
+    The path of the source project of the merge request if the pipelines
+    are for merge requests. Available only if only [merge_requests] or
+    rules syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_PROJECT_URL = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_PROJECT_URL&#34;)
+    &#34;&#34;&#34;
+    The URL of the source project of the merge request if the pipelines are
+    for merge requests. Available only if only [merge_requests] or rules
+    syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_TARGET_BRANCH_NAME = EnvProxy(&#34;CI_MERGE_REQUEST_TARGET_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The target branch name of the merge request if the pipelines are for
+    merge requests. Available only if only [merge_requests] or rules syntax
+    is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_TARGET_BRANCH_SHA = EnvProxy(&#34;CI_MERGE_REQUEST_TARGET_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the target branch of the merge request if the pipelines
+    are for merge requests. Available only if only [merge_requests] or rules
+    syntax is used, the merge request is created, and the pipeline is a merged
+    result pipeline.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_TITLE = EnvProxy(&#34;CI_MERGE_REQUEST_TITLE&#34;)
+    &#34;&#34;&#34;
+    The title of the merge request if the pipelines are for merge requests.
+    Available only if only [merge_requests] or rules syntax is used and the
+    merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_EVENT_TYPE = EnvProxy(&#34;CI_MERGE_REQUEST_EVENT_TYPE&#34;)
+    &#34;&#34;&#34;
+    The event type of the merge request, if the pipelines are for merge requests.
+    Can be detached, merged_result or merge_train.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_DIFF_ID = EnvProxy(&#34;CI_MERGE_REQUEST_DIFF_ID&#34;)
+    &#34;&#34;&#34;
+    The version of the merge request diff, if the pipelines are for merge requests.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_DIFF_BASE_SHA = EnvProxy(&#34;CI_MERGE_REQUEST_DIFF_BASE_SHA&#34;)
+    &#34;&#34;&#34;
+    The base SHA of the merge request diff, if the pipelines are for merge requests.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_NODE_INDEX = EnvProxy(&#34;CI_NODE_INDEX&#34;)
+    &#34;&#34;&#34;
+    Index of the job in the job set. If the job is not parallelized, this variable is not set.
+
+    Added in GitLab 11.5
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_NODE_TOTAL = EnvProxy(&#34;CI_NODE_TOTAL&#34;)
+    &#34;&#34;&#34;
+    Total number of instances of this job running in parallel. If the job is not parallelized, this variable is set to 1.
+
+    Added in GitLab 11.5
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PAGES_DOMAIN = EnvProxy(&#34;CI_PAGES_DOMAIN&#34;)
+    &#34;&#34;&#34;
+    The configured domain that hosts GitLab Pages.
+
+    Added in GitLab 11.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PAGES_URL = EnvProxy(&#34;CI_PAGES_URL&#34;)
+    &#34;&#34;&#34;
+    URL to GitLab Pages-built pages. Always belongs to a subdomain of CI_PAGES_DOMAIN.
+
+    Added in GitLab 11.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_ID = EnvProxy(&#34;CI_PIPELINE_ID&#34;)
+    &#34;&#34;&#34;
+    The instance-level ID of the current pipeline. This is a unique ID
+    across all projects on GitLab.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_IID = EnvProxy(&#34;CI_PIPELINE_IID&#34;)
+    &#34;&#34;&#34;
+    The project-level IID (internal ID) of the current pipeline.
+    This ID is unique for the current project.
+
+    Added in GitLab 11.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_SOURCE = EnvProxy(&#34;CI_PIPELINE_SOURCE&#34;)
+    &#34;&#34;&#34;
+    Indicates how the pipeline was triggered.
+    Possible options are push, web, schedule, api, external, chat, webide,
+    merge_request_event, external_pull_request_event, parent_pipeline,
+    trigger, or pipeline.
+    For pipelines created before GitLab 9.5, this is displayed as unknown.
+
+    Added in GitLab 10.0
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_TRIGGERED = EnvProxy(&#34;CI_PIPELINE_TRIGGERED&#34;)
+    &#34;&#34;&#34;
+    The flag to indicate that job was triggered.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_URL = EnvProxy(&#34;CI_PIPELINE_URL&#34;)
+    &#34;&#34;&#34;
+    Pipeline details URL.
+
+    Added in GitLab 11.1
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_CONFIG_PATH = EnvProxy(&#34;CI_PROJECT_CONFIG_PATH&#34;)
+    &#34;&#34;&#34;
+    The CI configuration path for the project.
+
+    Added in GitLab 13.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_DIR = EnvProxy(&#34;CI_PROJECT_DIR&#34;)
+    &#34;&#34;&#34;
+    The full path where the repository is cloned and where the job is run.
+    If the GitLab Runner builds_dir parameter is set, this variable is set
+    relative to the value of builds_dir. For more information, see Advanced
+    configuration for GitLab Runner.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_ID = EnvProxy(&#34;CI_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    The unique ID of the current project that GitLab CI/CD uses internally.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_NAME = EnvProxy(&#34;CI_PROJECT_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of the directory for the project that is being built.
+    For example, if the project URL is gitlab.example.com/group-name/project-1,
+    the CI_PROJECT_NAME would be project-1.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_NAMESPACE = EnvProxy(&#34;CI_PROJECT_NAMESPACE&#34;)
+    &#34;&#34;&#34;
+    The project namespace (username or group name) that is being built.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_ROOT_NAMESPACE = EnvProxy(&#34;CI_PROJECT_ROOT_NAMESPACE&#34;)
+    &#34;&#34;&#34;
+    The root project namespace (username or group name) that is being built.
+    For example, if CI_PROJECT_NAMESPACE is root-group/child-group/grandchild-group,
+    CI_PROJECT_ROOT_NAMESPACE would be root-group.
+
+    Added in GitLab 13.2
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_PATH = EnvProxy(&#34;CI_PROJECT_PATH&#34;)
+    &#34;&#34;&#34;
+    The namespace with project name.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_PATH_SLUG = EnvProxy(&#34;CI_PROJECT_PATH_SLUG&#34;)
+    &#34;&#34;&#34;
+    $CI_PROJECT_PATH in lowercase and with everything except 0-9 and a-z replaced with -. Use in URLs and domain names.
+
+    Added in GitLab 9.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_REPOSITORY_LANGUAGES = EnvProxy(&#34;CI_PROJECT_REPOSITORY_LANGUAGES&#34;)
+    &#34;&#34;&#34;
+    Comma-separated, lowercase list of the languages used in the repository (for example ruby,javascript,html,css).
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_TITLE = EnvProxy(&#34;CI_PROJECT_TITLE&#34;)
+    &#34;&#34;&#34;
+    The human-readable project name as displayed in the GitLab web interface.
+
+    Added in GitLab 12.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_URL = EnvProxy(&#34;CI_PROJECT_URL&#34;)
+    &#34;&#34;&#34;
+    The HTTP(S) address to access project.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_VISIBILITY = EnvProxy(&#34;CI_PROJECT_VISIBILITY&#34;)
+    &#34;&#34;&#34;
+    The project visibility (internal, private, public).
+
+    Added in GitLab 10.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_REGISTRY = EnvProxy(&#34;CI_REGISTRY&#34;)
+    &#34;&#34;&#34;
+    GitLab Container Registry. This variable includes a :port value if one
+    has been specified in the registry configuration.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_REGISTRY_IMAGE = EnvProxy(&#34;CI_REGISTRY_IMAGE&#34;)
+    &#34;&#34;&#34;
+    the address of the registry tied to the specific project.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_REGISTRY_PASSWORD = EnvProxy(&#34;CI_REGISTRY_PASSWORD&#34;)
+    &#34;&#34;&#34;
+    The password to use to push containers to the GitLab Container Registry, for the current project.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_REGISTRY_USER = EnvProxy(&#34;CI_REGISTRY_USER&#34;)
+    &#34;&#34;&#34;
+    The username to use to push containers to the GitLab Container Registry, for the current project.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_REPOSITORY_URL = EnvProxy(&#34;CI_REPOSITORY_URL&#34;)
+    &#34;&#34;&#34;
+    The URL to clone the Git repository.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_RUNNER_DESCRIPTION = EnvProxy(&#34;CI_RUNNER_DESCRIPTION&#34;)
+    &#34;&#34;&#34;
+    The description of the runner as saved in GitLab.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_RUNNER_EXECUTABLE_ARCH = EnvProxy(&#34;CI_RUNNER_EXECUTABLE_ARCH&#34;)
+    &#34;&#34;&#34;
+    The OS/architecture of the GitLab Runner executable (note that this is not necessarily the same as the environment of the executor).
+
+    Added in GitLab all
+    Available in GitLab Runner 10.6
+    &#34;&#34;&#34;
+
+    CI_RUNNER_ID = EnvProxy(&#34;CI_RUNNER_ID&#34;)
+    &#34;&#34;&#34;
+    The unique ID of runner being used.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_RUNNER_REVISION = EnvProxy(&#34;CI_RUNNER_REVISION&#34;)
+    &#34;&#34;&#34;
+    GitLab Runner revision that is executing the current job.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.6
+    &#34;&#34;&#34;
+
+    CI_RUNNER_SHORT_TOKEN = EnvProxy(&#34;CI_RUNNER_SHORT_TOKEN&#34;)
+    &#34;&#34;&#34;
+    First eight characters of the runner’s token used to authenticate new job requests. Used as the runner’s unique ID.
+
+    Added in GitLab all
+    Available in GitLab Runner 12.3
+    &#34;&#34;&#34;
+
+    CI_RUNNER_TAGS = EnvProxy(&#34;CI_RUNNER_TAGS&#34;)
+    &#34;&#34;&#34;
+    The defined runner tags.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_RUNNER_VERSION = EnvProxy(&#34;CI_RUNNER_VERSION&#34;)
+    &#34;&#34;&#34;
+    GitLab Runner version that is executing the current job.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.6
+    &#34;&#34;&#34;
+
+    CI_SERVER = EnvProxy(&#34;CI_SERVER&#34;)
+    &#34;&#34;&#34;
+    Mark that job is executed in CI environment.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_URL = EnvProxy(&#34;CI_SERVER_URL&#34;)
+    &#34;&#34;&#34;
+    The base URL of the GitLab instance, including protocol and port (like https://gitlab.example.com:8080).
+
+    Added in GitLab 12.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_HOST = EnvProxy(&#34;CI_SERVER_HOST&#34;)
+    &#34;&#34;&#34;
+    Host component of the GitLab instance URL, without protocol and port (like gitlab.example.com).
+
+    Added in GitLab 12.1
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_PORT = EnvProxy(&#34;CI_SERVER_PORT&#34;)
+    &#34;&#34;&#34;
+    Port component of the GitLab instance URL, without host and protocol (like 3000).
+
+    Added in GitLab 12.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_PROTOCOL = EnvProxy(&#34;CI_SERVER_PROTOCOL&#34;)
+    &#34;&#34;&#34;
+    Protocol component of the GitLab instance URL, without host and port (like https).
+
+    Added in GitLab 12.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_NAME = EnvProxy(&#34;CI_SERVER_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of CI server that is used to coordinate jobs.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_REVISION = EnvProxy(&#34;CI_SERVER_REVISION&#34;)
+    &#34;&#34;&#34;
+    GitLab revision that is used to schedule jobs.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION = EnvProxy(&#34;CI_SERVER_VERSION&#34;)
+    &#34;&#34;&#34;
+    GitLab version that is used to schedule jobs.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION_MAJOR = EnvProxy(&#34;CI_SERVER_VERSION_MAJOR&#34;)
+    &#34;&#34;&#34;
+    GitLab version major component.
+
+    Added in GitLab 11.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION_MINOR = EnvProxy(&#34;CI_SERVER_VERSION_MINOR&#34;)
+    &#34;&#34;&#34;
+    GitLab version minor component.
+
+    Added in GitLab 11.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION_PATCH = EnvProxy(&#34;CI_SERVER_VERSION_PATCH&#34;)
+    &#34;&#34;&#34;
+    GitLab version patch component.
+
+    Added in GitLab 11.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SHARED_ENVIRONMENT = EnvProxy(&#34;CI_SHARED_ENVIRONMENT&#34;)
+    &#34;&#34;&#34;
+    Marks that the job is executed in a shared environment (something that
+    is persisted across CI invocations like shell or ssh executor).
+    If the environment is shared, it is set to true, otherwise it is not
+    defined at all.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.1
+    &#34;&#34;&#34;
+
+    GITLAB_CI = EnvProxy(&#34;GITLAB_CI&#34;)
+    &#34;&#34;&#34;
+    Mark that job is executed in GitLab CI/CD environment.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_FEATURES = EnvProxy(&#34;GITLAB_FEATURES&#34;)
+    &#34;&#34;&#34;
+    The comma separated list of licensed features available for your instance and plan.
+
+    Added in GitLab 10.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_EMAIL = EnvProxy(&#34;GITLAB_USER_EMAIL&#34;)
+    &#34;&#34;&#34;
+    The email of the user who started the job.
+
+    Added in GitLab 8.12
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_ID = EnvProxy(&#34;GITLAB_USER_ID&#34;)
+    &#34;&#34;&#34;
+    The ID of the user who started the job.
+
+    Added in GitLab 8.12
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_LOGIN = EnvProxy(&#34;GITLAB_USER_LOGIN&#34;)
+    &#34;&#34;&#34;
+    The login username of the user who started the job.
+
+    Added in GitLab 10.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_NAME = EnvProxy(&#34;GITLAB_USER_NAME&#34;)
+    &#34;&#34;&#34;
+    The real name of the user who started the job.
+
+    Added in GitLab 10.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    TRIGGER_PAYLOAD = EnvProxy(&#34;TRIGGER_PAYLOAD&#34;)
+    &#34;&#34;&#34;
+    This variable is available when a pipeline is triggered with a webhook
+
+    Added in GitLab 13.9
+    Available in GitLab Runner all
+    &#34;&#34;&#34;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="gcip.core.variables.EnvProxy"><code class="flex name class">
+<span>class <span class="ident">EnvProxy</span></span>
+<span>(</span><span>key: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EnvProxy():
+    def __init__(self, key: str) -&gt; None:
+        self.key = key
+
+    def __get__(self, obj: Any, objtype: Any = None) -&gt; Optional[str]:
+        return os.getenv(self.key)</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables"><code class="flex name class">
+<span>class <span class="ident">PredefinedVariables</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gitlab CI predefined variables.
+<a href="https://docs.gitlab.com/ee/ci/variables/predefined_variables.html">https://docs.gitlab.com/ee/ci/variables/predefined_variables.html</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PredefinedVariables():
+    &#34;&#34;&#34;
+    Gitlab CI predefined variables.
+    https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+    &#34;&#34;&#34;
+
+    CHAT_CHANNEL = EnvProxy(&#34;CHAT_CHANNEL&#34;)
+    &#34;&#34;&#34;
+    Source chat channel which triggered the ChatOps command.
+
+    Added in GitLab 10.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CHAT_INPUT = EnvProxy(&#34;CHAT_INPUT&#34;)
+    &#34;&#34;&#34;
+    Additional arguments passed in the ChatOps command.
+
+    Added in GitLab 10.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI = EnvProxy(&#34;CI&#34;)
+    &#34;&#34;&#34;
+    Mark that job is executed in CI environment.
+
+    Added in GitLab all
+    Available in GitLab Runner 0.4
+    &#34;&#34;&#34;
+
+    CI_API_V4_URL = EnvProxy(&#34;CI_API_V4_URL&#34;)
+    &#34;&#34;&#34;
+    The GitLab API v4 root URL.
+
+    Added in GitLab 11.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_BUILDS_DIR = EnvProxy(&#34;CI_BUILDS_DIR&#34;)
+    &#34;&#34;&#34;
+    Top-level directory where builds are executed.
+
+    Added in GitLab all
+    Available in GitLab Runner 11.10
+    &#34;&#34;&#34;
+
+    CI_COMMIT_BEFORE_SHA = EnvProxy(&#34;CI_COMMIT_BEFORE_SHA&#34;)
+    &#34;&#34;&#34;
+    The previous latest commit present on a branch. Is always
+    0000000000000000000000000000000000000000 in pipelines for merge requests.
+
+    Added in GitLab 11.2
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_DESCRIPTION = EnvProxy(&#34;CI_COMMIT_DESCRIPTION&#34;)
+    &#34;&#34;&#34;
+    The description of the commit the message without first line,
+    if the title is shorter than 100 characters; full message in other case.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_COMMIT_MESSAGE = EnvProxy(&#34;CI_COMMIT_MESSAGE&#34;)
+    &#34;&#34;&#34;
+    The full commit message.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_REF_NAME = EnvProxy(&#34;CI_COMMIT_REF_NAME&#34;)
+    &#34;&#34;&#34;
+    The branch or tag name for which project is built.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_REF_PROTECTED = EnvProxy(&#34;CI_COMMIT_REF_PROTECTED&#34;)
+    &#34;&#34;&#34;
+    true if the job is running on a protected reference, false if not.
+
+    Added in GitLab 11.11
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_REF_SLUG = EnvProxy(&#34;CI_COMMIT_REF_SLUG&#34;)
+    &#34;&#34;&#34;
+    $CI_COMMIT_REF_NAME in lowercase, shortened to 63 bytes,
+    and with everything except 0-9 and a-z replaced with -.
+    No leading / trailing -. Use in URLs, host names and domain names.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_SHA = EnvProxy(&#34;CI_COMMIT_SHA&#34;)
+    &#34;&#34;&#34;
+    The commit revision for which project is built.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_SHORT_SHA = EnvProxy(&#34;CI_COMMIT_SHORT_SHA&#34;)
+    &#34;&#34;&#34;
+    The first eight characters of CI_COMMIT_SHA.
+
+    Added in GitLab 11.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_BRANCH = EnvProxy(&#34;CI_COMMIT_BRANCH&#34;)
+    &#34;&#34;&#34;
+    The commit branch name. Present in branch pipelines,
+    including pipelines for the default branch.
+    Not present in merge request pipelines or tag pipelines.
+
+    Added in GitLab 12.6
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_COMMIT_TAG = EnvProxy(&#34;CI_COMMIT_TAG&#34;)
+    &#34;&#34;&#34;
+    The commit tag name. Present only when building tags.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_COMMIT_TITLE = EnvProxy(&#34;CI_COMMIT_TITLE&#34;)
+    &#34;&#34;&#34;
+    The title of the commit - the full first line of the message.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_COMMIT_TIMESTAMP = EnvProxy(&#34;CI_COMMIT_TIMESTAMP&#34;)
+    &#34;&#34;&#34;
+    The timestamp of the commit in the ISO 8601 format.
+
+    Added in GitLab 13.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_CONCURRENT_ID = EnvProxy(&#34;CI_CONCURRENT_ID&#34;)
+    &#34;&#34;&#34;
+    Unique ID of build execution in a single executor.
+
+    Added in GitLab all
+    Available in GitLab Runner 11.10
+    &#34;&#34;&#34;
+
+    CI_CONCURRENT_PROJECT_ID = EnvProxy(&#34;CI_CONCURRENT_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    Unique ID of build execution in a single executor and project.
+
+    Added in GitLab all
+    Available in GitLab Runner 11.10
+    &#34;&#34;&#34;
+
+    CI_CONFIG_PATH = EnvProxy(&#34;CI_CONFIG_PATH&#34;)
+    &#34;&#34;&#34;
+    The path to CI configuration file. Defaults to .gitlab-ci.yml.
+
+    Added in GitLab 9.4
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_DEBUG_TRACE = EnvProxy(&#34;CI_DEBUG_TRACE&#34;)
+    &#34;&#34;&#34;
+    Whether debug logging (tracing) is enabled.
+
+    Added in GitLab all
+    Available in GitLab Runner 1.7
+    &#34;&#34;&#34;
+
+    CI_DEFAULT_BRANCH = EnvProxy(&#34;CI_DEFAULT_BRANCH&#34;)
+    &#34;&#34;&#34;
+    The name of the default branch for the project.
+
+    Added in GitLab 12.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX = EnvProxy(&#34;CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX&#34;)
+    &#34;&#34;&#34;
+    The image prefix for pulling images through the Dependency Proxy.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_SERVER = EnvProxy(&#34;CI_DEPENDENCY_PROXY_SERVER&#34;)
+    &#34;&#34;&#34;
+    The server for logging in to the Dependency Proxy. This is equivalent to $CI_SERVER_HOST:$CI_SERVER_PORT.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_PASSWORD = EnvProxy(&#34;CI_DEPENDENCY_PROXY_PASSWORD&#34;)
+    &#34;&#34;&#34;
+    The password to use to pull images through the Dependency Proxy.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPENDENCY_PROXY_USER = EnvProxy(&#34;CI_DEPENDENCY_PROXY_USER&#34;)
+    &#34;&#34;&#34;
+    The username to use to pull images through the Dependency Proxy.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPLOY_FREEZE = EnvProxy(&#34;CI_DEPLOY_FREEZE&#34;)
+    &#34;&#34;&#34;
+    Included with the value true if the pipeline runs during a deploy freeze window.
+
+    Added in GitLab 13.2
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPLOY_PASSWORD = EnvProxy(&#34;CI_DEPLOY_PASSWORD&#34;)
+    &#34;&#34;&#34;
+    Authentication password of the GitLab Deploy Token,
+    only present if the Project has one related.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DEPLOY_USER = EnvProxy(&#34;CI_DEPLOY_USER&#34;)
+    &#34;&#34;&#34;
+    Authentication username of the GitLab Deploy Token,
+    only present if the Project has one related.
+
+    Added in GitLab 10.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_DISPOSABLE_ENVIRONMENT = EnvProxy(&#34;CI_DISPOSABLE_ENVIRONMENT&#34;)
+    &#34;&#34;&#34;
+    Marks that the job is executed in a disposable environment
+    (something that is created only for this job and disposed of/destroyed
+    after the execution - all executors except shell and ssh).
+    If the environment is disposable, it is set to true,
+    otherwise it is not defined at all.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.1
+    &#34;&#34;&#34;
+
+    CI_ENVIRONMENT_NAME = EnvProxy(&#34;CI_ENVIRONMENT_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of the environment for this job.
+    Only present if environment:name is set.
+
+    Added in GitLab 8.15
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_ENVIRONMENT_SLUG = EnvProxy(&#34;CI_ENVIRONMENT_SLUG&#34;)
+    &#34;&#34;&#34;
+    A simplified version of the environment name,
+    suitable for inclusion in DNS, URLs, Kubernetes labels, and so on.
+    Only present if environment:name is set.
+
+    Added in GitLab 8.15
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_ENVIRONMENT_URL = EnvProxy(&#34;CI_ENVIRONMENT_URL&#34;)
+    &#34;&#34;&#34;
+    The URL of the environment for this job.
+    Only present if environment:url is set.
+
+    Added in GitLab 9.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_IID = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_IID&#34;)
+    &#34;&#34;&#34;
+    Pull Request ID from GitHub if the pipelines are for
+    external pull requests.
+    Available only if only [external_pull_requests] or
+    rules syntax is used and the pull request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY&#34;)
+    &#34;&#34;&#34;
+    The source repository name of the pull request if the pipelines are
+    for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and
+    the pull request is open.
+
+    Added in GitLab 13.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY&#34;)
+    &#34;&#34;&#34;
+    The target repository name of the pull request if the pipelines
+    are for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and the pull
+    request is open.
+
+    Added in GitLab 13.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The source branch name of the pull request if the pipelines are for
+    external pull requests. Available only if only [external_pull_requests]
+    or rules syntax is used and the pull request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the source branch of the pull request if the pipelines
+    are for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and the pull
+    request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The target branch name of the pull request if the pipelines are for
+    external pull requests. Available only if only [external_pull_requests]
+    or rules syntax is used and the pull request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA = EnvProxy(&#34;CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the target branch of the pull request if the pipelines
+    are for external pull requests. Available only if only
+    [external_pull_requests] or rules syntax is used and the pull
+    request is open.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_HAS_OPEN_REQUIREMENTS = EnvProxy(&#34;CI_HAS_OPEN_REQUIREMENTS&#34;)
+    &#34;&#34;&#34;
+    Included with the value true only if the pipeline’s project has any
+    open requirements. Not included if there are no open requirements for
+    the pipeline’s project.
+
+    Added in GitLab 13.1
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_OPEN_MERGE_REQUESTS = EnvProxy(&#34;CI_OPEN_MERGE_REQUESTS&#34;)
+    &#34;&#34;&#34;
+    Available in branch and merge request pipelines. Contains a
+    comma-separated list of up to four merge requests that use the current
+    branch and project as the merge request source.
+    For example gitlab-org/gitlab!333,gitlab-org/gitlab-foss!11.
+
+    Added in GitLab 13.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_ID = EnvProxy(&#34;CI_JOB_ID&#34;)
+    &#34;&#34;&#34;
+    The unique ID of the current job that GitLab CI/CD uses internally.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_IMAGE = EnvProxy(&#34;CI_JOB_IMAGE&#34;)
+    &#34;&#34;&#34;
+    The name of the image running the CI job.
+
+    Added in GitLab 12.9
+    Available in GitLab Runner 12.9
+    &#34;&#34;&#34;
+
+    CI_JOB_MANUAL = EnvProxy(&#34;CI_JOB_MANUAL&#34;)
+    &#34;&#34;&#34;
+    The flag to indicate that job was manually started.
+
+    Added in GitLab 8.12
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_NAME = EnvProxy(&#34;CI_JOB_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of the job as defined in .gitlab-ci.yml.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_JOB_STAGE = EnvProxy(&#34;CI_JOB_STAGE&#34;)
+    &#34;&#34;&#34;
+    The name of the stage as defined in .gitlab-ci.yml.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_JOB_STATUS = EnvProxy(&#34;CI_JOB_STATUS&#34;)
+    &#34;&#34;&#34;
+    The state of the job as each runner stage is executed.
+    Use with after_script where CI_JOB_STATUS can be either success,
+    failed or canceled.
+
+    Added in GitLab all
+    Available in GitLab Runner 13.5
+
+    &#34;&#34;&#34;
+
+    CI_JOB_TOKEN = EnvProxy(&#34;CI_JOB_TOKEN&#34;)
+    &#34;&#34;&#34;
+    Token used for authenticating with a few API endpoints and downloading
+    dependent repositories. The token is valid as long as the job is running.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner 1.2
+    &#34;&#34;&#34;
+
+    CI_JOB_JWT = EnvProxy(&#34;CI_JOB_JWT&#34;)
+    &#34;&#34;&#34;
+    RS256 JSON web token that can be used for authenticating with third
+    party systems that support JWT authentication, for example HashiCorp’s Vault.
+
+    Added in GitLab 12.10
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_JOB_URL = EnvProxy(&#34;CI_JOB_URL&#34;)
+    &#34;&#34;&#34;
+    Job details URL.
+
+    Added in GitLab 11.1
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_KUBERNETES_ACTIVE = EnvProxy(&#34;CI_KUBERNETES_ACTIVE&#34;)
+    &#34;&#34;&#34;
+    Included with the value true only if the pipeline has a Kubernetes
+    cluster available for deployments. Not included if no cluster is available.
+    Can be used as an alternative to only:kubernetes/except:kubernetes
+    with rules:if.
+
+    Added in GitLab 13.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_ASSIGNEES = EnvProxy(&#34;CI_MERGE_REQUEST_ASSIGNEES&#34;)
+    &#34;&#34;&#34;
+    Comma-separated list of username(s) of assignee(s) for the merge request
+    if the pipelines are for merge requests.
+    Available only if only [merge_requests] or rules syntax is used and the
+    merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_ID = EnvProxy(&#34;CI_MERGE_REQUEST_ID&#34;)
+    &#34;&#34;&#34;
+    The instance-level ID of the merge request. Only available if the
+    pipelines are for merge requests and the merge request is created.
+    This is a unique ID across all projects on GitLab.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_IID = EnvProxy(&#34;CI_MERGE_REQUEST_IID&#34;)
+    &#34;&#34;&#34;
+    The project-level IID (internal ID) of the merge request.
+    Only available If the pipelines are for merge requests and the merge
+    request is created. This ID is unique for the current project.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_LABELS = EnvProxy(&#34;CI_MERGE_REQUEST_LABELS&#34;)
+    &#34;&#34;&#34;
+    Comma-separated label names of the merge request if the pipelines are
+    for merge requests. Available only if only [merge_requests] or rules
+    syntax is used and the merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_MILESTONE = EnvProxy(&#34;CI_MERGE_REQUEST_MILESTONE&#34;)
+    &#34;&#34;&#34;
+    The milestone title of the merge request if the pipelines are for merge
+    requests. Available only if only [merge_requests] or rules syntax is
+    used and the merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_PROJECT_ID = EnvProxy(&#34;CI_MERGE_REQUEST_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    The ID of the project of the merge request if the pipelines are for
+    merge requests. Available only if only [merge_requests] or rules syntax
+    is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_PROJECT_PATH = EnvProxy(&#34;CI_MERGE_REQUEST_PROJECT_PATH&#34;)
+    &#34;&#34;&#34;
+    The path of the project of the merge request if the pipelines are for
+    merge requests (for example namespace/awesome-project). Available only
+    if only [merge_requests] or rules syntax is used and the merge request
+    is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_PROJECT_URL = EnvProxy(&#34;CI_MERGE_REQUEST_PROJECT_URL&#34;)
+    &#34;&#34;&#34;
+    The URL of the project of the merge request if the pipelines are for
+    merge requests (for example http://192.168.10.15:3000/namespace/awesome-project).
+    Available only if only [merge_requests] or rules syntax is used and the merge
+    request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_REF_PATH = EnvProxy(&#34;CI_MERGE_REQUEST_REF_PATH&#34;)
+    &#34;&#34;&#34;
+    The ref path of the merge request if the pipelines are for merge requests.
+    (for example refs/merge-requests/1/head). Available only if only
+    [merge_requests] or rules syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_BRANCH_NAME = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The source branch name of the merge request if the pipelines are for
+    merge requests. Available only if only [merge_requests] or rules syntax
+    is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_BRANCH_SHA = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the source branch of the merge request if the pipelines
+    are for merge requests. Available only if only [merge_requests] or rules
+    syntax is used, the merge request is created, and the pipeline is a
+    merged result pipeline.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_PROJECT_ID = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    The ID of the source project of the merge request if the pipelines are
+    for merge requests. Available only if only [merge_requests] or rules
+    syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_PROJECT_PATH = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_PROJECT_PATH&#34;)
+    &#34;&#34;&#34;
+    The path of the source project of the merge request if the pipelines
+    are for merge requests. Available only if only [merge_requests] or
+    rules syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_SOURCE_PROJECT_URL = EnvProxy(&#34;CI_MERGE_REQUEST_SOURCE_PROJECT_URL&#34;)
+    &#34;&#34;&#34;
+    The URL of the source project of the merge request if the pipelines are
+    for merge requests. Available only if only [merge_requests] or rules
+    syntax is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_TARGET_BRANCH_NAME = EnvProxy(&#34;CI_MERGE_REQUEST_TARGET_BRANCH_NAME&#34;)
+    &#34;&#34;&#34;
+    The target branch name of the merge request if the pipelines are for
+    merge requests. Available only if only [merge_requests] or rules syntax
+    is used and the merge request is created.
+
+    Added in GitLab 11.6
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_TARGET_BRANCH_SHA = EnvProxy(&#34;CI_MERGE_REQUEST_TARGET_BRANCH_SHA&#34;)
+    &#34;&#34;&#34;
+    The HEAD SHA of the target branch of the merge request if the pipelines
+    are for merge requests. Available only if only [merge_requests] or rules
+    syntax is used, the merge request is created, and the pipeline is a merged
+    result pipeline.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_TITLE = EnvProxy(&#34;CI_MERGE_REQUEST_TITLE&#34;)
+    &#34;&#34;&#34;
+    The title of the merge request if the pipelines are for merge requests.
+    Available only if only [merge_requests] or rules syntax is used and the
+    merge request is created.
+
+    Added in GitLab 11.9
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_EVENT_TYPE = EnvProxy(&#34;CI_MERGE_REQUEST_EVENT_TYPE&#34;)
+    &#34;&#34;&#34;
+    The event type of the merge request, if the pipelines are for merge requests.
+    Can be detached, merged_result or merge_train.
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_DIFF_ID = EnvProxy(&#34;CI_MERGE_REQUEST_DIFF_ID&#34;)
+    &#34;&#34;&#34;
+    The version of the merge request diff, if the pipelines are for merge requests.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_MERGE_REQUEST_DIFF_BASE_SHA = EnvProxy(&#34;CI_MERGE_REQUEST_DIFF_BASE_SHA&#34;)
+    &#34;&#34;&#34;
+    The base SHA of the merge request diff, if the pipelines are for merge requests.
+
+    Added in GitLab 13.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_NODE_INDEX = EnvProxy(&#34;CI_NODE_INDEX&#34;)
+    &#34;&#34;&#34;
+    Index of the job in the job set. If the job is not parallelized, this variable is not set.
+
+    Added in GitLab 11.5
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_NODE_TOTAL = EnvProxy(&#34;CI_NODE_TOTAL&#34;)
+    &#34;&#34;&#34;
+    Total number of instances of this job running in parallel. If the job is not parallelized, this variable is set to 1.
+
+    Added in GitLab 11.5
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PAGES_DOMAIN = EnvProxy(&#34;CI_PAGES_DOMAIN&#34;)
+    &#34;&#34;&#34;
+    The configured domain that hosts GitLab Pages.
+
+    Added in GitLab 11.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PAGES_URL = EnvProxy(&#34;CI_PAGES_URL&#34;)
+    &#34;&#34;&#34;
+    URL to GitLab Pages-built pages. Always belongs to a subdomain of CI_PAGES_DOMAIN.
+
+    Added in GitLab 11.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_ID = EnvProxy(&#34;CI_PIPELINE_ID&#34;)
+    &#34;&#34;&#34;
+    The instance-level ID of the current pipeline. This is a unique ID
+    across all projects on GitLab.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_IID = EnvProxy(&#34;CI_PIPELINE_IID&#34;)
+    &#34;&#34;&#34;
+    The project-level IID (internal ID) of the current pipeline.
+    This ID is unique for the current project.
+
+    Added in GitLab 11.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_SOURCE = EnvProxy(&#34;CI_PIPELINE_SOURCE&#34;)
+    &#34;&#34;&#34;
+    Indicates how the pipeline was triggered.
+    Possible options are push, web, schedule, api, external, chat, webide,
+    merge_request_event, external_pull_request_event, parent_pipeline,
+    trigger, or pipeline.
+    For pipelines created before GitLab 9.5, this is displayed as unknown.
+
+    Added in GitLab 10.0
+    Available in GitLab Runner all
+
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_TRIGGERED = EnvProxy(&#34;CI_PIPELINE_TRIGGERED&#34;)
+    &#34;&#34;&#34;
+    The flag to indicate that job was triggered.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PIPELINE_URL = EnvProxy(&#34;CI_PIPELINE_URL&#34;)
+    &#34;&#34;&#34;
+    Pipeline details URL.
+
+    Added in GitLab 11.1
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_CONFIG_PATH = EnvProxy(&#34;CI_PROJECT_CONFIG_PATH&#34;)
+    &#34;&#34;&#34;
+    The CI configuration path for the project.
+
+    Added in GitLab 13.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_DIR = EnvProxy(&#34;CI_PROJECT_DIR&#34;)
+    &#34;&#34;&#34;
+    The full path where the repository is cloned and where the job is run.
+    If the GitLab Runner builds_dir parameter is set, this variable is set
+    relative to the value of builds_dir. For more information, see Advanced
+    configuration for GitLab Runner.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_ID = EnvProxy(&#34;CI_PROJECT_ID&#34;)
+    &#34;&#34;&#34;
+    The unique ID of the current project that GitLab CI/CD uses internally.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_NAME = EnvProxy(&#34;CI_PROJECT_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of the directory for the project that is being built.
+    For example, if the project URL is gitlab.example.com/group-name/project-1,
+    the CI_PROJECT_NAME would be project-1.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_NAMESPACE = EnvProxy(&#34;CI_PROJECT_NAMESPACE&#34;)
+    &#34;&#34;&#34;
+    The project namespace (username or group name) that is being built.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_ROOT_NAMESPACE = EnvProxy(&#34;CI_PROJECT_ROOT_NAMESPACE&#34;)
+    &#34;&#34;&#34;
+    The root project namespace (username or group name) that is being built.
+    For example, if CI_PROJECT_NAMESPACE is root-group/child-group/grandchild-group,
+    CI_PROJECT_ROOT_NAMESPACE would be root-group.
+
+    Added in GitLab 13.2
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_PATH = EnvProxy(&#34;CI_PROJECT_PATH&#34;)
+    &#34;&#34;&#34;
+    The namespace with project name.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_PATH_SLUG = EnvProxy(&#34;CI_PROJECT_PATH_SLUG&#34;)
+    &#34;&#34;&#34;
+    $CI_PROJECT_PATH in lowercase and with everything except 0-9 and a-z replaced with -. Use in URLs and domain names.
+
+    Added in GitLab 9.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_REPOSITORY_LANGUAGES = EnvProxy(&#34;CI_PROJECT_REPOSITORY_LANGUAGES&#34;)
+    &#34;&#34;&#34;
+    Comma-separated, lowercase list of the languages used in the repository (for example ruby,javascript,html,css).
+
+    Added in GitLab 12.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_TITLE = EnvProxy(&#34;CI_PROJECT_TITLE&#34;)
+    &#34;&#34;&#34;
+    The human-readable project name as displayed in the GitLab web interface.
+
+    Added in GitLab 12.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_PROJECT_URL = EnvProxy(&#34;CI_PROJECT_URL&#34;)
+    &#34;&#34;&#34;
+    The HTTP(S) address to access project.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_PROJECT_VISIBILITY = EnvProxy(&#34;CI_PROJECT_VISIBILITY&#34;)
+    &#34;&#34;&#34;
+    The project visibility (internal, private, public).
+
+    Added in GitLab 10.3
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_REGISTRY = EnvProxy(&#34;CI_REGISTRY&#34;)
+    &#34;&#34;&#34;
+    GitLab Container Registry. This variable includes a :port value if one
+    has been specified in the registry configuration.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_REGISTRY_IMAGE = EnvProxy(&#34;CI_REGISTRY_IMAGE&#34;)
+    &#34;&#34;&#34;
+    the address of the registry tied to the specific project.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_REGISTRY_PASSWORD = EnvProxy(&#34;CI_REGISTRY_PASSWORD&#34;)
+    &#34;&#34;&#34;
+    The password to use to push containers to the GitLab Container Registry, for the current project.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_REGISTRY_USER = EnvProxy(&#34;CI_REGISTRY_USER&#34;)
+    &#34;&#34;&#34;
+    The username to use to push containers to the GitLab Container Registry, for the current project.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_REPOSITORY_URL = EnvProxy(&#34;CI_REPOSITORY_URL&#34;)
+    &#34;&#34;&#34;
+    The URL to clone the Git repository.
+
+    Added in GitLab 9.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_RUNNER_DESCRIPTION = EnvProxy(&#34;CI_RUNNER_DESCRIPTION&#34;)
+    &#34;&#34;&#34;
+    The description of the runner as saved in GitLab.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_RUNNER_EXECUTABLE_ARCH = EnvProxy(&#34;CI_RUNNER_EXECUTABLE_ARCH&#34;)
+    &#34;&#34;&#34;
+    The OS/architecture of the GitLab Runner executable (note that this is not necessarily the same as the environment of the executor).
+
+    Added in GitLab all
+    Available in GitLab Runner 10.6
+    &#34;&#34;&#34;
+
+    CI_RUNNER_ID = EnvProxy(&#34;CI_RUNNER_ID&#34;)
+    &#34;&#34;&#34;
+    The unique ID of runner being used.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_RUNNER_REVISION = EnvProxy(&#34;CI_RUNNER_REVISION&#34;)
+    &#34;&#34;&#34;
+    GitLab Runner revision that is executing the current job.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.6
+    &#34;&#34;&#34;
+
+    CI_RUNNER_SHORT_TOKEN = EnvProxy(&#34;CI_RUNNER_SHORT_TOKEN&#34;)
+    &#34;&#34;&#34;
+    First eight characters of the runner’s token used to authenticate new job requests. Used as the runner’s unique ID.
+
+    Added in GitLab all
+    Available in GitLab Runner 12.3
+    &#34;&#34;&#34;
+
+    CI_RUNNER_TAGS = EnvProxy(&#34;CI_RUNNER_TAGS&#34;)
+    &#34;&#34;&#34;
+    The defined runner tags.
+
+    Added in GitLab 8.10
+    Available in GitLab Runner 0.5
+    &#34;&#34;&#34;
+
+    CI_RUNNER_VERSION = EnvProxy(&#34;CI_RUNNER_VERSION&#34;)
+    &#34;&#34;&#34;
+    GitLab Runner version that is executing the current job.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.6
+    &#34;&#34;&#34;
+
+    CI_SERVER = EnvProxy(&#34;CI_SERVER&#34;)
+    &#34;&#34;&#34;
+    Mark that job is executed in CI environment.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_URL = EnvProxy(&#34;CI_SERVER_URL&#34;)
+    &#34;&#34;&#34;
+    The base URL of the GitLab instance, including protocol and port (like https://gitlab.example.com:8080).
+
+    Added in GitLab 12.7
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_HOST = EnvProxy(&#34;CI_SERVER_HOST&#34;)
+    &#34;&#34;&#34;
+    Host component of the GitLab instance URL, without protocol and port (like gitlab.example.com).
+
+    Added in GitLab 12.1
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_PORT = EnvProxy(&#34;CI_SERVER_PORT&#34;)
+    &#34;&#34;&#34;
+    Port component of the GitLab instance URL, without host and protocol (like 3000).
+
+    Added in GitLab 12.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_PROTOCOL = EnvProxy(&#34;CI_SERVER_PROTOCOL&#34;)
+    &#34;&#34;&#34;
+    Protocol component of the GitLab instance URL, without host and port (like https).
+
+    Added in GitLab 12.8
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_NAME = EnvProxy(&#34;CI_SERVER_NAME&#34;)
+    &#34;&#34;&#34;
+    The name of CI server that is used to coordinate jobs.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_REVISION = EnvProxy(&#34;CI_SERVER_REVISION&#34;)
+    &#34;&#34;&#34;
+    GitLab revision that is used to schedule jobs.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION = EnvProxy(&#34;CI_SERVER_VERSION&#34;)
+    &#34;&#34;&#34;
+    GitLab version that is used to schedule jobs.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION_MAJOR = EnvProxy(&#34;CI_SERVER_VERSION_MAJOR&#34;)
+    &#34;&#34;&#34;
+    GitLab version major component.
+
+    Added in GitLab 11.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION_MINOR = EnvProxy(&#34;CI_SERVER_VERSION_MINOR&#34;)
+    &#34;&#34;&#34;
+    GitLab version minor component.
+
+    Added in GitLab 11.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SERVER_VERSION_PATCH = EnvProxy(&#34;CI_SERVER_VERSION_PATCH&#34;)
+    &#34;&#34;&#34;
+    GitLab version patch component.
+
+    Added in GitLab 11.4
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    CI_SHARED_ENVIRONMENT = EnvProxy(&#34;CI_SHARED_ENVIRONMENT&#34;)
+    &#34;&#34;&#34;
+    Marks that the job is executed in a shared environment (something that
+    is persisted across CI invocations like shell or ssh executor).
+    If the environment is shared, it is set to true, otherwise it is not
+    defined at all.
+
+    Added in GitLab all
+    Available in GitLab Runner 10.1
+    &#34;&#34;&#34;
+
+    GITLAB_CI = EnvProxy(&#34;GITLAB_CI&#34;)
+    &#34;&#34;&#34;
+    Mark that job is executed in GitLab CI/CD environment.
+
+    Added in GitLab all
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_FEATURES = EnvProxy(&#34;GITLAB_FEATURES&#34;)
+    &#34;&#34;&#34;
+    The comma separated list of licensed features available for your instance and plan.
+
+    Added in GitLab 10.6
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_EMAIL = EnvProxy(&#34;GITLAB_USER_EMAIL&#34;)
+    &#34;&#34;&#34;
+    The email of the user who started the job.
+
+    Added in GitLab 8.12
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_ID = EnvProxy(&#34;GITLAB_USER_ID&#34;)
+    &#34;&#34;&#34;
+    The ID of the user who started the job.
+
+    Added in GitLab 8.12
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_LOGIN = EnvProxy(&#34;GITLAB_USER_LOGIN&#34;)
+    &#34;&#34;&#34;
+    The login username of the user who started the job.
+
+    Added in GitLab 10.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    GITLAB_USER_NAME = EnvProxy(&#34;GITLAB_USER_NAME&#34;)
+    &#34;&#34;&#34;
+    The real name of the user who started the job.
+
+    Added in GitLab 10.0
+    Available in GitLab Runner all
+    &#34;&#34;&#34;
+
+    TRIGGER_PAYLOAD = EnvProxy(&#34;TRIGGER_PAYLOAD&#34;)
+    &#34;&#34;&#34;
+    This variable is available when a pipeline is triggered with a webhook
+
+    Added in GitLab 13.9
+    Available in GitLab Runner all
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="gcip.core.variables.PredefinedVariables.CHAT_CHANNEL"><code class="name">var <span class="ident">CHAT_CHANNEL</span></code></dt>
+<dd>
+<div class="desc"><p>Source chat channel which triggered the ChatOps command.</p>
+<p>Added in GitLab 10.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CHAT_INPUT"><code class="name">var <span class="ident">CHAT_INPUT</span></code></dt>
+<dd>
+<div class="desc"><p>Additional arguments passed in the ChatOps command.</p>
+<p>Added in GitLab 10.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI"><code class="name">var <span class="ident">CI</span></code></dt>
+<dd>
+<div class="desc"><p>Mark that job is executed in CI environment.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 0.4</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_API_V4_URL"><code class="name">var <span class="ident">CI_API_V4_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The GitLab API v4 root URL.</p>
+<p>Added in GitLab 11.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_BUILDS_DIR"><code class="name">var <span class="ident">CI_BUILDS_DIR</span></code></dt>
+<dd>
+<div class="desc"><p>Top-level directory where builds are executed.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 11.10</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_BEFORE_SHA"><code class="name">var <span class="ident">CI_COMMIT_BEFORE_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The previous latest commit present on a branch. Is always
+0000000000000000000000000000000000000000 in pipelines for merge requests.</p>
+<p>Added in GitLab 11.2
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_BRANCH"><code class="name">var <span class="ident">CI_COMMIT_BRANCH</span></code></dt>
+<dd>
+<div class="desc"><p>The commit branch name. Present in branch pipelines,
+including pipelines for the default branch.
+Not present in merge request pipelines or tag pipelines.</p>
+<p>Added in GitLab 12.6
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_DESCRIPTION"><code class="name">var <span class="ident">CI_COMMIT_DESCRIPTION</span></code></dt>
+<dd>
+<div class="desc"><p>The description of the commit the message without first line,
+if the title is shorter than 100 characters; full message in other case.</p>
+<p>Added in GitLab 10.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_MESSAGE"><code class="name">var <span class="ident">CI_COMMIT_MESSAGE</span></code></dt>
+<dd>
+<div class="desc"><p>The full commit message.</p>
+<p>Added in GitLab 10.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_NAME"><code class="name">var <span class="ident">CI_COMMIT_REF_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The branch or tag name for which project is built.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_PROTECTED"><code class="name">var <span class="ident">CI_COMMIT_REF_PROTECTED</span></code></dt>
+<dd>
+<div class="desc"><p>true if the job is running on a protected reference, false if not.</p>
+<p>Added in GitLab 11.11
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG"><code class="name">var <span class="ident">CI_COMMIT_REF_SLUG</span></code></dt>
+<dd>
+<div class="desc"><p>$CI_COMMIT_REF_NAME in lowercase, shortened to 63 bytes,
+and with everything except 0-9 and a-z replaced with -.
+No leading / trailing -. Use in URLs, host names and domain names.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_SHA"><code class="name">var <span class="ident">CI_COMMIT_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The commit revision for which project is built.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_SHORT_SHA"><code class="name">var <span class="ident">CI_COMMIT_SHORT_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The first eight characters of CI_COMMIT_SHA.</p>
+<p>Added in GitLab 11.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_TAG"><code class="name">var <span class="ident">CI_COMMIT_TAG</span></code></dt>
+<dd>
+<div class="desc"><p>The commit tag name. Present only when building tags.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_TIMESTAMP"><code class="name">var <span class="ident">CI_COMMIT_TIMESTAMP</span></code></dt>
+<dd>
+<div class="desc"><p>The timestamp of the commit in the ISO 8601 format.</p>
+<p>Added in GitLab 13.4
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_COMMIT_TITLE"><code class="name">var <span class="ident">CI_COMMIT_TITLE</span></code></dt>
+<dd>
+<div class="desc"><p>The title of the commit - the full first line of the message.</p>
+<p>Added in GitLab 10.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_CONCURRENT_ID"><code class="name">var <span class="ident">CI_CONCURRENT_ID</span></code></dt>
+<dd>
+<div class="desc"><p>Unique ID of build execution in a single executor.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 11.10</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_CONCURRENT_PROJECT_ID"><code class="name">var <span class="ident">CI_CONCURRENT_PROJECT_ID</span></code></dt>
+<dd>
+<div class="desc"><p>Unique ID of build execution in a single executor and project.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 11.10</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_CONFIG_PATH"><code class="name">var <span class="ident">CI_CONFIG_PATH</span></code></dt>
+<dd>
+<div class="desc"><p>The path to CI configuration file. Defaults to .gitlab-ci.yml.</p>
+<p>Added in GitLab 9.4
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEBUG_TRACE"><code class="name">var <span class="ident">CI_DEBUG_TRACE</span></code></dt>
+<dd>
+<div class="desc"><p>Whether debug logging (tracing) is enabled.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 1.7</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEFAULT_BRANCH"><code class="name">var <span class="ident">CI_DEFAULT_BRANCH</span></code></dt>
+<dd>
+<div class="desc"><p>The name of the default branch for the project.</p>
+<p>Added in GitLab 12.4
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX"><code class="name">var <span class="ident">CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX</span></code></dt>
+<dd>
+<div class="desc"><p>The image prefix for pulling images through the Dependency Proxy.</p>
+<p>Added in GitLab 13.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_PASSWORD"><code class="name">var <span class="ident">CI_DEPENDENCY_PROXY_PASSWORD</span></code></dt>
+<dd>
+<div class="desc"><p>The password to use to pull images through the Dependency Proxy.</p>
+<p>Added in GitLab 13.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_SERVER"><code class="name">var <span class="ident">CI_DEPENDENCY_PROXY_SERVER</span></code></dt>
+<dd>
+<div class="desc"><p>The server for logging in to the Dependency Proxy. This is equivalent to $CI_SERVER_HOST:$CI_SERVER_PORT.</p>
+<p>Added in GitLab 13.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_USER"><code class="name">var <span class="ident">CI_DEPENDENCY_PROXY_USER</span></code></dt>
+<dd>
+<div class="desc"><p>The username to use to pull images through the Dependency Proxy.</p>
+<p>Added in GitLab 13.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPLOY_FREEZE"><code class="name">var <span class="ident">CI_DEPLOY_FREEZE</span></code></dt>
+<dd>
+<div class="desc"><p>Included with the value true if the pipeline runs during a deploy freeze window.</p>
+<p>Added in GitLab 13.2
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPLOY_PASSWORD"><code class="name">var <span class="ident">CI_DEPLOY_PASSWORD</span></code></dt>
+<dd>
+<div class="desc"><p>Authentication password of the GitLab Deploy Token,
+only present if the Project has one related.</p>
+<p>Added in GitLab 10.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DEPLOY_USER"><code class="name">var <span class="ident">CI_DEPLOY_USER</span></code></dt>
+<dd>
+<div class="desc"><p>Authentication username of the GitLab Deploy Token,
+only present if the Project has one related.</p>
+<p>Added in GitLab 10.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_DISPOSABLE_ENVIRONMENT"><code class="name">var <span class="ident">CI_DISPOSABLE_ENVIRONMENT</span></code></dt>
+<dd>
+<div class="desc"><p>Marks that the job is executed in a disposable environment
+(something that is created only for this job and disposed of/destroyed
+after the execution - all executors except shell and ssh).
+If the environment is disposable, it is set to true,
+otherwise it is not defined at all.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 10.1</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_NAME"><code class="name">var <span class="ident">CI_ENVIRONMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The name of the environment for this job.
+Only present if environment:name is set.</p>
+<p>Added in GitLab 8.15
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_SLUG"><code class="name">var <span class="ident">CI_ENVIRONMENT_SLUG</span></code></dt>
+<dd>
+<div class="desc"><p>A simplified version of the environment name,
+suitable for inclusion in DNS, URLs, Kubernetes labels, and so on.
+Only present if environment:name is set.</p>
+<p>Added in GitLab 8.15
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_URL"><code class="name">var <span class="ident">CI_ENVIRONMENT_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The URL of the environment for this job.
+Only present if environment:url is set.</p>
+<p>Added in GitLab 9.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_IID"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_IID</span></code></dt>
+<dd>
+<div class="desc"><p>Pull Request ID from GitHub if the pipelines are for
+external pull requests.
+Available only if only [external_pull_requests] or
+rules syntax is used and the pull request is open.</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The source branch name of the pull request if the pipelines are for
+external pull requests. Available only if only [external_pull_requests]
+or rules syntax is used and the pull request is open.</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The HEAD SHA of the source branch of the pull request if the pipelines
+are for external pull requests. Available only if only
+[external_pull_requests] or rules syntax is used and the pull
+request is open.</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY</span></code></dt>
+<dd>
+<div class="desc"><p>The source repository name of the pull request if the pipelines are
+for external pull requests. Available only if only
+[external_pull_requests] or rules syntax is used and
+the pull request is open.</p>
+<p>Added in GitLab 13.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The target branch name of the pull request if the pipelines are for
+external pull requests. Available only if only [external_pull_requests]
+or rules syntax is used and the pull request is open.</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The HEAD SHA of the target branch of the pull request if the pipelines
+are for external pull requests. Available only if only
+[external_pull_requests] or rules syntax is used and the pull
+request is open.</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY"><code class="name">var <span class="ident">CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY</span></code></dt>
+<dd>
+<div class="desc"><p>The target repository name of the pull request if the pipelines
+are for external pull requests. Available only if only
+[external_pull_requests] or rules syntax is used and the pull
+request is open.</p>
+<p>Added in GitLab 13.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_HAS_OPEN_REQUIREMENTS"><code class="name">var <span class="ident">CI_HAS_OPEN_REQUIREMENTS</span></code></dt>
+<dd>
+<div class="desc"><p>Included with the value true only if the pipeline’s project has any
+open requirements. Not included if there are no open requirements for
+the pipeline’s project.</p>
+<p>Added in GitLab 13.1
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_ID"><code class="name">var <span class="ident">CI_JOB_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The unique ID of the current job that GitLab CI/CD uses internally.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_IMAGE"><code class="name">var <span class="ident">CI_JOB_IMAGE</span></code></dt>
+<dd>
+<div class="desc"><p>The name of the image running the CI job.</p>
+<p>Added in GitLab 12.9
+Available in GitLab Runner 12.9</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_JWT"><code class="name">var <span class="ident">CI_JOB_JWT</span></code></dt>
+<dd>
+<div class="desc"><p>RS256 JSON web token that can be used for authenticating with third
+party systems that support JWT authentication, for example HashiCorp’s Vault.</p>
+<p>Added in GitLab 12.10
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_MANUAL"><code class="name">var <span class="ident">CI_JOB_MANUAL</span></code></dt>
+<dd>
+<div class="desc"><p>The flag to indicate that job was manually started.</p>
+<p>Added in GitLab 8.12
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_NAME"><code class="name">var <span class="ident">CI_JOB_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The name of the job as defined in .gitlab-ci.yml.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_STAGE"><code class="name">var <span class="ident">CI_JOB_STAGE</span></code></dt>
+<dd>
+<div class="desc"><p>The name of the stage as defined in .gitlab-ci.yml.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_STATUS"><code class="name">var <span class="ident">CI_JOB_STATUS</span></code></dt>
+<dd>
+<div class="desc"><p>The state of the job as each runner stage is executed.
+Use with after_script where CI_JOB_STATUS can be either success,
+failed or canceled.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 13.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_TOKEN"><code class="name">var <span class="ident">CI_JOB_TOKEN</span></code></dt>
+<dd>
+<div class="desc"><p>Token used for authenticating with a few API endpoints and downloading
+dependent repositories. The token is valid as long as the job is running.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner 1.2</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_JOB_URL"><code class="name">var <span class="ident">CI_JOB_URL</span></code></dt>
+<dd>
+<div class="desc"><p>Job details URL.</p>
+<p>Added in GitLab 11.1
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_KUBERNETES_ACTIVE"><code class="name">var <span class="ident">CI_KUBERNETES_ACTIVE</span></code></dt>
+<dd>
+<div class="desc"><p>Included with the value true only if the pipeline has a Kubernetes
+cluster available for deployments. Not included if no cluster is available.
+Can be used as an alternative to only:kubernetes/except:kubernetes
+with rules:if.</p>
+<p>Added in GitLab 13.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_ASSIGNEES"><code class="name">var <span class="ident">CI_MERGE_REQUEST_ASSIGNEES</span></code></dt>
+<dd>
+<div class="desc"><p>Comma-separated list of username(s) of assignee(s) for the merge request
+if the pipelines are for merge requests.
+Available only if only [merge_requests] or rules syntax is used and the
+merge request is created.</p>
+<p>Added in GitLab 11.9
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_DIFF_BASE_SHA"><code class="name">var <span class="ident">CI_MERGE_REQUEST_DIFF_BASE_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The base SHA of the merge request diff, if the pipelines are for merge requests.</p>
+<p>Added in GitLab 13.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_DIFF_ID"><code class="name">var <span class="ident">CI_MERGE_REQUEST_DIFF_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The version of the merge request diff, if the pipelines are for merge requests.</p>
+<p>Added in GitLab 13.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_EVENT_TYPE"><code class="name">var <span class="ident">CI_MERGE_REQUEST_EVENT_TYPE</span></code></dt>
+<dd>
+<div class="desc"><p>The event type of the merge request, if the pipelines are for merge requests.
+Can be detached, merged_result or merge_train.</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_ID"><code class="name">var <span class="ident">CI_MERGE_REQUEST_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The instance-level ID of the merge request. Only available if the
+pipelines are for merge requests and the merge request is created.
+This is a unique ID across all projects on GitLab.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_IID"><code class="name">var <span class="ident">CI_MERGE_REQUEST_IID</span></code></dt>
+<dd>
+<div class="desc"><p>The project-level IID (internal ID) of the merge request.
+Only available If the pipelines are for merge requests and the merge
+request is created. This ID is unique for the current project.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_LABELS"><code class="name">var <span class="ident">CI_MERGE_REQUEST_LABELS</span></code></dt>
+<dd>
+<div class="desc"><p>Comma-separated label names of the merge request if the pipelines are
+for merge requests. Available only if only [merge_requests] or rules
+syntax is used and the merge request is created.</p>
+<p>Added in GitLab 11.9
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_MILESTONE"><code class="name">var <span class="ident">CI_MERGE_REQUEST_MILESTONE</span></code></dt>
+<dd>
+<div class="desc"><p>The milestone title of the merge request if the pipelines are for merge
+requests. Available only if only [merge_requests] or rules syntax is
+used and the merge request is created.</p>
+<p>Added in GitLab 11.9
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_ID"><code class="name">var <span class="ident">CI_MERGE_REQUEST_PROJECT_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The ID of the project of the merge request if the pipelines are for
+merge requests. Available only if only [merge_requests] or rules syntax
+is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_PATH"><code class="name">var <span class="ident">CI_MERGE_REQUEST_PROJECT_PATH</span></code></dt>
+<dd>
+<div class="desc"><p>The path of the project of the merge request if the pipelines are for
+merge requests (for example namespace/awesome-project). Available only
+if only [merge_requests] or rules syntax is used and the merge request
+is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_URL"><code class="name">var <span class="ident">CI_MERGE_REQUEST_PROJECT_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The URL of the project of the merge request if the pipelines are for
+merge requests (for example <a href="http://192.168.10.15:3000/namespace/awesome-project">http://192.168.10.15:3000/namespace/awesome-project</a>).
+Available only if only [merge_requests] or rules syntax is used and the merge
+request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_REF_PATH"><code class="name">var <span class="ident">CI_MERGE_REQUEST_REF_PATH</span></code></dt>
+<dd>
+<div class="desc"><p>The ref path of the merge request if the pipelines are for merge requests.
+(for example refs/merge-requests/1/head). Available only if only
+[merge_requests] or rules syntax is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"><code class="name">var <span class="ident">CI_MERGE_REQUEST_SOURCE_BRANCH_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The source branch name of the merge request if the pipelines are for
+merge requests. Available only if only [merge_requests] or rules syntax
+is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_BRANCH_SHA"><code class="name">var <span class="ident">CI_MERGE_REQUEST_SOURCE_BRANCH_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The HEAD SHA of the source branch of the merge request if the pipelines
+are for merge requests. Available only if only [merge_requests] or rules
+syntax is used, the merge request is created, and the pipeline is a
+merged result pipeline.</p>
+<p>Added in GitLab 11.9
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_ID"><code class="name">var <span class="ident">CI_MERGE_REQUEST_SOURCE_PROJECT_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The ID of the source project of the merge request if the pipelines are
+for merge requests. Available only if only [merge_requests] or rules
+syntax is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_PATH"><code class="name">var <span class="ident">CI_MERGE_REQUEST_SOURCE_PROJECT_PATH</span></code></dt>
+<dd>
+<div class="desc"><p>The path of the source project of the merge request if the pipelines
+are for merge requests. Available only if only [merge_requests] or
+rules syntax is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_URL"><code class="name">var <span class="ident">CI_MERGE_REQUEST_SOURCE_PROJECT_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The URL of the source project of the merge request if the pipelines are
+for merge requests. Available only if only [merge_requests] or rules
+syntax is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TARGET_BRANCH_NAME"><code class="name">var <span class="ident">CI_MERGE_REQUEST_TARGET_BRANCH_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The target branch name of the merge request if the pipelines are for
+merge requests. Available only if only [merge_requests] or rules syntax
+is used and the merge request is created.</p>
+<p>Added in GitLab 11.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TARGET_BRANCH_SHA"><code class="name">var <span class="ident">CI_MERGE_REQUEST_TARGET_BRANCH_SHA</span></code></dt>
+<dd>
+<div class="desc"><p>The HEAD SHA of the target branch of the merge request if the pipelines
+are for merge requests. Available only if only [merge_requests] or rules
+syntax is used, the merge request is created, and the pipeline is a merged
+result pipeline.</p>
+<p>Added in GitLab 11.9
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TITLE"><code class="name">var <span class="ident">CI_MERGE_REQUEST_TITLE</span></code></dt>
+<dd>
+<div class="desc"><p>The title of the merge request if the pipelines are for merge requests.
+Available only if only [merge_requests] or rules syntax is used and the
+merge request is created.</p>
+<p>Added in GitLab 11.9
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_NODE_INDEX"><code class="name">var <span class="ident">CI_NODE_INDEX</span></code></dt>
+<dd>
+<div class="desc"><p>Index of the job in the job set. If the job is not parallelized, this variable is not set.</p>
+<p>Added in GitLab 11.5
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_NODE_TOTAL"><code class="name">var <span class="ident">CI_NODE_TOTAL</span></code></dt>
+<dd>
+<div class="desc"><p>Total number of instances of this job running in parallel. If the job is not parallelized, this variable is set to 1.</p>
+<p>Added in GitLab 11.5
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_OPEN_MERGE_REQUESTS"><code class="name">var <span class="ident">CI_OPEN_MERGE_REQUESTS</span></code></dt>
+<dd>
+<div class="desc"><p>Available in branch and merge request pipelines. Contains a
+comma-separated list of up to four merge requests that use the current
+branch and project as the merge request source.
+For example gitlab-org/gitlab!333,gitlab-org/gitlab-foss!11.</p>
+<p>Added in GitLab 13.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PAGES_DOMAIN"><code class="name">var <span class="ident">CI_PAGES_DOMAIN</span></code></dt>
+<dd>
+<div class="desc"><p>The configured domain that hosts GitLab Pages.</p>
+<p>Added in GitLab 11.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PAGES_URL"><code class="name">var <span class="ident">CI_PAGES_URL</span></code></dt>
+<dd>
+<div class="desc"><p>URL to GitLab Pages-built pages. Always belongs to a subdomain of CI_PAGES_DOMAIN.</p>
+<p>Added in GitLab 11.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PIPELINE_ID"><code class="name">var <span class="ident">CI_PIPELINE_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The instance-level ID of the current pipeline. This is a unique ID
+across all projects on GitLab.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PIPELINE_IID"><code class="name">var <span class="ident">CI_PIPELINE_IID</span></code></dt>
+<dd>
+<div class="desc"><p>The project-level IID (internal ID) of the current pipeline.
+This ID is unique for the current project.</p>
+<p>Added in GitLab 11.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PIPELINE_SOURCE"><code class="name">var <span class="ident">CI_PIPELINE_SOURCE</span></code></dt>
+<dd>
+<div class="desc"><p>Indicates how the pipeline was triggered.
+Possible options are push, web, schedule, api, external, chat, webide,
+merge_request_event, external_pull_request_event, parent_pipeline,
+trigger, or pipeline.
+For pipelines created before GitLab 9.5, this is displayed as unknown.</p>
+<p>Added in GitLab 10.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PIPELINE_TRIGGERED"><code class="name">var <span class="ident">CI_PIPELINE_TRIGGERED</span></code></dt>
+<dd>
+<div class="desc"><p>The flag to indicate that job was triggered.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PIPELINE_URL"><code class="name">var <span class="ident">CI_PIPELINE_URL</span></code></dt>
+<dd>
+<div class="desc"><p>Pipeline details URL.</p>
+<p>Added in GitLab 11.1
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_CONFIG_PATH"><code class="name">var <span class="ident">CI_PROJECT_CONFIG_PATH</span></code></dt>
+<dd>
+<div class="desc"><p>The CI configuration path for the project.</p>
+<p>Added in GitLab 13.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_DIR"><code class="name">var <span class="ident">CI_PROJECT_DIR</span></code></dt>
+<dd>
+<div class="desc"><p>The full path where the repository is cloned and where the job is run.
+If the GitLab Runner builds_dir parameter is set, this variable is set
+relative to the value of builds_dir. For more information, see Advanced
+configuration for GitLab Runner.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_ID"><code class="name">var <span class="ident">CI_PROJECT_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The unique ID of the current project that GitLab CI/CD uses internally.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME"><code class="name">var <span class="ident">CI_PROJECT_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The name of the directory for the project that is being built.
+For example, if the project URL is gitlab.example.com/group-name/project-1,
+the CI_PROJECT_NAME would be project-1.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_NAMESPACE"><code class="name">var <span class="ident">CI_PROJECT_NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"><p>The project namespace (username or group name) that is being built.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_PATH"><code class="name">var <span class="ident">CI_PROJECT_PATH</span></code></dt>
+<dd>
+<div class="desc"><p>The namespace with project name.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_PATH_SLUG"><code class="name">var <span class="ident">CI_PROJECT_PATH_SLUG</span></code></dt>
+<dd>
+<div class="desc"><p>$CI_PROJECT_PATH in lowercase and with everything except 0-9 and a-z replaced with -. Use in URLs and domain names.</p>
+<p>Added in GitLab 9.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_REPOSITORY_LANGUAGES"><code class="name">var <span class="ident">CI_PROJECT_REPOSITORY_LANGUAGES</span></code></dt>
+<dd>
+<div class="desc"><p>Comma-separated, lowercase list of the languages used in the repository (for example ruby,javascript,html,css).</p>
+<p>Added in GitLab 12.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_ROOT_NAMESPACE"><code class="name">var <span class="ident">CI_PROJECT_ROOT_NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"><p>The root project namespace (username or group name) that is being built.
+For example, if CI_PROJECT_NAMESPACE is root-group/child-group/grandchild-group,
+CI_PROJECT_ROOT_NAMESPACE would be root-group.</p>
+<p>Added in GitLab 13.2
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_TITLE"><code class="name">var <span class="ident">CI_PROJECT_TITLE</span></code></dt>
+<dd>
+<div class="desc"><p>The human-readable project name as displayed in the GitLab web interface.</p>
+<p>Added in GitLab 12.4
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_URL"><code class="name">var <span class="ident">CI_PROJECT_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The HTTP(S) address to access project.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_PROJECT_VISIBILITY"><code class="name">var <span class="ident">CI_PROJECT_VISIBILITY</span></code></dt>
+<dd>
+<div class="desc"><p>The project visibility (internal, private, public).</p>
+<p>Added in GitLab 10.3
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_REGISTRY"><code class="name">var <span class="ident">CI_REGISTRY</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab Container Registry. This variable includes a :port value if one
+has been specified in the registry configuration.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_REGISTRY_IMAGE"><code class="name">var <span class="ident">CI_REGISTRY_IMAGE</span></code></dt>
+<dd>
+<div class="desc"><p>the address of the registry tied to the specific project.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_REGISTRY_PASSWORD"><code class="name">var <span class="ident">CI_REGISTRY_PASSWORD</span></code></dt>
+<dd>
+<div class="desc"><p>The password to use to push containers to the GitLab Container Registry, for the current project.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_REGISTRY_USER"><code class="name">var <span class="ident">CI_REGISTRY_USER</span></code></dt>
+<dd>
+<div class="desc"><p>The username to use to push containers to the GitLab Container Registry, for the current project.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_REPOSITORY_URL"><code class="name">var <span class="ident">CI_REPOSITORY_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The URL to clone the Git repository.</p>
+<p>Added in GitLab 9.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_DESCRIPTION"><code class="name">var <span class="ident">CI_RUNNER_DESCRIPTION</span></code></dt>
+<dd>
+<div class="desc"><p>The description of the runner as saved in GitLab.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_EXECUTABLE_ARCH"><code class="name">var <span class="ident">CI_RUNNER_EXECUTABLE_ARCH</span></code></dt>
+<dd>
+<div class="desc"><p>The OS/architecture of the GitLab Runner executable (note that this is not necessarily the same as the environment of the executor).</p>
+<p>Added in GitLab all
+Available in GitLab Runner 10.6</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_ID"><code class="name">var <span class="ident">CI_RUNNER_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The unique ID of runner being used.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_REVISION"><code class="name">var <span class="ident">CI_RUNNER_REVISION</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab Runner revision that is executing the current job.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 10.6</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_SHORT_TOKEN"><code class="name">var <span class="ident">CI_RUNNER_SHORT_TOKEN</span></code></dt>
+<dd>
+<div class="desc"><p>First eight characters of the runner’s token used to authenticate new job requests. Used as the runner’s unique ID.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 12.3</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_TAGS"><code class="name">var <span class="ident">CI_RUNNER_TAGS</span></code></dt>
+<dd>
+<div class="desc"><p>The defined runner tags.</p>
+<p>Added in GitLab 8.10
+Available in GitLab Runner 0.5</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_RUNNER_VERSION"><code class="name">var <span class="ident">CI_RUNNER_VERSION</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab Runner version that is executing the current job.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 10.6</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER"><code class="name">var <span class="ident">CI_SERVER</span></code></dt>
+<dd>
+<div class="desc"><p>Mark that job is executed in CI environment.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_HOST"><code class="name">var <span class="ident">CI_SERVER_HOST</span></code></dt>
+<dd>
+<div class="desc"><p>Host component of the GitLab instance URL, without protocol and port (like gitlab.example.com).</p>
+<p>Added in GitLab 12.1
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_NAME"><code class="name">var <span class="ident">CI_SERVER_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The name of CI server that is used to coordinate jobs.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_PORT"><code class="name">var <span class="ident">CI_SERVER_PORT</span></code></dt>
+<dd>
+<div class="desc"><p>Port component of the GitLab instance URL, without host and protocol (like 3000).</p>
+<p>Added in GitLab 12.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_PROTOCOL"><code class="name">var <span class="ident">CI_SERVER_PROTOCOL</span></code></dt>
+<dd>
+<div class="desc"><p>Protocol component of the GitLab instance URL, without host and port (like https).</p>
+<p>Added in GitLab 12.8
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_REVISION"><code class="name">var <span class="ident">CI_SERVER_REVISION</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab revision that is used to schedule jobs.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_URL"><code class="name">var <span class="ident">CI_SERVER_URL</span></code></dt>
+<dd>
+<div class="desc"><p>The base URL of the GitLab instance, including protocol and port (like <a href="https://gitlab.example.com:8080">https://gitlab.example.com:8080</a>).</p>
+<p>Added in GitLab 12.7
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION"><code class="name">var <span class="ident">CI_SERVER_VERSION</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab version that is used to schedule jobs.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_MAJOR"><code class="name">var <span class="ident">CI_SERVER_VERSION_MAJOR</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab version major component.</p>
+<p>Added in GitLab 11.4
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_MINOR"><code class="name">var <span class="ident">CI_SERVER_VERSION_MINOR</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab version minor component.</p>
+<p>Added in GitLab 11.4
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_PATCH"><code class="name">var <span class="ident">CI_SERVER_VERSION_PATCH</span></code></dt>
+<dd>
+<div class="desc"><p>GitLab version patch component.</p>
+<p>Added in GitLab 11.4
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.CI_SHARED_ENVIRONMENT"><code class="name">var <span class="ident">CI_SHARED_ENVIRONMENT</span></code></dt>
+<dd>
+<div class="desc"><p>Marks that the job is executed in a shared environment (something that
+is persisted across CI invocations like shell or ssh executor).
+If the environment is shared, it is set to true, otherwise it is not
+defined at all.</p>
+<p>Added in GitLab all
+Available in GitLab Runner 10.1</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.GITLAB_CI"><code class="name">var <span class="ident">GITLAB_CI</span></code></dt>
+<dd>
+<div class="desc"><p>Mark that job is executed in GitLab CI/CD environment.</p>
+<p>Added in GitLab all
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.GITLAB_FEATURES"><code class="name">var <span class="ident">GITLAB_FEATURES</span></code></dt>
+<dd>
+<div class="desc"><p>The comma separated list of licensed features available for your instance and plan.</p>
+<p>Added in GitLab 10.6
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.GITLAB_USER_EMAIL"><code class="name">var <span class="ident">GITLAB_USER_EMAIL</span></code></dt>
+<dd>
+<div class="desc"><p>The email of the user who started the job.</p>
+<p>Added in GitLab 8.12
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.GITLAB_USER_ID"><code class="name">var <span class="ident">GITLAB_USER_ID</span></code></dt>
+<dd>
+<div class="desc"><p>The ID of the user who started the job.</p>
+<p>Added in GitLab 8.12
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.GITLAB_USER_LOGIN"><code class="name">var <span class="ident">GITLAB_USER_LOGIN</span></code></dt>
+<dd>
+<div class="desc"><p>The login username of the user who started the job.</p>
+<p>Added in GitLab 10.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.GITLAB_USER_NAME"><code class="name">var <span class="ident">GITLAB_USER_NAME</span></code></dt>
+<dd>
+<div class="desc"><p>The real name of the user who started the job.</p>
+<p>Added in GitLab 10.0
+Available in GitLab Runner all</p></div>
+</dd>
+<dt id="gcip.core.variables.PredefinedVariables.TRIGGER_PAYLOAD"><code class="name">var <span class="ident">TRIGGER_PAYLOAD</span></code></dt>
+<dd>
+<div class="desc"><p>This variable is available when a pipeline is triggered with a webhook</p>
+<p>Added in GitLab 13.9
+Available in GitLab Runner all</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="gcip.core" href="index.html">gcip.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="gcip.core.variables.EnvProxy" href="#gcip.core.variables.EnvProxy">EnvProxy</a></code></h4>
+</li>
+<li>
+<h4><code><a title="gcip.core.variables.PredefinedVariables" href="#gcip.core.variables.PredefinedVariables">PredefinedVariables</a></code></h4>
+<ul class="">
+<li><code><a title="gcip.core.variables.PredefinedVariables.CHAT_CHANNEL" href="#gcip.core.variables.PredefinedVariables.CHAT_CHANNEL">CHAT_CHANNEL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CHAT_INPUT" href="#gcip.core.variables.PredefinedVariables.CHAT_INPUT">CHAT_INPUT</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI" href="#gcip.core.variables.PredefinedVariables.CI">CI</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_API_V4_URL" href="#gcip.core.variables.PredefinedVariables.CI_API_V4_URL">CI_API_V4_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_BUILDS_DIR" href="#gcip.core.variables.PredefinedVariables.CI_BUILDS_DIR">CI_BUILDS_DIR</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_BEFORE_SHA" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_BEFORE_SHA">CI_COMMIT_BEFORE_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_BRANCH" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_BRANCH">CI_COMMIT_BRANCH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_DESCRIPTION" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_DESCRIPTION">CI_COMMIT_DESCRIPTION</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_MESSAGE" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_MESSAGE">CI_COMMIT_MESSAGE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_NAME" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_NAME">CI_COMMIT_REF_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_PROTECTED" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_PROTECTED">CI_COMMIT_REF_PROTECTED</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG">CI_COMMIT_REF_SLUG</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_SHA" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_SHA">CI_COMMIT_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_SHORT_SHA" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_SHORT_SHA">CI_COMMIT_SHORT_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_TAG" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_TAG">CI_COMMIT_TAG</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_TIMESTAMP" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_TIMESTAMP">CI_COMMIT_TIMESTAMP</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_TITLE" href="#gcip.core.variables.PredefinedVariables.CI_COMMIT_TITLE">CI_COMMIT_TITLE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_CONCURRENT_ID" href="#gcip.core.variables.PredefinedVariables.CI_CONCURRENT_ID">CI_CONCURRENT_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_CONCURRENT_PROJECT_ID" href="#gcip.core.variables.PredefinedVariables.CI_CONCURRENT_PROJECT_ID">CI_CONCURRENT_PROJECT_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_CONFIG_PATH" href="#gcip.core.variables.PredefinedVariables.CI_CONFIG_PATH">CI_CONFIG_PATH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEBUG_TRACE" href="#gcip.core.variables.PredefinedVariables.CI_DEBUG_TRACE">CI_DEBUG_TRACE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEFAULT_BRANCH" href="#gcip.core.variables.PredefinedVariables.CI_DEFAULT_BRANCH">CI_DEFAULT_BRANCH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX" href="#gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX">CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_PASSWORD" href="#gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_PASSWORD">CI_DEPENDENCY_PROXY_PASSWORD</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_SERVER" href="#gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_SERVER">CI_DEPENDENCY_PROXY_SERVER</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_USER" href="#gcip.core.variables.PredefinedVariables.CI_DEPENDENCY_PROXY_USER">CI_DEPENDENCY_PROXY_USER</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPLOY_FREEZE" href="#gcip.core.variables.PredefinedVariables.CI_DEPLOY_FREEZE">CI_DEPLOY_FREEZE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPLOY_PASSWORD" href="#gcip.core.variables.PredefinedVariables.CI_DEPLOY_PASSWORD">CI_DEPLOY_PASSWORD</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DEPLOY_USER" href="#gcip.core.variables.PredefinedVariables.CI_DEPLOY_USER">CI_DEPLOY_USER</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_DISPOSABLE_ENVIRONMENT" href="#gcip.core.variables.PredefinedVariables.CI_DISPOSABLE_ENVIRONMENT">CI_DISPOSABLE_ENVIRONMENT</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_NAME" href="#gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_NAME">CI_ENVIRONMENT_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_SLUG" href="#gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_SLUG">CI_ENVIRONMENT_SLUG</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_URL" href="#gcip.core.variables.PredefinedVariables.CI_ENVIRONMENT_URL">CI_ENVIRONMENT_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_IID" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_IID">CI_EXTERNAL_PULL_REQUEST_IID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME">CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA">CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY">CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME">CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA">CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY" href="#gcip.core.variables.PredefinedVariables.CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY">CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_HAS_OPEN_REQUIREMENTS" href="#gcip.core.variables.PredefinedVariables.CI_HAS_OPEN_REQUIREMENTS">CI_HAS_OPEN_REQUIREMENTS</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_ID" href="#gcip.core.variables.PredefinedVariables.CI_JOB_ID">CI_JOB_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_IMAGE" href="#gcip.core.variables.PredefinedVariables.CI_JOB_IMAGE">CI_JOB_IMAGE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_JWT" href="#gcip.core.variables.PredefinedVariables.CI_JOB_JWT">CI_JOB_JWT</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_MANUAL" href="#gcip.core.variables.PredefinedVariables.CI_JOB_MANUAL">CI_JOB_MANUAL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_NAME" href="#gcip.core.variables.PredefinedVariables.CI_JOB_NAME">CI_JOB_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_STAGE" href="#gcip.core.variables.PredefinedVariables.CI_JOB_STAGE">CI_JOB_STAGE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_STATUS" href="#gcip.core.variables.PredefinedVariables.CI_JOB_STATUS">CI_JOB_STATUS</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_TOKEN" href="#gcip.core.variables.PredefinedVariables.CI_JOB_TOKEN">CI_JOB_TOKEN</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_JOB_URL" href="#gcip.core.variables.PredefinedVariables.CI_JOB_URL">CI_JOB_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_KUBERNETES_ACTIVE" href="#gcip.core.variables.PredefinedVariables.CI_KUBERNETES_ACTIVE">CI_KUBERNETES_ACTIVE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_ASSIGNEES" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_ASSIGNEES">CI_MERGE_REQUEST_ASSIGNEES</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_DIFF_BASE_SHA" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_DIFF_BASE_SHA">CI_MERGE_REQUEST_DIFF_BASE_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_DIFF_ID" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_DIFF_ID">CI_MERGE_REQUEST_DIFF_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_EVENT_TYPE" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_EVENT_TYPE">CI_MERGE_REQUEST_EVENT_TYPE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_ID" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_ID">CI_MERGE_REQUEST_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_IID" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_IID">CI_MERGE_REQUEST_IID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_LABELS" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_LABELS">CI_MERGE_REQUEST_LABELS</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_MILESTONE" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_MILESTONE">CI_MERGE_REQUEST_MILESTONE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_ID" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_ID">CI_MERGE_REQUEST_PROJECT_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_PATH" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_PATH">CI_MERGE_REQUEST_PROJECT_PATH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_URL" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_PROJECT_URL">CI_MERGE_REQUEST_PROJECT_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_REF_PATH" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_REF_PATH">CI_MERGE_REQUEST_REF_PATH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_BRANCH_NAME">CI_MERGE_REQUEST_SOURCE_BRANCH_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_BRANCH_SHA" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_BRANCH_SHA">CI_MERGE_REQUEST_SOURCE_BRANCH_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_ID" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_ID">CI_MERGE_REQUEST_SOURCE_PROJECT_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_PATH" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_PATH">CI_MERGE_REQUEST_SOURCE_PROJECT_PATH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_URL" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_SOURCE_PROJECT_URL">CI_MERGE_REQUEST_SOURCE_PROJECT_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TARGET_BRANCH_NAME" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TARGET_BRANCH_NAME">CI_MERGE_REQUEST_TARGET_BRANCH_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TARGET_BRANCH_SHA" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TARGET_BRANCH_SHA">CI_MERGE_REQUEST_TARGET_BRANCH_SHA</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TITLE" href="#gcip.core.variables.PredefinedVariables.CI_MERGE_REQUEST_TITLE">CI_MERGE_REQUEST_TITLE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_NODE_INDEX" href="#gcip.core.variables.PredefinedVariables.CI_NODE_INDEX">CI_NODE_INDEX</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_NODE_TOTAL" href="#gcip.core.variables.PredefinedVariables.CI_NODE_TOTAL">CI_NODE_TOTAL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_OPEN_MERGE_REQUESTS" href="#gcip.core.variables.PredefinedVariables.CI_OPEN_MERGE_REQUESTS">CI_OPEN_MERGE_REQUESTS</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PAGES_DOMAIN" href="#gcip.core.variables.PredefinedVariables.CI_PAGES_DOMAIN">CI_PAGES_DOMAIN</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PAGES_URL" href="#gcip.core.variables.PredefinedVariables.CI_PAGES_URL">CI_PAGES_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PIPELINE_ID" href="#gcip.core.variables.PredefinedVariables.CI_PIPELINE_ID">CI_PIPELINE_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PIPELINE_IID" href="#gcip.core.variables.PredefinedVariables.CI_PIPELINE_IID">CI_PIPELINE_IID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PIPELINE_SOURCE" href="#gcip.core.variables.PredefinedVariables.CI_PIPELINE_SOURCE">CI_PIPELINE_SOURCE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PIPELINE_TRIGGERED" href="#gcip.core.variables.PredefinedVariables.CI_PIPELINE_TRIGGERED">CI_PIPELINE_TRIGGERED</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PIPELINE_URL" href="#gcip.core.variables.PredefinedVariables.CI_PIPELINE_URL">CI_PIPELINE_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_CONFIG_PATH" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_CONFIG_PATH">CI_PROJECT_CONFIG_PATH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_DIR" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_DIR">CI_PROJECT_DIR</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_ID" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_ID">CI_PROJECT_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME">CI_PROJECT_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_NAMESPACE" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_NAMESPACE">CI_PROJECT_NAMESPACE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_PATH" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_PATH">CI_PROJECT_PATH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_PATH_SLUG" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_PATH_SLUG">CI_PROJECT_PATH_SLUG</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_REPOSITORY_LANGUAGES" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_REPOSITORY_LANGUAGES">CI_PROJECT_REPOSITORY_LANGUAGES</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_ROOT_NAMESPACE" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_ROOT_NAMESPACE">CI_PROJECT_ROOT_NAMESPACE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_TITLE" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_TITLE">CI_PROJECT_TITLE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_URL" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_URL">CI_PROJECT_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_PROJECT_VISIBILITY" href="#gcip.core.variables.PredefinedVariables.CI_PROJECT_VISIBILITY">CI_PROJECT_VISIBILITY</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_REGISTRY" href="#gcip.core.variables.PredefinedVariables.CI_REGISTRY">CI_REGISTRY</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_REGISTRY_IMAGE" href="#gcip.core.variables.PredefinedVariables.CI_REGISTRY_IMAGE">CI_REGISTRY_IMAGE</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_REGISTRY_PASSWORD" href="#gcip.core.variables.PredefinedVariables.CI_REGISTRY_PASSWORD">CI_REGISTRY_PASSWORD</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_REGISTRY_USER" href="#gcip.core.variables.PredefinedVariables.CI_REGISTRY_USER">CI_REGISTRY_USER</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_REPOSITORY_URL" href="#gcip.core.variables.PredefinedVariables.CI_REPOSITORY_URL">CI_REPOSITORY_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_DESCRIPTION" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_DESCRIPTION">CI_RUNNER_DESCRIPTION</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_EXECUTABLE_ARCH" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_EXECUTABLE_ARCH">CI_RUNNER_EXECUTABLE_ARCH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_ID" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_ID">CI_RUNNER_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_REVISION" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_REVISION">CI_RUNNER_REVISION</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_SHORT_TOKEN" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_SHORT_TOKEN">CI_RUNNER_SHORT_TOKEN</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_TAGS" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_TAGS">CI_RUNNER_TAGS</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_RUNNER_VERSION" href="#gcip.core.variables.PredefinedVariables.CI_RUNNER_VERSION">CI_RUNNER_VERSION</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER" href="#gcip.core.variables.PredefinedVariables.CI_SERVER">CI_SERVER</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_HOST" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_HOST">CI_SERVER_HOST</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_NAME" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_NAME">CI_SERVER_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_PORT" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_PORT">CI_SERVER_PORT</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_PROTOCOL" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_PROTOCOL">CI_SERVER_PROTOCOL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_REVISION" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_REVISION">CI_SERVER_REVISION</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_URL" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_URL">CI_SERVER_URL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION">CI_SERVER_VERSION</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_MAJOR" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_MAJOR">CI_SERVER_VERSION_MAJOR</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_MINOR" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_MINOR">CI_SERVER_VERSION_MINOR</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_PATCH" href="#gcip.core.variables.PredefinedVariables.CI_SERVER_VERSION_PATCH">CI_SERVER_VERSION_PATCH</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.CI_SHARED_ENVIRONMENT" href="#gcip.core.variables.PredefinedVariables.CI_SHARED_ENVIRONMENT">CI_SHARED_ENVIRONMENT</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.GITLAB_CI" href="#gcip.core.variables.PredefinedVariables.GITLAB_CI">GITLAB_CI</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.GITLAB_FEATURES" href="#gcip.core.variables.PredefinedVariables.GITLAB_FEATURES">GITLAB_FEATURES</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.GITLAB_USER_EMAIL" href="#gcip.core.variables.PredefinedVariables.GITLAB_USER_EMAIL">GITLAB_USER_EMAIL</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.GITLAB_USER_ID" href="#gcip.core.variables.PredefinedVariables.GITLAB_USER_ID">GITLAB_USER_ID</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.GITLAB_USER_LOGIN" href="#gcip.core.variables.PredefinedVariables.GITLAB_USER_LOGIN">GITLAB_USER_LOGIN</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.GITLAB_USER_NAME" href="#gcip.core.variables.PredefinedVariables.GITLAB_USER_NAME">GITLAB_USER_NAME</a></code></li>
+<li><code><a title="gcip.core.variables.PredefinedVariables.TRIGGER_PAYLOAD" href="#gcip.core.variables.PredefinedVariables.TRIGGER_PAYLOAD">TRIGGER_PAYLOAD</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
