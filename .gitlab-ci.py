@@ -1,6 +1,6 @@
 from gcip import Image, Pipeline, PredefinedVariables
-from gcip.addons.kaniko import jobs as kaniko
 from gcip.addons.python import jobs as python
+from gcip.addons.container.jobs import kaniko
 
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
