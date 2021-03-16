@@ -6,11 +6,55 @@ from typing import Any, Optional
 # together, so that there are no parantheses necessarry.
 # See https://stackoverflow.com/questions/128573/using-property-on-classmethods´
 class EnvProxy():
+    """This proxy delays the operating system query for environment variables until the value is requested.
+
+    This proxy is designed for requesting predefined environment variables that must
+    exist within a Gitlab CI pipeline execution. Create an object from this proxy
+    with the name of the Gitlab `CI_*` variable you want to query:
+
+    ```
+    CI_COMMIT_REF_SLUG = EnvProxy("CI_COMMIT_REF_SLUG")  # os.environ is not (!) called here
+    ...
+    ```
+
+    When using an object of this proxy in a statement it returns the value of the `CI_*`
+    variable requested or raises a `KeyError` if against our expectations the variable
+    is not available.
+
+    ```
+    ...
+    if CI_COMMIT_REF_SLUG == "foobar":  # <- os.environ is called here
+        ...
+    ```
+
+    The proxy has a different behavior when not being called within a Gitlab CI pipeline
+    execution. This is, when the environment variable `CI` is unset (from the official
+    Gitlab CI docs). Then the proxy does not raise a KeyError for `CI_*` variables, because
+    they naturally does not exist (or at least their existence is not guaranteed).
+    So if we are not running within a Gitlab CI pipeline, the proxy insteads returns the
+    dummy string `notRunningInAPipeline` for all `CI_*` variables. Except for the `CI`
+    variable itself, where an empty string is returned, indicating we are not running
+    within a pipeline
+
+    Args:
+        key (str): The name of the environment variable that should be queried on request.
+    """
     def __init__(self, key: str) -> None:
-        self.key = key
+        self._key = key
 
     def __get__(self, obj: Any, objtype: Any = None) -> str:
-        return os.environ[self.key]
+        if os.getenv("CI"):  # when running within a gitlab ci pipeline
+            return os.environ[self._key]
+
+        # indicate that we are not running within a pipeline by
+        # returning an empty string
+        if self._key == "CI":
+            return ""
+
+        # in the case we are not running within a pipeline ($CI is empty)
+        # for all other variables we return a dummy value which
+        # explicitly describe this state
+        return "notRunningInAPipeline"
 
 
 class PredefinedVariables():
