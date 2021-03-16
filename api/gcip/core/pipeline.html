@@ -31,7 +31,7 @@
 from . import OrderedSetType
 from .include import Include
 from .service import Service
-from .sequence import Sequence
+from .job_sequence import JobSequence
 
 __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
@@ -42,7 +42,7 @@ __maintainer__ = &#39;Thomas Steinbach&#39;
 __email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
-class Pipeline(Sequence):
+class Pipeline(JobSequence):
     def __init__(self, *, includes: Optional[Union[Include, List[Include]]] = None):
         &#34;&#34;&#34;
         Pipeline class creates an empty Gitlab pipeline.
@@ -139,7 +139,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Pipeline(Sequence):
+<pre><code class="python">class Pipeline(JobSequence):
     def __init__(self, *, includes: Optional[Union[Include, List[Include]]] = None):
         &#34;&#34;&#34;
         Pipeline class creates an empty Gitlab pipeline.
@@ -205,7 +205,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></li>
+<li><a title="gcip.core.job_sequence.JobSequence" href="job_sequence.html#gcip.core.job_sequence.JobSequence">JobSequence</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -299,19 +299,19 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></b></code>:
+<li><code><b><a title="gcip.core.job_sequence.JobSequence" href="job_sequence.html#gcip.core.job_sequence.JobSequence">JobSequence</a></b></code>:
 <ul class="hlist">
-<li><code><a title="gcip.core.sequence.Sequence.add_needs" href="sequence.html#gcip.core.sequence.Sequence.add_needs">add_needs</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.initialize_cache" href="sequence.html#gcip.core.sequence.Sequence.initialize_cache">initialize_cache</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.initialize_image" href="sequence.html#gcip.core.sequence.Sequence.initialize_image">initialize_image</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.initialize_rules" href="sequence.html#gcip.core.sequence.Sequence.initialize_rules">initialize_rules</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.initialize_tags" href="sequence.html#gcip.core.sequence.Sequence.initialize_tags">initialize_tags</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.initialize_variables" href="sequence.html#gcip.core.sequence.Sequence.initialize_variables">initialize_variables</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.override_image" href="sequence.html#gcip.core.sequence.Sequence.override_image">override_image</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.override_rules" href="sequence.html#gcip.core.sequence.Sequence.override_rules">override_rules</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.override_tags" href="sequence.html#gcip.core.sequence.Sequence.override_tags">override_tags</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.override_variables" href="sequence.html#gcip.core.sequence.Sequence.override_variables">override_variables</a></code></li>
-<li><code><a title="gcip.core.sequence.Sequence.set_cache" href="sequence.html#gcip.core.sequence.Sequence.set_cache">set_cache</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.add_needs" href="job_sequence.html#gcip.core.job_sequence.JobSequence.add_needs">add_needs</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_cache" href="job_sequence.html#gcip.core.job_sequence.JobSequence.initialize_cache">initialize_cache</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_image" href="job_sequence.html#gcip.core.job_sequence.JobSequence.initialize_image">initialize_image</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_rules" href="job_sequence.html#gcip.core.job_sequence.JobSequence.initialize_rules">initialize_rules</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_tags" href="job_sequence.html#gcip.core.job_sequence.JobSequence.initialize_tags">initialize_tags</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.initialize_variables" href="job_sequence.html#gcip.core.job_sequence.JobSequence.initialize_variables">initialize_variables</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_image" href="job_sequence.html#gcip.core.job_sequence.JobSequence.override_image">override_image</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_rules" href="job_sequence.html#gcip.core.job_sequence.JobSequence.override_rules">override_rules</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_tags" href="job_sequence.html#gcip.core.job_sequence.JobSequence.override_tags">override_tags</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.override_variables" href="job_sequence.html#gcip.core.job_sequence.JobSequence.override_variables">override_variables</a></code></li>
+<li><code><a title="gcip.core.job_sequence.JobSequence.set_cache" href="job_sequence.html#gcip.core.job_sequence.JobSequence.set_cache">set_cache</a></code></li>
 </ul>
 </li>
 </ul>

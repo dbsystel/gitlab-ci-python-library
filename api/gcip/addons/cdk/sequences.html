@@ -28,7 +28,7 @@
 </summary>
 <pre><code class="python">from typing import Optional
 
-from gcip.core.sequence import Sequence
+from gcip.core.job_sequence import JobSequence
 
 from . import jobs as cdk
 
@@ -51,8 +51,8 @@ def diff_deploy(
     diff_options: str = &#34;&#34;,
     deploy_options: str = &#34;&#34;,
     **context: str,
-) -&gt; Sequence:
-    sequence = Sequence()
+) -&gt; JobSequence:
+    sequence = JobSequence()
     diff_job = cdk.diff(*stacks, synth_options=synth_options, diff_options=diff_options, **context)
     sequence.add_children(
         diff_job,
@@ -77,7 +77,7 @@ def diff_deploy(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="gcip.addons.cdk.sequences.diff_deploy"><code class="name flex">
-<span>def <span class="ident">diff_deploy</span></span>(<span>*stacks: str, toolkit_stack_name: str, wait_for_stack: bool = True, wait_for_stack_assume_role: Optional[str] = None, wait_for_stack_account_id: Optional[str] = None, synth_options: str = '', diff_options: str = '', deploy_options: str = '', **context: str) ‑> <a title="gcip.core.sequence.Sequence" href="../../core/sequence.html#gcip.core.sequence.Sequence">Sequence</a></span>
+<span>def <span class="ident">diff_deploy</span></span>(<span>*stacks: str, toolkit_stack_name: str, wait_for_stack: bool = True, wait_for_stack_assume_role: Optional[str] = None, wait_for_stack_account_id: Optional[str] = None, synth_options: str = '', diff_options: str = '', deploy_options: str = '', **context: str) ‑> <a title="gcip.core.job_sequence.JobSequence" href="../../core/job_sequence.html#gcip.core.job_sequence.JobSequence">JobSequence</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -95,8 +95,8 @@ def diff_deploy(
     diff_options: str = &#34;&#34;,
     deploy_options: str = &#34;&#34;,
     **context: str,
-) -&gt; Sequence:
-    sequence = Sequence()
+) -&gt; JobSequence:
+    sequence = JobSequence()
     diff_job = cdk.diff(*stacks, synth_options=synth_options, diff_options=diff_options, **context)
     sequence.add_children(
         diff_job,

@@ -478,14 +478,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_scripts">scripts</a></li>
 <li><a href="#_jobs">jobs</a></li>
-<li><a href="#_sequences">sequences</a></li>
+<li><a href="#_job_sequences">job_sequences</a></li>
 <li><a href="#_rules">rules</a></li>
 </ul>
 </li>
 <li><a href="#_do_more_with_python">Do more with Python</a></li>
 <li><a href="#_beyond_the_basics">Beyond the basics</a>
 <ul class="sectlevel2">
-<li><a href="#_string_job_sequence_modifications_together">string Job / Sequence modifications together</a></li>
+<li><a href="#_string_job_jobsequence_modifications_together">string Job / JobSequence modifications together</a></li>
 <li><a href="#_triggerjobs">TriggerJobs</a></li>
 </ul>
 </li>
@@ -731,27 +731,27 @@ from tests import conftest
 
 
 def test():
-    sequence = gcip.Sequence()
+    job_sequence = gcip.JobSequence()
 
     job1 = gcip.Job(namespace="job1", script="script1.sh")
     job1.prepend_scripts("from-job-1.sh")
 
-    sequence.add_children(
+    job_sequence.add_children(
         job1,
         gcip.Job(namespace="job2", script="script2.sh"),
     )
 
-    sequence.prepend_scripts("from-sequence.sh")
+    job_sequence.prepend_scripts("from-sequence.sh")
 
     pipeline = gcip.Pipeline()
-    pipeline.add_children(sequence)
+    pipeline.add_children(job_sequence)
 
     conftest.check(pipeline.render())</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>As you will see in the output, jobs can have their own configuration (<code>job1.prepend_scripts(...</code>)
-as well as a common configuration from their sequence (<code>sequence.prepend_scripts(...</code>).</p>
+as well as a common configuration from their sequence (<code>job_sequence.prepend_scripts(...</code>).</p>
 </div>
 <div class="paragraph">
 <p><strong>Output:</strong></p>
@@ -789,11 +789,11 @@ from tests import conftest
 
 
 def test():
-    sequence_a = gcip.Sequence()
+    sequence_a = gcip.JobSequence()
     sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence-a.sh")
 
-    sequence_b = gcip.Sequence()
+    sequence_b = gcip.JobSequence()
     sequence_b.add_children(sequence_a)
     sequence_b.add_children(gcip.Job(namespace="job2", script="script2.sh"))
     sequence_b.prepend_scripts("from-sequence-b.sh")
@@ -845,7 +845,7 @@ from tests import conftest
 
 
 def test():
-    sequence_a = gcip.Sequence()
+    sequence_a = gcip.JobSequence()
     sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence.sh")
 
@@ -1005,8 +1005,8 @@ allows that all jobs of the sequence are populated per environment.</p>
 from tests import conftest
 
 
-def environment_pipeline(environment: str) -&gt; gcip.Sequence:
-    sequence = gcip.Sequence()
+def environment_pipeline(environment: str) -&gt; gcip.JobSequence:
+    sequence = gcip.JobSequence()
     sequence.add_children(
         gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
         gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
@@ -1164,8 +1164,8 @@ and instead of using the <code>namespace</code> when adding the sequence several
 from tests import conftest
 
 
-def environment_pipeline(environment: str) -&gt; gcip.Sequence:
-    sequence = gcip.Sequence()
+def environment_pipeline(environment: str) -&gt; gcip.JobSequence:
+    sequence = gcip.JobSequence()
     sequence.add_children(
         gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
         gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
@@ -1287,7 +1287,7 @@ assets are contained in the following modules named by their type:</p>
 <p><a href="./gcip/jobs.py">jobs</a></p>
 </li>
 <li>
-<p><a href="./gcip/sequences.py">sequences</a></p>
+<p><a href="./gcip/job_sequences.py">job_sequences</a></p>
 </li>
 <li>
 <p><a href="./gcip/rules.py">rules</a></p>
@@ -1365,13 +1365,22 @@ lint-flake8:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sequences">sequences</h3>
+<h3 id="_job_sequences">job_sequences</h3>
 <div class="paragraph">
 <p><strong>Input:</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">Unresolved directive in index.adoc - include::../../tests/unit/test_readme_assets_sequences.py[]</code></pre>
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
+from tests import conftest
+from gcip.addons.cdk import sequences as cdk
+
+
+def test():
+    pipeline = gcip.Pipeline()
+    pipeline.add_children(cdk.diff_deploy("my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+
+    conftest.check(pipeline.render())</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1379,7 +1388,25 @@ lint-flake8:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">Unresolved directive in index.adoc - include::../../tests/unit/comparison_files/test_readme_assets_sequences_test.yml[]</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
+- diff
+- deploy
+diff-cdk:
+  stage: diff
+  script:
+  - cdk synth my-cdk-stack
+  - cdk diff my-cdk-stack
+deploy-cdk:
+  needs:
+  - job: diff-cdk
+    artifacts: true
+  stage: deploy
+  script:
+  - pip3 install gcip
+  - python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names
+    'my-cdk-stack'
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
+    my-cdk-stack</code></pre>
 </div>
 </div>
 </div>
@@ -1518,9 +1545,9 @@ some ideas:</p>
 <p>This chapter covers further abilities of GCIP which suffices to be read after the basics.</p>
 </div>
 <div class="sect2">
-<h3 id="_string_job_sequence_modifications_together">string Job / Sequence modifications together</h3>
+<h3 id="_string_job_jobsequence_modifications_together">string Job / JobSequence modifications together</h3>
 <div class="paragraph">
-<p>Every modification method of Job and Sequence returns the appropriate Job / Sequence object. Thus you can
+<p>Every modification method of Job and JobSequence returns the appropriate Job / JobSequence object. Thus you can
 string multiple modifications methods together. Here an example for the job configuration.</p>
 </div>
 <div class="paragraph">
@@ -1705,7 +1732,7 @@ trigger-subpipe:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-16 15:44:37 UTC
+Last updated 2021-03-16 15:51:35 UTC
 </div>
 </div>
 </body>
