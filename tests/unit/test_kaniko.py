@@ -1,6 +1,6 @@
 from gcip import Pipeline, PredefinedVariables
-from gcip.addons.kaniko import jobs as kaniko
 from tests import conftest
+from gcip.addons.kaniko import jobs as kaniko
 
 
 def test_default_kaniko_job(gitlab_ci_environment_variables):
