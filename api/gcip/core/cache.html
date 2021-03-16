@@ -556,7 +556,7 @@ all jobs, cache per-job, cache per-branch, or any other way that fits your workf
 <dt><strong><code>key</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>The key is the unique id of the cache. <code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code>s referencing caches with the same key are
 sharing the cache contents. Mutually exclusive with <code>files</code>. Defaults to
-<code><a title="gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG" href="variables.html#gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG">PredefinedVariables.CI_COMMIT_REF_SLUG</a></code> if neither <code>key</code> nor <code>files</code> is set.</dd>
+<code>gcip.core.variables.PredefinedVariables.CI_COMMIT_REF_SLUG</code> if neither <code>key</code> nor <code>files</code> is set.</dd>
 <dt><strong><code>files</code></strong> :&ensp;<code>Optional[list]</code></dt>
 <dd>A set of files is another way to define a caches unique id. Jobs referencing caches with the same
 set of files are sharing the cache contents. The <a href="https://docs.gitlab.com/ee/ci/yaml/#cachekeyfiles">cache:key:files</a> keyword
