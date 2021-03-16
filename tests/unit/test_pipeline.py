@@ -5,6 +5,7 @@ from gcip import (
     IncludeLocal,
     IncludeRemote,
     IncludeTemplate,
+    Service,
 )
 from tests import conftest
 from gcip.lib import rules
@@ -74,3 +75,10 @@ def test_write_yaml():
     pipeline.add_children(gcip.Job(script="testjob", namespace="test"))
     target = tempfile.TemporaryFile()
     pipeline.write_yaml(target.name)
+
+
+def test_services():
+    pipeline = gcip.Pipeline()
+    pipeline.add_services("foo", "bar")
+    pipeline.add_services(Service("baz"))
+    conftest.check(pipeline.render())
