@@ -2,7 +2,7 @@ import gcip
 from tests import conftest
 
 
-def test():
+def test(gitlab_ci_environment_variables):
     pipeline = gcip.Pipeline()
     cache = gcip.Cache(["dir1", "dir2", "dir3/subdir"])
     cachejob1 = gcip.Job(name="cachejob1", namespace="single-stage", script="date")

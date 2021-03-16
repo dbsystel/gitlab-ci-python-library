@@ -9,12 +9,11 @@ def test_cache_policies():
         assert member in expected_members
 
 
-def test_default_cache_key_matches_ci_commit_ref_slug():
+def test_default_cache_key_matches_ci_commit_ref_slug(gitlab_ci_environment_variables):
     cache_key = CacheKey()
-    # `os.environ["CI_COMMIT_REF_SLUG"] = "my-feature-branch"` is set in conftest.py
-    expected_render = "my-feature-branch"
+    expected_render = "my-awsome-feature-branch"
     assert expected_render == cache_key.render()
-    assert cache_key.key == "my-feature-branch"
+    assert cache_key.key == "my-awsome-feature-branch"
     assert cache_key.files is None
     assert cache_key.prefix is None
 
@@ -60,14 +59,14 @@ def test_cache_key_exceptions():
         CacheKey(key="my/key")
 
 
-def test_cache():
+def test_cache(gitlab_ci_environment_variables):
     cache = Cache(paths=["path1", "path/two", "./path/three"])
     expected_render = {
-        "key": "my-feature-branch",
+        "key": "my-awsome-feature-branch",
         "paths": ["./path1", "./path/two", "./path/three"]
     }
     assert expected_render == cache.render()
-    assert cache.cache_key.render() == "my-feature-branch"
+    assert cache.cache_key.render() == "my-awsome-feature-branch"
     assert cache.paths == ["./path1", "./path/two", "./path/three"]
     assert cache.policy is None
     assert cache.untracked is None

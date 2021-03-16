@@ -3,9 +3,7 @@ import inspect
 import pathlib
 
 import yaml
-
-os.environ["CI_COMMIT_REF_SLUG"] = "my-feature-branch"
-os.environ["CI_PROJECT_PATH"] = "my/awsome/project/dir"
+import pytest
 
 
 def check(output: str) -> bool:
@@ -23,3 +21,20 @@ def check(output: str) -> bool:
     else:
         with open(compare_file, "r") as infile:
             assert yaml_output == infile.read()
+
+
+@pytest.fixture
+def gitlab_ci_environment_variables(monkeypatch):
+    """
+    Fixture to patch GitLab CI predefined environment variables.
+
+    You can extend this fixture with all GitLab CI environment variables that will be used by gcip.PredefinedVariables.
+    All other environment variables should be placed elswhere.
+
+    Fore more information about `monkeypatch` ->
+    https://docs.pytest.org/en/stable/monkeypatch.html
+    https://docs.pytest.org/en/stable/monkeypatch.html#monkeypatching-environment-variables
+    """
+    monkeypatch.setenv("CI_PROJECT_NAME", "gitlab-ci-project")
+    monkeypatch.setenv("CI_PROJECT_PATH", "my/awsome/project")
+    monkeypatch.setenv("CI_COMMIT_REF_SLUG", "my-awsome-feature-branch")
