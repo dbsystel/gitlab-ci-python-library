@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, Dict, List, Union, Optional
 
 from . import OrderedSetType
@@ -41,7 +43,7 @@ class Pipeline(Sequence):
             raise ValueError("Parameter include must of type gcip.Include or List[gcip.Include]")
         super().__init__()
 
-    def add_services(self, *services: Union[str, Service]):
+    def add_services(self, *services: Union[str, Service]) -> Pipeline:
         """Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
 
         Args:
@@ -77,8 +79,9 @@ class Pipeline(Sequence):
             pipeline[job.name] = job.render()
         return pipeline
 
-    def add_include(self, include: Include) -> None:
+    def add_include(self, include: Include) -> Pipeline:
         self._includes.append(include)
+        return self
 
     def dump_yaml(self) -> None:
         import yaml
