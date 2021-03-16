@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added config.yml to .github dir to force using issue templates.
+* Added gitlab_ci_environment_variables monkeypatch fixture. It allows patching environment variables.
+* Added gitlab_ci_environmnet_variables fixture to tests.
+
 ## [0.5.0] - 2021-03-16
 
 ### Added
