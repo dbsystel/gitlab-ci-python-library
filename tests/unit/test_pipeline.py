@@ -2,10 +2,10 @@ import tempfile
 
 import gcip
 from gcip import (
+    Service,
     IncludeLocal,
     IncludeRemote,
     IncludeTemplate,
-    Service,
 )
 from tests import conftest
 from gcip.lib import rules
