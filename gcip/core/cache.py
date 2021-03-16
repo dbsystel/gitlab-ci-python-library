@@ -110,7 +110,7 @@ class CacheKey():
         return self._prefix
 
     def render(self) -> Union[str, Dict[str, Union[List[str], str]]]:
-        """Renders the class as string or dict.
+        """Return a representation of this cache key object as string or dictionary with static values.
 
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
@@ -212,13 +212,13 @@ class Cache():
         return self._policy
 
     def render(self) -> Dict[str, Any]:
-        """Renders the class as string or dict.
+        """Return a representation of this Cache object as dictionary with static values.
 
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Returns:
-            Dict[str, Any]: Configuration of a GitLab cache.
+            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         """
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
         rendered = {
