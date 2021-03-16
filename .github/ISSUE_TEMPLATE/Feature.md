@@ -1,8 +1,8 @@
-<!--Inspired by https://github.com/restic/restic-->
 ---
 name: Feature request
 about: Suggest a new feature or enhancement for gcip
 ---
+<!--Inspired by https://github.com/restic/restic-->
 <!--
 
 Welcome! - We kindly ask you to fill out the issue template below.

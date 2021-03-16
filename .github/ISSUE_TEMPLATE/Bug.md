@@ -1,8 +1,9 @@
-<!--Inspired by https://github.com/restic/restic-->
 ---
 name: Bug report
 about: Report a problem with gcip to help resolve it and improve
 ---
+<!--Inspired by https://github.com/restic/restic-->
+
 <!--
 
 Welcome! - We kindly ask you to fill out the issue template below.
