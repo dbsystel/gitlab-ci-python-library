@@ -40,7 +40,7 @@ __email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
 def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;]),
+    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;sh&#34;]),
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
@@ -260,7 +260,7 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;]),
+    gitlab_executor_image: Optional[Union[Image, str]] = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;sh&#34;]),
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
