@@ -9,6 +9,7 @@ pipeline.add_children(
     python.isort(),
     python.flake8(),
     python.pytest(),
+    python.mypy("gcip"),
     python.bdist_wheel(),
     kaniko.execute(
         image_name="thomass/gcip",
