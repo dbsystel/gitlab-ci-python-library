@@ -14,6 +14,7 @@ pipeline.add_children(
     python.isort(),
     python.flake8(),
     python.pytest(),
+    python.mypy("gcip"),
     python.bdist_wheel(),
     kaniko.execute(
         gitlab_executor_image=kaniko_image,
