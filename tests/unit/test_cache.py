@@ -73,7 +73,7 @@ def test_cache(gitlab_ci_environment_variables):
     assert cache.when is None
 
 
-def test_full_featured_cache():
+def test_full_featured_cache(gitlab_ci_environment_variables):
     cache = Cache(
         paths=["path1", "path/two", "./path/three"],
         cache_key=CacheKey(key="mykey"),
