@@ -27,7 +27,7 @@ def get_version() -> str:
     return "0.0.0"
 
 
-with open("README.adoc") as fp:
+with open("README.md") as fp:
     long_description_from_readme = fp.read()
 
 if __name__ == '__main__':

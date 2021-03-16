@@ -6,7 +6,7 @@ COPY docker docker
 COPY gcip gcip
 COPY LICENCE .
 COPY requirements.txt .
-COPY README.adoc .
+COPY README.md .
 COPY setup.py .
 
 RUN pip install --no-cache-dir -r requirements.txt
