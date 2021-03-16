@@ -146,7 +146,7 @@ include::../../tests/unit/test_readme_bundling_jobs.py[]
 ----
 
 As you will see in the output, jobs can have their own configuration (`+job1.prepend_scripts(...+`)
-as well as a common configuration from their sequence (`+sequence.prepend_scripts(...+`).
+as well as a common configuration from their sequence (`+job_sequence.prepend_scripts(...+`).
 
 *Output:*
 
@@ -364,7 +364,7 @@ assets are contained in the following modules named by their type:
 
 * link:./gcip/scripts.py[scripts]
 * link:./gcip/jobs.py[jobs]
-* link:./gcip/sequences.py[sequences]
+* link:./gcip/job_sequences.py[job_sequences]
 * link:./gcip/rules.py[rules]
 
 Following sub chapters provide an example for one asset out of every module.
@@ -401,20 +401,20 @@ include::../../tests/unit/test_readme_assets_jobs.py[]
 include::../../tests/unit/comparison_files/test_readme_assets_jobs_test.yml[]
 ----
 
-=== sequences
+=== job_sequences
 
 *Input:*
 
 [source,python]
 ----
-include::../../tests/unit/test_readme_assets_sequences.py[]
+include::../../tests/unit/test_readme_assets_job_sequences.py[]
 ----
 
 *Output:*
 
 [source,yaml]
 ----
-include::../../tests/unit/comparison_files/test_readme_assets_sequences_test.yml[]
+include::../../tests/unit/comparison_files/test_readme_assets_job_sequences_test.yml[]
 ----
 
 === rules
@@ -470,9 +470,9 @@ some ideas:
 
 This chapter covers further abilities of GCIP which suffices to be read after the basics.
 
-=== string Job / Sequence modifications together
+=== string Job / JobSequence modifications together
 
-Every modification method of Job and Sequence returns the appropriate Job / Sequence object. Thus you can
+Every modification method of Job and JobSequence returns the appropriate Job / JobSequence object. Thus you can
 string multiple modifications methods together. Here an example for the job configuration.
 
 *Input:*
