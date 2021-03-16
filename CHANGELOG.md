@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* **BREAKING** Renamed all occurences of 'job\w*sequence' to 'sequene'. Mainly this renames
+* **BREAKING** Renamed all occurences of 'job\w*sequence' to 'sequence'. Mainly this renames
   `gcip.core.job_sequence.JobSequence` to `gcip.core.sequence.Sequence`.
 * Changed behavior how PredefinedVariables is handling environment variables.
   PredefinedVariables knows which environment variables are always present or under certain circumstances,
