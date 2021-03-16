@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   like merge requests or if GitLab container registry is present.
   Variables marked with limited availabilty within official documentation returns String or None.
   All variables which are documented as always present return String.
+* If the gcip code is executed outside a pipeline ($CI is empty) then for all expected `CI_*` variables
+  a dummy string is returned instead of raising a KeyError.
 * The `gcip.Pipeline` has now an `add_services()` method instead `add_service()` allowing to pass multiple
   services at once.
 
