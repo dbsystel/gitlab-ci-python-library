@@ -1,6 +1,6 @@
 from typing import Optional
 
-from gcip.core.job_sequence import JobSequence
+from gcip.core.sequence import Sequence
 
 from . import jobs as cdk
 
@@ -23,8 +23,8 @@ def diff_deploy(
     diff_options: str = "",
     deploy_options: str = "",
     **context: str,
-) -> JobSequence:
-    sequence = JobSequence()
+) -> Sequence:
+    sequence = Sequence()
     diff_job = cdk.diff(*stacks, synth_options=synth_options, diff_options=diff_options, **context)
     sequence.add_children(
         diff_job,

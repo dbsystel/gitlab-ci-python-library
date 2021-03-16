@@ -3,7 +3,7 @@ from tests import conftest
 
 
 def test():
-    sequence_a = gcip.JobSequence()
+    sequence_a = gcip.Sequence()
     sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence.sh")
 

@@ -1,6 +1,6 @@
 import pytest
 
-from gcip import Job, Need, Pipeline, JobSequence
+from gcip import Job, Need, Pipeline, Sequence
 from tests import conftest
 
 
@@ -32,7 +32,7 @@ def test_job_with_needs(testjob):
 
 
 def test_sequence_with_needs(testjob):
-    sequence = JobSequence()
+    sequence = Sequence()
     pipeline = Pipeline()
     pipeline.add_children(testjob).add_children(sequence)
     sequence.add_children(Job(namespace="firstjob", script="foo"), Job(namespace="secondjob", script="bar"))
@@ -41,7 +41,7 @@ def test_sequence_with_needs(testjob):
 
 
 def test_sequence_with_parallel_jobs_and_needs(testjob):
-    sequence = JobSequence()
+    sequence = Sequence()
     pipeline = Pipeline()
     pipeline.add_children(testjob).add_children(sequence)
     sequence.add_children(
@@ -55,7 +55,7 @@ def test_sequence_with_parallel_jobs_and_needs(testjob):
 
 
 def test_add_sequence_as_need(testjob):
-    sequence = JobSequence()
+    sequence = Sequence()
     sequence.add_children(
         Job(namespace="first", name="A", script="firstDateA"),
         Job(namespace="second", name="A", script="secondDateA"),
@@ -74,22 +74,22 @@ def test_add_sequence_as_need(testjob):
 
 def test_needs_will_be_namespaced():
     job1 = Job(namespace="first", script="foobar")
-    sequence = JobSequence().add_children(Job(namespace="second", script="foobar"), namespace="SSS")
+    sequence = Sequence().add_children(Job(namespace="second", script="foobar"), namespace="SSS")
 
     targetJob = Job(namespace="target1", script="foobar").add_needs(job1, sequence)
-    targetSequence = JobSequence().add_children(Job(namespace="target2", script="foobar"), namespace="TTT").add_needs(job1, sequence)
+    targetSequence = Sequence().add_children(Job(namespace="target2", script="foobar"), namespace="TTT").add_needs(job1, sequence)
 
-    sequenceWithoutNamespace = JobSequence()
+    sequenceWithoutNamespace = Sequence()
     sequenceWithoutNamespace.add_children(job1)
     sequenceWithoutNamespace.add_children(sequence)
 
-    parentSequence = JobSequence().add_children(sequenceWithoutNamespace, namespace="abc")
+    parentSequence = Sequence().add_children(sequenceWithoutNamespace, namespace="abc")
 
-    parentSequence2 = JobSequence()
+    parentSequence2 = Sequence()
     parentSequence2.add_children(targetJob, namespace="xyz")
     parentSequence2.add_children(targetSequence, namespace="xyz")
 
-    parentParentSequence = JobSequence().add_children(parentSequence, namespace="123")
+    parentParentSequence = Sequence().add_children(parentSequence, namespace="123")
 
     pipeline = Pipeline().add_children(parentParentSequence, parentSequence2, namespace="final")
     conftest.check(pipeline.render())

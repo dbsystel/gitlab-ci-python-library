@@ -12,12 +12,12 @@ from gcip.addons.cdk import sequences as cdk
 from gcip.addons.gitlab import job_scripts
 
 
-def myapp_diff_deploy(environment: str, resource: str) -> gcip.JobSequence:
+def myapp_diff_deploy(environment: str, resource: str) -> gcip.Sequence:
     return cdk.diff_deploy(f"myapp-{environment}-{resource}", toolkit_stack_name=f"application-{environment}-cdk-toolkit")
 
 
-def environment_pipeline(environment: str) -> gcip.JobSequence:
-    env_pipe = gcip.JobSequence()
+def environment_pipeline(environment: str) -> gcip.Sequence:
+    env_pipe = gcip.Sequence()
 
     env_pipe.add_children(myapp_diff_deploy(environment, "project-resources"), namespace="project_resources")
 

@@ -108,7 +108,7 @@ from .image import Image
 from .include import Include
 
 if TYPE_CHECKING:
-    from .job_sequence import JobSequence
+    from .sequence import Sequence
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -143,11 +143,11 @@ class Job():
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
-        self._needs: List[Union[Need, Job, JobSequence]] = []
+        self._needs: List[Union[Need, Job, Sequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
         self._cache: Optional[Cache] = None
-        self._parents: List[JobSequence] = list()
+        self._parents: List[Sequence] = list()
         self._original: Optional[Job]
         """Only set if you get a :meth:`copy()` of this job"""
 
@@ -178,7 +178,7 @@ class Job():
     def name(self) -> str:
         """The name of the Job
 
-        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
         populate the job name depending on their names. That means you can be sure to get the jobs
         final name when rendered.
         """
@@ -188,30 +188,30 @@ class Job():
     def stage(self) -> str:
         """The [stage](https://docs.gitlab.com/ee/ci/yaml/README.html#stage) of the Job
 
-        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
         populate the job stage depending on their namespaces. That means you can be sure to get the jobs
         final stage when rendered.
         """
         return self._stage
 
     def _extend_name(self, name: Optional[str]) -> None:
-        """This method is used by `gcip.core.job.Sequence`s to populate the jobs name."""
+        """This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name."""
         if name:
             self._name += "-" + name.replace("_", "-")
 
     def _extend_stage(self, stage: Optional[str]) -> None:
-        """This method is used by `gcip.core.job.Sequence`s to populate the jobs stage."""
+        """This method is used by `gcip.core.sequence.Sequence`s to populate the jobs stage."""
         if stage:
             self._stage += "_" + stage.replace("-", "_")
 
     def _extend_namespace(self, namespace: Optional[str]) -> None:
-        """This method is used by `gcip.core.job.Sequence`s to populate the jobs name and stage."""
+        """This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name and stage."""
         if namespace:
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
-    def _add_parent(self, parent: JobSequence) -> None:
-        """This method is called by `gcip.core.job.Sequence`s when the job is added to that sequence.
+    def _add_parent(self, parent: Sequence) -> None:
+        """This method is called by `gcip.core.sequence.Sequence`s when the job is added to that sequence.
 
         The job needs to know its parents when `_get_all_instance_names()` is called.
         """
@@ -280,7 +280,7 @@ class Job():
             cache (Optional[Cache]): See `gcip.core.cache.Cache` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         """
         if cache:
             self._cache = cache
@@ -293,7 +293,7 @@ class Job():
             *rules (Rule): See `gcip.core.rule.Rule` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         """
         self._rules.extend(rules)
         return self
@@ -305,19 +305,19 @@ class Job():
             *rules (Rule): See `gcip.core.rule.Rule` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         """
         self._rules = list(rules) + self._rules
         return self
 
-    def add_needs(self, *needs: Union[Need, Job, JobSequence]) -> Job:
+    def add_needs(self, *needs: Union[Need, Job, Sequence]) -> Job:
         """Add one or more [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) to the job.
 
         Args:
-            *needs (Union[Need, Job, JobSequence]):
+            *needs (Union[Need, Job, Sequence]):
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         """
         self._needs.extend(needs)
         return self
@@ -389,8 +389,8 @@ class Job():
         return job
 
     def render(self) -> Dict[str, Any]:
-        from .job_sequence import \
-            JobSequence  # late import to avoid circular dependencies
+        from .sequence import \
+            Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -403,7 +403,7 @@ class Job():
             for need in self._needs:
                 if isinstance(need, Job):
                     need_jobs.append(need)
-                elif isinstance(need, JobSequence):
+                elif isinstance(need, Sequence):
                     for job in need.last_jobs_executed:
                         need_jobs.append(job)
                 elif isinstance(need, Need):

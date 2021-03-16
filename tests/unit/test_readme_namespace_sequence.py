@@ -2,8 +2,8 @@ import gcip
 from tests import conftest
 
 
-def environment_pipeline(environment: str) -> gcip.JobSequence:
-    sequence = gcip.JobSequence()
+def environment_pipeline(environment: str) -> gcip.Sequence:
+    sequence = gcip.Sequence()
     sequence.add_children(
         gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
         gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
