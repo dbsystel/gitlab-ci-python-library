@@ -43,7 +43,7 @@ pipeline.write_yaml()
 <p>A <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> has always a <code>script</code> and at least one of <code>namespace</code> and <code>name</code>.
 The <code>namespace</code> will be used for the name of the stage of the job and the
 job name itself, whereas <code>name</code> is only used for the job`s name. When adding
-a job to a <code><a title="gcip.core.pipeline.Pipeline" href="pipeline.html#gcip.core.pipeline.Pipeline">Pipeline</a></code> or a <code>gcip.core.sequence.Sequence</code>
+a job to a <code><a title="gcip.core.pipeline.Pipeline" href="pipeline.html#gcip.core.pipeline.Pipeline">Pipeline</a></code> or a <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>
 you can and should define a <code>name</code> or <code>namespace</code> too. This is how you
 distinguish between two jobs of the same kind added to a pipeline:</p>
 <pre><code class="language-python">def create_build_job(artifact: str) -&gt; Job:
@@ -208,7 +208,7 @@ from .image import Image
 from .include import Include
 
 if TYPE_CHECKING:
-    from .job_sequence import JobSequence
+    from .sequence import Sequence
 
 __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
@@ -243,11 +243,11 @@ class Job():
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
-        self._needs: List[Union[Need, Job, JobSequence]] = []
+        self._needs: List[Union[Need, Job, Sequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
         self._cache: Optional[Cache] = None
-        self._parents: List[JobSequence] = list()
+        self._parents: List[Sequence] = list()
         self._original: Optional[Job]
         &#34;&#34;&#34;Only set if you get a :meth:`copy()` of this job&#34;&#34;&#34;
 
@@ -278,7 +278,7 @@ class Job():
     def name(self) -&gt; str:
         &#34;&#34;&#34;The name of the Job
 
-        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
         populate the job name depending on their names. That means you can be sure to get the jobs
         final name when rendered.
         &#34;&#34;&#34;
@@ -288,30 +288,30 @@ class Job():
     def stage(self) -&gt; str:
         &#34;&#34;&#34;The [stage](https://docs.gitlab.com/ee/ci/yaml/README.html#stage) of the Job
 
-        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
         populate the job stage depending on their namespaces. That means you can be sure to get the jobs
         final stage when rendered.
         &#34;&#34;&#34;
         return self._stage
 
     def _extend_name(self, name: Optional[str]) -&gt; None:
-        &#34;&#34;&#34;This method is used by `gcip.core.job.Sequence`s to populate the jobs name.&#34;&#34;&#34;
+        &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name.&#34;&#34;&#34;
         if name:
             self._name += &#34;-&#34; + name.replace(&#34;_&#34;, &#34;-&#34;)
 
     def _extend_stage(self, stage: Optional[str]) -&gt; None:
-        &#34;&#34;&#34;This method is used by `gcip.core.job.Sequence`s to populate the jobs stage.&#34;&#34;&#34;
+        &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs stage.&#34;&#34;&#34;
         if stage:
             self._stage += &#34;_&#34; + stage.replace(&#34;-&#34;, &#34;_&#34;)
 
     def _extend_namespace(self, namespace: Optional[str]) -&gt; None:
-        &#34;&#34;&#34;This method is used by `gcip.core.job.Sequence`s to populate the jobs name and stage.&#34;&#34;&#34;
+        &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name and stage.&#34;&#34;&#34;
         if namespace:
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
-    def _add_parent(self, parent: JobSequence) -&gt; None:
-        &#34;&#34;&#34;This method is called by `gcip.core.job.Sequence`s when the job is added to that sequence.
+    def _add_parent(self, parent: Sequence) -&gt; None:
+        &#34;&#34;&#34;This method is called by `gcip.core.sequence.Sequence`s when the job is added to that sequence.
 
         The job needs to know its parents when `_get_all_instance_names()` is called.
         &#34;&#34;&#34;
@@ -380,7 +380,7 @@ class Job():
             cache (Optional[Cache]): See `gcip.core.cache.Cache` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         if cache:
             self._cache = cache
@@ -393,7 +393,7 @@ class Job():
             *rules (Rule): See `gcip.core.rule.Rule` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         self._rules.extend(rules)
         return self
@@ -405,19 +405,19 @@ class Job():
             *rules (Rule): See `gcip.core.rule.Rule` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         self._rules = list(rules) + self._rules
         return self
 
-    def add_needs(self, *needs: Union[Need, Job, JobSequence]) -&gt; Job:
+    def add_needs(self, *needs: Union[Need, Job, Sequence]) -&gt; Job:
         &#34;&#34;&#34;Add one or more [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) to the job.
 
         Args:
-            *needs (Union[Need, Job, JobSequence]):
+            *needs (Union[Need, Job, Sequence]):
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         self._needs.extend(needs)
         return self
@@ -489,8 +489,8 @@ class Job():
         return job
 
     def render(self) -&gt; Dict[str, Any]:
-        from .job_sequence import \
-            JobSequence  # late import to avoid circular dependencies
+        from .sequence import \
+            Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -503,7 +503,7 @@ class Job():
             for need in self._needs:
                 if isinstance(need, Job):
                     need_jobs.append(need)
-                elif isinstance(need, JobSequence):
+                elif isinstance(need, Sequence):
                     for job in need.last_jobs_executed:
                         need_jobs.append(job)
                 elif isinstance(need, Need):
@@ -724,11 +724,11 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         self._variables: Dict[str, str] = {}
         self._tags: OrderedSetType = {}
         self._rules: List[Rule] = []
-        self._needs: List[Union[Need, Job, JobSequence]] = []
+        self._needs: List[Union[Need, Job, Sequence]] = []
         self._scripts: List[str]
         self._artifacts_paths: OrderedSetType = {}
         self._cache: Optional[Cache] = None
-        self._parents: List[JobSequence] = list()
+        self._parents: List[Sequence] = list()
         self._original: Optional[Job]
         &#34;&#34;&#34;Only set if you get a :meth:`copy()` of this job&#34;&#34;&#34;
 
@@ -759,7 +759,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
     def name(self) -&gt; str:
         &#34;&#34;&#34;The name of the Job
 
-        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
         populate the job name depending on their names. That means you can be sure to get the jobs
         final name when rendered.
         &#34;&#34;&#34;
@@ -769,30 +769,30 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
     def stage(self) -&gt; str:
         &#34;&#34;&#34;The [stage](https://docs.gitlab.com/ee/ci/yaml/README.html#stage) of the Job
 
-        This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+        This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
         populate the job stage depending on their namespaces. That means you can be sure to get the jobs
         final stage when rendered.
         &#34;&#34;&#34;
         return self._stage
 
     def _extend_name(self, name: Optional[str]) -&gt; None:
-        &#34;&#34;&#34;This method is used by `gcip.core.job.Sequence`s to populate the jobs name.&#34;&#34;&#34;
+        &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name.&#34;&#34;&#34;
         if name:
             self._name += &#34;-&#34; + name.replace(&#34;_&#34;, &#34;-&#34;)
 
     def _extend_stage(self, stage: Optional[str]) -&gt; None:
-        &#34;&#34;&#34;This method is used by `gcip.core.job.Sequence`s to populate the jobs stage.&#34;&#34;&#34;
+        &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs stage.&#34;&#34;&#34;
         if stage:
             self._stage += &#34;_&#34; + stage.replace(&#34;-&#34;, &#34;_&#34;)
 
     def _extend_namespace(self, namespace: Optional[str]) -&gt; None:
-        &#34;&#34;&#34;This method is used by `gcip.core.job.Sequence`s to populate the jobs name and stage.&#34;&#34;&#34;
+        &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name and stage.&#34;&#34;&#34;
         if namespace:
             self._extend_name(namespace)
             self._extend_stage(namespace)
 
-    def _add_parent(self, parent: JobSequence) -&gt; None:
-        &#34;&#34;&#34;This method is called by `gcip.core.job.Sequence`s when the job is added to that sequence.
+    def _add_parent(self, parent: Sequence) -&gt; None:
+        &#34;&#34;&#34;This method is called by `gcip.core.sequence.Sequence`s when the job is added to that sequence.
 
         The job needs to know its parents when `_get_all_instance_names()` is called.
         &#34;&#34;&#34;
@@ -861,7 +861,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
             cache (Optional[Cache]): See `gcip.core.cache.Cache` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         if cache:
             self._cache = cache
@@ -874,7 +874,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
             *rules (Rule): See `gcip.core.rule.Rule` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         self._rules.extend(rules)
         return self
@@ -886,19 +886,19 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
             *rules (Rule): See `gcip.core.rule.Rule` class.
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         self._rules = list(rules) + self._rules
         return self
 
-    def add_needs(self, *needs: Union[Need, Job, JobSequence]) -&gt; Job:
+    def add_needs(self, *needs: Union[Need, Job, Sequence]) -&gt; Job:
         &#34;&#34;&#34;Add one or more [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) to the job.
 
         Args:
-            *needs (Union[Need, Job, JobSequence]):
+            *needs (Union[Need, Job, Sequence]):
 
         Returns:
-            JobSequence: Returns the modified `Job` object.
+            Sequence: Returns the modified `Job` object.
         &#34;&#34;&#34;
         self._needs.extend(needs)
         return self
@@ -970,8 +970,8 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         return job
 
     def render(self) -&gt; Dict[str, Any]:
-        from .job_sequence import \
-            JobSequence  # late import to avoid circular dependencies
+        from .sequence import \
+            Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -984,7 +984,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
             for need in self._needs:
                 if isinstance(need, Job):
                     need_jobs.append(need)
-                elif isinstance(need, JobSequence):
+                elif isinstance(need, Sequence):
                     for job in need.last_jobs_executed:
                         need_jobs.append(job)
                 elif isinstance(need, Need):
@@ -1040,7 +1040,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
 <dt id="gcip.core.job.Job.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
 <dd>
 <div class="desc"><p>The name of the Job</p>
-<p>This property is affected by the rendering process, where <code>gcip.core.job.Sequence</code>s will
+<p>This property is affected by the rendering process, where <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>s will
 populate the job name depending on their names. That means you can be sure to get the jobs
 final name when rendered.</p></div>
 <details class="source">
@@ -1051,7 +1051,7 @@ final name when rendered.</p></div>
 def name(self) -&gt; str:
     &#34;&#34;&#34;The name of the Job
 
-    This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+    This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
     populate the job name depending on their names. That means you can be sure to get the jobs
     final name when rendered.
     &#34;&#34;&#34;
@@ -1061,7 +1061,7 @@ def name(self) -&gt; str:
 <dt id="gcip.core.job.Job.stage"><code class="name">var <span class="ident">stage</span> : str</code></dt>
 <dd>
 <div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#stage">stage</a> of the Job</p>
-<p>This property is affected by the rendering process, where <code>gcip.core.job.Sequence</code>s will
+<p>This property is affected by the rendering process, where <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>s will
 populate the job stage depending on their namespaces. That means you can be sure to get the jobs
 final stage when rendered.</p></div>
 <details class="source">
@@ -1072,7 +1072,7 @@ final stage when rendered.</p></div>
 def stage(self) -&gt; str:
     &#34;&#34;&#34;The [stage](https://docs.gitlab.com/ee/ci/yaml/README.html#stage) of the Job
 
-    This property is affected by the rendering process, where `gcip.core.job.Sequence`s will
+    This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
     populate the job stage depending on their namespaces. That means you can be sure to get the jobs
     final stage when rendered.
     &#34;&#34;&#34;
@@ -1105,29 +1105,29 @@ def stage(self) -&gt; str:
 </details>
 </dd>
 <dt id="gcip.core.job.Job.add_needs"><code class="name flex">
-<span>def <span class="ident">add_needs</span></span>(<span>self, *needs: Union[Need, <a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a>, JobSequence]) ‑> <a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></span>
+<span>def <span class="ident">add_needs</span></span>(<span>self, *needs: Union[Need, <a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a>, Sequence]) ‑> <a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add one or more <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#needs">needs</a> to the job.</p>
 <h2 id="args">Args</h2>
-<p>*needs (Union[Need, Job, JobSequence]):</p>
+<p>*needs (Union[Need, Job, Sequence]):</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>JobSequence</code></dt>
+<dt><code>Sequence</code></dt>
 <dd>Returns the modified <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> object.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_needs(self, *needs: Union[Need, Job, JobSequence]) -&gt; Job:
+<pre><code class="python">def add_needs(self, *needs: Union[Need, Job, Sequence]) -&gt; Job:
     &#34;&#34;&#34;Add one or more [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) to the job.
 
     Args:
-        *needs (Union[Need, Job, JobSequence]):
+        *needs (Union[Need, Job, Sequence]):
 
     Returns:
-        JobSequence: Returns the modified `Job` object.
+        Sequence: Returns the modified `Job` object.
     &#34;&#34;&#34;
     self._needs.extend(needs)
     return self</code></pre>
@@ -1204,7 +1204,7 @@ to the job.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>JobSequence</code></dt>
+<dt><code>Sequence</code></dt>
 <dd>Returns the modified <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> object.</dd>
 </dl></div>
 <details class="source">
@@ -1218,7 +1218,7 @@ to the job.</p>
         *rules (Rule): See `gcip.core.rule.Rule` class.
 
     Returns:
-        JobSequence: Returns the modified `Job` object.
+        Sequence: Returns the modified `Job` object.
     &#34;&#34;&#34;
     self._rules.extend(rules)
     return self</code></pre>
@@ -1272,7 +1272,7 @@ to the job.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>JobSequence</code></dt>
+<dt><code>Sequence</code></dt>
 <dd>Returns the modified <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> object.</dd>
 </dl></div>
 <details class="source">
@@ -1286,7 +1286,7 @@ to the job.</p>
         *rules (Rule): See `gcip.core.rule.Rule` class.
 
     Returns:
-        JobSequence: Returns the modified `Job` object.
+        Sequence: Returns the modified `Job` object.
     &#34;&#34;&#34;
     self._rules = list(rules) + self._rules
     return self</code></pre>
@@ -1323,8 +1323,8 @@ to the job.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; Dict[str, Any]:
-    from .job_sequence import \
-        JobSequence  # late import to avoid circular dependencies
+    from .sequence import \
+        Sequence  # late import to avoid circular dependencies
 
     rendered_job: Dict[str, Any] = {}
 
@@ -1337,7 +1337,7 @@ to the job.</p>
         for need in self._needs:
             if isinstance(need, Job):
                 need_jobs.append(need)
-            elif isinstance(need, JobSequence):
+            elif isinstance(need, Sequence):
                 for job in need.last_jobs_executed:
                     need_jobs.append(job)
             elif isinstance(need, Need):
@@ -1398,7 +1398,7 @@ to the job.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>JobSequence</code></dt>
+<dt><code>Sequence</code></dt>
 <dd>Returns the modified <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> object.</dd>
 </dl></div>
 <details class="source">
@@ -1414,7 +1414,7 @@ to the job.</p>
         cache (Optional[Cache]): See `gcip.core.cache.Cache` class.
 
     Returns:
-        JobSequence: Returns the modified `Job` object.
+        Sequence: Returns the modified `Job` object.
     &#34;&#34;&#34;
     if cache:
         self._cache = cache
