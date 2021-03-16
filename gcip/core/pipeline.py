@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Union, Optional
 from . import OrderedSetType
 from .include import Include
 from .service import Service
-from .job_sequence import JobSequence
+from .sequence import Sequence
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -14,7 +14,7 @@ __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
-class Pipeline(JobSequence):
+class Pipeline(Sequence):
     def __init__(self, *, includes: Optional[Union[Include, List[Include]]] = None):
         """
         Pipeline class creates an empty Gitlab pipeline.

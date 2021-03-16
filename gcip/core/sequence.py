@@ -27,12 +27,12 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 class ChildDict(TypedDict):
-    object: Union[Job, JobSequence]
+    object: Union[Job, Sequence]
     namespace: Optional[str]
     name: Optional[str]
 
 
-class JobSequence():
+class Sequence():
     def __init__(self) -> None:
         super().__init__()
         self._children: List[ChildDict] = list()
@@ -54,14 +54,14 @@ class JobSequence():
         self._rules_for_initialization: List[Rule] = []
         self._rules_for_replacement: List[Rule] = []
         self._needs: List[Union[Job, Need]] = []
-        self._parents: List[JobSequence] = list()
+        self._parents: List[Sequence] = list()
 
-    def _add_parent(self, parent: JobSequence) -> None:
+    def _add_parent(self, parent: Sequence) -> None:
         self._parents.append(parent)
 
     def add_children(
-        self, *jobs_or_sequences: Union[Job, JobSequence], namespace: Optional[str] = None, name: Optional[str] = None
-    ) -> JobSequence:
+        self, *jobs_or_sequences: Union[Job, Sequence], namespace: Optional[str] = None, name: Optional[str] = None
+    ) -> Sequence:
         for child in jobs_or_sequences:
             child._add_parent(self)
             self._children.append({
@@ -71,11 +71,11 @@ class JobSequence():
             })
         return self
 
-    def add_variables(self, **variables: str) -> JobSequence:
+    def add_variables(self, **variables: str) -> Sequence:
         self._variables.update(variables)
         return self
 
-    def initialize_variables(self, **variables: str) -> JobSequence:
+    def initialize_variables(self, **variables: str) -> Sequence:
         """
         Works like :meth:`initialize_tags` but for variales.
 
@@ -86,7 +86,7 @@ class JobSequence():
         self._variables_for_initialization.update(variables)
         return self
 
-    def override_variables(self, **variables: str) -> JobSequence:
+    def override_variables(self, **variables: str) -> Sequence:
         """
         Works like :meth:`override_tags` but for variables.
 
@@ -97,37 +97,37 @@ class JobSequence():
         self._variables_for_replacement.update(variables)
         return self
 
-    def set_cache(self, cache: Cache) -> JobSequence:
-        """Sets the cache for the corresponding JobSequence.
+    def set_cache(self, cache: Cache) -> Sequence:
+        """Sets the cache for the corresponding Sequence.
         This will override any previously set chaches on this sequence or child sequences/jobs.
 
         Args:
-            cache (Cache): Cache to use for the JobSequence and its Jobs.
+            cache (Cache): Cache to use for the Sequence and its Jobs.
 
         Returns:
-            JobSequence: Returns the modified Sequence object.
+            Sequence: Returns the modified Sequence object.
         """
         self._cache = cache
         return self
 
-    def initialize_cache(self, cache: Cache) -> JobSequence:
+    def initialize_cache(self, cache: Cache) -> Sequence:
         """Sets the cache of child sequences/jobs only  if not set before.
 
         Args:
-            cache (Cache): Cache to use for the JobSequence and its Jobs.
+            cache (Cache): Cache to use for the Sequence and its Jobs.
 
         Returns:
-            JobSequence: Returns the modified Sequence object.
+            Sequence: Returns the modified Sequence object.
         """
         self._cache_for_initialization = cache
         return self
 
-    def add_tags(self, *tags: str) -> JobSequence:
+    def add_tags(self, *tags: str) -> Sequence:
         for tag in tags:
             self._tags[tag] = None
         return self
 
-    def initialize_tags(self, *tags: str) -> JobSequence:
+    def initialize_tags(self, *tags: str) -> Sequence:
         """
         Adds tags to downstream :class:`Job` s only if they haven't tags added yet.
 
@@ -141,7 +141,7 @@ class JobSequence():
             self._tags_for_initialization[tag] = None
         return self
 
-    def override_tags(self, *tags: str) -> JobSequence:
+    def override_tags(self, *tags: str) -> Sequence:
         """
         Will replace all tags from downstream :class:`Job` s.
 
@@ -155,20 +155,20 @@ class JobSequence():
             self._tags_for_replacement[tag] = None
         return self
 
-    def add_artifacts_paths(self, *paths: str) -> JobSequence:
+    def add_artifacts_paths(self, *paths: str) -> Sequence:
         for path in paths:
             self._artifacts_paths[path] = None
         return self
 
-    def append_rules(self, *rules: Rule) -> JobSequence:
+    def append_rules(self, *rules: Rule) -> Sequence:
         self._rules_to_append.extend(rules)
         return self
 
-    def prepend_rules(self, *rules: Rule) -> JobSequence:
+    def prepend_rules(self, *rules: Rule) -> Sequence:
         self._rules_to_prepend = list(rules) + self._rules_to_prepend
         return self
 
-    def initialize_rules(self, *rules: Rule) -> JobSequence:
+    def initialize_rules(self, *rules: Rule) -> Sequence:
         """
         Works like :meth:`initialize_tags` but for rules.
 
@@ -178,7 +178,7 @@ class JobSequence():
         self._rules_for_initialization.extend(rules)
         return self
 
-    def override_rules(self, *rules: Rule) -> JobSequence:
+    def override_rules(self, *rules: Rule) -> Sequence:
         """
         Works like :meth:`override_tags` but for rules.
 
@@ -188,7 +188,7 @@ class JobSequence():
         self._rules_for_replacement.extend(rules)
         return self
 
-    def add_needs(self, *needs: Union[Job, Need]) -> JobSequence:
+    def add_needs(self, *needs: Union[Job, Need]) -> Sequence:
         """
         Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
         the same stage.
@@ -196,15 +196,15 @@ class JobSequence():
         self._needs.extend(needs)
         return self
 
-    def prepend_scripts(self, *scripts: str) -> JobSequence:
+    def prepend_scripts(self, *scripts: str) -> Sequence:
         self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
         return self
 
-    def append_scripts(self, *scripts: str) -> JobSequence:
+    def append_scripts(self, *scripts: str) -> Sequence:
         self._scripts_to_append.extend(scripts)
         return self
 
-    def initialize_image(self, image: Union[Image, str]) -> JobSequence:
+    def initialize_image(self, image: Union[Image, str]) -> Sequence:
         """Initializes given `image` to all downstream `Job`s which do not have
         an `image` set.
 
@@ -212,13 +212,13 @@ class JobSequence():
             image (Union[Image, str]): The image to set to all downstream :class:`Job`'s.
 
         Returns:
-            JobSequence: Modified `sequence` object.
+            Sequence: Modified `sequence` object.
         """
         if image:
             self._image_for_initialization = image
         return self
 
-    def override_image(self, image: Union[Image, str]) -> JobSequence:
+    def override_image(self, image: Union[Image, str]) -> Sequence:
         """Initializes and override's `image` to all downstream `Job`s.
         In consequence, all downstream `Job`s will be started with `image`.
 
@@ -226,13 +226,13 @@ class JobSequence():
             image (str): The image to set for all downstream :class:`Job`'s.
 
         Returns:
-            JobSequence: Modified `sequence` object.
+            Sequence: Modified `sequence` object.
         """
         if image:
             self._image_for_replacement = image
         return self
 
-    def _get_all_instance_names(self, child: Union[Job, JobSequence]) -> Set[str]:
+    def _get_all_instance_names(self, child: Union[Job, Sequence]) -> Set[str]:
         instance_names: Set[str] = set()
         for parent in self._parents:
             instance_names.update(parent._get_all_instance_names(self))
@@ -292,7 +292,7 @@ class JobSequence():
     def populated_jobs(self) -> List[Job]:
         all_jobs: List[Job] = []
         for child in self._children:
-            if isinstance(child["object"], JobSequence):
+            if isinstance(child["object"], Sequence):
                 for job_copy in child["object"].populated_jobs:
                     job_copy._extend_namespace(child["namespace"])
                     job_copy._extend_name(child["name"])

@@ -1,6 +1,6 @@
 import pytest
 
-from gcip import Job, Rule, Pipeline, JobSequence
+from gcip import Job, Rule, Pipeline, Sequence
 from tests import conftest
 from gcip.lib import rules
 
@@ -21,7 +21,7 @@ def test_on_success():
 
 def test_rule_order():
     pipeline = Pipeline()
-    sequence = JobSequence()
+    sequence = Sequence()
     sequence.prepend_rules(Rule(if_statement="1"))
     sequence.append_rules(Rule(if_statement="2"))
 
