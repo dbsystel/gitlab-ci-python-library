@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Added config.yml to .github dir to force using issue templates.
 ## [0.5.0] - 2021-03-16
 
 ### Added
