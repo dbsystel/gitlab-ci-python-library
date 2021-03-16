@@ -1,28 +1,25 @@
-= gcip - The Gitlab CI Python Library
-:doctype: book
+# gcip - The Gitlab CI Python Library
 
 A Python Library for creating dynamic pipelines for Gitlab CI.
 
-https://dbsystel.github.io/gitlab-ci-python-library/user/index.html[User Documentation] | https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html[API Reference]
+[User Documentation](https://dbsystel.github.io/gitlab-ci-python-library/user/index.html) | [API Reference](https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html)
 
 With the gcip and the ease and power of Python you can write Gitlab CI pipelines
 of any complexity in well manageable Python code.
 
 A simple starting pipeline could look like following:
 
-[source,python]
-----
+```
 from gcip import Pipeline, Job
 
 pipeline = Pipeline()
 pipeline.add_children(Job(namespace="build", script="docker build ."))
 pipeline.write_yaml()
-----
+```
 
 Here is a prospect of how you can handle complex pipelines in Python:
 
-[source,python]
-----
+```
 from gcip import Pipeline, JobSequence, Job
 from gcip.addons.gitlab import job_scripts as gitlab
 
@@ -48,33 +45,33 @@ for environment in ("develop", "test", "production"):
     pipeline.add_children(jobs, namespace=environment)
 
 pipeline.write_yaml("generated-config.yml")
-----
+```
 
-Do you really want to see the link:docs/user/generated-config.yml[generated-config.yml] ? :)
+Do you really want to see the [generated-config.yml](docs/user/generated-config.yml) ? :)
 
-== Documentation
+## Documentation
 
-Please read the https://dbsystel.github.io/gitlab-ci-python-library/user/index.html[User Documentation] to get a quick introduction into most
+Please read the [User Documentation](https://dbsystel.github.io/gitlab-ci-python-library/user/index.html) to get a quick introduction into most
 features of the gcip.
 
-You can consult the https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html[API Reference] to get an overview of all classes and methods
+You can consult the [API Reference](https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html) to get an overview of all classes and methods
 and a deeper view into their paramters.
 
 
-== Why is this Gitlab Project hosted on Github?
+## Why is this Gitlab Project hosted on Github?
 
-The https://github.com/dbsystel[DB Systel GmbH] organization sponsoring this project is currently only present on Github.
+The [DB Systel GmbH](https://github.com/dbsystel) organization sponsoring this project is currently only present on Github.
 This may be change in future.
 
 
-== Author
+## Author
 
-gcip was created by link:mailto:thomas.t.steinbach@deutschebahn.com[Thomas Steinbach] in 2020.
+gcip was created by [Thomas Steinbach](mailto:thomas.t.steinbach@deutschebahn.com) in 2020.
 
-Thanks to initial contributions from link:mailto:daniel.von-essen@deutschebahn.com[Daniel von Eßen]
+Thanks to initial contributions from [Daniel von Eßen](mailto:daniel.von-essen@deutschebahn.com)
 
-== Licence
+## Licence
 
-The content of this repository is licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache 2.0 license].
+The content of this repository is licensed under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
 
 Copyright DB Systel GmbH
