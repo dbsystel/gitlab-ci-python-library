@@ -81,11 +81,11 @@ from .core.include import (  # noqa
     IncludeArtifact,
     IncludeTemplate,
 )
+from .core.service import Service  # noqa
 # yapf: disable
 from .core.pipeline import Pipeline  # noqa
 from .core.sequence import Sequence  # noqa
 from .core.variables import PredefinedVariables  # noqa
-from .core.service import Service  # noqa
 
 __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
