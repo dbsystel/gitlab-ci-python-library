@@ -27,7 +27,9 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 class ChildDict(TypedDict):
-    object: Union[Job, Sequence]
+    """This data structure is supposed to store one child of a `Sequence` with all required information about that child."""
+
+    child: Union[Job, Sequence]
     namespace: Optional[str]
     name: Optional[str]
 
@@ -65,7 +67,7 @@ class Sequence():
         for child in jobs_or_sequences:
             child._add_parent(self)
             self._children.append({
-                "object": child,
+                "child": child,
                 "namespace": namespace,
                 "name": name
             })
@@ -240,7 +242,7 @@ class Sequence():
         child_instance_names: Set[str] = set()
         child_instance_name: str
         for item in self._children:
-            if item["object"] == child:
+            if item["child"] == child:
                 if item["namespace"] is not None:
                     if item["name"]:
                         child_instance_name = f"{item['namespace']}-{item['name']}"
@@ -292,13 +294,13 @@ class Sequence():
     def populated_jobs(self) -> List[Job]:
         all_jobs: List[Job] = []
         for child in self._children:
-            if isinstance(child["object"], Sequence):
-                for job_copy in child["object"].populated_jobs:
+            if isinstance(child["child"], Sequence):
+                for job_copy in child["child"].populated_jobs:
                     job_copy._extend_namespace(child["namespace"])
                     job_copy._extend_name(child["name"])
                     all_jobs.append(job_copy)
-            elif isinstance(child["object"], Job):
-                job_copy = child["object"].copy()
+            elif isinstance(child["child"], Job):
+                job_copy = child["child"].copy()
                 job_copy._extend_namespace(child["namespace"])
                 job_copy._extend_name(child["name"])
                 all_jobs.append(job_copy)
