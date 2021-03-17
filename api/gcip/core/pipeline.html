@@ -69,21 +69,10 @@ class Pipeline(Sequence):
             raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
-    def add_services(self, *services: Union[str, Service]):
-        &#34;&#34;&#34;Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
-
-        Args:
-            *services (Rule): If strings are provided, then for every string a `Service(string)` will be created.
-                Use objects of the `gcip.core.service.Service` class directly for more complex service configurations.
-
-        Returns:
-            `Pipeline`: The modified `Pipeline` object.
-        &#34;&#34;&#34;
-        for service in services:
-            if isinstance(service, str):
-                service = Service(service)
-            self._services.append(service)
-        return self
+    def add_service(self, service: Union[str, Service]):
+        if isinstance(service, str):
+            service = Service(service)
+        self._services.append(service)
 
     def render(self) -&gt; Dict[str, Any]:
         stages: OrderedSetType = {}
@@ -177,21 +166,10 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
             raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
-    def add_services(self, *services: Union[str, Service]):
-        &#34;&#34;&#34;Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
-
-        Args:
-            *services (Rule): If strings are provided, then for every string a `Service(string)` will be created.
-                Use objects of the `gcip.core.service.Service` class directly for more complex service configurations.
-
-        Returns:
-            `Pipeline`: The modified `Pipeline` object.
-        &#34;&#34;&#34;
-        for service in services:
-            if isinstance(service, str):
-                service = Service(service)
-            self._services.append(service)
-        return self
+    def add_service(self, service: Union[str, Service]):
+        if isinstance(service, str):
+            service = Service(service)
+        self._services.append(service)
 
     def render(self) -&gt; Dict[str, Any]:
         stages: OrderedSetType = {}
@@ -244,38 +222,19 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
     self._includes.append(include)</code></pre>
 </details>
 </dd>
-<dt id="gcip.core.pipeline.Pipeline.add_services"><code class="name flex">
-<span>def <span class="ident">add_services</span></span>(<span>self, *services: Union[str, <a title="gcip.core.service.Service" href="service.html#gcip.core.service.Service">Service</a>])</span>
+<dt id="gcip.core.pipeline.Pipeline.add_service"><code class="name flex">
+<span>def <span class="ident">add_service</span></span>(<span>self, service: Union[str, <a title="gcip.core.service.Service" href="service.html#gcip.core.service.Service">Service</a>])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Add one or more <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#services">services</a> to the pipeline.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>*services</code></strong> :&ensp;<code>Rule</code></dt>
-<dd>If strings are provided, then for every string a <code>Service(string)</code> will be created.
-Use objects of the <code><a title="gcip.core.service.Service" href="service.html#gcip.core.service.Service">Service</a></code> class directly for more complex service configurations.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p><code><a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></code>: The modified <code><a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></code> object.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_services(self, *services: Union[str, Service]):
-    &#34;&#34;&#34;Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
-
-    Args:
-        *services (Rule): If strings are provided, then for every string a `Service(string)` will be created.
-            Use objects of the `gcip.core.service.Service` class directly for more complex service configurations.
-
-    Returns:
-        `Pipeline`: The modified `Pipeline` object.
-    &#34;&#34;&#34;
-    for service in services:
-        if isinstance(service, str):
-            service = Service(service)
-        self._services.append(service)
-    return self</code></pre>
+<pre><code class="python">def add_service(self, service: Union[str, Service]):
+    if isinstance(service, str):
+        service = Service(service)
+    self._services.append(service)</code></pre>
 </details>
 </dd>
 <dt id="gcip.core.pipeline.Pipeline.dump_yaml"><code class="name flex">
@@ -377,7 +336,7 @@ Use objects of the <code><a title="gcip.core.service.Service" href="service.html
 <h4><code><a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></code></h4>
 <ul class="">
 <li><code><a title="gcip.core.pipeline.Pipeline.add_include" href="#gcip.core.pipeline.Pipeline.add_include">add_include</a></code></li>
-<li><code><a title="gcip.core.pipeline.Pipeline.add_services" href="#gcip.core.pipeline.Pipeline.add_services">add_services</a></code></li>
+<li><code><a title="gcip.core.pipeline.Pipeline.add_service" href="#gcip.core.pipeline.Pipeline.add_service">add_service</a></code></li>
 <li><code><a title="gcip.core.pipeline.Pipeline.dump_yaml" href="#gcip.core.pipeline.Pipeline.dump_yaml">dump_yaml</a></code></li>
 <li><code><a title="gcip.core.pipeline.Pipeline.render" href="#gcip.core.pipeline.Pipeline.render">render</a></code></li>
 <li><code><a title="gcip.core.pipeline.Pipeline.write_yaml" href="#gcip.core.pipeline.Pipeline.write_yaml">write_yaml</a></code></li>
