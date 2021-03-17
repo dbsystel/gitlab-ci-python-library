@@ -83,7 +83,10 @@ from .core.include import (  # noqa
 )
 from .core.service import Service  # noqa
 # yapf: disable
-from .core.pipeline import Pipeline  # noqa
+from .core.pipeline import (  # noqa
+    Pipeline,
+    JobNameConflictError,
+)
 from .core.sequence import Sequence  # noqa
 from .core.variables import PredefinedVariables  # noqa
 
