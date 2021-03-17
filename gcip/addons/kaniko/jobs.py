@@ -12,7 +12,7 @@ __email__ = 'thomas.t.steinbach@deutschebahn.com'
 
 
 def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""]),
+    gitlab_executor_image: Optional[Union[Image, str]] = None,
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
@@ -36,8 +36,7 @@ def execute(
 
     Args:
         gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. If set to `None`, no image will be set for this job.
-            Defaults to ```gcr.io/kaniko-project/executor:latest```.
+            Must contain the kaniko ```executor``` binary. Defaults to ```Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""])```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
@@ -157,4 +156,7 @@ def execute(
 
     if gitlab_executor_image:
         job.set_image(gitlab_executor_image)
+    else:
+        job.set_image(Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""]))
+
     return job
