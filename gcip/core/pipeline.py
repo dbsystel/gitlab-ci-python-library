@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Union, Optional
 
 from . import OrderedSetType
+from .job import Job
 from .include import Include
 from .service import Service
 from .sequence import Sequence
@@ -14,6 +15,24 @@ __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 __license__ = 'Apache-2.0'
 __maintainer__ = 'Thomas Steinbach'
 __email__ = 'thomas.t.steinbach@deutschebahn.com'
+
+
+class JobNameConflictError(Exception):
+    """This exception is used by the `Pipeline` when two rendered jobs have the same name.
+
+    When two or more jobs have the same name within a pipeline means that one job will overwrite
+    all other jobs. This is absolutely nonsense and could (nearly?) never be the intention of
+    the user so he must be informed about that exception.
+
+    Attributes:
+        job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
+    """
+    def __init__(self, job: Job):
+        super().__init__(
+            f"Two jobs have the same name '{job.name}' when rendering the pipeline."
+            "\nPlease fix this by providing a different name and/or namespace when adding those jobs to"
+            " their sequences/pipeline."
+        )
 
 
 class Pipeline(Sequence):
@@ -77,11 +96,7 @@ class Pipeline(Sequence):
         pipeline["stages"] = list(stages.keys())
         for job in job_copies:
             if job.name in pipeline:
-                raise ValueError(
-                    f"NAMING CONFLICT: Two jobs have the same name '{job.name}' when rendering the pipeline."
-                    "\nPlease fix this by providing a different name and/or namespace when adding those jobs to"
-                    " their sequences/pipeline."
-                )
+                raise JobNameConflictError(job)
 
             pipeline[job.name] = job.render()
         return pipeline
