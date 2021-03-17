@@ -1,5 +1,6 @@
+import pytest
+
 import gcip
-from tests import conftest
 
 
 def job_for(environment: str) -> gcip.Job:
@@ -11,4 +12,5 @@ def test():
     for env in ["development", "test"]:
         pipeline.add_children(job_for(env))
 
-    conftest.check(pipeline.render())
+    with pytest.raises(ValueError, match="NAMING CONFLICT: Two jobs have the same name"):
+        pipeline.render()

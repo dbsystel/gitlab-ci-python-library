@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added config.yml to .github dir to force using issue templates.
 * Added gitlab_ci_environment_variables monkeypatch fixture. It allows patching environment variables.
 * Added gitlab_ci_environmnet_variables fixture to tests.
+* The gcip is now able to detect if two or more jobs would have the same name in the rendered pipeline
+  and raises an ValueError to prevent undesirable pipeline behavior.
 
 ### Changed
 
