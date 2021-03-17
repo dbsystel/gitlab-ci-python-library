@@ -13,6 +13,26 @@ from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
 
 
+def _validate_float_for_scan(validate: float) -> bool:
+    """
+    Helper function to validate given arguments type and range.
+
+    If `validate` is not of type float or not between 0.0 and 1.0 function returns `False`.
+            Otherwise function returns `True`
+    Args:
+        validate (float): Argument to validate.
+
+    Returns:
+        bool:
+    """
+
+    if not isinstance(validate, float):
+        raise TypeError("Argument is not of type float.")
+    if not 0 <= validate <= 1:
+        raise ValueError("Argument is not between 0.0 and 1.0.")
+    return True
+
+
 def scan(
     *,
     dive_image: Optional[Image] = None,
@@ -25,7 +45,7 @@ def scan(
     source: str = "docker-archive",
 ) -> Job:
     """
-    Scan your images with wagoodman/dive.
+    Scan your images with [wagoodman/dive](https://github.com/wagoodman/dive).
 
     `dive` will scan your container image layers and will output the efficency of each layer.
     You can see which layer and which file is consuming the most storage and optimize the layers if possible.
@@ -52,7 +72,7 @@ def scan(
         Job: gcip.Job returned which will scan your image(s).
     """
     if not dive_image:
-        dive_image = Image(name="wagoodman/dive:v0.10.0")
+        dive_image = Image(name="wagoodman/dive:latest")
     if not image_path:
         image_path = "/" + PredefinedVariables.CI_PROJECT_PATH
     if image_path and image_path.endswith("/"):
@@ -66,11 +86,11 @@ def scan(
 
     dive_command: List[str] = ["dive", f"{source}://{image_path}/{image_name}", "--ci"]
 
-    if isinstance(highest_user_wasted_percent, float) and highest_user_wasted_percent <= 1:
+    if highest_user_wasted_percent and _validate_float_for_scan(highest_user_wasted_percent):
         dive_command.append(f'--highestUserWastedPercent "{highest_user_wasted_percent}"')
-    if isinstance(highest_wasted_bytes, float) and highest_wasted_bytes <= 1:
+    if highest_wasted_bytes and _validate_float_for_scan(highest_wasted_bytes):
         dive_command.append(f'--highestWastedBytes "{highest_wasted_bytes}"')
-    if isinstance(lowest_efficiency, float) and lowest_efficiency <= 1:
+    if lowest_efficiency and _validate_float_for_scan(lowest_efficiency):
         dive_command.append(f'--lowestEfficiency "{lowest_efficiency}"')
     if ignore_errors:
         dive_command.append("--ignore-errors")
