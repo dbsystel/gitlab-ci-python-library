@@ -24,8 +24,8 @@ def execute(
     enable_push: bool = False,
     verbosity: Optional[str] = None,
     ecr_login: bool = False,
-    dockerhub_user_env_var: Optional[str] = None,
-    dockerhub_login_env_var: Optional[str] = None,
+    registry_user_env_var: Optional[str] = None,
+    registry_login_env_var: Optional[str] = None,
 ):
     """
     Creates a job which builds container images.
@@ -54,24 +54,24 @@ def execute(
             Defaults to False.
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to "info".
         ecr_login (bool): If ```ecr-login``` should be registered as ```credStore``` in the ```.docker/config.json```.
-            Mutually exclusive with `dockerhub_user_env_var` and `dockerhub_login_env_var`. Defaults to `False`.
-        dockerhub_user_env_var (Optional[str]): If you have to login to the docker registry before the push, you have to provide
+            Mutually exclusive with `registry_user_env_var` and `registry_login_env_var`. Defaults to `False`.
+        registry_user_env_var (Optional[str]): If you have to login to the registry before the push, you have to provide
             the name of the environment variable, which contains the username value, here.
             **DO NOT PROVIDE THE USERNAME VALUE ITSELF!** This would be a security issue!
             Mutually exclusive with `ecr_login`.
-            Defaults to `None` which skips the docker login attempt.
-        dockerhub_login_env_var (Optional[str]): If you have to login to the docker registry before the push, you have to provide
+            Defaults to `None` which skips the login attempt.
+        registry_login_env_var (Optional[str]): If you have to login to the registry before the push, you have to provide
             the name of the environment variable, which contains the password or token, here.
             **DO NOT PROVIDE THE LOGIN VALUE ITSELF!** This would be a security issue!
             Mutually exclusive with `ecr_login`.
-            Defaults to `None` which skips the docker login attempt.
+            Defaults to `None` which skips the login attempt.
 
     Returns:
         Job: gcip.Job will be returned to create container images with ```name=kaniko``` and ```namespace=execute```.
     """
 
-    if ecr_login and (dockerhub_user_env_var or dockerhub_login_env_var):
-        raise ValueError("`ecr_login` is mutually exclusive with `dockerhub_user_env_var` and `dockerhub_login_env_var`.")
+    if ecr_login and (registry_user_env_var or registry_login_env_var):
+        raise ValueError("`ecr_login` is mutually exclusive with `registry_user_env_var` and `registry_login_env_var`.")
 
     job = Job(
         name="kaniko",
@@ -146,10 +146,10 @@ def execute(
     if ecr_login:
         job.prepend_scripts('mkdir -p /kaniko/.docker && echo "{\\"credsStore\\":\\"ecr-login\\"}" > /kaniko/.docker/config.json')
 
-    if dockerhub_user_env_var and dockerhub_login_env_var:
+    if registry_user_env_var and registry_login_env_var:
         job.prepend_scripts(
             'mkdir -p /kaniko/.docker && echo "{\\"auths\\":{\\"https://index.docker.io/v1/\\":{\\"username\\":\\"$' +
-            dockerhub_user_env_var + '\\",\\"password\\":\\"$' + dockerhub_login_env_var + '\\"}}}" > /kaniko/.docker/config.json'
+            registry_user_env_var + '\\",\\"password\\":\\"$' + registry_login_env_var + '\\"}}}" > /kaniko/.docker/config.json'
         )
 
     job.append_scripts(" ".join(executor_cmd))

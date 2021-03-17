@@ -4,7 +4,7 @@ execute-kaniko:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint:
-    - sh
+    - ''
   stage: execute
   script:
   - mkdir -p /kaniko/.docker && echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_LOGIN\"}}}"
