@@ -1,6 +1,6 @@
 from gcip import Pipeline
 from tests import conftest
-from gcip.addons.docker import jobs as docker
+from gcip.addons.container.jobs import docker
 
 
 def test_default_docker_jobs(gitlab_ci_environment_variables):
