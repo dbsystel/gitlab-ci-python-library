@@ -5,14 +5,18 @@ from gcip.addons.python import jobs as python
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
 
+# gitlabci-local only works with 'sh' as kaniko entrypoint
+kaniko_image = None
+if not PredefinedVariables.CI:
+    kaniko_image = Image("gcr.io/kaniko-project/executor:debug", entrypoint=["sh"])
+
 pipeline.add_children(
     python.isort(),
     python.flake8(),
     python.pytest(),
     python.bdist_wheel(),
     kaniko.execute(
-        # gitlabci-local only works with sh as entrypoint
-        gitlab_executor_image=Image("gcr.io/kaniko-project/executor:debug", entrypoint=["sh"]),
+        gitlab_executor_image=kaniko_image,
         image_name="thomass/gcip",
         enable_push=(PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main"),
         registry_user_env_var="DOCKER_USER",
