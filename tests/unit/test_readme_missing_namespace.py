@@ -1,16 +1,16 @@
 import pytest
 
-import gcip
+from gcip import Job, Pipeline, JobNameConflictError
 
 
-def job_for(environment: str) -> gcip.Job:
-    return gcip.Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
+def job_for(environment: str) -> Job:
+    return Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
 
 
 def test():
-    pipeline = gcip.Pipeline()
+    pipeline = Pipeline()
     for env in ["development", "test"]:
         pipeline.add_children(job_for(env))
 
-    with pytest.raises(ValueError, match="NAMING CONFLICT: Two jobs have the same name"):
+    with pytest.raises(JobNameConflictError):
         pipeline.render()
