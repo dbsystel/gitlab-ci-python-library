@@ -26,9 +26,12 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import Any, Dict, List, Union, Optional
+<pre><code class="python">from __future__ import annotations
+
+from typing import Any, Dict, List, Union, Optional
 
 from . import OrderedSetType
+from .job import Job
 from .include import Include
 from .service import Service
 from .sequence import Sequence
@@ -40,6 +43,24 @@ __credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
 __license__ = &#39;Apache-2.0&#39;
 __maintainer__ = &#39;Thomas Steinbach&#39;
 __email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+
+
+class JobNameConflictError(Exception):
+    &#34;&#34;&#34;This exception is used by the `Pipeline` when two rendered jobs have the same name.
+
+    When two or more jobs have the same name within a pipeline means that one job will overwrite
+    all other jobs. This is absolutely nonsense and could (nearly?) never be the intention of
+    the user so he must be informed about that exception.
+
+    Attributes:
+        job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
+    &#34;&#34;&#34;
+    def __init__(self, job: Job):
+        super().__init__(
+            f&#34;Two jobs have the same name &#39;{job.name}&#39; when rendering the pipeline.&#34;
+            &#34;\nPlease fix this by providing a different name and/or namespace when adding those jobs to&#34;
+            &#34; their sequences/pipeline.&#34;
+        )
 
 
 class Pipeline(Sequence):
@@ -69,7 +90,7 @@ class Pipeline(Sequence):
             raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
-    def add_services(self, *services: Union[str, Service]):
+    def add_services(self, *services: Union[str, Service]) -&gt; Pipeline:
         &#34;&#34;&#34;Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
 
         Args:
@@ -102,11 +123,15 @@ class Pipeline(Sequence):
 
         pipeline[&#34;stages&#34;] = list(stages.keys())
         for job in job_copies:
+            if job.name in pipeline:
+                raise JobNameConflictError(job)
+
             pipeline[job.name] = job.render()
         return pipeline
 
-    def add_include(self, include: Include) -&gt; None:
+    def add_include(self, include: Include) -&gt; Pipeline:
         self._includes.append(include)
+        return self
 
     def dump_yaml(self) -&gt; None:
         import yaml
@@ -127,12 +152,54 @@ class Pipeline(Sequence):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="gcip.core.pipeline.Pipeline"><code class="flex name class">
-<span>class <span class="ident">Pipeline</span></span>
-<span>(</span><span>*, includes: Union[<a title="gcip.core.include.Include" href="include.html#gcip.core.include.Include">Include</a>, List[<a title="gcip.core.include.Include" href="include.html#gcip.core.include.Include">Include</a>], NoneType] = None)</span>
+<dt id="gcip.core.pipeline.JobNameConflictError"><code class="flex name class">
+<span>class <span class="ident">JobNameConflictError</span></span>
+<span>(</span><span>job: Job)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Pipeline class creates an empty Gitlab pipeline.</p>
+<div class="desc"><p>This exception is used by the <code><a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></code> when two rendered jobs have the same name.</p>
+<p>When two or more jobs have the same name within a pipeline means that one job will overwrite
+all other jobs. This is absolutely nonsense and could (nearly?) never be the intention of
+the user so he must be informed about that exception.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>job</code></strong> :&ensp;<code>Job</code></dt>
+<dd>The <code>Job</code> whose name equals to another job already added to the rendered pipeline.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JobNameConflictError(Exception):
+    &#34;&#34;&#34;This exception is used by the `Pipeline` when two rendered jobs have the same name.
+
+    When two or more jobs have the same name within a pipeline means that one job will overwrite
+    all other jobs. This is absolutely nonsense and could (nearly?) never be the intention of
+    the user so he must be informed about that exception.
+
+    Attributes:
+        job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
+    &#34;&#34;&#34;
+    def __init__(self, job: Job):
+        super().__init__(
+            f&#34;Two jobs have the same name &#39;{job.name}&#39; when rendering the pipeline.&#34;
+            &#34;\nPlease fix this by providing a different name and/or namespace when adding those jobs to&#34;
+            &#34; their sequences/pipeline.&#34;
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="gcip.core.pipeline.Pipeline"><code class="flex name class">
+<span>class <span class="ident">Pipeline</span></span>
+<span>(</span><span>*, includes: Optional[Union[Include, List[Include]]] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A Sequence collects multiple <code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code>s and/or other <code>Sequence</code>s into a group.</p>
+<p>Pipeline class creates an empty Gitlab pipeline.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>includes</code></strong> :&ensp;<code>Optional[Union[Include, List[Include]]]</code></dt>
@@ -177,7 +244,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
             raise ValueError(&#34;Parameter include must of type gcip.Include or List[gcip.Include]&#34;)
         super().__init__()
 
-    def add_services(self, *services: Union[str, Service]):
+    def add_services(self, *services: Union[str, Service]) -&gt; Pipeline:
         &#34;&#34;&#34;Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
 
         Args:
@@ -210,11 +277,15 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 
         pipeline[&#34;stages&#34;] = list(stages.keys())
         for job in job_copies:
+            if job.name in pipeline:
+                raise JobNameConflictError(job)
+
             pipeline[job.name] = job.render()
         return pipeline
 
-    def add_include(self, include: Include) -&gt; None:
+    def add_include(self, include: Include) -&gt; Pipeline:
         self._includes.append(include)
+        return self
 
     def dump_yaml(self) -&gt; None:
         import yaml
@@ -232,7 +303,7 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <h3>Methods</h3>
 <dl>
 <dt id="gcip.core.pipeline.Pipeline.add_include"><code class="name flex">
-<span>def <span class="ident">add_include</span></span>(<span>self, include: <a title="gcip.core.include.Include" href="include.html#gcip.core.include.Include">Include</a>) ‑> NoneType</span>
+<span>def <span class="ident">add_include</span></span>(<span>self, include: Include) ‑> <a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -240,12 +311,13 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_include(self, include: Include) -&gt; None:
-    self._includes.append(include)</code></pre>
+<pre><code class="python">def add_include(self, include: Include) -&gt; Pipeline:
+    self._includes.append(include)
+    return self</code></pre>
 </details>
 </dd>
 <dt id="gcip.core.pipeline.Pipeline.add_services"><code class="name flex">
-<span>def <span class="ident">add_services</span></span>(<span>self, *services: Union[str, <a title="gcip.core.service.Service" href="service.html#gcip.core.service.Service">Service</a>])</span>
+<span>def <span class="ident">add_services</span></span>(<span>self, *services: Union[str, Service]) ‑> <a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add one or more <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#services">services</a> to the pipeline.</p>
@@ -261,7 +333,7 @@ Use objects of the <code><a title="gcip.core.service.Service" href="service.html
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_services(self, *services: Union[str, Service]):
+<pre><code class="python">def add_services(self, *services: Union[str, Service]) -&gt; Pipeline:
     &#34;&#34;&#34;Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
 
     Args:
@@ -318,6 +390,9 @@ Use objects of the <code><a title="gcip.core.service.Service" href="service.html
 
     pipeline[&#34;stages&#34;] = list(stages.keys())
     for job in job_copies:
+        if job.name in pipeline:
+            raise JobNameConflictError(job)
+
         pipeline[job.name] = job.render()
     return pipeline</code></pre>
 </details>
@@ -373,6 +448,9 @@ Use objects of the <code><a title="gcip.core.service.Service" href="service.html
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="gcip.core.pipeline.JobNameConflictError" href="#gcip.core.pipeline.JobNameConflictError">JobNameConflictError</a></code></h4>
+</li>
 <li>
 <h4><code><a title="gcip.core.pipeline.Pipeline" href="#gcip.core.pipeline.Pipeline">Pipeline</a></code></h4>
 <ul class="">

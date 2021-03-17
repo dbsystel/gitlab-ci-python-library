@@ -157,7 +157,7 @@ class CacheKey():
         return self._prefix
 
     def render(self) -&gt; Union[str, Dict[str, Union[List[str], str]]]:
-        &#34;&#34;&#34;Renders the class as string or dict.
+        &#34;&#34;&#34;Return a representation of this cache key object as string or dictionary with static values.
 
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
@@ -259,13 +259,13 @@ class Cache():
         return self._policy
 
     def render(self) -&gt; Dict[str, Any]:
-        &#34;&#34;&#34;Renders the class as string or dict.
+        &#34;&#34;&#34;Return a representation of this Cache object as dictionary with static values.
 
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Returns:
-            Dict[str, Any]: Configuration of a GitLab cache.
+            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
         rendered = {
@@ -409,13 +409,13 @@ Defaults to None (unset).</dd>
         return self._policy
 
     def render(self) -&gt; Dict[str, Any]:
-        &#34;&#34;&#34;Renders the class as string or dict.
+        &#34;&#34;&#34;Return a representation of this Cache object as dictionary with static values.
 
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Returns:
-            Dict[str, Any]: Configuration of a GitLab cache.
+            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
         rendered = {
@@ -505,26 +505,26 @@ def when(self) -&gt; Optional[WhenStatement]:
 <span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[str, Any]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Renders the class as string or dict.</p>
+<div class="desc"><p>Return a representation of this Cache object as dictionary with static values.</p>
 <p>The rendered representation is used by the gcip to dump it
 in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Dict[str, Any]</code></dt>
-<dd>Configuration of a GitLab cache.</dd>
+<dd>A dictionary prepresenting the cache object in Gitlab CI.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; Dict[str, Any]:
-    &#34;&#34;&#34;Renders the class as string or dict.
+    &#34;&#34;&#34;Return a representation of this Cache object as dictionary with static values.
 
     The rendered representation is used by the gcip to dump it
     in YAML format as part of the .gitlab-ci.yml pipeline.
 
     Returns:
-        Dict[str, Any]: Configuration of a GitLab cache.
+        Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
     &#34;&#34;&#34;
     rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
     rendered = {
@@ -639,7 +639,7 @@ subsequent pipeline runs. Mutually exclusive with <code>keys</code>. Defaults to
         return self._prefix
 
     def render(self) -&gt; Union[str, Dict[str, Union[List[str], str]]]:
-        &#34;&#34;&#34;Renders the class as string or dict.
+        &#34;&#34;&#34;Return a representation of this cache key object as string or dictionary with static values.
 
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
@@ -706,7 +706,7 @@ def prefix(self) -&gt; Optional[str]:
 <span>def <span class="ident">render</span></span>(<span>self) ‑> Union[str, Dict[str, Union[List[str], str]]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Renders the class as string or dict.</p>
+<div class="desc"><p>Return a representation of this cache key object as string or dictionary with static values.</p>
 <p>The rendered representation is used by the gcip to dump it
 in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 <h2 id="returns">Returns</h2>
@@ -719,7 +719,7 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; Union[str, Dict[str, Union[List[str], str]]]:
-    &#34;&#34;&#34;Renders the class as string or dict.
+    &#34;&#34;&#34;Return a representation of this cache key object as string or dictionary with static values.
 
     The rendered representation is used by the gcip to dump it
     in YAML format as part of the .gitlab-ci.yml pipeline.

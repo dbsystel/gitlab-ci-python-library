@@ -469,10 +469,20 @@ class Job():
         return instance_names
 
     def copy(self) -&gt; Job:
-        &#34;&#34;&#34;Returns a independent, deep copy object of this job.&#34;&#34;&#34;
+        &#34;&#34;&#34;Returns an independent, deep copy object of this job.
+
+        Returns:
+            `Job`: A copy of this job which, when modified, has no effects on this source job.
+        &#34;&#34;&#34;
         return self._copy_into(Job(name=&#34;&lt;set in _copy_into()&#34;, script=copy.deepcopy(self._scripts)))
 
     def _copy_into(self, job: Job) -&gt; Job:
+        &#34;&#34;&#34;Utility method to create a independent copy of a `Job`.
+
+        Because the __init__() method of `Job` is doing some blackbox operations, we cannot simply
+        create a Job copy with the construtor. This method helps to copy attribute by attribute
+        to an empty Job object. The attributes are deep copys itself.
+        &#34;&#34;&#34;
         job._original = self
         job._name = self._name
         job._stage = self._stage
@@ -489,6 +499,14 @@ class Job():
         return job
 
     def render(self) -&gt; Dict[str, Any]:
+        &#34;&#34;&#34;Return a representation of this Job object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Return:
+            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
+        &#34;&#34;&#34;
         from .sequence import \
             Sequence  # late import to avoid circular dependencies
 
@@ -552,11 +570,45 @@ class Job():
 
 
 class TriggerStrategy(Enum):
-    &#34;&#34;&#34;Class with static values for ``TriggerStrategy`` used together with :class:`gcip.core.job.TriggerJob`. To construct an object.&#34;&#34;&#34;
+    &#34;&#34;&#34;This class represents the [trigger:strategy](https://docs.gitlab.com/ee/ci/yaml/README.html#linking-pipelines-with-triggerstrategy)
+    keyword.&#34;&#34;&#34;
+
     DEPEND = &#34;depend&#34;
+    &#34;&#34;&#34;Use this strategy to force the `TriggerJob` to wait for the downstream (multi-project or child) pipeline to complete.&#34;&#34;&#34;
 
 
 class TriggerJob(Job):
+    &#34;&#34;&#34;This class represents the [trigger](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger) job.
+
+    Jobs with trigger can only use a [limited set of keywords](https://docs.gitlab.com/ee/ci/multi_project_pipelines.html#limitations).
+    For example, you can’t run commands with `script`.
+
+    Simple example:
+
+    ```python
+    trigger_job = TriggerJob(
+        namespace=&#34;trigger-other-job&#34;,
+        project=&#34;myteam/other-project&#34;,
+        branch=&#34;main&#34;,
+        strategy=TriggerStrategy.DEPEND,
+    )
+    trigger_job.append_rules(rules.on_tags().never(), rules.on_main())
+    ```
+
+    Args:
+        project (Optional[str]): The full name of another Gitlab project to trigger (multi-project pipeline trigger)
+            Mutually exclusive with `includes`. Defaults to None.
+        branch (Optional[str]): The branch of `project` the pipeline should be triggered of. Defaults to None.
+        includes (Optional[List[Include]]): Include a pipeline to trigger (Parent-child pipeline trigger)
+            Mutually exclusiv with `project`. Defaults to None.
+        strategy (Optional[TriggerStrategy]): Determines if the result of this pipeline depends on the triggered downstream pipeline
+            (use `TriggerStrategy.DEPEND`) or if just &#34;fire and forget&#34; the downstream pipeline (use `None`). Defaults to None.
+
+    Raises:
+        ValueError: If both `project` and `includes` are given.
+        ValueError: When the limit of three child pipelines is exceeded. See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html
+            for more information.
+    &#34;&#34;&#34;
     def __init__(
         self,
         *args: Any,
@@ -568,24 +620,6 @@ class TriggerJob(Job):
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -&gt; None:
-        &#34;&#34;&#34;
-        Class to create a Gitlab CI Trigger.
-
-        You can create either a &#34;Parent-child&#34; or a &#34;Multi-project&#34; pipeline trigger.
-
-
-        Args:
-            project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
-                e.g &#39;team1/project1&#39;. Defaults to None.
-            branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
-            strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
-                If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
-
-        Raises:
-            ValueError: If ``project`` and ``includes`` is given at the same time.
-            ValueError: There is a Gitlab CI limitation, in &#34;Parent-child&#34; pipelines it is only allowed to add max. three includes.
-        &#34;&#34;&#34;
 
         if includes and project:
             raise ValueError((&#34;You cannot specify &#39;include&#39; and &#39;project&#39; together. Either &#39;include&#39; or &#39;project&#39; is possible.&#34;))
@@ -950,10 +984,20 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         return instance_names
 
     def copy(self) -&gt; Job:
-        &#34;&#34;&#34;Returns a independent, deep copy object of this job.&#34;&#34;&#34;
+        &#34;&#34;&#34;Returns an independent, deep copy object of this job.
+
+        Returns:
+            `Job`: A copy of this job which, when modified, has no effects on this source job.
+        &#34;&#34;&#34;
         return self._copy_into(Job(name=&#34;&lt;set in _copy_into()&#34;, script=copy.deepcopy(self._scripts)))
 
     def _copy_into(self, job: Job) -&gt; Job:
+        &#34;&#34;&#34;Utility method to create a independent copy of a `Job`.
+
+        Because the __init__() method of `Job` is doing some blackbox operations, we cannot simply
+        create a Job copy with the construtor. This method helps to copy attribute by attribute
+        to an empty Job object. The attributes are deep copys itself.
+        &#34;&#34;&#34;
         job._original = self
         job._name = self._name
         job._stage = self._stage
@@ -970,6 +1014,14 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         return job
 
     def render(self) -&gt; Dict[str, Any]:
+        &#34;&#34;&#34;Return a representation of this Job object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Return:
+            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
+        &#34;&#34;&#34;
         from .sequence import \
             Sequence  # late import to avoid circular dependencies
 
@@ -1249,13 +1301,19 @@ to the job.</p>
 <span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a independent, deep copy object of this job.</p></div>
+<div class="desc"><p>Returns an independent, deep copy object of this job.</p>
+<h2 id="returns">Returns</h2>
+<p><code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code>: A copy of this job which, when modified, has no effects on this source job.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def copy(self) -&gt; Job:
-    &#34;&#34;&#34;Returns a independent, deep copy object of this job.&#34;&#34;&#34;
+    &#34;&#34;&#34;Returns an independent, deep copy object of this job.
+
+    Returns:
+        `Job`: A copy of this job which, when modified, has no effects on this source job.
+    &#34;&#34;&#34;
     return self._copy_into(Job(name=&#34;&lt;set in _copy_into()&#34;, script=copy.deepcopy(self._scripts)))</code></pre>
 </details>
 </dd>
@@ -1317,12 +1375,24 @@ to the job.</p>
 <span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[str, Any]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return a representation of this Job object as dictionary with static values.</p>
+<p>The rendered representation is used by the gcip to dump it
+in YAML format as part of the .gitlab-ci.yml pipeline.</p>
+<h2 id="return">Return</h2>
+<p>Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; Dict[str, Any]:
+    &#34;&#34;&#34;Return a representation of this Job object as dictionary with static values.
+
+    The rendered representation is used by the gcip to dump it
+    in YAML format as part of the .gitlab-ci.yml pipeline.
+
+    Return:
+        Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
+    &#34;&#34;&#34;
     from .sequence import \
         Sequence  # late import to avoid circular dependencies
 
@@ -1468,46 +1538,76 @@ If you want to set the entrypoint, you have to provide an Image object instead.<
 <span>(</span><span>*args: Any, name: Optional[str] = None, namespace: Optional[str] = None, project: Optional[str] = None, branch: Optional[str] = None, includes: Union[Include, List[Include], None] = None, strategy: Optional[<a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a>] = None, **kwargs: Mapping[Any, Any])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This class represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords">Job</a></p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>script</code></strong> :&ensp;<code>Union[AnyStr, List[str]]</code></dt>
-<dd>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#script">script(s)</a> to be executed.</dd>
-<dt><strong><code>name</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>The name of the job. In opposite to <code>namespace</code> only the name is set and not the stage of the job.
-If <code>name</code> is set, than the jobs stage has no value, which defaults to the 'test' stage.
-Either <code>name</code> or <code>namespace</code> must be set. Defaults to <code>None</code>.</dd>
-<dt><strong><code>namespace</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>The name and stage of the job. In opposite to <code>name</code> also the jobs stage will be setup with this value.
-Either <code>name</code> or <code>namespace</code> must be set. Defaults to <code>None</code>.</dd>
-</dl>
-<p>Class to create a Gitlab CI Trigger.</p>
-<p>You can create either a "Parent-child" or a "Multi-project" pipeline trigger.</p>
+<div class="desc"><p>This class represents the <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#trigger">trigger</a> job.</p>
+<p>Jobs with trigger can only use a <a href="https://docs.gitlab.com/ee/ci/multi_project_pipelines.html#limitations">limited set of keywords</a>.
+For example, you can’t run commands with <code>script</code>.</p>
+<p>Simple example:</p>
+<pre><code class="language-python">trigger_job = TriggerJob(
+    namespace=&quot;trigger-other-job&quot;,
+    project=&quot;myteam/other-project&quot;,
+    branch=&quot;main&quot;,
+    strategy=TriggerStrategy.DEPEND,
+)
+trigger_job.append_rules(rules.on_tags().never(), rules.on_main())
+</code></pre>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>project</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Used to create Multi-project pipeline trigger, exclusive to <code>includes</code> given Gitlab project name.
-e.g 'team1/project1'. Defaults to None.</dd>
+<dd>The full name of another Gitlab project to trigger (multi-project pipeline trigger)
+Mutually exclusive with <code>includes</code>. Defaults to None.</dd>
 <dt><strong><code>branch</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>If <code>project</code> is given, you can specify which branch of <code>project</code> to trigger. Defaults to None.</dd>
+<dd>The branch of <code>project</code> the pipeline should be triggered of. Defaults to None.</dd>
 <dt><strong><code>includes</code></strong> :&ensp;<code>Optional[List[Include]]</code></dt>
-<dd>Used to create Parent-child pipeline trigger, exclusiv to <code>project</code>. Defaults to None.</dd>
+<dd>Include a pipeline to trigger (Parent-child pipeline trigger)
+Mutually exclusiv with <code>project</code>. Defaults to None.</dd>
 <dt><strong><code>strategy</code></strong> :&ensp;<code>Optional[<a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a>]</code></dt>
-<dd>Strategy of how the job behaves from the upstream pipeline.
-If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core.job.TriggerStrategy.DEPEND">TriggerStrategy.DEPEND</a></code>, any triggered job failed this job failed as well. Defaults to None.</dd>
+<dd>Determines if the result of this pipeline depends on the triggered downstream pipeline
+(use <code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core.job.TriggerStrategy.DEPEND">TriggerStrategy.DEPEND</a></code>) or if just "fire and forget" the downstream pipeline (use <code>None</code>). Defaults to None.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>ValueError</code></dt>
-<dd>If <code>project</code> and <code>includes</code> is given at the same time.</dd>
+<dd>If both <code>project</code> and <code>includes</code> are given.</dd>
 <dt><code>ValueError</code></dt>
-<dd>There is a Gitlab CI limitation, in "Parent-child" pipelines it is only allowed to add max. three includes.</dd>
+<dd>When the limit of three child pipelines is exceeded. See <a href="https://docs.gitlab.com/ee/ci/parent_child_pipelines.html">https://docs.gitlab.com/ee/ci/parent_child_pipelines.html</a>
+for more information.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TriggerJob(Job):
+    &#34;&#34;&#34;This class represents the [trigger](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger) job.
+
+    Jobs with trigger can only use a [limited set of keywords](https://docs.gitlab.com/ee/ci/multi_project_pipelines.html#limitations).
+    For example, you can’t run commands with `script`.
+
+    Simple example:
+
+    ```python
+    trigger_job = TriggerJob(
+        namespace=&#34;trigger-other-job&#34;,
+        project=&#34;myteam/other-project&#34;,
+        branch=&#34;main&#34;,
+        strategy=TriggerStrategy.DEPEND,
+    )
+    trigger_job.append_rules(rules.on_tags().never(), rules.on_main())
+    ```
+
+    Args:
+        project (Optional[str]): The full name of another Gitlab project to trigger (multi-project pipeline trigger)
+            Mutually exclusive with `includes`. Defaults to None.
+        branch (Optional[str]): The branch of `project` the pipeline should be triggered of. Defaults to None.
+        includes (Optional[List[Include]]): Include a pipeline to trigger (Parent-child pipeline trigger)
+            Mutually exclusiv with `project`. Defaults to None.
+        strategy (Optional[TriggerStrategy]): Determines if the result of this pipeline depends on the triggered downstream pipeline
+            (use `TriggerStrategy.DEPEND`) or if just &#34;fire and forget&#34; the downstream pipeline (use `None`). Defaults to None.
+
+    Raises:
+        ValueError: If both `project` and `includes` are given.
+        ValueError: When the limit of three child pipelines is exceeded. See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html
+            for more information.
+    &#34;&#34;&#34;
     def __init__(
         self,
         *args: Any,
@@ -1519,24 +1619,6 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
         strategy: Optional[TriggerStrategy] = None,
         **kwargs: Mapping[Any, Any],
     ) -&gt; None:
-        &#34;&#34;&#34;
-        Class to create a Gitlab CI Trigger.
-
-        You can create either a &#34;Parent-child&#34; or a &#34;Multi-project&#34; pipeline trigger.
-
-
-        Args:
-            project (Optional[str]): Used to create Multi-project pipeline trigger, exclusive to ``includes`` given Gitlab project name.
-                e.g &#39;team1/project1&#39;. Defaults to None.
-            branch (Optional[str]): If ``project`` is given, you can specify which branch of ``project`` to trigger. Defaults to None.
-            includes (Optional[List[Include]]): Used to create Parent-child pipeline trigger, exclusiv to ``project``. Defaults to None.
-            strategy (Optional[TriggerStrategy]): Strategy of how the job behaves from the upstream pipeline.
-                If :class:`TriggerStrategy.DEPEND`, any triggered job failed this job failed as well. Defaults to None.
-
-        Raises:
-            ValueError: If ``project`` and ``includes`` is given at the same time.
-            ValueError: There is a Gitlab CI limitation, in &#34;Parent-child&#34; pipelines it is only allowed to add max. three includes.
-        &#34;&#34;&#34;
 
         if includes and project:
             raise ValueError((&#34;You cannot specify &#39;include&#39; and &#39;project&#39; together. Either &#39;include&#39; or &#39;project&#39; is possible.&#34;))
@@ -1623,63 +1705,6 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 <ul class="hlist">
 <li><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></li>
 </ul>
-<h3>Methods</h3>
-<dl>
-<dt id="gcip.core.job.TriggerJob.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[Any, Any]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def render(self) -&gt; Dict[Any, Any]:
-    rendered_job = super().render()
-
-    # remove unsupported keywords from TriggerJob
-    rendered_job.pop(&#34;script&#34;)
-
-    if &#34;image&#34; in rendered_job:
-        rendered_job.pop(&#34;image&#34;)
-
-    if &#34;tags&#34; in rendered_job:
-        rendered_job.pop(&#34;tags&#34;)
-
-    if &#34;artifacts&#34; in rendered_job:
-        rendered_job.pop(&#34;artifacts&#34;)
-
-    if &#34;cache&#34; in rendered_job:
-        rendered_job.pop(&#34;cache&#34;)
-
-    trigger: Dict[str, Union[str, List[Dict[str, str]]]] = {}
-
-    # Child pipelines
-    if self._includes:
-        trigger.update({
-            &#34;include&#34;: [include.render() for include in self._includes],
-        })
-
-    # Multiproject pipelines
-    if self._project:
-        trigger.update({
-            &#34;project&#34;: self._project,
-        })
-        if self._branch:
-            trigger.update({&#34;branch&#34;: self._branch})
-
-    if self._strategy:
-        trigger.update({&#34;strategy&#34;: self._strategy.value})
-
-    rendered_job = {
-        &#34;trigger&#34;: trigger,
-        **rendered_job
-    }
-
-    return rendered_job</code></pre>
-</details>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></b></code>:
@@ -1694,6 +1719,7 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 <li><code><a title="gcip.core.job.Job.name" href="#gcip.core.job.Job.name">name</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_rules" href="#gcip.core.job.Job.prepend_rules">prepend_rules</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_scripts" href="#gcip.core.job.Job.prepend_scripts">prepend_scripts</a></code></li>
+<li><code><a title="gcip.core.job.Job.render" href="#gcip.core.job.Job.render">render</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_cache" href="#gcip.core.job.Job.set_cache">set_cache</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_image" href="#gcip.core.job.Job.set_image">set_image</a></code></li>
 <li><code><a title="gcip.core.job.Job.stage" href="#gcip.core.job.Job.stage">stage</a></code></li>
@@ -1706,14 +1732,18 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Class with static values for <code><a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a></code> used together with :class:<code><a title="gcip.core.job.TriggerJob" href="#gcip.core.job.TriggerJob">TriggerJob</a></code>. To construct an object.</p></div>
+<div class="desc"><p>This class represents the <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#linking-pipelines-with-triggerstrategy">trigger:strategy</a>
+keyword.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TriggerStrategy(Enum):
-    &#34;&#34;&#34;Class with static values for ``TriggerStrategy`` used together with :class:`gcip.core.job.TriggerJob`. To construct an object.&#34;&#34;&#34;
-    DEPEND = &#34;depend&#34;</code></pre>
+    &#34;&#34;&#34;This class represents the [trigger:strategy](https://docs.gitlab.com/ee/ci/yaml/README.html#linking-pipelines-with-triggerstrategy)
+    keyword.&#34;&#34;&#34;
+
+    DEPEND = &#34;depend&#34;
+    &#34;&#34;&#34;Use this strategy to force the `TriggerJob` to wait for the downstream (multi-project or child) pipeline to complete.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1723,7 +1753,7 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 <dl>
 <dt id="gcip.core.job.TriggerStrategy.DEPEND"><code class="name">var <span class="ident">DEPEND</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Use this strategy to force the <code><a title="gcip.core.job.TriggerJob" href="#gcip.core.job.TriggerJob">TriggerJob</a></code> to wait for the downstream (multi-project or child) pipeline to complete.</p></div>
 </dd>
 </dl>
 </dd>
@@ -1764,9 +1794,6 @@ If :class:<code><a title="gcip.core.job.TriggerStrategy.DEPEND" href="#gcip.core
 </li>
 <li>
 <h4><code><a title="gcip.core.job.TriggerJob" href="#gcip.core.job.TriggerJob">TriggerJob</a></code></h4>
-<ul class="">
-<li><code><a title="gcip.core.job.TriggerJob.render" href="#gcip.core.job.TriggerJob.render">render</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a></code></h4>

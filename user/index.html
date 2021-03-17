@@ -512,14 +512,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Your Gitlab project needs these two files:</p>
 </div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>MyProject
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>MyProject
 ├ .gitlab-ci.py
-└ .gitlab-ci.yml</p>
+└ .gitlab-ci.yml</code></pre>
 </div>
-</blockquote>
 </div>
 <div class="paragraph">
 <p>The  <code>.gitlab-ci.yml</code> is the file you already know. It&#8217;s only task is to
@@ -884,60 +882,46 @@ job2:
 <h2 id="_namespaces_allow_reuse_of_jobs_and_sequences">Namespaces allow reuse of jobs and sequences</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Assume you want to reuse a parameterized job. Following <a href="./tests/unit/test_readme_missing_namespace.py">Input</a> is an <strong>incorrect</strong> example:</p>
+<p>Assume you want to reuse a parameterized job. Following code shows an <strong>incorrect</strong> example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">import gcip
-from tests import conftest
+<pre class="highlight"><code class="language-python" data-lang="python">import pytest
+
+from gcip import Job, Pipeline, JobNameConflictError
 
 
-def job_for(environment: str) -&gt; gcip.Job:
-    return gcip.Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
+def job_for(environment: str) -&gt; Job:
+    return Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
 
 
 def test():
-    pipeline = gcip.Pipeline()
+    pipeline = Pipeline()
     for env in ["development", "test"]:
         pipeline.add_children(job_for(env))
 
-    conftest.check(pipeline.render())</code></pre>
+    with pytest.raises(JobNameConflictError):
+        pipeline.render()</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The output is obviously <strong>wrong</strong> as we expect two jobs but just get one:</p>
+<p>Rendering this pipeline leads to an error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
-- do_something
-do-something:
-  stage: do_something
-  script:
-  - ./do-something-on.sh test</code></pre>
+<pre class="highlight"><code>JobNameConflictError: Two jobs have the same name 'do-something' when rendering the pipeline.
+Please fix this by providing a different name and/or namespace when adding those jobs to their sequences/pipeline.</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This is because both jobs were added with an identical name to the pipeline. The second job will
+<p>This is because both jobs were added with an identical name to the pipeline. The second job would
 overwrite the first one.</p>
 </div>
 <div class="paragraph">
-<p>When adding jobs or sequences to a sequence with</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>.add_jobs(...)</code></p>
-</li>
-<li>
-<p><code>.add_sequences(...)</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>both methods accept the <code>namespace</code> parameter, you should use to modify the name of the jobs added.
-The value of <code>namespaces</code> will be appended to the jobs <code>name</code> and <code>stage</code>. This only applies to
-the jobs (sequences) added but not to the jobs (and sequences) already contained in the sequence.</p>
+<p>When adding jobs or sequences to a sequence, the <code>.add_children()</code>  method accepts the <code>namespace</code> parameter,
+you should use to modify the name of the jobs added. The value of <code>namespaces</code> will be appended to the jobs
+<code>name</code> and <code>stage</code>. This only applies to the jobs (sequences) added but not to the jobs (and sequences) already
+contained in the sequence.</p>
 </div>
 <div class="sect2">
 <h3 id="_reuse_jobs">Reuse jobs</h3>
@@ -1371,7 +1355,16 @@ lint-flake8:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">Unresolved directive in index.adoc - include::../../tests/unit/test_readme_assets_sequences.py[]</code></pre>
+<pre class="highlight"><code class="language-python" data-lang="python">import gcip
+from tests import conftest
+from gcip.addons.cdk import sequences as cdk
+
+
+def test():
+    pipeline = gcip.Pipeline()
+    pipeline.add_children(cdk.diff_deploy("my-cdk-stack", toolkit_stack_name="cdk-toolkit"))
+
+    conftest.check(pipeline.render())</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1379,7 +1372,25 @@ lint-flake8:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">Unresolved directive in index.adoc - include::../../tests/unit/comparison_files/test_readme_assets_sequences_test.yml[]</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
+- diff
+- deploy
+diff-cdk:
+  stage: diff
+  script:
+  - cdk synth my-cdk-stack
+  - cdk diff my-cdk-stack
+deploy-cdk:
+  needs:
+  - job: diff-cdk
+    artifacts: true
+  stage: deploy
+  script:
+  - pip3 install gcip
+  - python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names
+    'my-cdk-stack'
+  - cdk deploy --strict --require-approval 'never' --toolkit-stack-name cdk-toolkit
+    my-cdk-stack</code></pre>
 </div>
 </div>
 </div>
@@ -1705,7 +1716,7 @@ trigger-subpipe:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-17 13:08:10 UTC
+Last updated 2021-03-17 13:24:43 UTC
 </div>
 </div>
 </body>
