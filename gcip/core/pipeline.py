@@ -76,6 +76,13 @@ class Pipeline(Sequence):
 
         pipeline["stages"] = list(stages.keys())
         for job in job_copies:
+            if job.name in pipeline:
+                raise ValueError(
+                    f"NAMING CONFLICT: Two jobs have the same name '{job.name}' when rendering the pipeline."
+                    "\nPlease fix this by providing a different name and/or namespace when adding those jobs to"
+                    " their sequences/pipeline."
+                )
+
             pipeline[job.name] = job.render()
         return pipeline
 
