@@ -1,4 +1,4 @@
-from gcip import Pipeline, PredefinedVariables, Image
+from gcip import Image, Pipeline, PredefinedVariables
 from gcip.addons.kaniko import jobs as kaniko
 from gcip.addons.python import jobs as python
 
@@ -15,8 +15,8 @@ pipeline.add_children(
         gitlab_executor_image=Image("gcr.io/kaniko-project/executor:debug", entrypoint=["sh"]),
         image_name="thomass/gcip",
         enable_push=(PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main"),
-        dockerhub_user_env_var="DOCKER_USER",
-        dockerhub_login_env_var="DOCKER_LOGIN",
+        registry_user_env_var="DOCKER_USER",
+        registry_login_env_var="DOCKER_LOGIN",
     ),
 )
 

@@ -10,8 +10,8 @@ def test_default_kaniko_job(gitlab_ci_environment_variables):
         kaniko.execute(
             image_name="thomass/gcip",
             enable_push=(PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main"),
-            dockerhub_user_env_var="DOCKER_USER",
-            dockerhub_login_env_var="DOCKER_LOGIN",
+            registry_user_env_var="DOCKER_USER",
+            registry_login_env_var="DOCKER_LOGIN",
         ),
     )
 
