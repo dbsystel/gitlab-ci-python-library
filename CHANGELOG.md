@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added gitlab_ci_environmnet_variables fixture to tests.
 * The gcip is now able to detect if two or more jobs would have the same name in the rendered pipeline
   and raises an ValueError to prevent undesirable pipeline behavior.
+* Added new addon to check container optimization with `dive`
 
 ### Changed
 
