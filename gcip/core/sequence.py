@@ -30,11 +30,40 @@ class ChildDict(TypedDict):
     """This data structure is supposed to store one child of a `Sequence` with all required information about that child."""
 
     child: Union[Job, Sequence]
+    """The child to store - a `gcip.core.job.Job` or `Sequence`."""
     namespace: Optional[str]
+    """The namespace with whom the `child` was added to the `Sequence`."""
     name: Optional[str]
+    """The name with whom the `child` was added to the `Sequence`."""
 
 
 class Sequence():
+    """A Sequence collects multiple `gcip.core.job.Job`s and/or other `Sequence`s into a group.
+
+    This concept is no official representation of a Gitlab CI keyword. But it is such a powerful
+    extension of the Gitlab CI core funtionality and an essential building block of the gcip, that
+    it is conained in the `gcip.core` module.
+
+    A Sequence offers a mostly similar interface like `gcip.core.job.Job`s that allows to modify
+    all Jobs and child Sequences contained into that parent Sequence. For example: Instad of calling
+    `add_tag()` on a dozens of Jobs you can call `add_tag()` on the sequence that contain those Jobs.
+    The tag will then be applied to all Jobs in that Sequence and recursively to all Jobs within child
+    Sequenes of that Sequence.
+
+    Sequences must be added to a `gcip.core.pipeline.Pipeline`, either directly or as part of other Sequences.
+    That means Sequences are not meant to be a throw away configuration container for a bunch ob Jobs.
+    This is because adding a Job to a Sequence creates a copy of that Job, which will be inderectly added to
+    the `Pipeline` by that Sequence. Not adding that Sequence to a Pipeline means also not adding its Jobs
+    to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs, they will be broken.
+
+    As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
+    you should set `name` and/or `namespace` when adding the job (or child sequence). The sequence will add
+    the `name` / `namespace` to the ones of the Job, when rendering the pipeline. If you do not set those
+    identifiers, or you set equal name/namespaces for jobs and sequences, you provoke having two or more
+    jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
+    pipeline behavior. You can read more information in the chapter "Namespaces allow reuse of jobs
+    and sequences" of the user documantation.
+    """
     def __init__(self) -> None:
         super().__init__()
         self._children: List[ChildDict] = list()
