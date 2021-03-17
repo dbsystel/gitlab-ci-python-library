@@ -13,7 +13,7 @@ from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
 
 
-def _validate_float_for_scan(validate: float) -> bool:
+def _is_float_between_zero_and_one(validate: float) -> bool:
     """
     Helper function to validate given arguments type and range.
 
@@ -86,11 +86,11 @@ def scan(
 
     dive_command: List[str] = ["dive", f"{source}://{image_path}/{image_name}", "--ci"]
 
-    if highest_user_wasted_percent and _validate_float_for_scan(highest_user_wasted_percent):
+    if highest_user_wasted_percent and _is_float_between_zero_and_one(highest_user_wasted_percent):
         dive_command.append(f'--highestUserWastedPercent "{highest_user_wasted_percent}"')
-    if highest_wasted_bytes and _validate_float_for_scan(highest_wasted_bytes):
+    if highest_wasted_bytes and _is_float_between_zero_and_one(highest_wasted_bytes):
         dive_command.append(f'--highestWastedBytes "{highest_wasted_bytes}"')
-    if lowest_efficiency and _validate_float_for_scan(lowest_efficiency):
+    if lowest_efficiency and _is_float_between_zero_and_one(lowest_efficiency):
         dive_command.append(f'--lowestEfficiency "{lowest_efficiency}"')
     if ignore_errors:
         dive_command.append("--ignore-errors")
