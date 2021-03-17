@@ -41,6 +41,26 @@ from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
 
 
+def _validate_float_for_scan(validate: float) -&gt; bool:
+    &#34;&#34;&#34;
+    Helper function to validate given arguments type and range.
+
+    If `validate` is not of type float or not between 0.0 and 1.0 function returns `False`.
+            Otherwise function returns `True`
+    Args:
+        validate (float): Argument to validate.
+
+    Returns:
+        bool:
+    &#34;&#34;&#34;
+
+    if not isinstance(validate, float):
+        raise TypeError(&#34;Argument is not of type float.&#34;)
+    if not 0 &lt;= validate &lt;= 1:
+        raise ValueError(&#34;Argument is not between 0.0 and 1.0.&#34;)
+    return True
+
+
 def scan(
     *,
     dive_image: Optional[Image] = None,
@@ -53,7 +73,7 @@ def scan(
     source: str = &#34;docker-archive&#34;,
 ) -&gt; Job:
     &#34;&#34;&#34;
-    Scan your images with wagoodman/dive.
+    Scan your images with [wagoodman/dive](https://github.com/wagoodman/dive).
 
     `dive` will scan your container image layers and will output the efficency of each layer.
     You can see which layer and which file is consuming the most storage and optimize the layers if possible.
@@ -80,7 +100,7 @@ def scan(
         Job: gcip.Job returned which will scan your image(s).
     &#34;&#34;&#34;
     if not dive_image:
-        dive_image = Image(name=&#34;wagoodman/dive:v0.10.0&#34;)
+        dive_image = Image(name=&#34;wagoodman/dive:latest&#34;)
     if not image_path:
         image_path = &#34;/&#34; + PredefinedVariables.CI_PROJECT_PATH
     if image_path and image_path.endswith(&#34;/&#34;):
@@ -94,11 +114,11 @@ def scan(
 
     dive_command: List[str] = [&#34;dive&#34;, f&#34;{source}://{image_path}/{image_name}&#34;, &#34;--ci&#34;]
 
-    if isinstance(highest_user_wasted_percent, float) and highest_user_wasted_percent &lt;= 1:
+    if highest_user_wasted_percent and _validate_float_for_scan(highest_user_wasted_percent):
         dive_command.append(f&#39;--highestUserWastedPercent &#34;{highest_user_wasted_percent}&#34;&#39;)
-    if isinstance(highest_wasted_bytes, float) and highest_wasted_bytes &lt;= 1:
+    if highest_wasted_bytes and _validate_float_for_scan(highest_wasted_bytes):
         dive_command.append(f&#39;--highestWastedBytes &#34;{highest_wasted_bytes}&#34;&#39;)
-    if isinstance(lowest_efficiency, float) and lowest_efficiency &lt;= 1:
+    if lowest_efficiency and _validate_float_for_scan(lowest_efficiency):
         dive_command.append(f&#39;--lowestEfficiency &#34;{lowest_efficiency}&#34;&#39;)
     if ignore_errors:
         dive_command.append(&#34;--ignore-errors&#34;)
@@ -119,7 +139,7 @@ def scan(
 <span>def <span class="ident">scan</span></span>(<span>*, dive_image: Optional[<a title="gcip.core.image.Image" href="../../../core/image.html#gcip.core.image.Image">Image</a>] = None, image_path: Optional[str] = None, image_name: Optional[str] = None, highest_user_wasted_percent: Optional[float] = None, highest_wasted_bytes: Optional[float] = None, lowest_efficiency: Optional[float] = None, ignore_errors: bool = False, source: str = 'docker-archive') ‑> <a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Scan your images with wagoodman/dive.</p>
+<div class="desc"><p>Scan your images with <a href="https://github.com/wagoodman/dive">wagoodman/dive</a>.</p>
 <p><code>dive</code> will scan your container image layers and will output the efficency of each layer.
 You can see which layer and which file is consuming the most storage and optimize the layers if possible.
 It prevents container images and its layers beeing polluted with files like apt or yum cache's.</p>
@@ -170,7 +190,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
     source: str = &#34;docker-archive&#34;,
 ) -&gt; Job:
     &#34;&#34;&#34;
-    Scan your images with wagoodman/dive.
+    Scan your images with [wagoodman/dive](https://github.com/wagoodman/dive).
 
     `dive` will scan your container image layers and will output the efficency of each layer.
     You can see which layer and which file is consuming the most storage and optimize the layers if possible.
@@ -197,7 +217,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
         Job: gcip.Job returned which will scan your image(s).
     &#34;&#34;&#34;
     if not dive_image:
-        dive_image = Image(name=&#34;wagoodman/dive:v0.10.0&#34;)
+        dive_image = Image(name=&#34;wagoodman/dive:latest&#34;)
     if not image_path:
         image_path = &#34;/&#34; + PredefinedVariables.CI_PROJECT_PATH
     if image_path and image_path.endswith(&#34;/&#34;):
@@ -211,11 +231,11 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
 
     dive_command: List[str] = [&#34;dive&#34;, f&#34;{source}://{image_path}/{image_name}&#34;, &#34;--ci&#34;]
 
-    if isinstance(highest_user_wasted_percent, float) and highest_user_wasted_percent &lt;= 1:
+    if highest_user_wasted_percent and _validate_float_for_scan(highest_user_wasted_percent):
         dive_command.append(f&#39;--highestUserWastedPercent &#34;{highest_user_wasted_percent}&#34;&#39;)
-    if isinstance(highest_wasted_bytes, float) and highest_wasted_bytes &lt;= 1:
+    if highest_wasted_bytes and _validate_float_for_scan(highest_wasted_bytes):
         dive_command.append(f&#39;--highestWastedBytes &#34;{highest_wasted_bytes}&#34;&#39;)
-    if isinstance(lowest_efficiency, float) and lowest_efficiency &lt;= 1:
+    if lowest_efficiency and _validate_float_for_scan(lowest_efficiency):
         dive_command.append(f&#39;--lowestEfficiency &#34;{lowest_efficiency}&#34;&#39;)
     if ignore_errors:
         dive_command.append(&#34;--ignore-errors&#34;)
