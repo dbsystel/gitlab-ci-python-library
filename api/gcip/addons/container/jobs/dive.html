@@ -41,7 +41,7 @@ from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
 
 
-def _validate_float_for_scan(validate: float) -&gt; bool:
+def _is_float_between_zero_and_one(validate: float) -&gt; bool:
     &#34;&#34;&#34;
     Helper function to validate given arguments type and range.
 
@@ -114,11 +114,11 @@ def scan(
 
     dive_command: List[str] = [&#34;dive&#34;, f&#34;{source}://{image_path}/{image_name}&#34;, &#34;--ci&#34;]
 
-    if highest_user_wasted_percent and _validate_float_for_scan(highest_user_wasted_percent):
+    if highest_user_wasted_percent and _is_float_between_zero_and_one(highest_user_wasted_percent):
         dive_command.append(f&#39;--highestUserWastedPercent &#34;{highest_user_wasted_percent}&#34;&#39;)
-    if highest_wasted_bytes and _validate_float_for_scan(highest_wasted_bytes):
+    if highest_wasted_bytes and _is_float_between_zero_and_one(highest_wasted_bytes):
         dive_command.append(f&#39;--highestWastedBytes &#34;{highest_wasted_bytes}&#34;&#39;)
-    if lowest_efficiency and _validate_float_for_scan(lowest_efficiency):
+    if lowest_efficiency and _is_float_between_zero_and_one(lowest_efficiency):
         dive_command.append(f&#39;--lowestEfficiency &#34;{lowest_efficiency}&#34;&#39;)
     if ignore_errors:
         dive_command.append(&#34;--ignore-errors&#34;)
@@ -231,11 +231,11 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
 
     dive_command: List[str] = [&#34;dive&#34;, f&#34;{source}://{image_path}/{image_name}&#34;, &#34;--ci&#34;]
 
-    if highest_user_wasted_percent and _validate_float_for_scan(highest_user_wasted_percent):
+    if highest_user_wasted_percent and _is_float_between_zero_and_one(highest_user_wasted_percent):
         dive_command.append(f&#39;--highestUserWastedPercent &#34;{highest_user_wasted_percent}&#34;&#39;)
-    if highest_wasted_bytes and _validate_float_for_scan(highest_wasted_bytes):
+    if highest_wasted_bytes and _is_float_between_zero_and_one(highest_wasted_bytes):
         dive_command.append(f&#39;--highestWastedBytes &#34;{highest_wasted_bytes}&#34;&#39;)
-    if lowest_efficiency and _validate_float_for_scan(lowest_efficiency):
+    if lowest_efficiency and _is_float_between_zero_and_one(lowest_efficiency):
         dive_command.append(f&#39;--lowestEfficiency &#34;{lowest_efficiency}&#34;&#39;)
     if ignore_errors:
         dive_command.append(&#34;--ignore-errors&#34;)
