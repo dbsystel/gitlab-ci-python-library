@@ -28,7 +28,9 @@
 </summary>
 <pre><code class="python">from typing import Dict, List, Union, Optional
 
-from gcip import Job, Image, PredefinedVariables
+from gcip.core.job import Job
+from gcip.core.image import Image
+from gcip.core.variables import PredefinedVariables
 
 __author__ = &#34;Daniel von Eßen&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
@@ -47,14 +49,14 @@ def execute(
     registries: List[str] = list(),
     tar_path: Optional[str] = None,
     build_args: Dict[str, str] = {},
-    build_target: str = None,
+    build_target: Optional[str] = None,
     dockerfile: Optional[str] = None,
     enable_push: bool = False,
     verbosity: Optional[str] = None,
     ecr_login: bool = False,
     registry_user_env_var: Optional[str] = None,
     registry_login_env_var: Optional[str] = None,
-):
+) -&gt; Job:
     &#34;&#34;&#34;
     Creates a job which builds container images.
 
@@ -198,7 +200,7 @@ def execute(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="gcip.addons.kaniko.jobs.execute"><code class="name flex">
-<span>def <span class="ident">execute</span></span>(<span>gitlab_executor_image: Union[<a title="gcip.core.image.Image" href="../../core/image.html#gcip.core.image.Image">Image</a>, str, NoneType] = None, context: Optional[str] = None, image_name: Optional[str] = None, image_tag: Optional[str] = None, registries: List[str] = [], tar_path: Optional[str] = None, build_args: Dict[str, str] = {}, build_target: str = None, dockerfile: Optional[str] = None, enable_push: bool = False, verbosity: Optional[str] = None, ecr_login: bool = False, registry_user_env_var: Optional[str] = None, registry_login_env_var: Optional[str] = None)</span>
+<span>def <span class="ident">execute</span></span>(<span>gitlab_executor_image: Union[<a title="gcip.core.image.Image" href="../../core/image.html#gcip.core.image.Image">Image</a>, str, NoneType] = None, context: Optional[str] = None, image_name: Optional[str] = None, image_tag: Optional[str] = None, registries: List[str] = [], tar_path: Optional[str] = None, build_args: Dict[str, str] = {}, build_target: Optional[str] = None, dockerfile: Optional[str] = None, enable_push: bool = False, verbosity: Optional[str] = None, ecr_login: bool = False, registry_user_env_var: Optional[str] = None, registry_login_env_var: Optional[str] = None) ‑> <a title="gcip.core.job.Job" href="../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a job which builds container images.</p>
@@ -268,14 +270,14 @@ Defaults to <code>None</code> which skips the login attempt.</dd>
     registries: List[str] = list(),
     tar_path: Optional[str] = None,
     build_args: Dict[str, str] = {},
-    build_target: str = None,
+    build_target: Optional[str] = None,
     dockerfile: Optional[str] = None,
     enable_push: bool = False,
     verbosity: Optional[str] = None,
     ecr_login: bool = False,
     registry_user_env_var: Optional[str] = None,
     registry_login_env_var: Optional[str] = None,
-):
+) -&gt; Job:
     &#34;&#34;&#34;
     Creates a job which builds container images.
 
