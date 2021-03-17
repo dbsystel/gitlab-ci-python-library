@@ -20,11 +20,11 @@ For the code documentation please proceed to the xref:./gcip/README.adoc[README.
 Your Gitlab project needs these two files:
 
 [source]
-____
+----
 MyProject
 ├ .gitlab-ci.py
 └ .gitlab-ci.yml
-____
+----
 
 The  `.gitlab-ci.yml` is the file you already know. It's only task is to
 render and trigger the child Pipeline created with the Gitlab CI Python Library.
@@ -193,31 +193,28 @@ include::../../tests/unit/comparison_files/test_readme_pipelines_are_sequences_t
 
 == Namespaces allow reuse of jobs and sequences
 
-Assume you want to reuse a parameterized job. Following link:./tests/unit/test_readme_missing_namespace.py[Input] is an *incorrect* example:
+Assume you want to reuse a parameterized job. Following code shows an *incorrect* example:
 
 [source,python]
 ----
 include::../../tests/unit/test_readme_missing_namespace.py[]
 ----
 
-The output is obviously *wrong* as we expect two jobs but just get one:
+Rendering this pipeline leads to an error:
 
-[source,yaml]
+[source]
 ----
-include::../../tests/unit/comparison_files/test_readme_missing_namespace_test.yml[]
+ValueError: NAMING CONFLICT: Two jobs have the same name 'do-something' when rendering the pipeline.
+Please fix this by providing a different name and/or namespace when adding those jobs to their sequences/pipeline.
 ----
 
-This is because both jobs were added with an identical name to the pipeline. The second job will
+This is because both jobs were added with an identical name to the pipeline. The second job would
 overwrite the first one.
 
-When adding jobs or sequences to a sequence with
-
-* `+.add_jobs(...)+`
-* `+.add_sequences(...)+`
-
-both methods accept the `namespace` parameter, you should use to modify the name of the jobs added.
-The value of `namespaces` will be appended to the jobs `name` and `stage`. This only applies to
-the jobs (sequences) added but not to the jobs (and sequences) already contained in the sequence.
+When adding jobs or sequences to a sequence, the `.add_children()`  method accepts the `namespace` parameter,
+you should use to modify the name of the jobs added. The value of `namespaces` will be appended to the jobs
+`name` and `stage`. This only applies to the jobs (sequences) added but not to the jobs (and sequences) already
+contained in the sequence.
 
 === Reuse jobs
 
@@ -355,6 +352,7 @@ As output we get two services updated in parallel but in consecutive stages.
 ----
 include::../../tests/unit/comparison_files/test_readme_mix_namespace_and_name_test.yml[]
 ----
+
 
 == Batteries included
 
