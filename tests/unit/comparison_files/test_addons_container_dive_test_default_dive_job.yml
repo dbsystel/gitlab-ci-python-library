@@ -1,0 +1,24 @@
+stages:
+- check_container_image
+check-container-image-default:
+  image:
+    name: wagoodman/dive:v0.10.0
+  stage: check_container_image
+  script:
+  - date
+  - dive docker-archive:///my/awsome/project/gitlab-ci-project.tar --ci
+check-container-image-custom-image-and-path:
+  image:
+    name: wagoodman/dive:v0.10.0
+  stage: check_container_image
+  script:
+  - date
+  - dive docker-archive:///absolute/path/image_name.tar --ci
+check-container-image-custom-settings:
+  image:
+    name: wagoodman/dive:v0.10.0
+  stage: check_container_image
+  script:
+  - date
+  - dive docker-archive:///my/awsome/project/gitlab-ci-project.tar --ci --highestUserWastedPercent
+    "0.1" --highestWastedBytes "0.2" --lowestEfficiency "0.3" --ignore-errors
