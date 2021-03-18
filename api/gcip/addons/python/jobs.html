@@ -30,7 +30,6 @@
 
 from gcip.lib import rules
 from gcip.core.job import Job
-from gcip.addons.container.images import PredefinedImages
 
 from . import job_scripts as scripts
 
@@ -131,7 +130,7 @@ def evaluate_git_tag_pep440_conformity() -&gt; Job:
         script=&#34;python3 -m gcip.tools.evaluate_git_tag_pep440_conformity&#34;,
     )
     job.append_rules(rules.on_tags())
-    job.set_image(PredefinedImages.GCIP)
+    job.set_image(&#34;thomass/gcip:0.3.0&#34;)
     return job
 
 
@@ -282,7 +281,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
         script=&#34;python3 -m gcip.tools.evaluate_git_tag_pep440_conformity&#34;,
     )
     job.append_rules(rules.on_tags())
-    job.set_image(PredefinedImages.GCIP)
+    job.set_image(&#34;thomass/gcip:0.3.0&#34;)
     return job</code></pre>
 </details>
 </dd>
