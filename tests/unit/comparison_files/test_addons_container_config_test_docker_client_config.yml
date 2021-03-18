@@ -1,0 +1,1 @@
+'{"auths": {"index.docker.com": {"username": "$REGISTRY_USERNAME", "password": "$REGISTRY_PASSWORD"}}}'
