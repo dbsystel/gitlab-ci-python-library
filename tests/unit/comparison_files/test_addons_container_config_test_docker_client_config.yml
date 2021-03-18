@@ -1,1 +1,3 @@
-'{"auths": {"index.docker.com": {"username": "$REGISTRY_USERNAME", "password": "$REGISTRY_PASSWORD"}}}'
+- mkdir -p $HOME/.docker/
+- 'echo "{\"auths\": {\"index.docker.com\": {\"username\": \"$REGISTRY_USERNAME\",
+  \"password\": \"$REGISTRY_PASSWORD\"}}}" > $HOME/.docker/config.json'
