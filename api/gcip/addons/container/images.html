@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>gcip.addons.container API documentation</title>
+<title>gcip.addons.container.images API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,40 +19,74 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>gcip.addons.container</code></h1>
+<h1 class="title">Module <code>gcip.addons.container.images</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">__author__ = &#34;Thomas Steinbach&#34;
-__copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
-__credits__ = [&#34;Thomas Steinbach&#34;]
-# SPDX-License-Identifier: Apache-2.0
-__license__ = &#39;Apache-2.0&#39;
-__maintainer__ = &#39;Daniel von Eßen&#39;
-__email__ = &#39;daniel.von-essen@deutschebahn.com&#39;</code></pre>
+<pre><code class="python">from gcip.core.image import Image
+
+
+class PredefinedImages():
+    &#34;&#34;&#34;
+    PredefinedImages provides container images objects that are widley used withing the `gcip`.
+    &#34;&#34;&#34;
+    KANIKO: Image = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;])
+    CRANE: Image = Image(&#34;gcr.io/go-containerregistry/crane:latest&#34;)
+    DIVE: Image = Image(&#34;wagoodman/dive:latest&#34;)
+    GCIP: Image = Image(&#34;thomass/gcip:0.3.0&#34;)</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="gcip.addons.container.images" href="images.html">gcip.addons.container.images</a></code></dt>
+<dt id="gcip.addons.container.images.PredefinedImages"><code class="flex name class">
+<span>class <span class="ident">PredefinedImages</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>PredefinedImages provides container images objects that are widley used withing the <code><a title="gcip" href="../../index.html">gcip</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PredefinedImages():
+    &#34;&#34;&#34;
+    PredefinedImages provides container images objects that are widley used withing the `gcip`.
+    &#34;&#34;&#34;
+    KANIKO: Image = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;])
+    CRANE: Image = Image(&#34;gcr.io/go-containerregistry/crane:latest&#34;)
+    DIVE: Image = Image(&#34;wagoodman/dive:latest&#34;)
+    GCIP: Image = Image(&#34;thomass/gcip:0.3.0&#34;)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="gcip.addons.container.images.PredefinedImages.CRANE"><code class="name">var <span class="ident">CRANE</span> : <a title="gcip.core.image.Image" href="../../core/image.html#gcip.core.image.Image">Image</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="gcip.addons.container.jobs" href="jobs/index.html">gcip.addons.container.jobs</a></code></dt>
+<dt id="gcip.addons.container.images.PredefinedImages.DIVE"><code class="name">var <span class="ident">DIVE</span> : <a title="gcip.core.image.Image" href="../../core/image.html#gcip.core.image.Image">Image</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="gcip.addons.container.images.PredefinedImages.GCIP"><code class="name">var <span class="ident">GCIP</span> : <a title="gcip.core.image.Image" href="../../core/image.html#gcip.core.image.Image">Image</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="gcip.addons.container.images.PredefinedImages.KANIKO"><code class="name">var <span class="ident">KANIKO</span> : <a title="gcip.core.image.Image" href="../../core/image.html#gcip.core.image.Image">Image</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -63,13 +97,20 @@ __email__ = &#39;daniel.von-essen@deutschebahn.com&#39;</code></pre>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="gcip.addons" href="../index.html">gcip.addons</a></code></li>
+<li><code><a title="gcip.addons.container" href="index.html">gcip.addons.container</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="gcip.addons.container.images" href="images.html">gcip.addons.container.images</a></code></li>
-<li><code><a title="gcip.addons.container.jobs" href="jobs/index.html">gcip.addons.container.jobs</a></code></li>
+<li>
+<h4><code><a title="gcip.addons.container.images.PredefinedImages" href="#gcip.addons.container.images.PredefinedImages">PredefinedImages</a></code></h4>
+<ul class="">
+<li><code><a title="gcip.addons.container.images.PredefinedImages.CRANE" href="#gcip.addons.container.images.PredefinedImages.CRANE">CRANE</a></code></li>
+<li><code><a title="gcip.addons.container.images.PredefinedImages.DIVE" href="#gcip.addons.container.images.PredefinedImages.DIVE">DIVE</a></code></li>
+<li><code><a title="gcip.addons.container.images.PredefinedImages.GCIP" href="#gcip.addons.container.images.PredefinedImages.GCIP">GCIP</a></code></li>
+<li><code><a title="gcip.addons.container.images.PredefinedImages.KANIKO" href="#gcip.addons.container.images.PredefinedImages.KANIKO">KANIKO</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
