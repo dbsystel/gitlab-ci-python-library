@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * The gcip is now able to detect if two or more jobs would have the same name in the rendered pipeline
   and raises an ValueError to prevent undesirable pipeline behavior.
 * Added new addon to check container optimization with `dive`
+* Added new class `PredefinedImages` in `gcip.addons.container`. Allows access to container images, that are widley used.
 
 ### Changed
 
