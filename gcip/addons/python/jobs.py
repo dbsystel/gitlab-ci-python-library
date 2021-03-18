@@ -2,6 +2,7 @@ from typing import Optional
 
 from gcip.lib import rules
 from gcip.core.job import Job
+from gcip.addons.container.images import PredefinedImages
 
 from . import job_scripts as scripts
 
@@ -102,7 +103,7 @@ def evaluate_git_tag_pep440_conformity() -> Job:
         script="python3 -m gcip.tools.evaluate_git_tag_pep440_conformity",
     )
     job.append_rules(rules.on_tags())
-    job.set_image("thomass/gcip:0.3.0")
+    job.set_image(PredefinedImages.GCIP)
     return job
 
 

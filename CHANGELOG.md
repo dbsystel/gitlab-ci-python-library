@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a dummy string is returned instead of raising a KeyError.
 * The `gcip.Pipeline` has now an `add_services()` method instead `add_service()` allowing to pass multiple
   services at once.
+* Now jobs with hardcoded images, now using PredefinedImages images instead.
+
 
 ## [0.5.0] - 2021-03-16
 

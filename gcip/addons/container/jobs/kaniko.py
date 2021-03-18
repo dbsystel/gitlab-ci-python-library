@@ -3,6 +3,7 @@ from typing import Dict, List, Union, Optional
 from gcip.core.job import Job
 from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
+from gcip.addons.container.images import PredefinedImages
 
 __author__ = "Daniel von Eßen"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -38,7 +39,7 @@ def execute(
 
     Args:
         gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. Defaults to ```Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""])```.
+            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
@@ -159,6 +160,6 @@ def execute(
     if gitlab_executor_image:
         job.set_image(gitlab_executor_image)
     else:
-        job.set_image(Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""]))
+        job.set_image(PredefinedImages.KANIKO)
 
     return job

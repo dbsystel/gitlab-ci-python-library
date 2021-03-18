@@ -11,6 +11,7 @@ from typing import List, Optional
 from gcip.core.job import Job
 from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
+from gcip.addons.container.images import PredefinedImages
 
 
 def _is_float_between_zero_and_one(validate: float) -> bool:
@@ -53,7 +54,7 @@ def scan(
 
     Args:
         dive_image (Image): Container Image used for this job. This image has to contain the `dive` command available.
-            Defaults to `wagoodman/dive:v0.10.0` image.
+            Defaults to `PredefinedImages.DIVE` image.
         image_path (Optional[str]): Path to the image can be either a remote container registry,
             as well as a local path to an image. Defaults to `PredefinedVariables.CI_PROJECT_PATH`.
         image_name (Optional[str]): Name of the container image to scan, if `source` is `docker-archive` argument gets prefix `.tar`.
@@ -72,7 +73,7 @@ def scan(
         Job: gcip.Job returned which will scan your image(s).
     """
     if not dive_image:
-        dive_image = Image(name="wagoodman/dive:latest")
+        dive_image = PredefinedImages.DIVE
     if not image_path:
         image_path = "/" + PredefinedVariables.CI_PROJECT_PATH
     if image_path and image_path.endswith("/"):
