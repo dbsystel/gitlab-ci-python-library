@@ -19,12 +19,21 @@ DockerConfig = Dict[str, Any]
 
 
 class DockerClientConfig():
-    def __init__(self) -> None:
+    def __init__(self, config_file_path: str = "$HOME/.docker/", config_file_name: str = "config.json") -> None:
         """
         Class which represents a docker client configuration.
 
-        The configuration is mostly found unde $HOME/.docker/config.json.
+        After creating an instance of this class you can add new credential helper or
+        basic authentication settings. Or set a default credential store.
+        The constructor has a limited feature set. If you change either `config_file_path` or `config_file_name`,
+        you should consider using `docker --config` to specify the path to the configuration file.
+
+        Args:
+            config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
+            config_file_name (str): Docker client configuration filename. Defaults to config.json.
         """
+        self._config_file_path = config_file_path
+        self._config_file_name = config_file_name
         self.config: DockerConfig = {}
 
     def set_creds_store(self, creds_store: str) -> None:
@@ -112,11 +121,15 @@ class DockerClientConfig():
         """
         Renders the settings of the docker client config.
 
-        The render method uses `json.dumps()` to dump the configuration as a json string.
+        The render method uses `json.dumps()` to dump the configuration as a json string and escapes it for the shell.
         In Jobs which needed the configuration the renderd output should be redirected to the appropriate
         destinatino e.g. ~/.docker/config.json. This ensures, that environment variables are substituted.
 
         Returns:
             str: Docker client configuration as a JSON string.
         """
-        return json.dumps(self.config)
+        script = [
+            f"mkdir -p {self._config_file_path}",
+            "echo " + '"' + json.dumps(self.config).replace('"', '\\"') + '"' + f" > {self._config_file_path}{self._config_file_name}",
+        ]
+        return script
