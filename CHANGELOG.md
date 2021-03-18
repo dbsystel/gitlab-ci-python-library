@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and raises an ValueError to prevent undesirable pipeline behavior.
 * Added new addon to check container optimization with `dive`
 * Improved conftest.check() function. It tells the user how to create comparison files if the file not found exception.
+* Improved `conftest.check()` function. Now AssertionError is handled, the user will get receive how to update comparison files.
 
 ### Changed
 

@@ -24,9 +24,16 @@ def check(output: str) -> bool:
                 assert yaml_output == infile.read()
         except FileNotFoundError as exc:
             print(
-                "Comparison file not found."
-                "Use 'UPDATE_TEST_OUTPUT=true' to update the comparison files.\n"
-                f"Comparison file: {compare_file}"
+                "Comparison file not found.",
+                "Create it by executing:\n\n",
+                f"\tUPDATE_TEST_OUTPUT=true pytest {caller_file_path}",
+            )
+            raise exc
+        except AssertionError as exc:
+            print(
+                "If intentionally, you can update the comparions file:\n\n",
+                "\trm -rf test/unit/comparison_files/*; UPDATE_TEST_OUTPUT=true pytest\n\n",
+                "Always review the results carefully with 'git diff'!",
             )
             raise exc
 
