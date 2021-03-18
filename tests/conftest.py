@@ -19,8 +19,16 @@ def check(output: str) -> bool:
         with open(compare_file, "w") as outfile:
             outfile.write(yaml_output)
     else:
-        with open(compare_file, "r") as infile:
-            assert yaml_output == infile.read()
+        try:
+            with open(compare_file, "r") as infile:
+                assert yaml_output == infile.read()
+        except FileNotFoundError as exc:
+            print(
+                "Comparison file not found."
+                "Use 'UPDATE_TEST_OUTPUT=true' to update the comparison files.\n"
+                f"Comparison file: {compare_file}"
+            )
+            raise exc
 
 
 @pytest.fixture
