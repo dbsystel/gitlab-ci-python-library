@@ -13,7 +13,7 @@ cfg.render()
 This will render a Client configuration and dumps it as a json string.
 """
 import json
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 DockerConfig = Dict[str, Any]
 
@@ -117,7 +117,7 @@ class DockerClientConfig():
         """
         self.config.update(raw_input)
 
-    def render(self) -> str:
+    def get_shell_command(self) -> List[str]:
         """
         Renders the shell command for creating the docker client config.
 
@@ -126,7 +126,8 @@ class DockerClientConfig():
         destinatino e.g. ~/.docker/config.json. This ensures, that environment variables are substituted.
 
         Returns:
-            str: Docker client configuration as a JSON string.
+            list:  Returns a list with `mkdir -p config_file_path` and a shell escaped JSON string
+                echoed to `config_file_path`/`config_file_name`
         """
         script = [
             f"mkdir -p {self._config_file_path}",
