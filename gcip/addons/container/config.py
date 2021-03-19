@@ -74,7 +74,7 @@ class DockerClientConfig():
         else:
             self.config["credHelpers"].update(compose)
 
-    def add_auths(
+    def add_auth(
         self,
         registry: str,
         username_env_var: str = "REGISTRY_USERNAME",
@@ -119,7 +119,7 @@ class DockerClientConfig():
 
     def render(self) -> str:
         """
-        Renders the settings of the docker client config.
+        Renders the shell command for creating the docker client config.
 
         The render method uses `json.dumps()` to dump the configuration as a json string and escapes it for the shell.
         In Jobs which needed the configuration the renderd output should be redirected to the appropriate

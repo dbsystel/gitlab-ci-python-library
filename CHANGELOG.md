@@ -18,8 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved conftest.check() function. It tells the user how to create comparison files if the file not found exception.
 * Improved `conftest.check()` function. Now AssertionError is handled, the user will get receive how to update comparison files.
 * Added new class `PredefinedImages` in `gcip.addons.container`. Allows access to container images, that are widley used.
-
 * Added new `class` which handels docker client config and renders it to a json string.
+
 ### Changed
 
 * **BREAKING** Renamed all occurences of 'job\w*sequence' to 'sequence'. Mainly this renames
