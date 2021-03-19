@@ -154,7 +154,7 @@ class DockerClientConfig():
         &#34;&#34;&#34;
         self.config.update(raw_input)
 
-    def render(self) -&gt; str:
+    def get_shell_command(self) -&gt; str:
         &#34;&#34;&#34;
         Renders the shell command for creating the docker client config.
 
@@ -301,7 +301,7 @@ you should consider using <code>docker --config</code> to specify the path to th
         &#34;&#34;&#34;
         self.config.update(raw_input)
 
-    def render(self) -&gt; str:
+    def get_shell_command(self) -&gt; str:
         &#34;&#34;&#34;
         Renders the shell command for creating the docker client config.
 
@@ -438,8 +438,8 @@ have to set a configuration setting.</p>
     self.config.update(raw_input)</code></pre>
 </details>
 </dd>
-<dt id="gcip.addons.container.config.DockerClientConfig.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self) ‑> str</span>
+<dt id="gcip.addons.container.config.DockerClientConfig.get_shell_command"><code class="name flex">
+<span>def <span class="ident">get_shell_command</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Renders the shell command for creating the docker client config.</p>
@@ -455,7 +455,7 @@ destinatino e.g. ~/.docker/config.json. This ensures, that environment variables
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def render(self) -&gt; str:
+<pre><code class="python">def get_shell_command(self) -&gt; str:
     &#34;&#34;&#34;
     Renders the shell command for creating the docker client config.
 
@@ -543,7 +543,7 @@ For example <code>osxkeychain</code>, to use docker-credential-osxkeychain or
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.add_auth" href="#gcip.addons.container.config.DockerClientConfig.add_auth">add_auth</a></code></li>
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.add_cred_helper" href="#gcip.addons.container.config.DockerClientConfig.add_cred_helper">add_cred_helper</a></code></li>
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.add_raw" href="#gcip.addons.container.config.DockerClientConfig.add_raw">add_raw</a></code></li>
-<li><code><a title="gcip.addons.container.config.DockerClientConfig.render" href="#gcip.addons.container.config.DockerClientConfig.render">render</a></code></li>
+<li><code><a title="gcip.addons.container.config.DockerClientConfig.get_shell_command" href="#gcip.addons.container.config.DockerClientConfig.get_shell_command">get_shell_command</a></code></li>
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.set_creds_store" href="#gcip.addons.container.config.DockerClientConfig.set_creds_store">set_creds_store</a></code></li>
 </ul>
 </li>
