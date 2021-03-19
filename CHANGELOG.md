@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Improved `conftest.check()` function. Now AssertionError is handled, the user will get receive how to update comparison files.
 * Added new class `PredefinedImages` in `gcip.addons.container`. Allows access to container images, that are widley used.
 * Added new `class` which handels docker client config and renders it to a json string.
+* Added `gcip.addon.container.job.crane` to allow copying container images between registries.
 
 ### Changed
 
