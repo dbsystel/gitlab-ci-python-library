@@ -50,7 +50,7 @@ cfg.render()
 This will render a Client configuration and dumps it as a json string.
 &#34;&#34;&#34;
 import json
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 DockerConfig = Dict[str, Any]
 
@@ -154,7 +154,7 @@ class DockerClientConfig():
         &#34;&#34;&#34;
         self.config.update(raw_input)
 
-    def get_shell_command(self) -&gt; str:
+    def get_shell_command(self) -&gt; List[str]:
         &#34;&#34;&#34;
         Renders the shell command for creating the docker client config.
 
@@ -163,7 +163,8 @@ class DockerClientConfig():
         destinatino e.g. ~/.docker/config.json. This ensures, that environment variables are substituted.
 
         Returns:
-            str: Docker client configuration as a JSON string.
+            list:  Returns a list with `mkdir -p config_file_path` and a shell escaped JSON string
+                echoed to `config_file_path`/`config_file_name`
         &#34;&#34;&#34;
         script = [
             f&#34;mkdir -p {self._config_file_path}&#34;,
@@ -301,7 +302,7 @@ you should consider using <code>docker --config</code> to specify the path to th
         &#34;&#34;&#34;
         self.config.update(raw_input)
 
-    def get_shell_command(self) -&gt; str:
+    def get_shell_command(self) -&gt; List[str]:
         &#34;&#34;&#34;
         Renders the shell command for creating the docker client config.
 
@@ -310,7 +311,8 @@ you should consider using <code>docker --config</code> to specify the path to th
         destinatino e.g. ~/.docker/config.json. This ensures, that environment variables are substituted.
 
         Returns:
-            str: Docker client configuration as a JSON string.
+            list:  Returns a list with `mkdir -p config_file_path` and a shell escaped JSON string
+                echoed to `config_file_path`/`config_file_name`
         &#34;&#34;&#34;
         script = [
             f&#34;mkdir -p {self._config_file_path}&#34;,
@@ -439,7 +441,7 @@ have to set a configuration setting.</p>
 </details>
 </dd>
 <dt id="gcip.addons.container.config.DockerClientConfig.get_shell_command"><code class="name flex">
-<span>def <span class="ident">get_shell_command</span></span>(<span>self) ‑> str</span>
+<span>def <span class="ident">get_shell_command</span></span>(<span>self) ‑> List[str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Renders the shell command for creating the docker client config.</p>
@@ -448,14 +450,15 @@ In Jobs which needed the configuration the renderd output should be redirected t
 destinatino e.g. ~/.docker/config.json. This ensures, that environment variables are substituted.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>str</code></dt>
-<dd>Docker client configuration as a JSON string.</dd>
+<dt><code>list</code></dt>
+<dd>Returns a list with <code>mkdir -p config_file_path</code> and a shell escaped JSON string
+echoed to <code>config_file_path</code>/<code>config_file_name</code></dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_shell_command(self) -&gt; str:
+<pre><code class="python">def get_shell_command(self) -&gt; List[str]:
     &#34;&#34;&#34;
     Renders the shell command for creating the docker client config.
 
@@ -464,7 +467,8 @@ destinatino e.g. ~/.docker/config.json. This ensures, that environment variables
     destinatino e.g. ~/.docker/config.json. This ensures, that environment variables are substituted.
 
     Returns:
-        str: Docker client configuration as a JSON string.
+        list:  Returns a list with `mkdir -p config_file_path` and a shell escaped JSON string
+            echoed to `config_file_path`/`config_file_name`
     &#34;&#34;&#34;
     script = [
         f&#34;mkdir -p {self._config_file_path}&#34;,
