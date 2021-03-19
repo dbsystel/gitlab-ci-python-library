@@ -1,0 +1,18 @@
+stages:
+- push_container_image
+push-container-image-default:
+  image:
+    name: gcr.io/go-containerregistry/crane:latest
+  stage: push_container_image
+  script:
+  - date
+  - crane validate --remote index.docker.io/alpine:3
+  - crane copy index.docker.io/alpine:3 index.docker.io/user/alpine:3
+push-container-image-custom-image:
+  image:
+    name: index.docker.io/user/crane:latest
+  stage: push_container_image
+  script:
+  - date
+  - crane validate --remote quay.io/wagoodman/dive:0.10.0
+  - crane copy quay.io/wagoodman/dive:0.10.0 index.docker.io/user/dive:latest
