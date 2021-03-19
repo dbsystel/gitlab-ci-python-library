@@ -39,6 +39,7 @@ from typing import List, Optional
 from gcip.core.job import Job
 from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
+from gcip.addons.container.images import PredefinedImages
 
 
 def _is_float_between_zero_and_one(validate: float) -&gt; bool:
@@ -81,7 +82,7 @@ def scan(
 
     Args:
         dive_image (Image): Container Image used for this job. This image has to contain the `dive` command available.
-            Defaults to `wagoodman/dive:v0.10.0` image.
+            Defaults to `PredefinedImages.DIVE` image.
         image_path (Optional[str]): Path to the image can be either a remote container registry,
             as well as a local path to an image. Defaults to `PredefinedVariables.CI_PROJECT_PATH`.
         image_name (Optional[str]): Name of the container image to scan, if `source` is `docker-archive` argument gets prefix `.tar`.
@@ -100,7 +101,7 @@ def scan(
         Job: gcip.Job returned which will scan your image(s).
     &#34;&#34;&#34;
     if not dive_image:
-        dive_image = Image(name=&#34;wagoodman/dive:latest&#34;)
+        dive_image = PredefinedImages.DIVE
     if not image_path:
         image_path = &#34;/&#34; + PredefinedVariables.CI_PROJECT_PATH
     if image_path and image_path.endswith(&#34;/&#34;):
@@ -147,7 +148,7 @@ It prevents container images and its layers beeing polluted with files like apt 
 <dl>
 <dt><strong><code>dive_image</code></strong> :&ensp;<code>Image</code></dt>
 <dd>Container Image used for this job. This image has to contain the <code>dive</code> command available.
-Defaults to <code>wagoodman/dive:v0.10.0</code> image.</dd>
+Defaults to <code>PredefinedImages.DIVE</code> image.</dd>
 <dt><strong><code>image_path</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Path to the image can be either a remote container registry,
 as well as a local path to an image. Defaults to <code>PredefinedVariables.CI_PROJECT_PATH</code>.</dd>
@@ -198,7 +199,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
 
     Args:
         dive_image (Image): Container Image used for this job. This image has to contain the `dive` command available.
-            Defaults to `wagoodman/dive:v0.10.0` image.
+            Defaults to `PredefinedImages.DIVE` image.
         image_path (Optional[str]): Path to the image can be either a remote container registry,
             as well as a local path to an image. Defaults to `PredefinedVariables.CI_PROJECT_PATH`.
         image_name (Optional[str]): Name of the container image to scan, if `source` is `docker-archive` argument gets prefix `.tar`.
@@ -217,7 +218,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
         Job: gcip.Job returned which will scan your image(s).
     &#34;&#34;&#34;
     if not dive_image:
-        dive_image = Image(name=&#34;wagoodman/dive:latest&#34;)
+        dive_image = PredefinedImages.DIVE
     if not image_path:
         image_path = &#34;/&#34; + PredefinedVariables.CI_PROJECT_PATH
     if image_path and image_path.endswith(&#34;/&#34;):

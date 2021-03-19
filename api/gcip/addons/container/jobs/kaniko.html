@@ -31,6 +31,7 @@
 from gcip.core.job import Job
 from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
+from gcip.addons.container.images import PredefinedImages
 
 __author__ = &#34;Daniel von Eßen&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
@@ -66,7 +67,7 @@ def execute(
 
     Args:
         gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. Defaults to ```Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;])```.
+            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
@@ -187,7 +188,7 @@ def execute(
     if gitlab_executor_image:
         job.set_image(gitlab_executor_image)
     else:
-        job.set_image(Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;]))
+        job.set_image(PredefinedImages.KANIKO)
 
     return job</code></pre>
 </details>
@@ -211,7 +212,7 @@ e.g If the branch which gets pushed to the remote is named
 <dl>
 <dt><strong><code>gitlab_executor_image</code></strong> :&ensp;<code>Optional[Union[Image, str]]</code></dt>
 <dd>The Gitlab executor image this <code><a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></code> should run with.
-Must contain the kaniko <code>executor</code> binary. Defaults to <code>Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""])</code>.</dd>
+Must contain the kaniko <code>executor</code> binary. Defaults to <code>PredefinedImages.KANIKO</code>.</dd>
 <dt><strong><code>context</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
 <dd>Context which will be send to kaniko. Defaults to <code>None</code> which implies the local
 directory is the context.</dd>
@@ -287,7 +288,7 @@ Defaults to <code>None</code> which skips the login attempt.</dd>
 
     Args:
         gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. Defaults to ```Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;])```.
+            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
@@ -408,7 +409,7 @@ Defaults to <code>None</code> which skips the login attempt.</dd>
     if gitlab_executor_image:
         job.set_image(gitlab_executor_image)
     else:
-        job.set_image(Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;]))
+        job.set_image(PredefinedImages.KANIKO)
 
     return job</code></pre>
 </details>
