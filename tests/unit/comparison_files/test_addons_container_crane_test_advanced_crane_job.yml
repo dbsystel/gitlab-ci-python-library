@@ -9,6 +9,5 @@ push-container-image-with-authentication:
   - 'echo "{\"auths\": {\"index.docker.io\": {\"username\": \"$REGISTRY_USERNAME\",
     \"password\": \"$REGISTRY_PASSWORD\"}}, \"credHelpers\": {\"0132456789.dkr.eu-central-1.amazonaws.com\":
     \"ecr-login\"}}" > $HOME/.docker/config.json'
-  - date
   - crane validate --remote index.docker.io/alpine:3
   - crane copy index.docker.io/alpine:3 0132456789.dkr.eu-central-1.amazonaws.com/namespace/alpine:3
