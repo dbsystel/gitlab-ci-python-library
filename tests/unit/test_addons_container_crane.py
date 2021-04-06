@@ -5,7 +5,7 @@ from gcip.addons.container.jobs import crane
 from gcip.addons.container.config import DockerClientConfig
 
 
-def test_default_crane_job():
+def test_simple_crane_copy_job():
     pipeline = Pipeline()
 
     pipeline.add_children(
@@ -23,7 +23,7 @@ def test_default_crane_job():
     conftest.check(pipeline.render())
 
 
-def test_advanced_crane_job():
+def test_advanced_crane_copy_job():
     dcc = DockerClientConfig()
     dcc.add_auth(registry="index.docker.io")
     dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", "ecr-login")
