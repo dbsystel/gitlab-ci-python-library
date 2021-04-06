@@ -36,7 +36,6 @@ def copy(
 
     job = Job(
         script=[
-            "date",
             f"crane validate --remote {src}",
             f"crane copy {src} {dst}",
         ],
