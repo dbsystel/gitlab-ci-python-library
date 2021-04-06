@@ -1,0 +1,9 @@
+stages:
+- push_container_image
+push-container-image-push-image:
+  image:
+    name: gcr.io/go-containerregistry/crane:latest
+  stage: push_container_image
+  script:
+  - crane validate --tarball /path/to/project/gitlab-ci-project.tar
+  - crane push /path/to/project/gitlab-ci-project.tar index.docker.io
