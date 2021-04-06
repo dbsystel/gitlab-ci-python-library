@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added new class `PredefinedImages` in `gcip.addons.container`. Allows access to container images, that are widley used.
 * Added new `class` which handels docker client config and renders it to a json string.
 * Added `gcip.addon.container.job.crane` to allow copying container images between registries.
+* Added `push` Job function to `gcip.addon.container.job.crane` to allow pushing local tarballs to remote registries.
 
 ### Changed
 

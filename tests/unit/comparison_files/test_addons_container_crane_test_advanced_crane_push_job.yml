@@ -1,0 +1,13 @@
+stages:
+- push_container_image
+push-container-image-push-image:
+  image:
+    name: crane_image:v1.1.2
+  stage: push_container_image
+  script:
+  - mkdir -p $HOME/.docker/
+  - 'echo "{\"auths\": {\"index.docker.io\": {\"username\": \"$REGISTRY_USERNAME\",
+    \"password\": \"$REGISTRY_PASSWORD\"}}, \"credHelpers\": {\"0132456789.dkr.eu-central-1.amazonaws.com\":
+    \"ecr-login\"}}" > $HOME/.docker/config.json'
+  - crane validate --tarball /path/to/project/crane.tar
+  - crane push /path/to/project/crane.tar index.docker.io
