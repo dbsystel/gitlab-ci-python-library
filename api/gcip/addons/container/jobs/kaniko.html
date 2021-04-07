@@ -37,9 +37,9 @@ __author__ = &#34;Daniel von Eßen&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Daniel von Eßen&#34;, &#34;Thomas Steinbach&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#34;Apache-2.0&#34;
-__maintainer__ = &#34;Thomas Steinbach&#34;
-__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
+__license__ = &#39;Apache-2.0&#39;
+__maintainer__ = &#39;Thomas Steinbach&#39;
+__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
 def execute(
@@ -178,11 +178,8 @@ def execute(
 
     if registry_user_env_var and registry_login_env_var:
         job.prepend_scripts(
-            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;username\\&#34;:\\&#34;$&#39;
-            + registry_user_env_var
-            + &#39;\\&#34;,\\&#34;password\\&#34;:\\&#34;$&#39;
-            + registry_login_env_var
-            + &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
+            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;username\\&#34;:\\&#34;$&#39; +
+            registry_user_env_var + &#39;\\&#34;,\\&#34;password\\&#34;:\\&#34;$&#39; + registry_login_env_var + &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
         )
 
     job.append_scripts(&#34; &#34;.join(executor_cmd))
@@ -402,11 +399,8 @@ Defaults to <code>None</code> which skips the login attempt.</dd>
 
     if registry_user_env_var and registry_login_env_var:
         job.prepend_scripts(
-            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;username\\&#34;:\\&#34;$&#39;
-            + registry_user_env_var
-            + &#39;\\&#34;,\\&#34;password\\&#34;:\\&#34;$&#39;
-            + registry_login_env_var
-            + &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
+            &#39;mkdir -p /kaniko/.docker &amp;&amp; echo &#34;{\\&#34;auths\\&#34;:{\\&#34;https://index.docker.io/v1/\\&#34;:{\\&#34;username\\&#34;:\\&#34;$&#39; +
+            registry_user_env_var + &#39;\\&#34;,\\&#34;password\\&#34;:\\&#34;$&#39; + registry_login_env_var + &#39;\\&#34;}}}&#34; &gt; /kaniko/.docker/config.json&#39;
         )
 
     job.append_scripts(&#34; &#34;.join(executor_cmd))
