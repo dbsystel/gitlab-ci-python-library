@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+* `PredefinedVariables` return in all cases a proxy object, which calls `os.environ` or `os.getenv` as late as possible.
+  This helps when overriding (monkeypatching) variables in pytestes.
+
 ## [0.6.0] - 2021-04-06
 
 ### Added

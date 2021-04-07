@@ -1,12 +1,13 @@
 import os
 import inspect
 import pathlib
+from typing import Any, Dict
 
 import yaml
 import pytest
 
 
-def check(output: str) -> bool:
+def check(output: Dict[str, Any]) -> None:
     yaml_output = yaml.safe_dump(output, default_flow_style=False, sort_keys=False)
     # inspired by https://stackoverflow.com/a/60297932
     caller_file_path, caller_file_name = os.path.split(os.path.abspath(inspect.stack()[1].filename))
@@ -54,4 +55,5 @@ def gitlab_ci_environment_variables(monkeypatch):
     monkeypatch.setenv("CI_PROJECT_NAME", "gitlab-ci-project")
     monkeypatch.setenv("CI_PROJECT_PATH", "my/awsome/project")
     monkeypatch.setenv("CI_COMMIT_REF_SLUG", "my-awsome-feature-branch")
+    monkeypatch.setenv("CI_COMMIT_TAG", "11.22.33")
     monkeypatch.setenv("CI_PROJECT_DIR", "/path/to/project")

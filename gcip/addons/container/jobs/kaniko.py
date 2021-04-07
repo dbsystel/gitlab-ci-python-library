@@ -9,9 +9,9 @@ __author__ = "Daniel von Eßen"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Daniel von Eßen", "Thomas Steinbach"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 def execute(
@@ -150,8 +150,11 @@ def execute(
 
     if registry_user_env_var and registry_login_env_var:
         job.prepend_scripts(
-            'mkdir -p /kaniko/.docker && echo "{\\"auths\\":{\\"https://index.docker.io/v1/\\":{\\"username\\":\\"$' +
-            registry_user_env_var + '\\",\\"password\\":\\"$' + registry_login_env_var + '\\"}}}" > /kaniko/.docker/config.json'
+            'mkdir -p /kaniko/.docker && echo "{\\"auths\\":{\\"https://index.docker.io/v1/\\":{\\"username\\":\\"$'
+            + registry_user_env_var
+            + '\\",\\"password\\":\\"$'
+            + registry_login_env_var
+            + '\\"}}}" > /kaniko/.docker/config.json'
         )
 
     job.append_scripts(" ".join(executor_cmd))

@@ -5,7 +5,7 @@ from typing import Any, Optional
 # In Python >= 3.9 it is also possible to use @classmethods and @property
 # together, so that there are no parantheses necessarry.
 # See https://stackoverflow.com/questions/128573/using-property-on-classmethods´
-class EnvProxy():
+class EnvProxy:
     """This proxy delays the operating system query for environment variables until the value is requested.
 
     This proxy is designed for requesting predefined environment variables that must
@@ -39,6 +39,7 @@ class EnvProxy():
     Args:
         key (str): The name of the environment variable that should be queried on request.
     """
+
     def __init__(self, key: str) -> None:
         self._key = key
 
@@ -57,7 +58,30 @@ class EnvProxy():
         return "notRunningInAPipeline"
 
 
-class PredefinedVariables():
+class OptionalEnvProxy:
+    """This class represents an optional environment variable.
+
+    It returns `os.getenv(<key>)` on the key given in the `__init__()` method.
+
+    The class can be used in every expression where the `Optional[str]` of `os.getenv()` is expected:
+
+    ```
+    myvar = OptionalEnvProxy("MY_ENVIRONMENT_VARIABLE")
+    ```
+
+    The purpose of this class is to delay the execution of `os.getenv()`. In the upper example `myvar` is
+    only set to this `OptionalEnvProxy` object. The value itself is retrieved with `os.getenv()` in the moment
+    when `myvar` is used.
+    """
+
+    def __init__(self, key: str) -> None:
+        self._key = key
+
+    def __get__(self, obj: Any, objtype: Any = None) -> Optional[str]:
+        return os.getenv(self._key)
+
+
+class PredefinedVariables:
     """
     Gitlab CI predefined variables.
     https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
@@ -211,7 +235,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_COMMIT_BRANCH: Optional[str] = os.getenv("CI_COMMIT_BRANCH")
+    CI_COMMIT_BRANCH: OptionalEnvProxy = OptionalEnvProxy("CI_COMMIT_BRANCH")
     """
     The commit branch name. Present in branch pipelines,
     including pipelines for the default branch.
@@ -221,7 +245,7 @@ class PredefinedVariables():
     Available in GitLab Runner 0.5
     """
 
-    CI_COMMIT_TAG: Optional[str] = os.getenv("CI_COMMIT_TAG")
+    CI_COMMIT_TAG: OptionalEnvProxy = OptionalEnvProxy("CI_COMMIT_TAG")
     """
     The commit tag name. Present only when building tags.
 
@@ -350,7 +374,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_DEPLOY_FREEZE: Optional[str] = os.getenv("CI_DEPLOY_FREEZE")
+    CI_DEPLOY_FREEZE: OptionalEnvProxy = OptionalEnvProxy("CI_DEPLOY_FREEZE")
     """
     Included with the value true if the pipeline runs during a deploy freeze window.
 
@@ -382,7 +406,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_DISPOSABLE_ENVIRONMENT: Optional[str] = os.getenv("CI_DISPOSABLE_ENVIRONMENT")
+    CI_DISPOSABLE_ENVIRONMENT: OptionalEnvProxy = OptionalEnvProxy("CI_DISPOSABLE_ENVIRONMENT")
     """
     Marks that the job is executed in a disposable environment
     (something that is created only for this job and disposed of/destroyed
@@ -394,7 +418,7 @@ class PredefinedVariables():
     Available in GitLab Runner 10.1
     """
 
-    CI_ENVIRONMENT_NAME: Optional[str] = os.getenv("CI_ENVIRONMENT_NAME")
+    CI_ENVIRONMENT_NAME: OptionalEnvProxy = OptionalEnvProxy("CI_ENVIRONMENT_NAME")
     """
     The name of the environment for this job.
     Only present if environment:name is set.
@@ -403,7 +427,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_ENVIRONMENT_SLUG: Optional[str] = os.getenv("CI_ENVIRONMENT_SLUG")
+    CI_ENVIRONMENT_SLUG: OptionalEnvProxy = OptionalEnvProxy("CI_ENVIRONMENT_SLUG")
     """
     A simplified version of the environment name,
     suitable for inclusion in DNS, URLs, Kubernetes labels, and so on.
@@ -413,7 +437,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_ENVIRONMENT_URL: Optional[str] = os.getenv("CI_ENVIRONMENT_URL")
+    CI_ENVIRONMENT_URL: OptionalEnvProxy = OptionalEnvProxy("CI_ENVIRONMENT_URL")
     """
     The URL of the environment for this job.
     Only present if environment:url is set.
@@ -422,7 +446,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_EXTERNAL_PULL_REQUEST_IID: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_IID")
+    CI_EXTERNAL_PULL_REQUEST_IID: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_IID")
     """
     Pull Request ID from GitHub if the pipelines are for
     external pull requests.
@@ -434,7 +458,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY")
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_REPOSITORY")
     """
     The source repository name of the pull request if the pipelines are
     for external pull requests. Available only if only
@@ -446,7 +470,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY")
+    CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_REPOSITORY")
     """
     The target repository name of the pull request if the pipelines
     are for external pull requests. Available only if only
@@ -458,7 +482,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME")
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME")
     """
     The source branch name of the pull request if the pipelines are for
     external pull requests. Available only if only [external_pull_requests]
@@ -469,7 +493,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA")
+    CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_SHA")
     """
     The HEAD SHA of the source branch of the pull request if the pipelines
     are for external pull requests. Available only if only
@@ -481,7 +505,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME")
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME")
     """
     The target branch name of the pull request if the pipelines are for
     external pull requests. Available only if only [external_pull_requests]
@@ -492,7 +516,7 @@ class PredefinedVariables():
 
     """
 
-    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA: Optional[str] = os.getenv("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA")
+    CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA: OptionalEnvProxy = OptionalEnvProxy("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_SHA")
     """
     The HEAD SHA of the target branch of the pull request if the pipelines
     are for external pull requests. Available only if only
@@ -504,7 +528,7 @@ class PredefinedVariables():
 
     """
 
-    CI_HAS_OPEN_REQUIREMENTS: Optional[str] = os.getenv("CI_HAS_OPEN_REQUIREMENTS")
+    CI_HAS_OPEN_REQUIREMENTS: OptionalEnvProxy = OptionalEnvProxy("CI_HAS_OPEN_REQUIREMENTS")
     """
     Included with the value true only if the pipeline’s project has any
     open requirements. Not included if there are no open requirements for
@@ -514,7 +538,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_OPEN_MERGE_REQUESTS: Optional[str] = os.getenv("CI_OPEN_MERGE_REQUESTS")
+    CI_OPEN_MERGE_REQUESTS: OptionalEnvProxy = OptionalEnvProxy("CI_OPEN_MERGE_REQUESTS")
     """
     Available in branch and merge request pipelines. Contains a
     comma-separated list of up to four merge requests that use the current
@@ -653,7 +677,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_KUBERNETES_ACTIVE: Optional[str] = os.getenv("CI_KUBERNETES_ACTIVE")
+    CI_KUBERNETES_ACTIVE: OptionalEnvProxy = OptionalEnvProxy("CI_KUBERNETES_ACTIVE")
     """
     Included with the value true only if the pipeline has a Kubernetes
     cluster available for deployments. Not included if no cluster is available.
@@ -664,7 +688,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_MERGE_REQUEST_ASSIGNEES: Optional[str] = os.getenv("CI_MERGE_REQUEST_ASSIGNEES")
+    CI_MERGE_REQUEST_ASSIGNEES: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_ASSIGNEES")
     """
     Comma-separated list of username(s) of assignee(s) for the merge request
     if the pipelines are for merge requests.
@@ -676,7 +700,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_ID: Optional[str] = os.getenv("CI_MERGE_REQUEST_ID")
+    CI_MERGE_REQUEST_ID: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_ID")
     """
     The instance-level ID of the merge request. Only available if the
     pipelines are for merge requests and the merge request is created.
@@ -686,7 +710,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_MERGE_REQUEST_IID: Optional[str] = os.getenv("CI_MERGE_REQUEST_IID")
+    CI_MERGE_REQUEST_IID: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_IID")
     """
     The project-level IID (internal ID) of the merge request.
     Only available If the pipelines are for merge requests and the merge
@@ -696,7 +720,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_MERGE_REQUEST_LABELS: Optional[str] = os.getenv("CI_MERGE_REQUEST_LABELS")
+    CI_MERGE_REQUEST_LABELS: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_LABELS")
     """
     Comma-separated label names of the merge request if the pipelines are
     for merge requests. Available only if only [merge_requests] or rules
@@ -707,7 +731,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_MILESTONE: Optional[str] = os.getenv("CI_MERGE_REQUEST_MILESTONE")
+    CI_MERGE_REQUEST_MILESTONE: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_MILESTONE")
     """
     The milestone title of the merge request if the pipelines are for merge
     requests. Available only if only [merge_requests] or rules syntax is
@@ -718,7 +742,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_PROJECT_ID: Optional[str] = os.getenv("CI_MERGE_REQUEST_PROJECT_ID")
+    CI_MERGE_REQUEST_PROJECT_ID: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_PROJECT_ID")
     """
     The ID of the project of the merge request if the pipelines are for
     merge requests. Available only if only [merge_requests] or rules syntax
@@ -729,7 +753,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_PROJECT_PATH: Optional[str] = os.getenv("CI_MERGE_REQUEST_PROJECT_PATH")
+    CI_MERGE_REQUEST_PROJECT_PATH: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_PROJECT_PATH")
     """
     The path of the project of the merge request if the pipelines are for
     merge requests (for example namespace/awesome-project). Available only
@@ -741,7 +765,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_PROJECT_URL: Optional[str] = os.getenv("CI_MERGE_REQUEST_PROJECT_URL")
+    CI_MERGE_REQUEST_PROJECT_URL: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_PROJECT_URL")
     """
     The URL of the project of the merge request if the pipelines are for
     merge requests (for example http://192.168.10.15:3000/namespace/awesome-project).
@@ -753,7 +777,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_REF_PATH: Optional[str] = os.getenv("CI_MERGE_REQUEST_REF_PATH")
+    CI_MERGE_REQUEST_REF_PATH: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_REF_PATH")
     """
     The ref path of the merge request if the pipelines are for merge requests.
     (for example refs/merge-requests/1/head). Available only if only
@@ -764,7 +788,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_SOURCE_BRANCH_NAME: Optional[str] = os.getenv("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
+    CI_MERGE_REQUEST_SOURCE_BRANCH_NAME: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
     """
     The source branch name of the merge request if the pipelines are for
     merge requests. Available only if only [merge_requests] or rules syntax
@@ -775,7 +799,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_SOURCE_BRANCH_SHA: Optional[str] = os.getenv("CI_MERGE_REQUEST_SOURCE_BRANCH_SHA")
+    CI_MERGE_REQUEST_SOURCE_BRANCH_SHA: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_SOURCE_BRANCH_SHA")
     """
     The HEAD SHA of the source branch of the merge request if the pipelines
     are for merge requests. Available only if only [merge_requests] or rules
@@ -787,7 +811,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_SOURCE_PROJECT_ID: Optional[str] = os.getenv("CI_MERGE_REQUEST_SOURCE_PROJECT_ID")
+    CI_MERGE_REQUEST_SOURCE_PROJECT_ID: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_SOURCE_PROJECT_ID")
     """
     The ID of the source project of the merge request if the pipelines are
     for merge requests. Available only if only [merge_requests] or rules
@@ -798,7 +822,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_SOURCE_PROJECT_PATH: Optional[str] = os.getenv("CI_MERGE_REQUEST_SOURCE_PROJECT_PATH")
+    CI_MERGE_REQUEST_SOURCE_PROJECT_PATH: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_SOURCE_PROJECT_PATH")
     """
     The path of the source project of the merge request if the pipelines
     are for merge requests. Available only if only [merge_requests] or
@@ -809,7 +833,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_SOURCE_PROJECT_URL: Optional[str] = os.getenv("CI_MERGE_REQUEST_SOURCE_PROJECT_URL")
+    CI_MERGE_REQUEST_SOURCE_PROJECT_URL: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_SOURCE_PROJECT_URL")
     """
     The URL of the source project of the merge request if the pipelines are
     for merge requests. Available only if only [merge_requests] or rules
@@ -820,7 +844,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_TARGET_BRANCH_NAME: Optional[str] = os.getenv("CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
+    CI_MERGE_REQUEST_TARGET_BRANCH_NAME: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
     """
     The target branch name of the merge request if the pipelines are for
     merge requests. Available only if only [merge_requests] or rules syntax
@@ -831,7 +855,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_TARGET_BRANCH_SHA: Optional[str] = os.getenv("CI_MERGE_REQUEST_TARGET_BRANCH_SHA")
+    CI_MERGE_REQUEST_TARGET_BRANCH_SHA: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_TARGET_BRANCH_SHA")
     """
     The HEAD SHA of the target branch of the merge request if the pipelines
     are for merge requests. Available only if only [merge_requests] or rules
@@ -843,7 +867,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_TITLE: Optional[str] = os.getenv("CI_MERGE_REQUEST_TITLE")
+    CI_MERGE_REQUEST_TITLE: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_TITLE")
     """
     The title of the merge request if the pipelines are for merge requests.
     Available only if only [merge_requests] or rules syntax is used and the
@@ -854,7 +878,7 @@ class PredefinedVariables():
 
     """
 
-    CI_MERGE_REQUEST_EVENT_TYPE: Optional[str] = os.getenv("CI_MERGE_REQUEST_EVENT_TYPE")
+    CI_MERGE_REQUEST_EVENT_TYPE: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_EVENT_TYPE")
     """
     The event type of the merge request, if the pipelines are for merge requests.
     Can be detached, merged_result or merge_train.
@@ -863,7 +887,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_MERGE_REQUEST_DIFF_ID: Optional[str] = os.getenv("CI_MERGE_REQUEST_DIFF_ID")
+    CI_MERGE_REQUEST_DIFF_ID: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_DIFF_ID")
     """
     The version of the merge request diff, if the pipelines are for merge requests.
 
@@ -871,7 +895,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_MERGE_REQUEST_DIFF_BASE_SHA: Optional[str] = os.getenv("CI_MERGE_REQUEST_DIFF_BASE_SHA")
+    CI_MERGE_REQUEST_DIFF_BASE_SHA: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_DIFF_BASE_SHA")
     """
     The base SHA of the merge request diff, if the pipelines are for merge requests.
 
@@ -879,7 +903,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_NODE_INDEX: Optional[str] = os.getenv("CI_NODE_INDEX")
+    CI_NODE_INDEX: OptionalEnvProxy = OptionalEnvProxy("CI_NODE_INDEX")
     """
     Index of the job in the job set. If the job is not parallelized, this variable is not set.
 
@@ -1120,7 +1144,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_REGISTRY: Optional[str] = os.getenv("CI_REGISTRY")
+    CI_REGISTRY: OptionalEnvProxy = OptionalEnvProxy("CI_REGISTRY")
     """
     GitLab Container Registry. This variable includes a :port value if one
     has been specified in the registry configuration.
@@ -1129,7 +1153,7 @@ class PredefinedVariables():
     Available in GitLab Runner 0.5
     """
 
-    CI_REGISTRY_IMAGE: Optional[str] = os.getenv("CI_REGISTRY_IMAGE")
+    CI_REGISTRY_IMAGE: OptionalEnvProxy = OptionalEnvProxy("CI_REGISTRY_IMAGE")
     """
     the address of the registry tied to the specific project.
 
@@ -1140,7 +1164,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_REGISTRY_PASSWORD: Optional[str] = os.getenv("CI_REGISTRY_PASSWORD")
+    CI_REGISTRY_PASSWORD: OptionalEnvProxy = OptionalEnvProxy("CI_REGISTRY_PASSWORD")
     """
     The password to use to push containers to the GitLab Container Registry, for the current project.
 
@@ -1148,7 +1172,7 @@ class PredefinedVariables():
     Available in GitLab Runner all
     """
 
-    CI_REGISTRY_USER: Optional[str] = os.getenv("CI_REGISTRY_USER")
+    CI_REGISTRY_USER: OptionalEnvProxy = OptionalEnvProxy("CI_REGISTRY_USER")
     """
     The username to use to push containers to the GitLab Container Registry, for the current project.
 
@@ -1365,7 +1389,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    CI_SHARED_ENVIRONMENT: Optional[str] = os.getenv("CI_SHARED_ENVIRONMENT")
+    CI_SHARED_ENVIRONMENT: OptionalEnvProxy = OptionalEnvProxy("CI_SHARED_ENVIRONMENT")
     """
     Marks that the job is executed in a shared environment (something that
     is persisted across CI invocations like shell or ssh executor).
@@ -1442,7 +1466,7 @@ class PredefinedVariables():
         KeyError: If environment variable not available.
     """
 
-    TRIGGER_PAYLOAD: Optional[str] = os.getenv("TRIGGER_PAYLOAD")
+    TRIGGER_PAYLOAD: OptionalEnvProxy = OptionalEnvProxy("TRIGGER_PAYLOAD")
     """
     This variable is available when a pipeline is triggered with a webhook
 
