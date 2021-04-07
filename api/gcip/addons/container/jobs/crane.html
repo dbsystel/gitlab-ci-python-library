@@ -30,7 +30,6 @@
 
 from gcip.core.job import Job
 from gcip.core.image import Image
-from gcip.core.variables import PredefinedVariables
 from gcip.addons.container.config import DockerClientConfig
 from gcip.addons.container.images import PredefinedImages
 
@@ -65,58 +64,9 @@ def copy(
 
     job = Job(
         script=[
+            &#34;date&#34;,
             f&#34;crane validate --remote {src}&#34;,
             f&#34;crane copy {src} {dst}&#34;,
-        ],
-        namespace=&#34;push_container_image&#34;,
-    )
-    job.set_image(crane_image)
-
-    if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
-
-    return job
-
-
-def push(
-    dst: str,
-    image_path: Optional[str] = None,
-    image_name: Optional[str] = None,
-    *,
-    docker_client_config: Optional[DockerClientConfig] = None,
-    crane_image: Optional[Union[Image, str]] = None,
-) -&gt; Job:
-    &#34;&#34;&#34;
-    Creates a job to push container image to remote container registry with `crane`.
-
-    The image to copy must be in a `tarball` format. It gets validated with crane
-    and is pushed to `dst` destination registry.
-
-    Args:
-        dst (str): Registry URL to copy container image to.
-        image_path (Optional[str], optional): Path where to find the container image.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
-        image_name (Optional[str], optional): Container image name, searched for in `image_path` and gets `.tar` appended.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_NAME`. Defaults to None.
-        docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
-            used by crane to authenticate against given registries. Defaults to None.
-        crane_image (Optional[Union[Image, str]], optional): Container image which contains `crane` command.
-            Defaults to PredefindedImages.CRANE.
-
-    Returns:
-        Job: Returns a `gcip.Job`, with neccessary configuration to push a container image stored as a `tarball` to a remote registry.
-    &#34;&#34;&#34;
-    if not crane_image:
-        crane_image = PredefinedImages.CRANE
-
-    if not image_path:
-        image_path = PredefinedVariables.CI_PROJECT_DIR
-    if not image_name:
-        image_name = PredefinedVariables.CI_PROJECT_NAME
-    job = Job(
-        script=[
-            f&#34;crane validate --tarball {image_path}/{image_name}.tar&#34;,
-            f&#34;crane push {image_path}/{image_name}.tar {dst}&#34;,
         ],
         namespace=&#34;push_container_image&#34;,
     )
@@ -195,91 +145,9 @@ Defaults to PredefindedImages.CRANE.</dd>
 
     job = Job(
         script=[
+            &#34;date&#34;,
             f&#34;crane validate --remote {src}&#34;,
             f&#34;crane copy {src} {dst}&#34;,
-        ],
-        namespace=&#34;push_container_image&#34;,
-    )
-    job.set_image(crane_image)
-
-    if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
-
-    return job</code></pre>
-</details>
-</dd>
-<dt id="gcip.addons.container.jobs.crane.push"><code class="name flex">
-<span>def <span class="ident">push</span></span>(<span>dst: str, image_path: Optional[str] = None, image_name: Optional[str] = None, *, docker_client_config: Optional[<a title="gcip.addons.container.config.DockerClientConfig" href="../config.html#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a>] = None, crane_image: Union[<a title="gcip.core.image.Image" href="../../../core/image.html#gcip.core.image.Image">Image</a>, str, NoneType] = None) ‑> <a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a job to push container image to remote container registry with <code>crane</code>.</p>
-<p>The image to copy must be in a <code>tarball</code> format. It gets validated with crane
-and is pushed to <code>dst</code> destination registry.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>dst</code></strong> :&ensp;<code>str</code></dt>
-<dd>Registry URL to copy container image to.</dd>
-<dt><strong><code>image_path</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
-<dd>Path where to find the container image.
-If <code>None</code> it defaults internally to <code>PredefinedVariables.CI_PROJECT_DIR</code>. Defaults to None.</dd>
-<dt><strong><code>image_name</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
-<dd>Container image name, searched for in <code>image_path</code> and gets <code>.tar</code> appended.
-If <code>None</code> it defaults internally to <code>PredefinedVariables.CI_PROJECT_NAME</code>. Defaults to None.</dd>
-<dt><strong><code>docker_client_config</code></strong> :&ensp;<code>Optional[DockerClientConfig]</code>, optional</dt>
-<dd>Creates the Docker configuration file base on objects settings,
-used by crane to authenticate against given registries. Defaults to None.</dd>
-<dt><strong><code>crane_image</code></strong> :&ensp;<code>Optional[Union[Image, str]]</code>, optional</dt>
-<dd>Container image which contains <code>crane</code> command.
-Defaults to PredefindedImages.CRANE.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Job</code></dt>
-<dd>Returns a <code>gcip.Job</code>, with neccessary configuration to push a container image stored as a <code>tarball</code> to a remote registry.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def push(
-    dst: str,
-    image_path: Optional[str] = None,
-    image_name: Optional[str] = None,
-    *,
-    docker_client_config: Optional[DockerClientConfig] = None,
-    crane_image: Optional[Union[Image, str]] = None,
-) -&gt; Job:
-    &#34;&#34;&#34;
-    Creates a job to push container image to remote container registry with `crane`.
-
-    The image to copy must be in a `tarball` format. It gets validated with crane
-    and is pushed to `dst` destination registry.
-
-    Args:
-        dst (str): Registry URL to copy container image to.
-        image_path (Optional[str], optional): Path where to find the container image.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
-        image_name (Optional[str], optional): Container image name, searched for in `image_path` and gets `.tar` appended.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_NAME`. Defaults to None.
-        docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
-            used by crane to authenticate against given registries. Defaults to None.
-        crane_image (Optional[Union[Image, str]], optional): Container image which contains `crane` command.
-            Defaults to PredefindedImages.CRANE.
-
-    Returns:
-        Job: Returns a `gcip.Job`, with neccessary configuration to push a container image stored as a `tarball` to a remote registry.
-    &#34;&#34;&#34;
-    if not crane_image:
-        crane_image = PredefinedImages.CRANE
-
-    if not image_path:
-        image_path = PredefinedVariables.CI_PROJECT_DIR
-    if not image_name:
-        image_name = PredefinedVariables.CI_PROJECT_NAME
-    job = Job(
-        script=[
-            f&#34;crane validate --tarball {image_path}/{image_name}.tar&#34;,
-            f&#34;crane push {image_path}/{image_name}.tar {dst}&#34;,
         ],
         namespace=&#34;push_container_image&#34;,
     )
@@ -310,7 +178,6 @@ Defaults to PredefindedImages.CRANE.</dd>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="gcip.addons.container.jobs.crane.copy" href="#gcip.addons.container.jobs.crane.copy">copy</a></code></li>
-<li><code><a title="gcip.addons.container.jobs.crane.push" href="#gcip.addons.container.jobs.crane.push">push</a></code></li>
 </ul>
 </li>
 </ul>
