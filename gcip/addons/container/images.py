@@ -9,3 +9,4 @@ class PredefinedImages():
     CRANE: Image = Image("gcr.io/go-containerregistry/crane:latest")
     DIVE: Image = Image("wagoodman/dive:latest")
     GCIP: Image = Image("thomass/gcip:0.3.0")
+    TRIVY: Image = Image("aquasec/trivy:latest")

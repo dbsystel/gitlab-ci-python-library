@@ -1,0 +1,13 @@
+stages:
+- check_container_image
+check-container-image-advanced-scan:
+  image:
+    name: aquasec/trivy:latest
+  stage: check_container_image
+  script:
+  - trivy image --input /foo/bar/baz/custom_image.tar --output /path/to/project/trivi.txt
+    --no-progress --format json --severity MEDIUM,HIGH,CRITICAL --exit-code 1 --list-all-pkgs
+  - cat /path/to/project/trivi.txt
+  artifacts:
+    paths:
+    - trivi.txt

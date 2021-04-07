@@ -6,7 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+### Added
+* Added `gcip.addon.container.job.trivy.scan_local_image` to scan local container images of vulnerabilities.
 ## [0.6.1] - 2021-04-07
 
 ### Changed
