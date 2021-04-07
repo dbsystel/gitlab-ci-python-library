@@ -1,0 +1,5 @@
+{
+    "python.languageServer": "Pylance",
+    "python.formatting.provider": "black",
+    "python.analysis.typeCheckingMode": "basic"
+}

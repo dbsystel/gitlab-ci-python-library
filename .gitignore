@@ -19,7 +19,6 @@ docs/api
 
 
 # VS Code
-.vscode
 .devcontainer
 
 # gcip
