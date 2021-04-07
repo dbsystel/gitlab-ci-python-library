@@ -11,5 +11,5 @@ execute-kaniko:
     > /kaniko/.docker/config.json
   - date
   - executor --context /path/to/project --dockerfile /path/to/project/Dockerfile --destination
-    thomass/gcip:my-awsome-feature-branch
+    thomass/gcip:11.22.33
   - rm -rf /kaniko/.docker/config.json
