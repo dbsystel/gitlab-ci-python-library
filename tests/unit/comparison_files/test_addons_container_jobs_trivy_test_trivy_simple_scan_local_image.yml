@@ -1,0 +1,13 @@
+stages:
+- check_container_image
+check-container-image-simple-scan:
+  image:
+    name: aquasec/trivy:latest
+  stage: check_container_image
+  script:
+  - trivy image --input /path/to/project/gitlab-ci-project.tar --output /path/to/project/trivi.txt
+    --no-progress --exit-code 1
+  - cat /path/to/project/trivi.txt
+  artifacts:
+    paths:
+    - trivi.txt

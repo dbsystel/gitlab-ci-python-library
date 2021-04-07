@@ -1,5 +1,9 @@
 {
     "python.languageServer": "Pylance",
     "python.formatting.provider": "black",
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "autoDocstring.docstringFormat": "google",
+    "autoDocstring.guessTypes": true,
+    "autoDocstring.quoteStyle": "\"\"\"",
+    "autoDocstring.includeExtendedSummary": true
 }
