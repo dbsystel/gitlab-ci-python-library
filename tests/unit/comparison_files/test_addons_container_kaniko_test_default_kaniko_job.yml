@@ -1,15 +1,14 @@
 stages:
-- execute
-execute-kaniko:
+- build_container_image
+build-container-image-gcip:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint:
     - ''
-  stage: execute
+  stage: build_container_image
   script:
-  - mkdir -p /kaniko/.docker && echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_LOGIN\"}}}"
-    > /kaniko/.docker/config.json
-  - date
+  - mkdir -p /kaniko/.docker
+  - 'echo "{\"auths\": {\"index.docker.io\": {\"username\": \"$DOCKER_USER\", \"password\":
+    \"$DOCKER_LOGIN\"}}}" > /kaniko/.docker/config.json'
   - executor --context /path/to/project --dockerfile /path/to/project/Dockerfile --destination
     thomass/gcip:11.22.33
-  - rm -rf /kaniko/.docker/config.json

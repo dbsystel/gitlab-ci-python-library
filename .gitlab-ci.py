@@ -1,6 +1,7 @@
 from gcip import Image, Pipeline, PredefinedVariables
 from gcip.addons.python import jobs as python
 from gcip.addons.container.jobs import kaniko
+from gcip.addons.container.config import DockerClientConfig
 
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
@@ -16,13 +17,18 @@ pipeline.add_children(
     python.pytest(),
     python.mypy("gcip"),
     python.bdist_wheel(),
+)
+
+dcc = DockerClientConfig(config_file_path="/kaniko/.docker")
+dcc.add_auth("https://index.docker.io/v1/", username_env_var="DOCKER_USER", password_env_var="DOCKER_LOGIN")
+pipeline.add_children(
     kaniko.execute(
         gitlab_executor_image=kaniko_image,
         image_name="thomass/gcip",
-        enable_push=(PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main"),
-        registry_user_env_var="DOCKER_USER",
-        registry_login_env_var="DOCKER_LOGIN",
+        enable_push=True if PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main" else False,
+        docker_client_config=dcc
     ),
+    name="gcip",
 )
 
 if PredefinedVariables.CI_COMMIT_TAG:
