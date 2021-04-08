@@ -26,7 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List, Union, Optional
+<pre><code class="python">from typing import Union, Optional
 
 from gcip.core.job import Job
 from gcip.core.image import Image
@@ -77,7 +77,7 @@ def scan_local_image(
     if not trivy_image:
         trivy_image = PredefinedImages.TRIVY
 
-    trivy_cmd = [f&#34;trivy image&#34;]
+    trivy_cmd = [&#34;trivy image&#34;]
     trivy_cmd.append(f&#34;--input {image_path}/{image_name}.tar&#34;)
     trivy_cmd.append(f&#34;--output {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt&#34;)
     trivy_cmd.append(&#34;--no-progress&#34;)
@@ -195,7 +195,7 @@ Defaults to PredefindedImages.TRIVY.</dd>
     if not trivy_image:
         trivy_image = PredefinedImages.TRIVY
 
-    trivy_cmd = [f&#34;trivy image&#34;]
+    trivy_cmd = [&#34;trivy image&#34;]
     trivy_cmd.append(f&#34;--input {image_path}/{image_name}.tar&#34;)
     trivy_cmd.append(f&#34;--output {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt&#34;)
     trivy_cmd.append(&#34;--no-progress&#34;)
