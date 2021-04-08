@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * Several linter issues has been fixed
 * Fixed kaniko build in gitlabci-local.sh
+* **BREAKING** Removed custom docker client config from kaniko job.
+  Added DockerClientConfig as a optional client configuration to kaniko job.
+  Simplyfied function and sorted initialisation tests an actuall composing of job.
 
 ## [0.6.1] - 2021-04-07
 

@@ -1,8 +1,10 @@
+import os
 from typing import Dict, List, Union, Optional
 
 from gcip.core.job import Job
 from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
+from gcip.addons.container.config import DockerClientConfig
 from gcip.addons.container.images import PredefinedImages
 
 __author__ = "Daniel von Eßen"
@@ -25,17 +27,14 @@ def execute(
     build_target: Optional[str] = None,
     dockerfile: Optional[str] = None,
     enable_push: bool = False,
+    docker_client_config: Optional[DockerClientConfig] = None,
     verbosity: Optional[str] = None,
-    ecr_login: bool = False,
-    registry_user_env_var: Optional[str] = None,
-    registry_login_env_var: Optional[str] = None,
 ) -> Job:
     """
     Creates a job which builds container images.
 
-    This job creates images depending on their git branches.
-    e.g If the branch which gets pushed to the remote is named
-    `my_awsome_feature` the image
+    This job creates images depending on git branches.
+    e.g If the branch which gets pushed to the remote is named `my_awsome_feature` the image will be tagged with `my-awsome-feature`.
 
     Args:
         gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
@@ -54,34 +53,16 @@ def execute(
         dockerfile (str, optional): Name of the dockerfile to use. File is relative to context. Defaults to "Dockerfile".
         enable_push (bool, optional): Enable push to container registry, disabled to allow subsequent jobs to act on container tarball.
             Defaults to False.
+        docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
+            used by crane to authenticate against given registries. Defaults to None.
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to "info".
-        ecr_login (bool): If ```ecr-login``` should be registered as ```credStore``` in the ```.docker/config.json```.
-            Mutually exclusive with `registry_user_env_var` and `registry_login_env_var`. Defaults to `False`.
-        registry_user_env_var (Optional[str]): If you have to login to the registry before the push, you have to provide
-            the name of the environment variable, which contains the username value, here.
-            **DO NOT PROVIDE THE USERNAME VALUE ITSELF!** This would be a security issue!
-            Mutually exclusive with `ecr_login`.
-            Defaults to `None` which skips the login attempt.
-        registry_login_env_var (Optional[str]): If you have to login to the registry before the push, you have to provide
-            the name of the environment variable, which contains the password or token, here.
-            **DO NOT PROVIDE THE LOGIN VALUE ITSELF!** This would be a security issue!
-            Mutually exclusive with `ecr_login`.
-            Defaults to `None` which skips the login attempt.
 
     Returns:
-        Job: gcip.Job will be returned to create container images with ```name=kaniko``` and ```namespace=execute```.
+        Job: gcip.Job will be returned to create container images with ```namespace=execute```.
     """
-
-    if ecr_login and (registry_user_env_var or registry_login_env_var):
-        raise ValueError("`ecr_login` is mutually exclusive with `registry_user_env_var` and `registry_login_env_var`.")
-
-    job = Job(
-        name="kaniko",
-        namespace="execute",
-        script="date",
-    )
-
-    if image_name is None:
+    if not gitlab_executor_image:
+        gitlab_executor_image = PredefinedImages.KANIKO
+    if not image_name:
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
     if not image_tag:
@@ -94,30 +75,25 @@ def execute(
     if image_tag:
         image_tag_postfix = f":{image_tag}"
 
-    executor_cmd: List[str] = ["executor"]
-
-    if not context and PredefinedVariables.CI_PROJECT_DIR:
+    if not context:
         context = PredefinedVariables.CI_PROJECT_DIR
+    else:
+        context = os.path.normpath(context)
 
-    if context:
-        if context.endswith("/"):
-            context = context[:-1]
-        executor_cmd.append(f"--context {context}")
+    if not dockerfile:
+        dockerfile = f"{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile"
+
+    executor_cmd = ["executor"]
+    executor_cmd.append(f"--context {context}")
+    executor_cmd.append(f"--dockerfile {dockerfile}")
 
     if tar_path:
-        if tar_path.endswith("/"):
-            tar_path = tar_path[:-1]
-        executor_cmd.append(f"--tarPath {tar_path}/{image_name}.tar")
-        job.append_scripts(f"mkdir -p {tar_path}")
+        tar_path = os.path.normpath(tar_path)
+        executor_cmd.insert(0, f"mkdir -p {tar_path}")
+        executor_cmd.append(f"--tarPath {os.path.join(tar_path, image_name)}.tar")
 
     if verbosity:
         executor_cmd.append(f"--verbosity {verbosity}")
-
-    if not dockerfile and PredefinedVariables.CI_PROJECT_DIR:
-        dockerfile = f"{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile"
-
-    if dockerfile:
-        executor_cmd.append(f"--dockerfile {dockerfile}")
 
     # Disable push to registries.
     if not enable_push:
@@ -145,24 +121,12 @@ def execute(
         if image_tag and (image_tag == "main" or image_tag == "master"):
             executor_cmd.append(f"--destination {registry}/{image_name}:latest{build_target_postfix}")
 
-    if ecr_login:
-        job.prepend_scripts('mkdir -p /kaniko/.docker && echo "{\\"credsStore\\":\\"ecr-login\\"}" > /kaniko/.docker/config.json')
+    job = Job(
+        script=" ".join(executor_cmd),
+        namespace="build_container_image",
+    )
+    job.set_image(gitlab_executor_image)
 
-    if registry_user_env_var and registry_login_env_var:
-        job.prepend_scripts(
-            'mkdir -p /kaniko/.docker && echo "{\\"auths\\":{\\"https://index.docker.io/v1/\\":{\\"username\\":\\"$'
-            + registry_user_env_var
-            + '\\",\\"password\\":\\"$'
-            + registry_login_env_var
-            + '\\"}}}" > /kaniko/.docker/config.json'
-        )
-
-    job.append_scripts(" ".join(executor_cmd))
-    job.append_scripts("rm -rf /kaniko/.docker/config.json")
-
-    if gitlab_executor_image:
-        job.set_image(gitlab_executor_image)
-    else:
-        job.set_image(PredefinedImages.KANIKO)
-
+    if docker_client_config:
+        job.prepend_scripts(*docker_client_config.get_shell_command())
     return job
