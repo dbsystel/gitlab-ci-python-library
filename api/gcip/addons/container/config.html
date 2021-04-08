@@ -49,6 +49,7 @@ cfg.render()
 
 This will render a Client configuration and dumps it as a json string.
 &#34;&#34;&#34;
+import os
 import json
 from typing import Any, Dict, List
 
@@ -56,7 +57,7 @@ DockerConfig = Dict[str, Any]
 
 
 class DockerClientConfig():
-    def __init__(self, config_file_path: str = &#34;$HOME/.docker/&#34;, config_file_name: str = &#34;config.json&#34;) -&gt; None:
+    def __init__(self, config_file_path: str = &#34;$HOME/.docker&#34;, config_file_name: str = &#34;config.json&#34;) -&gt; None:
         &#34;&#34;&#34;
         Class which represents a docker client configuration.
 
@@ -69,7 +70,7 @@ class DockerClientConfig():
             config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
             config_file_name (str): Docker client configuration filename. Defaults to config.json.
         &#34;&#34;&#34;
-        self._config_file_path = config_file_path
+        self._config_file_path = os.path.normpath(config_file_path)
         self._config_file_name = config_file_name
         self.config: DockerConfig = {}
 
@@ -168,7 +169,7 @@ class DockerClientConfig():
         &#34;&#34;&#34;
         script = [
             f&#34;mkdir -p {self._config_file_path}&#34;,
-            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {self._config_file_path}{self._config_file_name}&#34;,
+            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {os.path.join(self._config_file_path, self._config_file_name)}&#34;,
         ]
         return script</code></pre>
 </details>
@@ -184,7 +185,7 @@ class DockerClientConfig():
 <dl>
 <dt id="gcip.addons.container.config.DockerClientConfig"><code class="flex name class">
 <span>class <span class="ident">DockerClientConfig</span></span>
-<span>(</span><span>config_file_path: str = '$HOME/.docker/', config_file_name: str = 'config.json')</span>
+<span>(</span><span>config_file_path: str = '$HOME/.docker', config_file_name: str = 'config.json')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class which represents a docker client configuration.</p>
@@ -204,7 +205,7 @@ you should consider using <code>docker --config</code> to specify the path to th
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DockerClientConfig():
-    def __init__(self, config_file_path: str = &#34;$HOME/.docker/&#34;, config_file_name: str = &#34;config.json&#34;) -&gt; None:
+    def __init__(self, config_file_path: str = &#34;$HOME/.docker&#34;, config_file_name: str = &#34;config.json&#34;) -&gt; None:
         &#34;&#34;&#34;
         Class which represents a docker client configuration.
 
@@ -217,7 +218,7 @@ you should consider using <code>docker --config</code> to specify the path to th
             config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
             config_file_name (str): Docker client configuration filename. Defaults to config.json.
         &#34;&#34;&#34;
-        self._config_file_path = config_file_path
+        self._config_file_path = os.path.normpath(config_file_path)
         self._config_file_name = config_file_name
         self.config: DockerConfig = {}
 
@@ -316,7 +317,7 @@ you should consider using <code>docker --config</code> to specify the path to th
         &#34;&#34;&#34;
         script = [
             f&#34;mkdir -p {self._config_file_path}&#34;,
-            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {self._config_file_path}{self._config_file_name}&#34;,
+            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {os.path.join(self._config_file_path, self._config_file_name)}&#34;,
         ]
         return script</code></pre>
 </details>
@@ -472,7 +473,7 @@ echoed to <code>config_file_path</code>/<code>config_file_name</code></dd>
     &#34;&#34;&#34;
     script = [
         f&#34;mkdir -p {self._config_file_path}&#34;,
-        &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {self._config_file_path}{self._config_file_name}&#34;,
+        &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {os.path.join(self._config_file_path, self._config_file_name)}&#34;,
     ]
     return script</code></pre>
 </details>
