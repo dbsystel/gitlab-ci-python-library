@@ -1,4 +1,4 @@
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 from gcip.core.job import Job
 from gcip.core.image import Image
@@ -49,7 +49,7 @@ def scan_local_image(
     if not trivy_image:
         trivy_image = PredefinedImages.TRIVY
 
-    trivy_cmd = [f"trivy image"]
+    trivy_cmd = ["trivy image"]
     trivy_cmd.append(f"--input {image_path}/{image_name}.tar")
     trivy_cmd.append(f"--output {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt")
     trivy_cmd.append("--no-progress")
