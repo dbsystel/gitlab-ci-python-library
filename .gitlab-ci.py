@@ -25,7 +25,7 @@ pipeline.add_children(
     kaniko.execute(
         gitlab_executor_image=kaniko_image,
         image_name="thomass/gcip",
-        enable_push=True if PredefinedVariables.CI_COMMIT_TAG or PredefinedVariables.CI_COMMIT_BRANCH == "main" else False,
+        enable_push=PredefinedVariables.CI_COMMIT_TAG is not None or PredefinedVariables.CI_COMMIT_BRANCH == "main",
         docker_client_config=dcc
     ),
     name="gcip",
