@@ -169,7 +169,7 @@ class DockerClientConfig():
         &#34;&#34;&#34;
         script = [
             f&#34;mkdir -p {self._config_file_path}&#34;,
-            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {os.path.join(self._config_file_path, self._config_file_name)}&#34;,
+            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + &#34; &gt; &#34; + os.path.join(self._config_file_path, self._config_file_name),
         ]
         return script</code></pre>
 </details>
@@ -317,7 +317,7 @@ you should consider using <code>docker --config</code> to specify the path to th
         &#34;&#34;&#34;
         script = [
             f&#34;mkdir -p {self._config_file_path}&#34;,
-            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {os.path.join(self._config_file_path, self._config_file_name)}&#34;,
+            &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + &#34; &gt; &#34; + os.path.join(self._config_file_path, self._config_file_name),
         ]
         return script</code></pre>
 </details>
@@ -473,7 +473,7 @@ echoed to <code>config_file_path</code>/<code>config_file_name</code></dd>
     &#34;&#34;&#34;
     script = [
         f&#34;mkdir -p {self._config_file_path}&#34;,
-        &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + f&#34; &gt; {os.path.join(self._config_file_path, self._config_file_name)}&#34;,
+        &#34;echo &#34; + &#39;&#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34;&#39; + &#34; &gt; &#34; + os.path.join(self._config_file_path, self._config_file_name),
     ]
     return script</code></pre>
 </details>
