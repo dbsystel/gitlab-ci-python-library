@@ -12,6 +12,7 @@ cfg.render()
 
 This will render a Client configuration and dumps it as a json string.
 """
+import os
 import json
 from typing import Any, Dict, List
 
@@ -19,7 +20,7 @@ DockerConfig = Dict[str, Any]
 
 
 class DockerClientConfig():
-    def __init__(self, config_file_path: str = "$HOME/.docker/", config_file_name: str = "config.json") -> None:
+    def __init__(self, config_file_path: str = "$HOME/.docker", config_file_name: str = "config.json") -> None:
         """
         Class which represents a docker client configuration.
 
@@ -32,7 +33,7 @@ class DockerClientConfig():
             config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
             config_file_name (str): Docker client configuration filename. Defaults to config.json.
         """
-        self._config_file_path = config_file_path
+        self._config_file_path = os.path.normpath(config_file_path)
         self._config_file_name = config_file_name
         self.config: DockerConfig = {}
 
@@ -131,6 +132,6 @@ class DockerClientConfig():
         """
         script = [
             f"mkdir -p {self._config_file_path}",
-            "echo " + '"' + json.dumps(self.config).replace('"', '\\"') + '"' + f" > {self._config_file_path}{self._config_file_name}",
+            'echo "' + json.dumps(self.config).replace('"', '\\"') + '" > ' + os.path.join(self._config_file_path, self._config_file_name),
         ]
         return script
