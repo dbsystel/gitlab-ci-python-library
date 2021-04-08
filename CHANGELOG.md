@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 * Added `gcip.addon.container.job.trivy.scan_local_image` to scan local container images of vulnerabilities.
+
+### Changed
+* Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
+
 ## [0.6.1] - 2021-04-07
 
 ### Changed

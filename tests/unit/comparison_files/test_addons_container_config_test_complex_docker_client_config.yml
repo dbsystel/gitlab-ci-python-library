@@ -1,4 +1,4 @@
-- mkdir -p $HOME/.docker/
+- mkdir -p $HOME/.docker
 - 'echo "{\"auths\": {\"index.docker.com\": {\"username\": \"$CUSTOM_DOCKER_USER\",
   \"password\": \"$CUSTOM_DOCKER_PW\"}}, \"credHelpers\": {\"123456789.dkr.ecr.eu-central-1.amazonaws.com\":
   \"ecr-login\"}, \"credsStore\": \"gcr\", \"proxies\": {\"default\": {\"httpProxy\":
