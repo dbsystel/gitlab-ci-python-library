@@ -10,8 +10,7 @@ then
 fi
 
 echo "Powerd by https://pypi.org/project/gitlabci-local/"
-
-gitlabci-local -p -e CI_COMMIT_REF_SLUG="local" && cat generated-config.yml && gitlabci-local -c generated-config.yml
+gitlabci-local -p -e CI="true" -e CI_PROJECT_DIR="/builds/gitlab-ci-python-library" -e CI_COMMIT_REF_SLUG="gitlab-local-sh" && cat generated-config.yml && gitlabci-local -c generated-config.yml $@
 
 rm -rf generated-config.yml
 rm -rf dist

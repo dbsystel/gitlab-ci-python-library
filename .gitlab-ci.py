@@ -7,7 +7,7 @@ pipeline.initialize_image("python:3.9-slim")
 
 # gitlabci-local only works with 'sh' as kaniko entrypoint
 kaniko_image = None
-if not PredefinedVariables.CI:
+if PredefinedVariables.CI_COMMIT_REF_SLUG == "gitlab-local-sh":
     kaniko_image = Image("gcr.io/kaniko-project/executor:debug", entrypoint=["sh"])
 
 pipeline.add_children(
