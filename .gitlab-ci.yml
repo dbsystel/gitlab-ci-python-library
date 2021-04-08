@@ -1,7 +1,7 @@
 ---
 generate-pipeline:
   stage: build
-  image: thomass/gcip
+  image: python:3.9-slim
   script:
     - pip3 install -r requirements.txt
     - python3 .gitlab-ci.py

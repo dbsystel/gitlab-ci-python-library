@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
 * Line length check in flake8 linter to 160.
-* To generate the pipeline we are using thomass/gcip instead of vanilla python image.
 
 ### Fixed
 * Several linter issues has been fixed
