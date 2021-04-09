@@ -47,9 +47,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 class ChildDict(TypedDict):
@@ -63,8 +63,9 @@ class ChildDict(TypedDict):
     """The name with whom the `child` was added to the `Sequence`."""
 
 
-class Sequence():
+class Sequence:
     """A Sequence collects multiple `gcip.core.job.Job`s and/or other `Sequence`s into a group."""
+
     def __init__(self) -> None:
         super().__init__()
         self._children: List[ChildDict] = list()
@@ -92,15 +93,14 @@ class Sequence():
         self._parents.append(parent)
 
     def add_children(
-        self, *jobs_or_sequences: Union[Job, Sequence], namespace: Optional[str] = None, name: Optional[str] = None
+        self,
+        *jobs_or_sequences: Union[Job, Sequence],
+        namespace: Optional[str] = None,
+        name: Optional[str] = None,
     ) -> Sequence:
         for child in jobs_or_sequences:
             child._add_parent(self)
-            self._children.append({
-                "child": child,
-                "namespace": namespace,
-                "name": name
-            })
+            self._children.append({"child": child, "namespace": namespace, "name": name})
         return self
 
     def add_variables(self, **variables: str) -> Sequence:

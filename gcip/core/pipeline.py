@@ -12,9 +12,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 class JobNameConflictError(Exception):
@@ -27,6 +27,7 @@ class JobNameConflictError(Exception):
     Attributes:
         job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
     """
+
     def __init__(self, job: Job):
         super().__init__(
             f"Two jobs have the same name '{job.name}' when rendering the pipeline."
@@ -107,9 +108,11 @@ class Pipeline(Sequence):
 
     def dump_yaml(self) -> None:
         import yaml
+
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
 
     def write_yaml(self, filename: str = "generated-config.yml") -> None:
         import yaml
+
         with open(filename, "w") as generated_config:
             generated_config.write(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))

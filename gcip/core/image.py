@@ -1,7 +1,7 @@
 from typing import Dict, List, Union, Optional
 
 
-class Image():
+class Image:
     def __init__(self, name: str, *, entrypoint: Optional[List[str]] = None) -> None:
         """Creates an object which represents an `image` for a job inside a pipeline.
 

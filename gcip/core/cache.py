@@ -51,7 +51,7 @@ class CachePolicy(Enum):
     """
 
 
-class CacheKey():
+class CacheKey:
     """This class represents the [cache:key](https://docs.gitlab.com/ee/ci/yaml/#cachekey) keyword.
 
     Gitlab CI documentation: _"The key keyword defines the affinity of caching between jobs. You can have a single cache for
@@ -73,7 +73,14 @@ class CacheKey():
         ValueError: If `prefix` but not `files` is provided.
         ValueError: If `key` is only made out of dots '.'.
     """
-    def __init__(self, key: Optional[str] = None, *, files: Optional[List[str]] = None, prefix: Optional[str] = None) -> None:
+
+    def __init__(
+        self,
+        key: Optional[str] = None,
+        *,
+        files: Optional[List[str]] = None,
+        prefix: Optional[str] = None,
+    ) -> None:
         self._key = key
         self._files = files
         self._prefix = prefix
@@ -130,7 +137,7 @@ class CacheKey():
         return rendered
 
 
-class Cache():
+class Cache:
     """This class represents the [cache](https://docs.gitlab.com/ee/ci/yaml/#cache) keyword.
 
     Gitlab CI documentation: _"Use cache to specify a list of files and directories to cache between `gcip.core.job.Job`s.
@@ -152,6 +159,7 @@ class Cache():
     Raises:
         ValueError: For unsupported values for the `when` parameter.
     """
+
     def __init__(
         self,
         paths: str,
@@ -170,7 +178,7 @@ class Cache():
         # are relative to CI_PROJECT_PATH
         for path in paths:
             if PredefinedVariables.CI_PROJECT_PATH and path.startswith(PredefinedVariables.CI_PROJECT_PATH):
-                path = path[len(PredefinedVariables.CI_PROJECT_PATH):]
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH) :]
 
             if not path.startswith("./"):
                 path = "./" + path
@@ -182,7 +190,11 @@ class Cache():
         else:
             self._cache_key = CacheKey()
 
-        allowed_when_statements = [WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS]
+        allowed_when_statements = [
+            WhenStatement.ON_SUCCESS,
+            WhenStatement.ON_FAILURE,
+            WhenStatement.ALWAYS,
+        ]
         if self._when and self._when not in allowed_when_statements:
             raise ValueError(f"{self._when} is not allowed. Allowed when statements: {allowed_when_statements}")
 
@@ -221,9 +233,7 @@ class Cache():
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         """
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
-        rendered = {
-            "paths": self._paths
-        }
+        rendered = {"paths": self._paths}
         if self._when:
             rendered["when"] = self._when.value
         if self._untracked:

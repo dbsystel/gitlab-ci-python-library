@@ -7,9 +7,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 class Include(metaclass=ABCMeta):
@@ -22,9 +22,7 @@ class Include(metaclass=ABCMeta):
 
 class IncludeLocal(Include):
     def __init__(self, local: str) -> None:
-        self._rendered_include = {
-            "local": local
-        }
+        self._rendered_include = {"local": local}
 
 
 class IncludeFile(Include):
@@ -34,10 +32,7 @@ class IncludeFile(Include):
         project: str,
         ref: Optional[str] = None,
     ) -> None:
-        self._rendered_include = {
-            "file": file,
-            "project": project
-        }
+        self._rendered_include = {"file": file, "project": project}
         if ref:
             self._rendered_include["ref"] = ref
 
@@ -47,22 +42,16 @@ class IncludeRemote(Include):
         if not is_valid_url(remote):
             raise ValueError(f"`remote` is not a valid URL: {remote}")
 
-        self._rendered_include = {
-            "remote": remote
-        }
+        self._rendered_include = {"remote": remote}
 
 
 class IncludeTemplate(Include):
     def __init__(self, template: str):
-        self._rendered_include = {
-            "template": template
-        }
+        self._rendered_include = {"template": template}
 
 
 class IncludeArtifact(Include):
     """for triggering a child pipeline with generated configuration file"""
+
     def __init__(self, job: str, artifact: str):
-        self._rendered_include = {
-            "job": job,
-            "artifact": artifact
-        }
+        self._rendered_include = {"job": job, "artifact": artifact}

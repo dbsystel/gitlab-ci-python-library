@@ -50,11 +50,8 @@ class Need(object):
         """
         rendered_need: Dict[str, Union[str, bool]] = {
             "job": self._job,
-            "artifacts": self._artifacts
+            "artifacts": self._artifacts,
         }
         if self._project and self._ref:
-            rendered_need.update({
-                "project": self._project,
-                "ref": self._ref
-            })
+            rendered_need.update({"project": self._project, "ref": self._ref})
         return rendered_need
