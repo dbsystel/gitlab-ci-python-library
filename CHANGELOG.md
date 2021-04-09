@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `gcip.addon.container.job.trivy.scan_local_image` to scan local container images of vulnerabilities.
 * Added set_config_file_path method to DockerClientConfig.
 * Return own instance on each method call for DockerClientConfig instances.
+* Added Registry class to `gcip.addons.container.registry` module. It contains constants of Container registries.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
