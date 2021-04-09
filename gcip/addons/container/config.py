@@ -23,7 +23,7 @@ from gcip.addons.container.registries import Registry
 DockerConfig = Dict[str, Any]
 
 
-class DockerClientConfig():
+class DockerClientConfig:
     def __init__(self) -> None:
         """
         Class which represents a docker client configuration.
@@ -81,9 +81,7 @@ class DockerClientConfig():
             registry (str): Name of the container registry to set `creds_helper` for.
             cred_helper (str): Name of the credential helper to use together with the `registry`.
         """
-        compose = {
-            registry: cred_helper
-        }
+        compose = {registry: cred_helper}
         if "credsHelpers" not in self.config.keys():
             self.config["credHelpers"] = compose
         else:
@@ -111,7 +109,7 @@ class DockerClientConfig():
         compose = {
             registry: {
                 "username": "$" + username_env_var,
-                "password": "$" + password_env_var
+                "password": "$" + password_env_var,
             }
         }
 

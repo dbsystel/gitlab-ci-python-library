@@ -114,12 +114,12 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
-class Job():
+class Job:
     """This class represents the Gitlab CI [Job](https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords)
 
     Attributes:
@@ -130,6 +130,7 @@ class Job():
         namespace (Optional[str]): The name and stage of the job. In opposite to `name` also the jobs stage will be setup with this value.
             Either `name` or `namespace` must be set. Defaults to `None`.
     """
+
     def __init__(
         self,
         *,
@@ -407,8 +408,7 @@ class Job():
         Return:
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         """
-        from .sequence import \
-            Sequence  # late import to avoid circular dependencies
+        from .sequence import Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -441,10 +441,12 @@ class Job():
 
             rendered_job.update({"needs": rendered_needs})
 
-        rendered_job.update({
-            "stage": self._stage,
-            "script": self._scripts,
-        })
+        rendered_job.update(
+            {
+                "stage": self._stage,
+                "script": self._scripts,
+            }
+        )
 
         if self._variables:
             rendered_job["variables"] = self._variables
@@ -456,9 +458,13 @@ class Job():
             rendered_job.update({"rules": rendered_rules})
 
         if self._artifacts_paths.keys():
-            rendered_job.update({"artifacts": {
-                "paths": list(self._artifacts_paths.keys()),
-            }})
+            rendered_job.update(
+                {
+                    "artifacts": {
+                        "paths": list(self._artifacts_paths.keys()),
+                    }
+                }
+            )
 
         if self._cache:
             rendered_job.update({"cache": self._cache.render()})
@@ -509,6 +515,7 @@ class TriggerJob(Job):
         ValueError: When the limit of three child pipelines is exceeded. See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html
             for more information.
     """
+
     def __init__(
         self,
         *args: Any,
@@ -539,10 +546,7 @@ class TriggerJob(Job):
         elif isinstance(includes, list):
             if len(includes) > 3:
                 raise ValueError(
-                    (
-                        "The length of 'includes' is limited to three."
-                        "See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information."
-                    )
+                    ("The length of 'includes' is limited to three." "See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information.")
                 )
             self._includes = includes
         else:
@@ -580,24 +584,25 @@ class TriggerJob(Job):
 
         # Child pipelines
         if self._includes:
-            trigger.update({
-                "include": [include.render() for include in self._includes],
-            })
+            trigger.update(
+                {
+                    "include": [include.render() for include in self._includes],
+                }
+            )
 
         # Multiproject pipelines
         if self._project:
-            trigger.update({
-                "project": self._project,
-            })
+            trigger.update(
+                {
+                    "project": self._project,
+                }
+            )
             if self._branch:
                 trigger.update({"branch": self._branch})
 
         if self._strategy:
             trigger.update({"strategy": self._strategy.value})
 
-        rendered_job = {
-            "trigger": trigger,
-            **rendered_job
-        }
+        rendered_job = {"trigger": trigger, **rendered_job}
 
         return rendered_job

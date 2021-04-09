@@ -7,12 +7,19 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
-def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, qualifier: str, **tags: str) -> Job:
+def bootstrap(
+    *args: None,
+    aws_account_id: str,
+    aws_region: str,
+    toolkit_stack_name: str,
+    qualifier: str,
+    **tags: str,
+) -> Job:
     """
     Test
     """
@@ -21,8 +28,7 @@ def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_n
         script="cdk bootstrap"
         f" --toolkit-stack-name {toolkit_stack_name}"
         f" --qualifier {qualifier}"
-        f" aws://{aws_account_id}/{aws_region}" +
-        " ".join([""] + list(map(lambda keyvalue: f"-t {keyvalue[0]}={keyvalue[1]}", tags.items()))),
+        f" aws://{aws_account_id}/{aws_region}" + " ".join([""] + list(map(lambda keyvalue: f"-t {keyvalue[0]}={keyvalue[1]}", tags.items()))),
     ).add_variables(CDK_NEW_BOOTSTRAP="1")
 
 

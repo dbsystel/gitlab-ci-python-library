@@ -10,9 +10,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 def get_version() -> str:
@@ -20,7 +20,7 @@ def get_version() -> str:
     if ci_commit_tag is not None and pep440.is_canonical(ci_commit_tag):
         return ci_commit_tag
 
-    version_from_pipeline = os.getenv('GCIP_VERSION')
+    version_from_pipeline = os.getenv("GCIP_VERSION")
     if version_from_pipeline is not None:
         return version_from_pipeline
 
@@ -30,7 +30,7 @@ def get_version() -> str:
 with open("README.md") as fp:
     long_description_from_readme = fp.read()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     setuptools.setup(
         name="gcip",
         version=get_version(),
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         author="Thomas Steinbach",
         author_email="thomas.t.steinbach@deutschebahn.com",
         url=os.getenv("CI_PROJECT_URL"),
-        packages=setuptools.find_packages(exclude=("tests*", )),
+        packages=setuptools.find_packages(exclude=("tests*",)),
         include_package_data=True,
         python_requires="~=3.7",
         install_requires=[

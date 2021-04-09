@@ -15,7 +15,7 @@ def scan_local_image(
     vulnerability_types: Optional[str] = None,
     exit_if_vulnerable: bool = True,
     trivy_config: Optional[str] = None,
-    trivy_image: Optional[Union[Image, str]] = None
+    trivy_image: Optional[Union[Image, str]] = None,
 ) -> Job:
     """This job scanns container images to find vulnerabilities.
 

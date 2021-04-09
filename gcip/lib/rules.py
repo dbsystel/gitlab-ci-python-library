@@ -4,9 +4,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 def on_branch(branch_name: str) -> Rule:
@@ -55,4 +55,4 @@ def on_pipeline_trigger() -> Rule:
 
 
 def on_tags() -> Rule:
-    return Rule(if_statement='$CI_COMMIT_TAG')
+    return Rule(if_statement="$CI_COMMIT_TAG")

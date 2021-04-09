@@ -7,9 +7,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach", "Daniel von Eßen"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 class WhenStatement(Enum):
@@ -21,7 +21,7 @@ class WhenStatement(Enum):
     ON_SUCCESS = "on_success"
 
 
-class Rule():
+class Rule:
     def __init__(
         self,
         *args: Any,
@@ -42,8 +42,10 @@ class Rule():
         if self._if:
             rendered_rule.update({"if": self._if})
 
-        rendered_rule.update({
-            "when": self._when.value,
-            "allow_failure": self._allow_failure,
-        })
+        rendered_rule.update(
+            {
+                "when": self._when.value,
+                "allow_failure": self._allow_failure,
+            }
+        )
         return rendered_rule

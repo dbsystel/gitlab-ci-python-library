@@ -8,9 +8,9 @@ __author__ = "Thomas Steinbach"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
 __credits__ = ["Thomas Steinbach"]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = 'Apache-2.0'
-__maintainer__ = 'Thomas Steinbach'
-__email__ = 'thomas.t.steinbach@deutschebahn.com'
+__license__ = "Apache-2.0"
+__maintainer__ = "Thomas Steinbach"
+__email__ = "thomas.t.steinbach@deutschebahn.com"
 
 if __name__ == "__main__":
 
@@ -39,54 +39,51 @@ if __name__ == "__main__":
     )
     args = argparser.parse_args()
 
-    config = Config(retries={
-        'max_attempts': 15,
-        'mode': 'standard'
-    })
+    config = Config(retries={"max_attempts": 15, "mode": "standard"})
 
     if args.assume_role:
         assume_role_account_id = args.assume_role_account_id
         if not assume_role_account_id:
-            assume_role_account_id = boto3.client('sts').get_caller_identity().get('Account')
+            assume_role_account_id = boto3.client("sts").get_caller_identity().get("Account")
 
-        sts_client = boto3.client('sts')
+        sts_client = boto3.client("sts")
         assumed_role_object = sts_client.assume_role(
             RoleArn=f"arn:aws:iam::{assume_role_account_id}:role/{args.assume_role}",
             RoleSessionName="AssumeRoleSession1",
         )
-        credentials = assumed_role_object['Credentials']
+        credentials = assumed_role_object["Credentials"]
         session = boto3.session.Session(
-            aws_access_key_id=credentials['AccessKeyId'],
-            aws_secret_access_key=credentials['SecretAccessKey'],
-            aws_session_token=credentials['SessionToken'],
+            aws_access_key_id=credentials["AccessKeyId"],
+            aws_secret_access_key=credentials["SecretAccessKey"],
+            aws_session_token=credentials["SessionToken"],
         )
-        cfn = session.client('cloudformation', config=config)
+        cfn = session.client("cloudformation", config=config)
     else:
-        cfn = boto3.client('cloudformation', config=config)
+        cfn = boto3.client("cloudformation", config=config)
 
     # everything but DELETE_COMPLETE
     stack_status_filter = [
-        'CREATE_IN_PROGRESS',
-        'CREATE_FAILED',
-        'CREATE_COMPLETE',
-        'ROLLBACK_IN_PROGRESS',
-        'ROLLBACK_FAILED',
-        'ROLLBACK_COMPLETE',
-        'DELETE_IN_PROGRESS',
-        'DELETE_FAILED',
-        'UPDATE_IN_PROGRESS',
-        'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS',
-        'UPDATE_COMPLETE',
-        'UPDATE_ROLLBACK_IN_PROGRESS',
-        'UPDATE_ROLLBACK_FAILED',
-        'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS',
-        'UPDATE_ROLLBACK_COMPLETE',
-        'REVIEW_IN_PROGRESS',
-        'IMPORT_IN_PROGRESS',
-        'IMPORT_COMPLETE',
-        'IMPORT_ROLLBACK_IN_PROGRESS',
-        'IMPORT_ROLLBACK_FAILED',
-        'IMPORT_ROLLBACK_COMPLETE',
+        "CREATE_IN_PROGRESS",
+        "CREATE_FAILED",
+        "CREATE_COMPLETE",
+        "ROLLBACK_IN_PROGRESS",
+        "ROLLBACK_FAILED",
+        "ROLLBACK_COMPLETE",
+        "DELETE_IN_PROGRESS",
+        "DELETE_FAILED",
+        "UPDATE_IN_PROGRESS",
+        "UPDATE_COMPLETE_CLEANUP_IN_PROGRESS",
+        "UPDATE_COMPLETE",
+        "UPDATE_ROLLBACK_IN_PROGRESS",
+        "UPDATE_ROLLBACK_FAILED",
+        "UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS",
+        "UPDATE_ROLLBACK_COMPLETE",
+        "REVIEW_IN_PROGRESS",
+        "IMPORT_IN_PROGRESS",
+        "IMPORT_COMPLETE",
+        "IMPORT_ROLLBACK_IN_PROGRESS",
+        "IMPORT_ROLLBACK_FAILED",
+        "IMPORT_ROLLBACK_COMPLETE",
     ]
 
     stacks = []
