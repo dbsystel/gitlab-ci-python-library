@@ -83,6 +83,9 @@ def execute(
     if not dockerfile:
         dockerfile = f"{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile"
 
+    if not docker_client_config:
+        docker_client_config = DockerClientConfig()
+
     executor_cmd = ["executor"]
     executor_cmd.append(f"--context {context}")
     executor_cmd.append(f"--dockerfile {dockerfile}")
@@ -127,8 +130,11 @@ def execute(
     )
     job.set_image(gitlab_executor_image)
 
-    if docker_client_config:
-        docker_client_config.set_config_file_path("/kaniko/.docker/config.json")
-        docker_client_shell_commands = [command.replace("index.docker.io/v2", "index.docker.io/v1") for command in docker_client_config.get_shell_command()]
-        job.prepend_scripts(*docker_client_shell_commands)
+    docker_client_config.set_config_file_path("/kaniko/.docker/config.json")
+
+    # Workaround to replace v2 api endpoint from dockerhub with v1 endpoint.
+    # https://github.com/GoogleContainerTools/kaniko/issues/1209
+    docker_client_shell_commands = [command.replace("index.docker.io/v2", "index.docker.io/v1") for command in docker_client_config.get_shell_command()]
+
+    job.prepend_scripts(*docker_client_shell_commands)
     return job
