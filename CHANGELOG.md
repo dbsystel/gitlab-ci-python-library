@@ -16,13 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
 * Line length check in flake8 linter to 160.
 * **BREAKING** Removed arguments from DockerClientConfig constructor to set config file path, use `set_config_file_path` of DockerClientConfig instance.
+* **BREAKING** Removed custom docker client config from kaniko job.
+  Added DockerClientConfig as a optional client configuration to kaniko job.
+  Simplyfied function and sorted initialisation tests an actuall composing of job.
 
 ### Fixed
 * Several linter issues has been fixed
 * Fixed kaniko build in gitlabci-local.sh
-* **BREAKING** Removed custom docker client config from kaniko job.
-  Added DockerClientConfig as a optional client configuration to kaniko job.
-  Simplyfied function and sorted initialisation tests an actuall composing of job.
+
 
 ## [0.6.1] - 2021-04-07
 
