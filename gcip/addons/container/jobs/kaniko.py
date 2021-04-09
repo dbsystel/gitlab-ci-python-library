@@ -128,5 +128,7 @@ def execute(
     job.set_image(gitlab_executor_image)
 
     if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
+        docker_client_config.set_config_file_path("/kaniko/.docker/config.json")
+        docker_client_shell_commands = [command.replace("index.docker.io/v2", "index.docker.io/v1") for command in docker_client_config.get_shell_command()]
+        job.prepend_scripts(*docker_client_shell_commands)
     return job
