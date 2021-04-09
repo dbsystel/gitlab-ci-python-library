@@ -20,6 +20,7 @@ def test_default_kaniko_job(gitlab_ci_environment_variables):
 
     conftest.check(pipeline.render())
 
+
 def test_container_kaniko_job_docker_v2_replacement_(gitlab_ci_environment_variables):
     pipeline = Pipeline()
     dcc = DockerClientConfig()
