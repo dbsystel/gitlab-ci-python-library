@@ -5,7 +5,7 @@ from gcip.addons.container.config import DockerClientConfig
 def test_docker_client_config():
     dcc = DockerClientConfig()
     dcc.add_auth("index.docker.com")
-    conftest.check(dcc.get_shell_command())
+    conftest.check({"shell_command": dcc.get_shell_command()})
 
 
 def test_complex_docker_client_config():
@@ -18,7 +18,7 @@ def test_complex_docker_client_config():
             "httpProxy": "127.0.0.1:1234"
         }
     }})
-    conftest.check(dcc.get_shell_command())
+    conftest.check({"shell_command": dcc.get_shell_command()})
 
 
 def test_docker_client_config_set_config_file_path():
