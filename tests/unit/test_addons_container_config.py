@@ -1,5 +1,6 @@
 from tests import conftest
 from gcip.addons.container.config import DockerClientConfig
+from gcip.addons.container.registries import Registry
 
 
 def test_docker_client_config():
@@ -24,4 +25,11 @@ def test_complex_docker_client_config():
 def test_docker_client_config_set_config_file_path():
     dcc = DockerClientConfig()
     dcc.set_config_file_path("/kaniko/.docker/other.json")
+    conftest.check({"shell_command": dcc.get_shell_command()})
+
+
+def test_docker_client_config_registry_constant():
+    dcc = DockerClientConfig()
+    dcc.add_auth(Registry.DOCKER)
+    dcc.add_cred_helper(Registry.GCR, cred_helper="gcr-login")
     conftest.check({"shell_command": dcc.get_shell_command()})

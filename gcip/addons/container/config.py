@@ -92,7 +92,7 @@ class DockerClientConfig():
 
     def add_auth(
         self,
-        registry: str,
+        registry: Union[Registry, str],
         username_env_var: str = "REGISTRY_USERNAME",
         password_env_var: str = "REGISTRY_PASSWORD",
     ) -> DockerClientConfig:
