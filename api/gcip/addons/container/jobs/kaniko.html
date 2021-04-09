@@ -156,7 +156,9 @@ def execute(
     job.set_image(gitlab_executor_image)
 
     if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
+        docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
+        docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
+        job.prepend_scripts(*docker_client_shell_commands)
     return job</code></pre>
 </details>
 </section>
@@ -329,7 +331,9 @@ used by crane to authenticate against given registries. Defaults to None.</dd>
     job.set_image(gitlab_executor_image)
 
     if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
+        docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
+        docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
+        job.prepend_scripts(*docker_client_shell_commands)
     return job</code></pre>
 </details>
 </dd>
