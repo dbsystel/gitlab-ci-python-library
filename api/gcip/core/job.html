@@ -214,12 +214,12 @@ __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#39;Apache-2.0&#39;
-__maintainer__ = &#39;Thomas Steinbach&#39;
-__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+__license__ = &#34;Apache-2.0&#34;
+__maintainer__ = &#34;Thomas Steinbach&#34;
+__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
-class Job():
+class Job:
     &#34;&#34;&#34;This class represents the Gitlab CI [Job](https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords)
 
     Attributes:
@@ -230,6 +230,7 @@ class Job():
         namespace (Optional[str]): The name and stage of the job. In opposite to `name` also the jobs stage will be setup with this value.
             Either `name` or `namespace` must be set. Defaults to `None`.
     &#34;&#34;&#34;
+
     def __init__(
         self,
         *,
@@ -507,8 +508,7 @@ class Job():
         Return:
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
-        from .sequence import \
-            Sequence  # late import to avoid circular dependencies
+        from .sequence import Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -541,10 +541,12 @@ class Job():
 
             rendered_job.update({&#34;needs&#34;: rendered_needs})
 
-        rendered_job.update({
-            &#34;stage&#34;: self._stage,
-            &#34;script&#34;: self._scripts,
-        })
+        rendered_job.update(
+            {
+                &#34;stage&#34;: self._stage,
+                &#34;script&#34;: self._scripts,
+            }
+        )
 
         if self._variables:
             rendered_job[&#34;variables&#34;] = self._variables
@@ -556,9 +558,13 @@ class Job():
             rendered_job.update({&#34;rules&#34;: rendered_rules})
 
         if self._artifacts_paths.keys():
-            rendered_job.update({&#34;artifacts&#34;: {
-                &#34;paths&#34;: list(self._artifacts_paths.keys()),
-            }})
+            rendered_job.update(
+                {
+                    &#34;artifacts&#34;: {
+                        &#34;paths&#34;: list(self._artifacts_paths.keys()),
+                    }
+                }
+            )
 
         if self._cache:
             rendered_job.update({&#34;cache&#34;: self._cache.render()})
@@ -609,6 +615,7 @@ class TriggerJob(Job):
         ValueError: When the limit of three child pipelines is exceeded. See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html
             for more information.
     &#34;&#34;&#34;
+
     def __init__(
         self,
         *args: Any,
@@ -639,10 +646,7 @@ class TriggerJob(Job):
         elif isinstance(includes, list):
             if len(includes) &gt; 3:
                 raise ValueError(
-                    (
-                        &#34;The length of &#39;includes&#39; is limited to three.&#34;
-                        &#34;See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information.&#34;
-                    )
+                    (&#34;The length of &#39;includes&#39; is limited to three.&#34; &#34;See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information.&#34;)
                 )
             self._includes = includes
         else:
@@ -680,25 +684,26 @@ class TriggerJob(Job):
 
         # Child pipelines
         if self._includes:
-            trigger.update({
-                &#34;include&#34;: [include.render() for include in self._includes],
-            })
+            trigger.update(
+                {
+                    &#34;include&#34;: [include.render() for include in self._includes],
+                }
+            )
 
         # Multiproject pipelines
         if self._project:
-            trigger.update({
-                &#34;project&#34;: self._project,
-            })
+            trigger.update(
+                {
+                    &#34;project&#34;: self._project,
+                }
+            )
             if self._branch:
                 trigger.update({&#34;branch&#34;: self._branch})
 
         if self._strategy:
             trigger.update({&#34;strategy&#34;: self._strategy.value})
 
-        rendered_job = {
-            &#34;trigger&#34;: trigger,
-            **rendered_job
-        }
+        rendered_job = {&#34;trigger&#34;: trigger, **rendered_job}
 
         return rendered_job</code></pre>
 </details>
@@ -734,7 +739,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Job():
+<pre><code class="python">class Job:
     &#34;&#34;&#34;This class represents the Gitlab CI [Job](https://docs.gitlab.com/ee/ci/yaml/README.html#job-keywords)
 
     Attributes:
@@ -745,6 +750,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         namespace (Optional[str]): The name and stage of the job. In opposite to `name` also the jobs stage will be setup with this value.
             Either `name` or `namespace` must be set. Defaults to `None`.
     &#34;&#34;&#34;
+
     def __init__(
         self,
         *,
@@ -1022,8 +1028,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         Return:
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
-        from .sequence import \
-            Sequence  # late import to avoid circular dependencies
+        from .sequence import Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -1056,10 +1061,12 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
 
             rendered_job.update({&#34;needs&#34;: rendered_needs})
 
-        rendered_job.update({
-            &#34;stage&#34;: self._stage,
-            &#34;script&#34;: self._scripts,
-        })
+        rendered_job.update(
+            {
+                &#34;stage&#34;: self._stage,
+                &#34;script&#34;: self._scripts,
+            }
+        )
 
         if self._variables:
             rendered_job[&#34;variables&#34;] = self._variables
@@ -1071,9 +1078,13 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
             rendered_job.update({&#34;rules&#34;: rendered_rules})
 
         if self._artifacts_paths.keys():
-            rendered_job.update({&#34;artifacts&#34;: {
-                &#34;paths&#34;: list(self._artifacts_paths.keys()),
-            }})
+            rendered_job.update(
+                {
+                    &#34;artifacts&#34;: {
+                        &#34;paths&#34;: list(self._artifacts_paths.keys()),
+                    }
+                }
+            )
 
         if self._cache:
             rendered_job.update({&#34;cache&#34;: self._cache.render()})
@@ -1393,8 +1404,7 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
     Return:
         Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
     &#34;&#34;&#34;
-    from .sequence import \
-        Sequence  # late import to avoid circular dependencies
+    from .sequence import Sequence  # late import to avoid circular dependencies
 
     rendered_job: Dict[str, Any] = {}
 
@@ -1427,10 +1437,12 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 
         rendered_job.update({&#34;needs&#34;: rendered_needs})
 
-    rendered_job.update({
-        &#34;stage&#34;: self._stage,
-        &#34;script&#34;: self._scripts,
-    })
+    rendered_job.update(
+        {
+            &#34;stage&#34;: self._stage,
+            &#34;script&#34;: self._scripts,
+        }
+    )
 
     if self._variables:
         rendered_job[&#34;variables&#34;] = self._variables
@@ -1442,9 +1454,13 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
         rendered_job.update({&#34;rules&#34;: rendered_rules})
 
     if self._artifacts_paths.keys():
-        rendered_job.update({&#34;artifacts&#34;: {
-            &#34;paths&#34;: list(self._artifacts_paths.keys()),
-        }})
+        rendered_job.update(
+            {
+                &#34;artifacts&#34;: {
+                    &#34;paths&#34;: list(self._artifacts_paths.keys()),
+                }
+            }
+        )
 
     if self._cache:
         rendered_job.update({&#34;cache&#34;: self._cache.render()})
@@ -1608,6 +1624,7 @@ for more information.</dd>
         ValueError: When the limit of three child pipelines is exceeded. See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html
             for more information.
     &#34;&#34;&#34;
+
     def __init__(
         self,
         *args: Any,
@@ -1638,10 +1655,7 @@ for more information.</dd>
         elif isinstance(includes, list):
             if len(includes) &gt; 3:
                 raise ValueError(
-                    (
-                        &#34;The length of &#39;includes&#39; is limited to three.&#34;
-                        &#34;See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information.&#34;
-                    )
+                    (&#34;The length of &#39;includes&#39; is limited to three.&#34; &#34;See https://docs.gitlab.com/ee/ci/parent_child_pipelines.html for more information.&#34;)
                 )
             self._includes = includes
         else:
@@ -1679,25 +1693,26 @@ for more information.</dd>
 
         # Child pipelines
         if self._includes:
-            trigger.update({
-                &#34;include&#34;: [include.render() for include in self._includes],
-            })
+            trigger.update(
+                {
+                    &#34;include&#34;: [include.render() for include in self._includes],
+                }
+            )
 
         # Multiproject pipelines
         if self._project:
-            trigger.update({
-                &#34;project&#34;: self._project,
-            })
+            trigger.update(
+                {
+                    &#34;project&#34;: self._project,
+                }
+            )
             if self._branch:
                 trigger.update({&#34;branch&#34;: self._branch})
 
         if self._strategy:
             trigger.update({&#34;strategy&#34;: self._strategy.value})
 
-        rendered_job = {
-            &#34;trigger&#34;: trigger,
-            **rendered_job
-        }
+        rendered_job = {&#34;trigger&#34;: trigger, **rendered_job}
 
         return rendered_job</code></pre>
 </details>

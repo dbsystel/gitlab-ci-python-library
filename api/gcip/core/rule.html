@@ -35,9 +35,9 @@ __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#39;Apache-2.0&#39;
-__maintainer__ = &#39;Thomas Steinbach&#39;
-__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+__license__ = &#34;Apache-2.0&#34;
+__maintainer__ = &#34;Thomas Steinbach&#34;
+__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
 class WhenStatement(Enum):
@@ -49,7 +49,7 @@ class WhenStatement(Enum):
     ON_SUCCESS = &#34;on_success&#34;
 
 
-class Rule():
+class Rule:
     def __init__(
         self,
         *args: Any,
@@ -70,10 +70,12 @@ class Rule():
         if self._if:
             rendered_rule.update({&#34;if&#34;: self._if})
 
-        rendered_rule.update({
-            &#34;when&#34;: self._when.value,
-            &#34;allow_failure&#34;: self._allow_failure,
-        })
+        rendered_rule.update(
+            {
+                &#34;when&#34;: self._when.value,
+                &#34;allow_failure&#34;: self._allow_failure,
+            }
+        )
         return rendered_rule</code></pre>
 </details>
 </section>
@@ -96,7 +98,7 @@ class Rule():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Rule():
+<pre><code class="python">class Rule:
     def __init__(
         self,
         *args: Any,
@@ -117,10 +119,12 @@ class Rule():
         if self._if:
             rendered_rule.update({&#34;if&#34;: self._if})
 
-        rendered_rule.update({
-            &#34;when&#34;: self._when.value,
-            &#34;allow_failure&#34;: self._allow_failure,
-        })
+        rendered_rule.update(
+            {
+                &#34;when&#34;: self._when.value,
+                &#34;allow_failure&#34;: self._allow_failure,
+            }
+        )
         return rendered_rule</code></pre>
 </details>
 <h3>Methods</h3>
@@ -153,10 +157,12 @@ class Rule():
     if self._if:
         rendered_rule.update({&#34;if&#34;: self._if})
 
-    rendered_rule.update({
-        &#34;when&#34;: self._when.value,
-        &#34;allow_failure&#34;: self._allow_failure,
-    })
+    rendered_rule.update(
+        {
+            &#34;when&#34;: self._when.value,
+            &#34;allow_failure&#34;: self._allow_failure,
+        }
+    )
     return rendered_rule</code></pre>
 </details>
 </dd>

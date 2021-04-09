@@ -98,7 +98,7 @@ class CachePolicy(Enum):
     &#34;&#34;&#34;
 
 
-class CacheKey():
+class CacheKey:
     &#34;&#34;&#34;This class represents the [cache:key](https://docs.gitlab.com/ee/ci/yaml/#cachekey) keyword.
 
     Gitlab CI documentation: _&#34;The key keyword defines the affinity of caching between jobs. You can have a single cache for
@@ -120,7 +120,14 @@ class CacheKey():
         ValueError: If `prefix` but not `files` is provided.
         ValueError: If `key` is only made out of dots &#39;.&#39;.
     &#34;&#34;&#34;
-    def __init__(self, key: Optional[str] = None, *, files: Optional[List[str]] = None, prefix: Optional[str] = None) -&gt; None:
+
+    def __init__(
+        self,
+        key: Optional[str] = None,
+        *,
+        files: Optional[List[str]] = None,
+        prefix: Optional[str] = None,
+    ) -&gt; None:
         self._key = key
         self._files = files
         self._prefix = prefix
@@ -177,7 +184,7 @@ class CacheKey():
         return rendered
 
 
-class Cache():
+class Cache:
     &#34;&#34;&#34;This class represents the [cache](https://docs.gitlab.com/ee/ci/yaml/#cache) keyword.
 
     Gitlab CI documentation: _&#34;Use cache to specify a list of files and directories to cache between `gcip.core.job.Job`s.
@@ -199,6 +206,7 @@ class Cache():
     Raises:
         ValueError: For unsupported values for the `when` parameter.
     &#34;&#34;&#34;
+
     def __init__(
         self,
         paths: str,
@@ -217,7 +225,7 @@ class Cache():
         # are relative to CI_PROJECT_PATH
         for path in paths:
             if PredefinedVariables.CI_PROJECT_PATH and path.startswith(PredefinedVariables.CI_PROJECT_PATH):
-                path = path[len(PredefinedVariables.CI_PROJECT_PATH):]
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH) :]
 
             if not path.startswith(&#34;./&#34;):
                 path = &#34;./&#34; + path
@@ -229,7 +237,11 @@ class Cache():
         else:
             self._cache_key = CacheKey()
 
-        allowed_when_statements = [WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS]
+        allowed_when_statements = [
+            WhenStatement.ON_SUCCESS,
+            WhenStatement.ON_FAILURE,
+            WhenStatement.ALWAYS,
+        ]
         if self._when and self._when not in allowed_when_statements:
             raise ValueError(f&#34;{self._when} is not allowed. Allowed when statements: {allowed_when_statements}&#34;)
 
@@ -268,9 +280,7 @@ class Cache():
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
-        rendered = {
-            &#34;paths&#34;: self._paths
-        }
+        rendered = {&#34;paths&#34;: self._paths}
         if self._when:
             rendered[&#34;when&#34;] = self._when.value
         if self._untracked:
@@ -327,7 +337,7 @@ Defaults to None (unset).</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Cache():
+<pre><code class="python">class Cache:
     &#34;&#34;&#34;This class represents the [cache](https://docs.gitlab.com/ee/ci/yaml/#cache) keyword.
 
     Gitlab CI documentation: _&#34;Use cache to specify a list of files and directories to cache between `gcip.core.job.Job`s.
@@ -349,6 +359,7 @@ Defaults to None (unset).</dd>
     Raises:
         ValueError: For unsupported values for the `when` parameter.
     &#34;&#34;&#34;
+
     def __init__(
         self,
         paths: str,
@@ -367,7 +378,7 @@ Defaults to None (unset).</dd>
         # are relative to CI_PROJECT_PATH
         for path in paths:
             if PredefinedVariables.CI_PROJECT_PATH and path.startswith(PredefinedVariables.CI_PROJECT_PATH):
-                path = path[len(PredefinedVariables.CI_PROJECT_PATH):]
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH) :]
 
             if not path.startswith(&#34;./&#34;):
                 path = &#34;./&#34; + path
@@ -379,7 +390,11 @@ Defaults to None (unset).</dd>
         else:
             self._cache_key = CacheKey()
 
-        allowed_when_statements = [WhenStatement.ON_SUCCESS, WhenStatement.ON_FAILURE, WhenStatement.ALWAYS]
+        allowed_when_statements = [
+            WhenStatement.ON_SUCCESS,
+            WhenStatement.ON_FAILURE,
+            WhenStatement.ALWAYS,
+        ]
         if self._when and self._when not in allowed_when_statements:
             raise ValueError(f&#34;{self._when} is not allowed. Allowed when statements: {allowed_when_statements}&#34;)
 
@@ -418,9 +433,7 @@ Defaults to None (unset).</dd>
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
         rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
-        rendered = {
-            &#34;paths&#34;: self._paths
-        }
+        rendered = {&#34;paths&#34;: self._paths}
         if self._when:
             rendered[&#34;when&#34;] = self._when.value
         if self._untracked:
@@ -527,9 +540,7 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
         Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
     &#34;&#34;&#34;
     rendered: Dict[str, Union[str, bool, List[str], Union[str, Dict[str, Union[List[str], str]]]]]
-    rendered = {
-        &#34;paths&#34;: self._paths
-    }
+    rendered = {&#34;paths&#34;: self._paths}
     if self._when:
         rendered[&#34;when&#34;] = self._when.value
     if self._untracked:
@@ -580,7 +591,7 @@ subsequent pipeline runs. Mutually exclusive with <code>keys</code>. Defaults to
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CacheKey():
+<pre><code class="python">class CacheKey:
     &#34;&#34;&#34;This class represents the [cache:key](https://docs.gitlab.com/ee/ci/yaml/#cachekey) keyword.
 
     Gitlab CI documentation: _&#34;The key keyword defines the affinity of caching between jobs. You can have a single cache for
@@ -602,7 +613,14 @@ subsequent pipeline runs. Mutually exclusive with <code>keys</code>. Defaults to
         ValueError: If `prefix` but not `files` is provided.
         ValueError: If `key` is only made out of dots &#39;.&#39;.
     &#34;&#34;&#34;
-    def __init__(self, key: Optional[str] = None, *, files: Optional[List[str]] = None, prefix: Optional[str] = None) -&gt; None:
+
+    def __init__(
+        self,
+        key: Optional[str] = None,
+        *,
+        files: Optional[List[str]] = None,
+        prefix: Optional[str] = None,
+    ) -&gt; None:
         self._key = key
         self._files = files
         self._prefix = prefix

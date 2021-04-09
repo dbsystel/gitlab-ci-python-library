@@ -35,12 +35,19 @@ __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Thomas Steinbach&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#39;Apache-2.0&#39;
-__maintainer__ = &#39;Thomas Steinbach&#39;
-__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+__license__ = &#34;Apache-2.0&#34;
+__maintainer__ = &#34;Thomas Steinbach&#34;
+__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
-def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, qualifier: str, **tags: str) -&gt; Job:
+def bootstrap(
+    *args: None,
+    aws_account_id: str,
+    aws_region: str,
+    toolkit_stack_name: str,
+    qualifier: str,
+    **tags: str,
+) -&gt; Job:
     &#34;&#34;&#34;
     Test
     &#34;&#34;&#34;
@@ -49,8 +56,7 @@ def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_n
         script=&#34;cdk bootstrap&#34;
         f&#34; --toolkit-stack-name {toolkit_stack_name}&#34;
         f&#34; --qualifier {qualifier}&#34;
-        f&#34; aws://{aws_account_id}/{aws_region}&#34; +
-        &#34; &#34;.join([&#34;&#34;] + list(map(lambda keyvalue: f&#34;-t {keyvalue[0]}={keyvalue[1]}&#34;, tags.items()))),
+        f&#34; aws://{aws_account_id}/{aws_region}&#34; + &#34; &#34;.join([&#34;&#34;] + list(map(lambda keyvalue: f&#34;-t {keyvalue[0]}={keyvalue[1]}&#34;, tags.items()))),
     ).add_variables(CDK_NEW_BOOTSTRAP=&#34;1&#34;)
 
 
@@ -131,7 +137,14 @@ def deploy(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def bootstrap(*args: None, aws_account_id: str, aws_region: str, toolkit_stack_name: str, qualifier: str, **tags: str) -&gt; Job:
+<pre><code class="python">def bootstrap(
+    *args: None,
+    aws_account_id: str,
+    aws_region: str,
+    toolkit_stack_name: str,
+    qualifier: str,
+    **tags: str,
+) -&gt; Job:
     &#34;&#34;&#34;
     Test
     &#34;&#34;&#34;
@@ -140,8 +153,7 @@ def deploy(
         script=&#34;cdk bootstrap&#34;
         f&#34; --toolkit-stack-name {toolkit_stack_name}&#34;
         f&#34; --qualifier {qualifier}&#34;
-        f&#34; aws://{aws_account_id}/{aws_region}&#34; +
-        &#34; &#34;.join([&#34;&#34;] + list(map(lambda keyvalue: f&#34;-t {keyvalue[0]}={keyvalue[1]}&#34;, tags.items()))),
+        f&#34; aws://{aws_account_id}/{aws_region}&#34; + &#34; &#34;.join([&#34;&#34;] + list(map(lambda keyvalue: f&#34;-t {keyvalue[0]}={keyvalue[1]}&#34;, tags.items()))),
     ).add_variables(CDK_NEW_BOOTSTRAP=&#34;1&#34;)</code></pre>
 </details>
 </dd>
