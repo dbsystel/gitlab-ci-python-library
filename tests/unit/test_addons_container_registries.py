@@ -1,5 +1,3 @@
-from typing import get_args
-
 import pytest
 
 from gcip.addons.container.registries import Registry
