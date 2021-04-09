@@ -6,6 +6,7 @@ from gcip.core.image import Image
 from gcip.core.variables import PredefinedVariables
 from gcip.addons.container.config import DockerClientConfig
 from gcip.addons.container.images import PredefinedImages
+from gcip.addons.container.registries import Registry
 
 __author__ = "Daniel von Eßen"
 __copyright__ = "Copyright 2020 DB Systel GmbH"
@@ -54,7 +55,8 @@ def execute(
         enable_push (bool, optional): Enable push to container registry, disabled to allow subsequent jobs to act on container tarball.
             Defaults to False.
         docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
-            used by crane to authenticate against given registries. Defaults to None.
+            to authenticate against given registries. Defaults to a `DockerClientConfig` with login to the official Docker Hub
+            and expecting credentials given as environment variables `REGISTRY_USER` and `REGISTRY_LOGIN`.
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to "info".
 
     Returns:
@@ -85,6 +87,7 @@ def execute(
 
     if not docker_client_config:
         docker_client_config = DockerClientConfig()
+        docker_client_config.add_auth(registry=Registry.DOCKER)
 
     executor_cmd = ["executor"]
     executor_cmd.append(f"--context {context}")
