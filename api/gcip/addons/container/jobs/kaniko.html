@@ -111,6 +111,9 @@ def execute(
     if not dockerfile:
         dockerfile = f&#34;{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile&#34;
 
+    if not docker_client_config:
+        docker_client_config = DockerClientConfig()
+
     executor_cmd = [&#34;executor&#34;]
     executor_cmd.append(f&#34;--context {context}&#34;)
     executor_cmd.append(f&#34;--dockerfile {dockerfile}&#34;)
@@ -155,10 +158,13 @@ def execute(
     )
     job.set_image(gitlab_executor_image)
 
-    if docker_client_config:
-        docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
-        docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
-        job.prepend_scripts(*docker_client_shell_commands)
+    docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
+
+    # Workaround to replace v2 api endpoint from dockerhub with v1 endpoint.
+    # https://github.com/GoogleContainerTools/kaniko/issues/1209
+    docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
+
+    job.prepend_scripts(*docker_client_shell_commands)
     return job</code></pre>
 </details>
 </section>
@@ -286,6 +292,9 @@ used by crane to authenticate against given registries. Defaults to None.</dd>
     if not dockerfile:
         dockerfile = f&#34;{PredefinedVariables.CI_PROJECT_DIR}/Dockerfile&#34;
 
+    if not docker_client_config:
+        docker_client_config = DockerClientConfig()
+
     executor_cmd = [&#34;executor&#34;]
     executor_cmd.append(f&#34;--context {context}&#34;)
     executor_cmd.append(f&#34;--dockerfile {dockerfile}&#34;)
@@ -330,10 +339,13 @@ used by crane to authenticate against given registries. Defaults to None.</dd>
     )
     job.set_image(gitlab_executor_image)
 
-    if docker_client_config:
-        docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
-        docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
-        job.prepend_scripts(*docker_client_shell_commands)
+    docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
+
+    # Workaround to replace v2 api endpoint from dockerhub with v1 endpoint.
+    # https://github.com/GoogleContainerTools/kaniko/issues/1209
+    docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
+
+    job.prepend_scripts(*docker_client_shell_commands)
     return job</code></pre>
 </details>
 </dd>
