@@ -23,8 +23,7 @@ def test_default_kaniko_job(gitlab_ci_environment_variables):
 def test_container_kaniko_job_docker_v2_replacement_(gitlab_ci_environment_variables):
     pipeline = Pipeline()
     dcc = DockerClientConfig()
-    dcc.add_auth(Registry.DOCKER_HUB)
-
+    dcc.add_auth(Registry.DOCKER)
     pipeline.add_children(
         kaniko.execute(
             image_name="thomass/gcip",
