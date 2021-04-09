@@ -8,10 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 * Added `gcip.addon.container.job.trivy.scan_local_image` to scan local container images of vulnerabilities.
+* Added set_config_file_path method to DockerClientConfig.
+* Return own instance on each method call for DockerClientConfig instances.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
 * Line length check in flake8 linter to 160.
+* **BREAKING** Removed arguments from DockerClientConfig constructor to set config file path, use `set_config_file_path` of DockerClientConfig instance.
 
 ### Fixed
 * Several linter issues has been fixed

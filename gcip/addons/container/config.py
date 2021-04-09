@@ -12,32 +12,45 @@ cfg.render()
 
 This will render a Client configuration and dumps it as a json string.
 """
-import os
+from __future__ import annotations
+
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
+from os.path import dirname, normpath
+
+from gcip.addons.container.registries import Registry
 
 DockerConfig = Dict[str, Any]
 
 
 class DockerClientConfig():
-    def __init__(self, config_file_path: str = "$HOME/.docker", config_file_name: str = "config.json") -> None:
+    def __init__(self) -> None:
         """
         Class which represents a docker client configuration.
 
         After creating an instance of this class you can add new credential helper or
         basic authentication settings. Or set a default credential store.
-        The constructor has a limited feature set. If you change either `config_file_path` or `config_file_name`,
-        you should consider using `docker --config` to specify the path to the configuration file.
-
-        Args:
-            config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
-            config_file_name (str): Docker client configuration filename. Defaults to config.json.
         """
-        self._config_file_path = os.path.normpath(config_file_path)
-        self._config_file_name = config_file_name
+        self._config_file_path: str = "$HOME/.docker/config.json"
         self.config: DockerConfig = {}
 
-    def set_creds_store(self, creds_store: str) -> None:
+    def set_config_file_path(self, path: str) -> DockerClientConfig:
+        """Change the path of the docker client configuration.
+
+        If changed the config file will be created in this path.
+        At instantiation time of an DockerClientConfig object
+        the path will be defaulted to "$HOME/.docker/config.json".
+
+        Args:
+            path (str): Complete path to docker client config.
+
+        Returns:
+            DockerClientConfig: Returns the instance of `DockerClientConfig`.
+        """
+        self._config_file_path = normpath(path)
+        return self
+
+    def set_creds_store(self, creds_store: str) -> DockerClientConfig:
         """
         Sets the `credsStore` setting for clients.
         See [docker login#credentials-store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
@@ -57,8 +70,9 @@ class DockerClientConfig():
             `ecr-login`, to use docker-crendential-ecr-login
         """
         self.config["credsStore"] = creds_store
+        return self
 
-    def add_cred_helper(self, registry: str, cred_helper: str) -> None:
+    def add_cred_helper(self, registry: Union[Registry, str], cred_helper: str) -> DockerClientConfig:
         """
         Adds a Credentials helper `credHelpers` for a registry.
         See [docker login#credential-helpers](https://docs.docker.com/engine/reference/commandline/login/#credential-helpers)
@@ -74,13 +88,14 @@ class DockerClientConfig():
             self.config["credHelpers"] = compose
         else:
             self.config["credHelpers"].update(compose)
+        return self
 
     def add_auth(
         self,
         registry: str,
         username_env_var: str = "REGISTRY_USERNAME",
         password_env_var: str = "REGISTRY_PASSWORD",
-    ) -> None:
+    ) -> DockerClientConfig:
         """
         Adds basic authentication `auths` setting to the configuration.
 
@@ -104,8 +119,9 @@ class DockerClientConfig():
             self.config["auths"] = compose
         else:
             self.config["auths"].update(compose)
+        return self
 
-    def add_raw(self, raw_input: Dict[Any, Any]) -> None:
+    def add_raw(self, raw_input: Dict[Any, Any]) -> DockerClientConfig:
         """
         Adds arbitrary settings to configuration.
 
@@ -117,6 +133,7 @@ class DockerClientConfig():
             raw_input (Dict[Any, Any]): Dictionary of non-available settings to be set.
         """
         self.config.update(raw_input)
+        return self
 
     def get_shell_command(self) -> List[str]:
         """
@@ -131,7 +148,7 @@ class DockerClientConfig():
                 echoed to `config_file_path`/`config_file_name`
         """
         script = [
-            f"mkdir -p {self._config_file_path}",
-            'echo "' + json.dumps(self.config).replace('"', '\\"') + '" > ' + os.path.join(self._config_file_path, self._config_file_name),
+            f"mkdir -p {dirname(self._config_file_path)}",
+            'echo "' + json.dumps(self.config).replace('"', '\\"') + '" > ' + self._config_file_path,
         ]
         return script

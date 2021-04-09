@@ -19,3 +19,9 @@ def test_complex_docker_client_config():
         }
     }})
     conftest.check(dcc.get_shell_command())
+
+
+def test_docker_client_config_set_config_file_path():
+    dcc = DockerClientConfig()
+    dcc.set_config_file_path("/kaniko/.docker/other.json")
+    conftest.check({"shell_command": dcc.get_shell_command()})
