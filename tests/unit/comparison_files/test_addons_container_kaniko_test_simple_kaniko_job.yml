@@ -1,11 +1,11 @@
 stages:
-- build_container_image
-build-container-image-simple:
+- build
+build-simple:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint:
     - ''
-  stage: build_container_image
+  stage: build
   script:
   - mkdir -p /kaniko/.docker
   - 'echo "{\"auths\": {\"https://index.docker.io/v1/\": {\"username\": \"$REGISTRY_USERNAME\",
