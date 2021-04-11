@@ -60,7 +60,7 @@ def execute(
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to "info".
 
     Returns:
-        Job: gcip.Job will be returned to create container images with ```namespace=execute```.
+        Job: gcip.Job will be returned to create container images with ```namespace=build```.
     """
     if not gitlab_executor_image:
         gitlab_executor_image = PredefinedImages.KANIKO
@@ -129,7 +129,7 @@ def execute(
 
     job = Job(
         script=" ".join(executor_cmd),
-        namespace="build_container_image",
+        namespace="build",
     )
     job.set_image(gitlab_executor_image)
 
