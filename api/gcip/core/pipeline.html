@@ -40,9 +40,9 @@ __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#34;Apache-2.0&#34;
-__maintainer__ = &#34;Thomas Steinbach&#34;
-__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
+__license__ = &#39;Apache-2.0&#39;
+__maintainer__ = &#39;Thomas Steinbach&#39;
+__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
 
 
 class JobNameConflictError(Exception):
@@ -55,7 +55,6 @@ class JobNameConflictError(Exception):
     Attributes:
         job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
     &#34;&#34;&#34;
-
     def __init__(self, job: Job):
         super().__init__(
             f&#34;Two jobs have the same name &#39;{job.name}&#39; when rendering the pipeline.&#34;
@@ -136,12 +135,10 @@ class Pipeline(Sequence):
 
     def dump_yaml(self) -&gt; None:
         import yaml
-
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
 
     def write_yaml(self, filename: str = &#34;generated-config.yml&#34;) -&gt; None:
         import yaml
-
         with open(filename, &#34;w&#34;) as generated_config:
             generated_config.write(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))</code></pre>
 </details>
@@ -183,7 +180,6 @@ the user so he must be informed about that exception.</p>
     Attributes:
         job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
     &#34;&#34;&#34;
-
     def __init__(self, job: Job):
         super().__init__(
             f&#34;Two jobs have the same name &#39;{job.name}&#39; when rendering the pipeline.&#34;
@@ -293,12 +289,10 @@ See <code>Gitlab CI Reference include</code>_. Defaults to None.</dd>
 
     def dump_yaml(self) -&gt; None:
         import yaml
-
         print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
 
     def write_yaml(self, filename: str = &#34;generated-config.yml&#34;) -&gt; None:
         import yaml
-
         with open(filename, &#34;w&#34;) as generated_config:
             generated_config.write(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))</code></pre>
 </details>
@@ -367,7 +361,6 @@ Use objects of the <code><a title="gcip.core.service.Service" href="service.html
 </summary>
 <pre><code class="python">def dump_yaml(self) -&gt; None:
     import yaml
-
     print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))</code></pre>
 </details>
 </dd>
@@ -415,7 +408,6 @@ Use objects of the <code><a title="gcip.core.service.Service" href="service.html
 </summary>
 <pre><code class="python">def write_yaml(self, filename: str = &#34;generated-config.yml&#34;) -&gt; None:
     import yaml
-
     with open(filename, &#34;w&#34;) as generated_config:
         generated_config.write(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))</code></pre>
 </details>

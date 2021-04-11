@@ -49,32 +49,45 @@ cfg.render()
 
 This will render a Client configuration and dumps it as a json string.
 &#34;&#34;&#34;
-import os
+from __future__ import annotations
+
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
+from os.path import dirname, normpath
+
+from gcip.addons.container.registries import Registry
 
 DockerConfig = Dict[str, Any]
 
 
-class DockerClientConfig:
-    def __init__(self, config_file_path: str = &#34;$HOME/.docker&#34;, config_file_name: str = &#34;config.json&#34;) -&gt; None:
+class DockerClientConfig():
+    def __init__(self) -&gt; None:
         &#34;&#34;&#34;
         Class which represents a docker client configuration.
 
         After creating an instance of this class you can add new credential helper or
         basic authentication settings. Or set a default credential store.
-        The constructor has a limited feature set. If you change either `config_file_path` or `config_file_name`,
-        you should consider using `docker --config` to specify the path to the configuration file.
-
-        Args:
-            config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
-            config_file_name (str): Docker client configuration filename. Defaults to config.json.
         &#34;&#34;&#34;
-        self._config_file_path = os.path.normpath(config_file_path)
-        self._config_file_name = config_file_name
+        self._config_file_path: str = &#34;$HOME/.docker/config.json&#34;
         self.config: DockerConfig = {}
 
-    def set_creds_store(self, creds_store: str) -&gt; None:
+    def set_config_file_path(self, path: str) -&gt; DockerClientConfig:
+        &#34;&#34;&#34;Change the path of the docker client configuration.
+
+        If changed the config file will be created in this path.
+        At instantiation time of an DockerClientConfig object
+        the path will be defaulted to &#34;$HOME/.docker/config.json&#34;.
+
+        Args:
+            path (str): Complete path to docker client config.
+
+        Returns:
+            DockerClientConfig: Returns the instance of `DockerClientConfig`.
+        &#34;&#34;&#34;
+        self._config_file_path = normpath(path)
+        return self
+
+    def set_creds_store(self, creds_store: str) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Sets the `credsStore` setting for clients.
         See [docker login#credentials-store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
@@ -94,8 +107,9 @@ class DockerClientConfig:
             `ecr-login`, to use docker-crendential-ecr-login
         &#34;&#34;&#34;
         self.config[&#34;credsStore&#34;] = creds_store
+        return self
 
-    def add_cred_helper(self, registry: str, cred_helper: str) -&gt; None:
+    def add_cred_helper(self, registry: Union[Registry, str], cred_helper: str) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Adds a Credentials helper `credHelpers` for a registry.
         See [docker login#credential-helpers](https://docs.docker.com/engine/reference/commandline/login/#credential-helpers)
@@ -104,18 +118,21 @@ class DockerClientConfig:
             registry (str): Name of the container registry to set `creds_helper` for.
             cred_helper (str): Name of the credential helper to use together with the `registry`.
         &#34;&#34;&#34;
-        compose = {registry: cred_helper}
+        compose = {
+            registry: cred_helper
+        }
         if &#34;credsHelpers&#34; not in self.config.keys():
             self.config[&#34;credHelpers&#34;] = compose
         else:
             self.config[&#34;credHelpers&#34;].update(compose)
+        return self
 
     def add_auth(
         self,
-        registry: str,
+        registry: Union[Registry, str],
         username_env_var: str = &#34;REGISTRY_USERNAME&#34;,
         password_env_var: str = &#34;REGISTRY_PASSWORD&#34;,
-    ) -&gt; None:
+    ) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Adds basic authentication `auths` setting to the configuration.
 
@@ -131,7 +148,7 @@ class DockerClientConfig:
         compose = {
             registry: {
                 &#34;username&#34;: &#34;$&#34; + username_env_var,
-                &#34;password&#34;: &#34;$&#34; + password_env_var,
+                &#34;password&#34;: &#34;$&#34; + password_env_var
             }
         }
 
@@ -139,8 +156,9 @@ class DockerClientConfig:
             self.config[&#34;auths&#34;] = compose
         else:
             self.config[&#34;auths&#34;].update(compose)
+        return self
 
-    def add_raw(self, raw_input: Dict[Any, Any]) -&gt; None:
+    def add_raw(self, raw_input: Dict[Any, Any]) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Adds arbitrary settings to configuration.
 
@@ -152,6 +170,7 @@ class DockerClientConfig:
             raw_input (Dict[Any, Any]): Dictionary of non-available settings to be set.
         &#34;&#34;&#34;
         self.config.update(raw_input)
+        return self
 
     def get_shell_command(self) -&gt; List[str]:
         &#34;&#34;&#34;
@@ -166,8 +185,8 @@ class DockerClientConfig:
                 echoed to `config_file_path`/`config_file_name`
         &#34;&#34;&#34;
         script = [
-            f&#34;mkdir -p {self._config_file_path}&#34;,
-            &#39;echo &#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34; &gt; &#39; + os.path.join(self._config_file_path, self._config_file_name),
+            f&#34;mkdir -p {dirname(self._config_file_path)}&#34;,
+            &#39;echo &#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34; &gt; &#39; + self._config_file_path,
         ]
         return script</code></pre>
 </details>
@@ -183,44 +202,43 @@ class DockerClientConfig:
 <dl>
 <dt id="gcip.addons.container.config.DockerClientConfig"><code class="flex name class">
 <span>class <span class="ident">DockerClientConfig</span></span>
-<span>(</span><span>config_file_path: str = '$HOME/.docker', config_file_name: str = 'config.json')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Class which represents a docker client configuration.</p>
 <p>After creating an instance of this class you can add new credential helper or
-basic authentication settings. Or set a default credential store.
-The constructor has a limited feature set. If you change either <code>config_file_path</code> or <code>config_file_name</code>,
-you should consider using <code>docker --config</code> to specify the path to the configuration file.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>config_file_path</code></strong> :&ensp;<code>str</code></dt>
-<dd>Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.</dd>
-<dt><strong><code>config_file_name</code></strong> :&ensp;<code>str</code></dt>
-<dd>Docker client configuration filename. Defaults to config.json.</dd>
-</dl></div>
+basic authentication settings. Or set a default credential store.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DockerClientConfig:
-    def __init__(self, config_file_path: str = &#34;$HOME/.docker&#34;, config_file_name: str = &#34;config.json&#34;) -&gt; None:
+<pre><code class="python">class DockerClientConfig():
+    def __init__(self) -&gt; None:
         &#34;&#34;&#34;
         Class which represents a docker client configuration.
 
         After creating an instance of this class you can add new credential helper or
         basic authentication settings. Or set a default credential store.
-        The constructor has a limited feature set. If you change either `config_file_path` or `config_file_name`,
-        you should consider using `docker --config` to specify the path to the configuration file.
-
-        Args:
-            config_file_path (str): Filesystem path where to create the docker client directory. Defaults to $HOME/.docker/.
-            config_file_name (str): Docker client configuration filename. Defaults to config.json.
         &#34;&#34;&#34;
-        self._config_file_path = os.path.normpath(config_file_path)
-        self._config_file_name = config_file_name
+        self._config_file_path: str = &#34;$HOME/.docker/config.json&#34;
         self.config: DockerConfig = {}
 
-    def set_creds_store(self, creds_store: str) -&gt; None:
+    def set_config_file_path(self, path: str) -&gt; DockerClientConfig:
+        &#34;&#34;&#34;Change the path of the docker client configuration.
+
+        If changed the config file will be created in this path.
+        At instantiation time of an DockerClientConfig object
+        the path will be defaulted to &#34;$HOME/.docker/config.json&#34;.
+
+        Args:
+            path (str): Complete path to docker client config.
+
+        Returns:
+            DockerClientConfig: Returns the instance of `DockerClientConfig`.
+        &#34;&#34;&#34;
+        self._config_file_path = normpath(path)
+        return self
+
+    def set_creds_store(self, creds_store: str) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Sets the `credsStore` setting for clients.
         See [docker login#credentials-store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
@@ -240,8 +258,9 @@ you should consider using <code>docker --config</code> to specify the path to th
             `ecr-login`, to use docker-crendential-ecr-login
         &#34;&#34;&#34;
         self.config[&#34;credsStore&#34;] = creds_store
+        return self
 
-    def add_cred_helper(self, registry: str, cred_helper: str) -&gt; None:
+    def add_cred_helper(self, registry: Union[Registry, str], cred_helper: str) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Adds a Credentials helper `credHelpers` for a registry.
         See [docker login#credential-helpers](https://docs.docker.com/engine/reference/commandline/login/#credential-helpers)
@@ -250,18 +269,21 @@ you should consider using <code>docker --config</code> to specify the path to th
             registry (str): Name of the container registry to set `creds_helper` for.
             cred_helper (str): Name of the credential helper to use together with the `registry`.
         &#34;&#34;&#34;
-        compose = {registry: cred_helper}
+        compose = {
+            registry: cred_helper
+        }
         if &#34;credsHelpers&#34; not in self.config.keys():
             self.config[&#34;credHelpers&#34;] = compose
         else:
             self.config[&#34;credHelpers&#34;].update(compose)
+        return self
 
     def add_auth(
         self,
-        registry: str,
+        registry: Union[Registry, str],
         username_env_var: str = &#34;REGISTRY_USERNAME&#34;,
         password_env_var: str = &#34;REGISTRY_PASSWORD&#34;,
-    ) -&gt; None:
+    ) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Adds basic authentication `auths` setting to the configuration.
 
@@ -277,7 +299,7 @@ you should consider using <code>docker --config</code> to specify the path to th
         compose = {
             registry: {
                 &#34;username&#34;: &#34;$&#34; + username_env_var,
-                &#34;password&#34;: &#34;$&#34; + password_env_var,
+                &#34;password&#34;: &#34;$&#34; + password_env_var
             }
         }
 
@@ -285,8 +307,9 @@ you should consider using <code>docker --config</code> to specify the path to th
             self.config[&#34;auths&#34;] = compose
         else:
             self.config[&#34;auths&#34;].update(compose)
+        return self
 
-    def add_raw(self, raw_input: Dict[Any, Any]) -&gt; None:
+    def add_raw(self, raw_input: Dict[Any, Any]) -&gt; DockerClientConfig:
         &#34;&#34;&#34;
         Adds arbitrary settings to configuration.
 
@@ -298,6 +321,7 @@ you should consider using <code>docker --config</code> to specify the path to th
             raw_input (Dict[Any, Any]): Dictionary of non-available settings to be set.
         &#34;&#34;&#34;
         self.config.update(raw_input)
+        return self
 
     def get_shell_command(self) -&gt; List[str]:
         &#34;&#34;&#34;
@@ -312,15 +336,15 @@ you should consider using <code>docker --config</code> to specify the path to th
                 echoed to `config_file_path`/`config_file_name`
         &#34;&#34;&#34;
         script = [
-            f&#34;mkdir -p {self._config_file_path}&#34;,
-            &#39;echo &#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34; &gt; &#39; + os.path.join(self._config_file_path, self._config_file_name),
+            f&#34;mkdir -p {dirname(self._config_file_path)}&#34;,
+            &#39;echo &#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34; &gt; &#39; + self._config_file_path,
         ]
         return script</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="gcip.addons.container.config.DockerClientConfig.add_auth"><code class="name flex">
-<span>def <span class="ident">add_auth</span></span>(<span>self, registry: str, username_env_var: str = 'REGISTRY_USERNAME', password_env_var: str = 'REGISTRY_PASSWORD') ‑> NoneType</span>
+<span>def <span class="ident">add_auth</span></span>(<span>self, registry: Union[Registry, str], username_env_var: str = 'REGISTRY_USERNAME', password_env_var: str = 'REGISTRY_PASSWORD') ‑> <a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds basic authentication <code>auths</code> setting to the configuration.</p>
@@ -342,10 +366,10 @@ Arguments ending wit *_env_var, are ment to be available as a <code>gcip.Job</co
 </summary>
 <pre><code class="python">def add_auth(
     self,
-    registry: str,
+    registry: Union[Registry, str],
     username_env_var: str = &#34;REGISTRY_USERNAME&#34;,
     password_env_var: str = &#34;REGISTRY_PASSWORD&#34;,
-) -&gt; None:
+) -&gt; DockerClientConfig:
     &#34;&#34;&#34;
     Adds basic authentication `auths` setting to the configuration.
 
@@ -361,18 +385,19 @@ Arguments ending wit *_env_var, are ment to be available as a <code>gcip.Job</co
     compose = {
         registry: {
             &#34;username&#34;: &#34;$&#34; + username_env_var,
-            &#34;password&#34;: &#34;$&#34; + password_env_var,
+            &#34;password&#34;: &#34;$&#34; + password_env_var
         }
     }
 
     if &#34;auths&#34; not in self.config.keys():
         self.config[&#34;auths&#34;] = compose
     else:
-        self.config[&#34;auths&#34;].update(compose)</code></pre>
+        self.config[&#34;auths&#34;].update(compose)
+    return self</code></pre>
 </details>
 </dd>
 <dt id="gcip.addons.container.config.DockerClientConfig.add_cred_helper"><code class="name flex">
-<span>def <span class="ident">add_cred_helper</span></span>(<span>self, registry: str, cred_helper: str) ‑> NoneType</span>
+<span>def <span class="ident">add_cred_helper</span></span>(<span>self, registry: Union[Registry, str], cred_helper: str) ‑> <a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds a Credentials helper <code>credHelpers</code> for a registry.
@@ -388,7 +413,7 @@ See <a href="https://docs.docker.com/engine/reference/commandline/login/#credent
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_cred_helper(self, registry: str, cred_helper: str) -&gt; None:
+<pre><code class="python">def add_cred_helper(self, registry: Union[Registry, str], cred_helper: str) -&gt; DockerClientConfig:
     &#34;&#34;&#34;
     Adds a Credentials helper `credHelpers` for a registry.
     See [docker login#credential-helpers](https://docs.docker.com/engine/reference/commandline/login/#credential-helpers)
@@ -397,15 +422,18 @@ See <a href="https://docs.docker.com/engine/reference/commandline/login/#credent
         registry (str): Name of the container registry to set `creds_helper` for.
         cred_helper (str): Name of the credential helper to use together with the `registry`.
     &#34;&#34;&#34;
-    compose = {registry: cred_helper}
+    compose = {
+        registry: cred_helper
+    }
     if &#34;credsHelpers&#34; not in self.config.keys():
         self.config[&#34;credHelpers&#34;] = compose
     else:
-        self.config[&#34;credHelpers&#34;].update(compose)</code></pre>
+        self.config[&#34;credHelpers&#34;].update(compose)
+    return self</code></pre>
 </details>
 </dd>
 <dt id="gcip.addons.container.config.DockerClientConfig.add_raw"><code class="name flex">
-<span>def <span class="ident">add_raw</span></span>(<span>self, raw_input: Dict[Any, Any]) ‑> NoneType</span>
+<span>def <span class="ident">add_raw</span></span>(<span>self, raw_input: Dict[Any, Any]) ‑> <a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Adds arbitrary settings to configuration.</p>
@@ -421,7 +449,7 @@ have to set a configuration setting.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_raw(self, raw_input: Dict[Any, Any]) -&gt; None:
+<pre><code class="python">def add_raw(self, raw_input: Dict[Any, Any]) -&gt; DockerClientConfig:
     &#34;&#34;&#34;
     Adds arbitrary settings to configuration.
 
@@ -432,7 +460,8 @@ have to set a configuration setting.</p>
     Args:
         raw_input (Dict[Any, Any]): Dictionary of non-available settings to be set.
     &#34;&#34;&#34;
-    self.config.update(raw_input)</code></pre>
+    self.config.update(raw_input)
+    return self</code></pre>
 </details>
 </dd>
 <dt id="gcip.addons.container.config.DockerClientConfig.get_shell_command"><code class="name flex">
@@ -466,14 +495,53 @@ echoed to <code>config_file_path</code>/<code>config_file_name</code></dd>
             echoed to `config_file_path`/`config_file_name`
     &#34;&#34;&#34;
     script = [
-        f&#34;mkdir -p {self._config_file_path}&#34;,
-        &#39;echo &#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34; &gt; &#39; + os.path.join(self._config_file_path, self._config_file_name),
+        f&#34;mkdir -p {dirname(self._config_file_path)}&#34;,
+        &#39;echo &#34;&#39; + json.dumps(self.config).replace(&#39;&#34;&#39;, &#39;\\&#34;&#39;) + &#39;&#34; &gt; &#39; + self._config_file_path,
     ]
     return script</code></pre>
 </details>
 </dd>
+<dt id="gcip.addons.container.config.DockerClientConfig.set_config_file_path"><code class="name flex">
+<span>def <span class="ident">set_config_file_path</span></span>(<span>self, path: str) ‑> <a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change the path of the docker client configuration.</p>
+<p>If changed the config file will be created in this path.
+At instantiation time of an DockerClientConfig object
+the path will be defaulted to "$HOME/.docker/config.json".</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Complete path to docker client config.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></code></dt>
+<dd>Returns the instance of <code><a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_config_file_path(self, path: str) -&gt; DockerClientConfig:
+    &#34;&#34;&#34;Change the path of the docker client configuration.
+
+    If changed the config file will be created in this path.
+    At instantiation time of an DockerClientConfig object
+    the path will be defaulted to &#34;$HOME/.docker/config.json&#34;.
+
+    Args:
+        path (str): Complete path to docker client config.
+
+    Returns:
+        DockerClientConfig: Returns the instance of `DockerClientConfig`.
+    &#34;&#34;&#34;
+    self._config_file_path = normpath(path)
+    return self</code></pre>
+</details>
+</dd>
 <dt id="gcip.addons.container.config.DockerClientConfig.set_creds_store"><code class="name flex">
-<span>def <span class="ident">set_creds_store</span></span>(<span>self, creds_store: str) ‑> NoneType</span>
+<span>def <span class="ident">set_creds_store</span></span>(<span>self, creds_store: str) ‑> <a title="gcip.addons.container.config.DockerClientConfig" href="#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sets the <code>credsStore</code> setting for clients.
@@ -496,7 +564,7 @@ For example <code>osxkeychain</code>, to use docker-credential-osxkeychain or
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_creds_store(self, creds_store: str) -&gt; None:
+<pre><code class="python">def set_creds_store(self, creds_store: str) -&gt; DockerClientConfig:
     &#34;&#34;&#34;
     Sets the `credsStore` setting for clients.
     See [docker login#credentials-store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
@@ -515,7 +583,8 @@ For example <code>osxkeychain</code>, to use docker-credential-osxkeychain or
         For example `osxkeychain`, to use docker-credential-osxkeychain or
         `ecr-login`, to use docker-crendential-ecr-login
     &#34;&#34;&#34;
-    self.config[&#34;credsStore&#34;] = creds_store</code></pre>
+    self.config[&#34;credsStore&#34;] = creds_store
+    return self</code></pre>
 </details>
 </dd>
 </dl>
@@ -543,6 +612,7 @@ For example <code>osxkeychain</code>, to use docker-credential-osxkeychain or
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.add_cred_helper" href="#gcip.addons.container.config.DockerClientConfig.add_cred_helper">add_cred_helper</a></code></li>
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.add_raw" href="#gcip.addons.container.config.DockerClientConfig.add_raw">add_raw</a></code></li>
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.get_shell_command" href="#gcip.addons.container.config.DockerClientConfig.get_shell_command">get_shell_command</a></code></li>
+<li><code><a title="gcip.addons.container.config.DockerClientConfig.set_config_file_path" href="#gcip.addons.container.config.DockerClientConfig.set_config_file_path">set_config_file_path</a></code></li>
 <li><code><a title="gcip.addons.container.config.DockerClientConfig.set_creds_store" href="#gcip.addons.container.config.DockerClientConfig.set_creds_store">set_creds_store</a></code></li>
 </ul>
 </li>

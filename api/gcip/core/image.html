@@ -29,7 +29,7 @@
 <pre><code class="python">from typing import Dict, List, Union, Optional
 
 
-class Image:
+class Image():
     def __init__(self, name: str, *, entrypoint: Optional[List[str]] = None) -&gt; None:
         &#34;&#34;&#34;Creates an object which represents an `image` for a job inside a pipeline.
 
@@ -91,7 +91,7 @@ class Image:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Image:
+<pre><code class="python">class Image():
     def __init__(self, name: str, *, entrypoint: Optional[List[str]] = None) -&gt; None:
         &#34;&#34;&#34;Creates an object which represents an `image` for a job inside a pipeline.
 

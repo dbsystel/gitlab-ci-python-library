@@ -78,10 +78,13 @@ class Need(object):
         &#34;&#34;&#34;
         rendered_need: Dict[str, Union[str, bool]] = {
             &#34;job&#34;: self._job,
-            &#34;artifacts&#34;: self._artifacts,
+            &#34;artifacts&#34;: self._artifacts
         }
         if self._project and self._ref:
-            rendered_need.update({&#34;project&#34;: self._project, &#34;ref&#34;: self._ref})
+            rendered_need.update({
+                &#34;project&#34;: self._project,
+                &#34;ref&#34;: self._ref
+            })
         return rendered_need</code></pre>
 </details>
 </section>
@@ -174,10 +177,13 @@ For more in depth information see <code>Gitlab CI Reference needs</code><em>, <c
         &#34;&#34;&#34;
         rendered_need: Dict[str, Union[str, bool]] = {
             &#34;job&#34;: self._job,
-            &#34;artifacts&#34;: self._artifacts,
+            &#34;artifacts&#34;: self._artifacts
         }
         if self._project and self._ref:
-            rendered_need.update({&#34;project&#34;: self._project, &#34;ref&#34;: self._ref})
+            rendered_need.update({
+                &#34;project&#34;: self._project,
+                &#34;ref&#34;: self._ref
+            })
         return rendered_need</code></pre>
 </details>
 <h3>Methods</h3>
@@ -197,10 +203,13 @@ For more in depth information see <code>Gitlab CI Reference needs</code><em>, <c
     &#34;&#34;&#34;
     rendered_need: Dict[str, Union[str, bool]] = {
         &#34;job&#34;: self._job,
-        &#34;artifacts&#34;: self._artifacts,
+        &#34;artifacts&#34;: self._artifacts
     }
     if self._project and self._ref:
-        rendered_need.update({&#34;project&#34;: self._project, &#34;ref&#34;: self._ref})
+        rendered_need.update({
+            &#34;project&#34;: self._project,
+            &#34;ref&#34;: self._ref
+        })
     return rendered_need</code></pre>
 </details>
 </dd>

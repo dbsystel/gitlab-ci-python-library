@@ -43,7 +43,7 @@ def scan_local_image(
     vulnerability_types: Optional[str] = None,
     exit_if_vulnerable: bool = True,
     trivy_config: Optional[str] = None,
-    trivy_image: Optional[Union[Image, str]] = None,
+    trivy_image: Optional[Union[Image, str]] = None
 ) -&gt; Job:
     &#34;&#34;&#34;This job scanns container images to find vulnerabilities.
 
@@ -161,7 +161,7 @@ Defaults to PredefindedImages.TRIVY.</dd>
     vulnerability_types: Optional[str] = None,
     exit_if_vulnerable: bool = True,
     trivy_config: Optional[str] = None,
-    trivy_image: Optional[Union[Image, str]] = None,
+    trivy_image: Optional[Union[Image, str]] = None
 ) -&gt; Job:
     &#34;&#34;&#34;This job scanns container images to find vulnerabilities.
 
