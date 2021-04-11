@@ -47,13 +47,17 @@ def is_semver(version: str) -&gt; bool:
     :return: True if `version` is semver compliant, otherwise false.
     :rtype: bool
     &#34;&#34;&#34;
-    return re.match(
-        (
-            r&#34;^(?P&lt;major&gt;0|[1-9]\d*)\.(?P&lt;minor&gt;0|[1-9]\d*)\.(?P&lt;patch&gt;0|[1-9]\d*)&#34;
-            r&#34;(?:-(?P&lt;prerelease&gt;(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)&#34;
-            r&#34;(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P&lt;buildmetadata&gt;[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$&#34;
-        ), version
-    ) is not None
+    return (
+        re.match(
+            (
+                r&#34;^(?P&lt;major&gt;0|[1-9]\d*)\.(?P&lt;minor&gt;0|[1-9]\d*)\.(?P&lt;patch&gt;0|[1-9]\d*)&#34;
+                r&#34;(?:-(?P&lt;prerelease&gt;(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)&#34;
+                r&#34;(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P&lt;buildmetadata&gt;[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$&#34;
+            ),
+            version,
+        )
+        is not None
+    )
 
 
 if __name__ == &#34;__main__&#34;:
@@ -95,13 +99,17 @@ if __name__ == &#34;__main__&#34;:
     :return: True if `version` is semver compliant, otherwise false.
     :rtype: bool
     &#34;&#34;&#34;
-    return re.match(
-        (
-            r&#34;^(?P&lt;major&gt;0|[1-9]\d*)\.(?P&lt;minor&gt;0|[1-9]\d*)\.(?P&lt;patch&gt;0|[1-9]\d*)&#34;
-            r&#34;(?:-(?P&lt;prerelease&gt;(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)&#34;
-            r&#34;(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P&lt;buildmetadata&gt;[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$&#34;
-        ), version
-    ) is not None</code></pre>
+    return (
+        re.match(
+            (
+                r&#34;^(?P&lt;major&gt;0|[1-9]\d*)\.(?P&lt;minor&gt;0|[1-9]\d*)\.(?P&lt;patch&gt;0|[1-9]\d*)&#34;
+                r&#34;(?:-(?P&lt;prerelease&gt;(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)&#34;
+                r&#34;(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P&lt;buildmetadata&gt;[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$&#34;
+            ),
+            version,
+        )
+        is not None
+    )</code></pre>
 </details>
 </dd>
 </dl>

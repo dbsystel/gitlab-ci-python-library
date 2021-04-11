@@ -60,7 +60,7 @@ from gcip.addons.container.registries import Registry
 DockerConfig = Dict[str, Any]
 
 
-class DockerClientConfig():
+class DockerClientConfig:
     def __init__(self) -&gt; None:
         &#34;&#34;&#34;
         Class which represents a docker client configuration.
@@ -118,9 +118,7 @@ class DockerClientConfig():
             registry (str): Name of the container registry to set `creds_helper` for.
             cred_helper (str): Name of the credential helper to use together with the `registry`.
         &#34;&#34;&#34;
-        compose = {
-            registry: cred_helper
-        }
+        compose = {registry: cred_helper}
         if &#34;credsHelpers&#34; not in self.config.keys():
             self.config[&#34;credHelpers&#34;] = compose
         else:
@@ -148,7 +146,7 @@ class DockerClientConfig():
         compose = {
             registry: {
                 &#34;username&#34;: &#34;$&#34; + username_env_var,
-                &#34;password&#34;: &#34;$&#34; + password_env_var
+                &#34;password&#34;: &#34;$&#34; + password_env_var,
             }
         }
 
@@ -211,7 +209,7 @@ basic authentication settings. Or set a default credential store.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DockerClientConfig():
+<pre><code class="python">class DockerClientConfig:
     def __init__(self) -&gt; None:
         &#34;&#34;&#34;
         Class which represents a docker client configuration.
@@ -269,9 +267,7 @@ basic authentication settings. Or set a default credential store.</p></div>
             registry (str): Name of the container registry to set `creds_helper` for.
             cred_helper (str): Name of the credential helper to use together with the `registry`.
         &#34;&#34;&#34;
-        compose = {
-            registry: cred_helper
-        }
+        compose = {registry: cred_helper}
         if &#34;credsHelpers&#34; not in self.config.keys():
             self.config[&#34;credHelpers&#34;] = compose
         else:
@@ -299,7 +295,7 @@ basic authentication settings. Or set a default credential store.</p></div>
         compose = {
             registry: {
                 &#34;username&#34;: &#34;$&#34; + username_env_var,
-                &#34;password&#34;: &#34;$&#34; + password_env_var
+                &#34;password&#34;: &#34;$&#34; + password_env_var,
             }
         }
 
@@ -385,7 +381,7 @@ Arguments ending wit *_env_var, are ment to be available as a <code>gcip.Job</co
     compose = {
         registry: {
             &#34;username&#34;: &#34;$&#34; + username_env_var,
-            &#34;password&#34;: &#34;$&#34; + password_env_var
+            &#34;password&#34;: &#34;$&#34; + password_env_var,
         }
     }
 
@@ -422,9 +418,7 @@ See <a href="https://docs.docker.com/engine/reference/commandline/login/#credent
         registry (str): Name of the container registry to set `creds_helper` for.
         cred_helper (str): Name of the credential helper to use together with the `registry`.
     &#34;&#34;&#34;
-    compose = {
-        registry: cred_helper
-    }
+    compose = {registry: cred_helper}
     if &#34;credsHelpers&#34; not in self.config.keys():
         self.config[&#34;credHelpers&#34;] = compose
     else:

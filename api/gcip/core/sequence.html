@@ -96,9 +96,9 @@ __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#39;Apache-2.0&#39;
-__maintainer__ = &#39;Thomas Steinbach&#39;
-__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+__license__ = &#34;Apache-2.0&#34;
+__maintainer__ = &#34;Thomas Steinbach&#34;
+__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
 class ChildDict(TypedDict):
@@ -112,8 +112,9 @@ class ChildDict(TypedDict):
     &#34;&#34;&#34;The name with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;
 
 
-class Sequence():
+class Sequence:
     &#34;&#34;&#34;A Sequence collects multiple `gcip.core.job.Job`s and/or other `Sequence`s into a group.&#34;&#34;&#34;
+
     def __init__(self) -&gt; None:
         super().__init__()
         self._children: List[ChildDict] = list()
@@ -141,15 +142,14 @@ class Sequence():
         self._parents.append(parent)
 
     def add_children(
-        self, *jobs_or_sequences: Union[Job, Sequence], namespace: Optional[str] = None, name: Optional[str] = None
+        self,
+        *jobs_or_sequences: Union[Job, Sequence],
+        namespace: Optional[str] = None,
+        name: Optional[str] = None,
     ) -&gt; Sequence:
         for child in jobs_or_sequences:
             child._add_parent(self)
-            self._children.append({
-                &#34;child&#34;: child,
-                &#34;namespace&#34;: namespace,
-                &#34;name&#34;: name
-            })
+            self._children.append({&#34;child&#34;: child, &#34;namespace&#34;: namespace, &#34;name&#34;: name})
         return self
 
     def add_variables(self, **variables: str) -&gt; Sequence:
@@ -487,8 +487,9 @@ class Sequence():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Sequence():
+<pre><code class="python">class Sequence:
     &#34;&#34;&#34;A Sequence collects multiple `gcip.core.job.Job`s and/or other `Sequence`s into a group.&#34;&#34;&#34;
+
     def __init__(self) -&gt; None:
         super().__init__()
         self._children: List[ChildDict] = list()
@@ -516,15 +517,14 @@ class Sequence():
         self._parents.append(parent)
 
     def add_children(
-        self, *jobs_or_sequences: Union[Job, Sequence], namespace: Optional[str] = None, name: Optional[str] = None
+        self,
+        *jobs_or_sequences: Union[Job, Sequence],
+        namespace: Optional[str] = None,
+        name: Optional[str] = None,
     ) -&gt; Sequence:
         for child in jobs_or_sequences:
             child._add_parent(self)
-            self._children.append({
-                &#34;child&#34;: child,
-                &#34;namespace&#34;: namespace,
-                &#34;name&#34;: name
-            })
+            self._children.append({&#34;child&#34;: child, &#34;namespace&#34;: namespace, &#34;name&#34;: name})
         return self
 
     def add_variables(self, **variables: str) -&gt; Sequence:
@@ -931,15 +931,14 @@ def populated_jobs(self) -&gt; List[Job]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_children(
-    self, *jobs_or_sequences: Union[Job, Sequence], namespace: Optional[str] = None, name: Optional[str] = None
+    self,
+    *jobs_or_sequences: Union[Job, Sequence],
+    namespace: Optional[str] = None,
+    name: Optional[str] = None,
 ) -&gt; Sequence:
     for child in jobs_or_sequences:
         child._add_parent(self)
-        self._children.append({
-            &#34;child&#34;: child,
-            &#34;namespace&#34;: namespace,
-            &#34;name&#34;: name
-        })
+        self._children.append({&#34;child&#34;: child, &#34;namespace&#34;: namespace, &#34;name&#34;: name})
     return self</code></pre>
 </details>
 </dd>

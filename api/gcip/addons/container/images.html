@@ -29,10 +29,11 @@
 <pre><code class="python">from gcip.core.image import Image
 
 
-class PredefinedImages():
+class PredefinedImages:
     &#34;&#34;&#34;
     PredefinedImages provides container images objects that are widley used withing the `gcip`.
     &#34;&#34;&#34;
+
     KANIKO: Image = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;])
     CRANE: Image = Image(&#34;gcr.io/go-containerregistry/crane:latest&#34;)
     DIVE: Image = Image(&#34;wagoodman/dive:latest&#34;)
@@ -58,10 +59,11 @@ class PredefinedImages():
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class PredefinedImages():
+<pre><code class="python">class PredefinedImages:
     &#34;&#34;&#34;
     PredefinedImages provides container images objects that are widley used withing the `gcip`.
     &#34;&#34;&#34;
+
     KANIKO: Image = Image(&#34;gcr.io/kaniko-project/executor:debug&#34;, entrypoint=[&#34;&#34;])
     CRANE: Image = Image(&#34;gcr.io/go-containerregistry/crane:latest&#34;)
     DIVE: Image = Image(&#34;wagoodman/dive:latest&#34;)

@@ -35,9 +35,9 @@ __author__ = &#34;Thomas Steinbach&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
 __credits__ = [&#34;Thomas Steinbach&#34;, &#34;Daniel von Eßen&#34;]
 # SPDX-License-Identifier: Apache-2.0
-__license__ = &#39;Apache-2.0&#39;
-__maintainer__ = &#39;Thomas Steinbach&#39;
-__email__ = &#39;thomas.t.steinbach@deutschebahn.com&#39;
+__license__ = &#34;Apache-2.0&#34;
+__maintainer__ = &#34;Thomas Steinbach&#34;
+__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
 class Include(metaclass=ABCMeta):
@@ -50,9 +50,7 @@ class Include(metaclass=ABCMeta):
 
 class IncludeLocal(Include):
     def __init__(self, local: str) -&gt; None:
-        self._rendered_include = {
-            &#34;local&#34;: local
-        }
+        self._rendered_include = {&#34;local&#34;: local}
 
 
 class IncludeFile(Include):
@@ -62,10 +60,7 @@ class IncludeFile(Include):
         project: str,
         ref: Optional[str] = None,
     ) -&gt; None:
-        self._rendered_include = {
-            &#34;file&#34;: file,
-            &#34;project&#34;: project
-        }
+        self._rendered_include = {&#34;file&#34;: file, &#34;project&#34;: project}
         if ref:
             self._rendered_include[&#34;ref&#34;] = ref
 
@@ -75,25 +70,19 @@ class IncludeRemote(Include):
         if not is_valid_url(remote):
             raise ValueError(f&#34;`remote` is not a valid URL: {remote}&#34;)
 
-        self._rendered_include = {
-            &#34;remote&#34;: remote
-        }
+        self._rendered_include = {&#34;remote&#34;: remote}
 
 
 class IncludeTemplate(Include):
     def __init__(self, template: str):
-        self._rendered_include = {
-            &#34;template&#34;: template
-        }
+        self._rendered_include = {&#34;template&#34;: template}
 
 
 class IncludeArtifact(Include):
     &#34;&#34;&#34;for triggering a child pipeline with generated configuration file&#34;&#34;&#34;
+
     def __init__(self, job: str, artifact: str):
-        self._rendered_include = {
-            &#34;job&#34;: job,
-            &#34;artifact&#34;: artifact
-        }</code></pre>
+        self._rendered_include = {&#34;job&#34;: job, &#34;artifact&#34;: artifact}</code></pre>
 </details>
 </section>
 <section>
@@ -158,11 +147,9 @@ class IncludeArtifact(Include):
 </summary>
 <pre><code class="python">class IncludeArtifact(Include):
     &#34;&#34;&#34;for triggering a child pipeline with generated configuration file&#34;&#34;&#34;
+
     def __init__(self, job: str, artifact: str):
-        self._rendered_include = {
-            &#34;job&#34;: job,
-            &#34;artifact&#34;: artifact
-        }</code></pre>
+        self._rendered_include = {&#34;job&#34;: job, &#34;artifact&#34;: artifact}</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -186,10 +173,7 @@ class IncludeArtifact(Include):
         project: str,
         ref: Optional[str] = None,
     ) -&gt; None:
-        self._rendered_include = {
-            &#34;file&#34;: file,
-            &#34;project&#34;: project
-        }
+        self._rendered_include = {&#34;file&#34;: file, &#34;project&#34;: project}
         if ref:
             self._rendered_include[&#34;ref&#34;] = ref</code></pre>
 </details>
@@ -210,9 +194,7 @@ class IncludeArtifact(Include):
 </summary>
 <pre><code class="python">class IncludeLocal(Include):
     def __init__(self, local: str) -&gt; None:
-        self._rendered_include = {
-            &#34;local&#34;: local
-        }</code></pre>
+        self._rendered_include = {&#34;local&#34;: local}</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -234,9 +216,7 @@ class IncludeArtifact(Include):
         if not is_valid_url(remote):
             raise ValueError(f&#34;`remote` is not a valid URL: {remote}&#34;)
 
-        self._rendered_include = {
-            &#34;remote&#34;: remote
-        }</code></pre>
+        self._rendered_include = {&#34;remote&#34;: remote}</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -255,9 +235,7 @@ class IncludeArtifact(Include):
 </summary>
 <pre><code class="python">class IncludeTemplate(Include):
     def __init__(self, template: str):
-        self._rendered_include = {
-            &#34;template&#34;: template
-        }</code></pre>
+        self._rendered_include = {&#34;template&#34;: template}</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
