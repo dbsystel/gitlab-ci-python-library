@@ -162,7 +162,7 @@ class Cache:
 
     def __init__(
         self,
-        paths: str,
+        paths: List[str],
         cache_key: Optional[CacheKey] = None,
         untracked: Optional[bool] = None,
         when: Optional[WhenStatement] = None,
