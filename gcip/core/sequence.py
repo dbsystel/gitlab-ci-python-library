@@ -1,4 +1,4 @@
-"""A Sequence collects multiple `gcip.core.job.Job`s and/or other `Sequence`s into a group.
+"""A Sequence collects multiple `gcip.core.job.Job`s and/or other `gcip.core.sequence.Sequence`s into a group.
 
 This concept is no official representation of a Gitlab CI keyword. But it is such a powerful
 extension of the Gitlab CI core funtionality and an essential building block of the gcip, that
@@ -64,7 +64,7 @@ class ChildDict(TypedDict):
 
 
 class Sequence:
-    """A Sequence collects multiple `gcip.core.job.Job`s and/or other `Sequence`s into a group."""
+    """A Sequence collects multiple `gcip.core.job.Job`s and/or other `gcip.core.sequence.Sequence`s into a group."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -78,6 +78,8 @@ class Sequence:
         self._tags_for_initialization: OrderedSetType = {}
         self._tags_for_replacement: OrderedSetType = {}
         self._artifacts_paths: OrderedSetType = {}
+        self._artifacts_paths_for_initialization: OrderedSetType = {}
+        self._artifacts_paths_for_replacement: OrderedSetType = {}
         self._cache: Optional[Cache] = None
         self._cache_for_initialization: Optional[Cache] = None
         self._scripts_to_prepend: List[str] = []
@@ -98,177 +100,225 @@ class Sequence:
         namespace: Optional[str] = None,
         name: Optional[str] = None,
     ) -> Sequence:
+        """Add `gcip.core.job.Job`s or other `gcip.core.sequence.Sequence`s to this sequence.
+
+        Adding a child creates a copy of that child. You should provide a name or namespace
+        when adding children, to make them different from other places where they will be used.
+
+        Args:
+            jobs_or_sequences (Union[Job, Sequence]): One or more jobs or sequences to be added to this sequence.
+            namespace (Optional[str], optional): Adds a namespaces component to all children added. Defaults to None.
+            name (Optional[str], optional): Adds a name component to all children added. Defaults to None.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         for child in jobs_or_sequences:
             child._add_parent(self)
             self._children.append({"child": child, "namespace": namespace, "name": name})
         return self
 
     def add_variables(self, **variables: str) -> Sequence:
+        """Calling `gcip.core.job.Job.add_variables()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         self._variables.update(variables)
         return self
 
     def initialize_variables(self, **variables: str) -> Sequence:
-        """
-        Works like :meth:`initialize_tags` but for variales.
+        """Calling `gcip.core.job.Job.add_variables()` to all jobs within this sequence that haven't been added variables before.
 
-        Args:
-            variables (str): A keyword argument list which key-value-pairs will be applied as variable-value-pairs
-                             to all downstream :class:`Job` s without variables already set.
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         self._variables_for_initialization.update(variables)
         return self
 
     def override_variables(self, **variables: str) -> Sequence:
-        """
-        Works like :meth:`override_tags` but for variables.
+        """Calling `gcip.core.job.Job.add_variables()` to all jobs within this sequence and overriding any previously added variables to that jobs.
 
-        Args:
-            variables (str): A keyword argument list which key-value-pairs will be set as variable-value-pairs
-                             to all downstream :class:`Job` s.
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         self._variables_for_replacement.update(variables)
         return self
 
     def set_cache(self, cache: Cache) -> Sequence:
-        """Sets the cache for the corresponding Sequence.
-        This will override any previously set chaches on this sequence or child sequences/jobs.
-
-        Args:
-            cache (Cache): Cache to use for the Sequence and its Jobs.
+        """Calling `gcip.core.job.Job.set_cache()` to all jobs within this sequence.
 
         Returns:
-            Sequence: Returns the modified Sequence object.
+            `Sequence`: The modified `Sequence` object.
         """
         self._cache = cache
         return self
 
     def initialize_cache(self, cache: Cache) -> Sequence:
-        """Sets the cache of child sequences/jobs only  if not set before.
-
-        Args:
-            cache (Cache): Cache to use for the Sequence and its Jobs.
+        """Calling `gcip.core.job.Job.set_cache()` to all jobs within this sequence that haven't been set the cache before.
 
         Returns:
-            Sequence: Returns the modified Sequence object.
+            `Sequence`: The modified `Sequence` object.
         """
         self._cache_for_initialization = cache
         return self
 
     def add_tags(self, *tags: str) -> Sequence:
+        """Calling `gcip.core.job.Job.add_tags()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         for tag in tags:
             self._tags[tag] = None
         return self
 
     def initialize_tags(self, *tags: str) -> Sequence:
-        """
-        Adds tags to downstream :class:`Job` s only if they haven't tags added yet.
+        """Calling `gcip.core.job.Job.add_tags()` to all jobs within this sequence that haven't been added tags before.
 
-        :meth:`initialize_tags` would be extended by :meth:`add_tags` and overridden
-        by :meth:`override_tags` if one of the other methods is called too.
-
-        Args:
-            tags (str): One or more strings that will be applied to :class:`Job` s with empty tag list.
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         for tag in tags:
             self._tags_for_initialization[tag] = None
         return self
 
     def override_tags(self, *tags: str) -> Sequence:
-        """
-        Will replace all tags from downstream :class:`Job` s.
+        """Calling `gcip.core.job.Job.add_tags()` to all jobs within this sequence and overriding any previously added tags to that jobs.
 
-        :meth:`override_tags` will also override tags set by :meth:`initialize_tags`
-        but be extended by :meth:`add_tags` when one of the other methods is called too.
-
-        Args:
-            tags (str): One or more strings that will be set as tags to all downstream :class:`Job` s.
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         for tag in tags:
             self._tags_for_replacement[tag] = None
         return self
 
     def add_artifacts_paths(self, *paths: str) -> Sequence:
+        """Calling `gcip.core.job.Job.add_artifacts_paths()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         for path in paths:
             self._artifacts_paths[path] = None
         return self
 
+    def initialize_artifacts_paths(self, *paths: str) -> Sequence:
+        """Calling `gcip.core.job.Job.add_artifacts_paths()` to all jobs within this sequence that haven't been added artifacts paths before.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
+        for path in paths:
+            self._artifacts_paths_for_initialization[path] = None
+        return self
+
+    def override_artifacts_paths(self, *paths: str) -> Sequence:
+        """Calling `gcip.core.job.Job.add_artifacts_paths()` to all jobs within this sequence and overriding any previously added artifacts paths to that jobs.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
+        for path in paths:
+            self._artifacts_paths_for_replacement[path] = None
+        return self
+
     def append_rules(self, *rules: Rule) -> Sequence:
+        """Calling `gcip.core.job.Job.append_rules()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         self._rules_to_append.extend(rules)
         return self
 
     def prepend_rules(self, *rules: Rule) -> Sequence:
+        """Calling `gcip.core.job.Job.prepend_rules()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         self._rules_to_prepend = list(rules) + self._rules_to_prepend
         return self
 
     def initialize_rules(self, *rules: Rule) -> Sequence:
-        """
-        Works like :meth:`initialize_tags` but for rules.
+        """Calling `gcip.core.job.Job.append_rules()` to all jobs within this sequence that haven't been added rules before.
 
-        Args:
-            rules (Rule): A list of :class:`Rule` s that will be applied to :class:`Job` s with empty rules list.
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         self._rules_for_initialization.extend(rules)
         return self
 
     def override_rules(self, *rules: Rule) -> Sequence:
-        """
-        Works like :meth:`override_tags` but for rules.
+        """Calling `gcip.core.job.Job.override_rules()` to all jobs within this sequence and overriding any previously added rules to that jobs.
 
-        Args:
-            rules (Rule): A list of :class:`Rule` s that will be replace all downstream :class:`Job` s rules.
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         self._rules_for_replacement.extend(rules)
         return self
 
     def add_needs(self, *needs: Union[Job, Need]) -> Sequence:
-        """
-        Only the first job of the sequence get the ``need`` appended to, as well as all following jobs with
-        the same stage.
+        """Calling `gcip.core.job.Job.add_need()` to all jobs within the first stage of this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
         """
         self._needs.extend(needs)
         return self
 
     def prepend_scripts(self, *scripts: str) -> Sequence:
+        """Calling `gcip.core.job.Job.prepend_scripts()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         self._scripts_to_prepend = list(scripts) + self._scripts_to_prepend
         return self
 
     def append_scripts(self, *scripts: str) -> Sequence:
+        """Calling `gcip.core.job.Job.append_scripts()` to all jobs within this sequence.
+
+        Returns:
+            `Sequence`: The modified `Sequence` object.
+        """
         self._scripts_to_append.extend(scripts)
         return self
 
     def initialize_image(self, image: Union[Image, str]) -> Sequence:
-        """Initializes given `image` to all downstream `Job`s which do not have
-        an `image` set.
-
-        Args:
-            image (Union[Image, str]): The image to set to all downstream :class:`Job`'s.
+        """Calling `gcip.core.job.Job.set_image()` to all jobs within this sequence.
 
         Returns:
-            Sequence: Modified `sequence` object.
+            `Sequence`: The modified `Sequence` object.
         """
         if image:
             self._image_for_initialization = image
         return self
 
     def override_image(self, image: Union[Image, str]) -> Sequence:
-        """Initializes and override's `image` to all downstream `Job`s.
-        In consequence, all downstream `Job`s will be started with `image`.
-
-        Args:
-            image (str): The image to set for all downstream :class:`Job`'s.
+        """Calling `gcip.core.job.Job.set_image()` to all jobs within this sequence that haven't been set the image before.
 
         Returns:
-            Sequence: Modified `sequence` object.
+            `Sequence`: The modified `Sequence` object.
         """
         if image:
             self._image_for_replacement = image
         return self
 
     def _get_all_instance_names(self, child: Union[Job, Sequence]) -> Set[str]:
-        instance_names: Set[str] = set()
-        for parent in self._parents:
-            instance_names.update(parent._get_all_instance_names(self))
+        """Return all instance names from the given child.
 
+        That means all combinations of the childs name and namespace within this
+        sequence and all parent sequences.
+        """
+
+        # first get all instance names from parents of this sequence
+        own_instance_names: Set[str] = set()
+        for parent in self._parents:
+            own_instance_names.update(parent._get_all_instance_names(self))
+
+        # second get all instance names of the child within this sequence
         child_instance_names: Set[str] = set()
         child_instance_name: str
         for item in self._children:
@@ -288,12 +338,12 @@ class Sequence:
                 # all job names have '-' instead of '_'
                 child_instance_names.add(child_instance_name.replace("_", "-"))
 
+        # third combine all instance names of this sequences
+        # with all instance names of the child
         return_values: Set[str] = set()
-        # add instane names of this sequence to all instance
-        # names of its children
-        if instance_names:
+        if own_instance_names:
             for child_instance_name in child_instance_names:
-                for instance_name in instance_names:
+                for instance_name in own_instance_names:
                     if child_instance_name:
                         return_values.add(f"{child_instance_name}-{instance_name}")
                     else:
@@ -305,6 +355,11 @@ class Sequence:
 
     @property
     def last_jobs_executed(self) -> List[Job]:
+        """This property returns all Jobs from the last stage of this sequence.
+
+        This is typically be requested from a job which has setup this sequence as need,
+        to determine all actual jobs of this sequence as need.
+        """
         all_jobs = self.populated_jobs
         stages: Dict[str, None] = {}
         for job in all_jobs:
@@ -324,6 +379,22 @@ class Sequence:
 
     @property
     def populated_jobs(self) -> List[Job]:
+        """Returns a list with populated copies of all nested jobs of this sequence.
+
+        Populated means, that all attributes of a Job which depends on its context are resolved
+        to their final values. The context is primarily the sequence within the jobs resides but
+        also dependencies to other jobs and sequences. Thus this sequence will apply its own
+        configuration, like variables to add, tags to set, etc., to all its jobs and sequences.
+
+        Copies means what it says, that the returned job are not the same job objects, originally
+        added to this sequence, but copies of them.
+
+        Nested means, that also jobs from sequences within this sequence, are returned, as well
+        as jobs from sequences within sequences within this sequence and so on.
+
+        Returns:
+            List[Job]: A list of copies of all nested jobs of this sequence with their final attribute values.
+        """
         all_jobs: List[Job] = []
         for item in self._children:
             child = item["child"]
@@ -370,6 +441,10 @@ class Sequence:
                 job._tags = copy.deepcopy(self._tags_for_replacement)
             job.add_tags(*list(self._tags.keys()))
 
+            if self._artifacts_paths_for_initialization and not job._artifacts_paths:
+                job._artifacts_paths = copy.deepcopy(self._artifacts_paths_for_initialization)
+            if self._artifacts_paths_for_replacement:
+                job._artifacts_paths = copy.deepcopy(self._artifacts_paths_for_replacement)
             job.add_artifacts_paths(*list(self._artifacts_paths.keys()))
 
             if self._rules_for_initialization and not job._rules:
