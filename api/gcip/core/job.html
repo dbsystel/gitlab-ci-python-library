@@ -508,8 +508,7 @@ class Job:
         Return:
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
-        # late import to avoid circular dependencies
-        from .sequence import Sequence
+        from .sequence import Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -1029,8 +1028,7 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         Return:
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         &#34;&#34;&#34;
-        # late import to avoid circular dependencies
-        from .sequence import Sequence
+        from .sequence import Sequence  # late import to avoid circular dependencies
 
         rendered_job: Dict[str, Any] = {}
 
@@ -1406,8 +1404,7 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
     Return:
         Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
     &#34;&#34;&#34;
-    # late import to avoid circular dependencies
-    from .sequence import Sequence
+    from .sequence import Sequence  # late import to avoid circular dependencies
 
     rendered_job: Dict[str, Any] = {}
 
