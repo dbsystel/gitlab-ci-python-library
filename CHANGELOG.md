@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added set_config_file_path method to DockerClientConfig.
 * Return own instance on each method call for DockerClientConfig instances.
 * Added Registry class to `gcip.addons.container.registry` module. It contains constants of Container registries.
+* Added `gcip.core.sequence.Sequence.initialize_artifacts_paths()` and `gcip.core.sequence.Sequence.override_artifacts_paths()`.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
