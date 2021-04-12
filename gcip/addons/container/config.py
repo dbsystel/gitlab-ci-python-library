@@ -1,3 +1,13 @@
+from __future__ import annotations
+
+__author__ = "Thomas Steinbach"
+__copyright__ = "Copyright 2020 DB Systel GmbH"
+__credits__ = ["Thomas Steinbach"]
+# SPDX-License-Identifier: Apache-2.0
+__license__ = "Apache-2.0"
+__maintainer__ = "Daniel von Eßen"
+__email__ = "daniel.von-essen@deutschebahn.com"
+
 """This module represents a Docker client configuration.
 
 Example:
@@ -12,8 +22,6 @@ cfg.render()
 
 This will render a Client configuration and dumps it as a json string.
 """
-from __future__ import annotations
-
 import json
 from typing import Any, Dict, List, Union
 from os.path import dirname, normpath

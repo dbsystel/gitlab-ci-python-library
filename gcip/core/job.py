@@ -408,7 +408,8 @@ class Job:
         Return:
             Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
         """
-        from .sequence import Sequence  # late import to avoid circular dependencies
+        # late import to avoid circular dependencies
+        from .sequence import Sequence
 
         rendered_job: Dict[str, Any] = {}
 
