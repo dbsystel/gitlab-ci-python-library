@@ -114,6 +114,8 @@ class DockerClientConfig:
             username_env_var (str): Name of the environment variable which as the registry username stored. Defaults to REGISTRY_USERNAME.
             password_env_var (str): Name of the environment variable which as the registry password stored. Defaults to REGISTRY_PASSWORD.
         """
+        if registry == Registry.DOCKER:
+            registry = f"https://{registry}/v1/"
         compose = {
             registry: {
                 "username": "$" + username_env_var,

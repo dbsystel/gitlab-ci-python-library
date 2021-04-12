@@ -134,11 +134,7 @@ def execute(
     job.append_scripts(" ".join(executor_cmd))
     job.set_image(gitlab_executor_image)
 
+    # Set static config path. Kaniko uses /kaniko/.docker/config.json path
     docker_client_config.set_config_file_path("/kaniko/.docker/config.json")
-
-    # Workaround to replace v2 api endpoint from dockerhub with v1 endpoint.
-    # https://github.com/GoogleContainerTools/kaniko/issues/1209
-    docker_client_shell_commands = [command.replace("index.docker.io/v2", "index.docker.io/v1") for command in docker_client_config.get_shell_command()]
-
-    job.prepend_scripts(*docker_client_shell_commands)
+    job.prepend_scripts(*docker_client_config.get_shell_command())
     return job
