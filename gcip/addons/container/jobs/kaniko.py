@@ -62,6 +62,11 @@ def execute(
     Returns:
         Job: gcip.Job will be returned to create container images with ```namespace=build```.
     """
+    job = Job(
+        script=[],
+        namespace="build",
+    )
+
     if not gitlab_executor_image:
         gitlab_executor_image = PredefinedImages.KANIKO
     if not image_name:
@@ -94,8 +99,7 @@ def execute(
     executor_cmd.append(f"--dockerfile {dockerfile}")
 
     if tar_path:
-        tar_path = os.path.normpath(tar_path)
-        executor_cmd.insert(0, f"mkdir -p {tar_path}")
+        job.prepend_scripts(f"mkdir -p {os.path.normpath(tar_path)}")
         executor_cmd.append(f"--tarPath {os.path.join(tar_path, image_name)}.tar")
 
     if verbosity:
@@ -127,10 +131,7 @@ def execute(
         if image_tag and (image_tag == "main" or image_tag == "master"):
             executor_cmd.append(f"--destination {registry}/{image_name}:latest{build_target_postfix}")
 
-    job = Job(
-        script=" ".join(executor_cmd),
-        namespace="build",
-    )
+    job.append_scripts(" ".join(executor_cmd))
     job.set_image(gitlab_executor_image)
 
     docker_client_config.set_config_file_path("/kaniko/.docker/config.json")

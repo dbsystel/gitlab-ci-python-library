@@ -41,3 +41,9 @@ def test_container_kaniko_job_docker_v2_replacement_(gitlab_ci_environment_varia
     )
 
     conftest.check(pipeline.render())
+
+
+def test_container_kaniko_job_tar_path(gitlab_ci_environment_variables):
+    pipeline = Pipeline()
+    pipeline.add_children(kaniko.execute(tar_path="tar/path/for/image"))
+    conftest.check(pipeline.render())
