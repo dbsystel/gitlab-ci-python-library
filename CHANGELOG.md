@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **BREAKING** Removed custom docker client config from kaniko job.
   Added DockerClientConfig as a optional client configuration to kaniko job.
   Simplyfied function and sorted initialisation tests an actuall composing of job.
+* **BREAKING** Removed custom docker client config from kaniko job.
+  Added DockerClientConfig as a optional client configuration to kaniko job.
+  Simplyfied function and sorted initialisation tests an actuall composing of job.
 
 ### Removed
 * Removed `date` call from dive job.
