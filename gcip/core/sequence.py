@@ -273,13 +273,15 @@ class Sequence:
         child_instance_name: str
         for item in self._children:
             if item["child"] == child:
-                if item["namespace"] is not None:
-                    if item["name"]:
-                        child_instance_name = f"{item['namespace']}-{item['name']}"
+                child_name = item["name"]
+                child_namespace = item["namespace"]
+                if child_namespace:
+                    if child_name:
+                        child_instance_name = f"{child_namespace}-{child_name}"
                     else:
-                        child_instance_name = item["namespace"]
-                elif item["name"] is not None:
-                    child_instance_name = item["name"]
+                        child_instance_name = child_namespace
+                elif child_name:
+                    child_instance_name = child_name
                 else:
                     child_instance_name = ""
 
@@ -323,16 +325,19 @@ class Sequence:
     @property
     def populated_jobs(self) -> List[Job]:
         all_jobs: List[Job] = []
-        for child in self._children:
-            if isinstance(child["child"], Sequence):
-                for job_copy in child["child"].populated_jobs:
-                    job_copy._extend_namespace(child["namespace"])
-                    job_copy._extend_name(child["name"])
+        for item in self._children:
+            child = item["child"]
+            child_name = item["name"]
+            child_namespace = item["namespace"]
+            if isinstance(child, Sequence):
+                for job_copy in child.populated_jobs:
+                    job_copy._extend_namespace(child_namespace)
+                    job_copy._extend_name(child_name)
                     all_jobs.append(job_copy)
-            elif isinstance(child["child"], Job):
-                job_copy = child["child"].copy()
-                job_copy._extend_namespace(child["namespace"])
-                job_copy._extend_name(child["name"])
+            elif isinstance(child, Job):
+                job_copy = child.copy()
+                job_copy._extend_namespace(child_namespace)
+                job_copy._extend_name(child_name)
                 all_jobs.append(job_copy)
 
         if len(all_jobs) > 0:
