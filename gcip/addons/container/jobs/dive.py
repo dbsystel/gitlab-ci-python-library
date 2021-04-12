@@ -96,6 +96,6 @@ def scan(
     if ignore_errors:
         dive_command.append("--ignore-errors")
 
-    job = Job(script=["date", " ".join(dive_command)], namespace="check_container_image")
+    job = Job(script=[" ".join(dive_command)], namespace="check_container_image")
     job.set_image(dive_image)
     return job
