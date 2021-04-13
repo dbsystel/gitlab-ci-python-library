@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Several linter issues has been fixed
 * Fixed kaniko build in gitlabci-local.sh
 * Kankio job's tar_path behavior fixed. If you specified tar_path in `kaniko.execute()`, the `tar_path` was added to the same line as the executor. Now it gets added to a item bevor `execute`.
-
+* Fixed PredefinedImages entrypoints for GitLab CI runner.
 
 ## [0.6.1] - 2021-04-07
 

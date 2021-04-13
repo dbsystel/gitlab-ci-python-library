@@ -21,6 +21,8 @@ build-kaniko:
 check-dive:
   image:
     name: wagoodman/dive:latest
+    entrypoint:
+    - ''
   stage: check
   script:
   - set -eo pipefail
@@ -34,6 +36,8 @@ check-dive:
 check-trivy:
   image:
     name: aquasec/trivy:latest
+    entrypoint:
+    - ''
   stage: check
   script:
   - set -eo pipefail
@@ -48,6 +52,8 @@ check-trivy:
 push-crane:
   image:
     name: gcr.io/go-containerregistry/crane:latest
+    entrypoint:
+    - ''
   stage: push
   script:
   - mkdir -p /kaniko/.docker
