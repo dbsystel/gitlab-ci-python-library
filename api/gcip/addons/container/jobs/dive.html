@@ -34,6 +34,7 @@ __license__ = &#34;Apache-2.0&#34;
 __maintainer__ = &#34;Daniel von Eßen&#34;
 __email__ = &#34;daniel.von-essen@deutschebahn.com&#34;
 
+from os import path
 from typing import List, Optional
 
 from gcip.core.job import Job
@@ -79,6 +80,7 @@ def scan(
     `dive` will scan your container image layers and will output the efficency of each layer.
     You can see which layer and which file is consuming the most storage and optimize the layers if possible.
     It prevents container images and its layers beeing polluted with files like apt or yum cache&#39;s.
+    The output produced by `dive` is uploaded as an artifact to the GitLab instance.
 
     Args:
         dive_image (Image): Container Image used for this job. This image has to contain the `dive` command available.
@@ -98,8 +100,10 @@ def scan(
             (default &#34;docker&#34;). Defaults to &#34;docker-archive&#34;.
 
     Returns:
-        Job: gcip.Job returned which will scan your image(s).
+        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```namespace=check```.
     &#34;&#34;&#34;
+    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
+
     if not dive_image:
         dive_image = PredefinedImages.DIVE
     if not image_path:
@@ -111,7 +115,7 @@ def scan(
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
     if source == &#34;docker-archive&#34;:
-        image_name = f&#34;{image_name}.tar&#34;
+        image_name = f&#34;{image_name}.tar&#34;.replace(&#34;/&#34;, &#34;_&#34;)
 
     dive_command: List[str] = [&#34;dive&#34;, f&#34;{source}://{image_path}/{image_name}&#34;, &#34;--ci&#34;]
 
@@ -124,7 +128,9 @@ def scan(
     if ignore_errors:
         dive_command.append(&#34;--ignore-errors&#34;)
 
-    job = Job(script=[&#34;date&#34;, &#34; &#34;.join(dive_command)], namespace=&#34;check_container_image&#34;)
+    dive_command.append(&#34;|tee &#34; + path.join(PredefinedVariables.CI_PROJECT_DIR, &#34;dive.txt&#34;))
+    job.append_scripts(&#34; &#34;.join(dive_command))
+    job.add_artifacts_paths(&#34;dive.txt&#34;)
     job.set_image(dive_image)
     return job</code></pre>
 </details>
@@ -143,7 +149,8 @@ def scan(
 <div class="desc"><p>Scan your images with <a href="https://github.com/wagoodman/dive">wagoodman/dive</a>.</p>
 <p><code>dive</code> will scan your container image layers and will output the efficency of each layer.
 You can see which layer and which file is consuming the most storage and optimize the layers if possible.
-It prevents container images and its layers beeing polluted with files like apt or yum cache's.</p>
+It prevents container images and its layers beeing polluted with files like apt or yum cache's.
+The output produced by <code>dive</code> is uploaded as an artifact to the GitLab instance.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>dive_image</code></strong> :&ensp;<code>Image</code></dt>
@@ -173,7 +180,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd>gcip.Job returned which will scan your image(s).</dd>
+<dd>gcip.Job returned which will scan your image(s) for optimizations. Job runs in <code>namespace=check</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -196,6 +203,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
     `dive` will scan your container image layers and will output the efficency of each layer.
     You can see which layer and which file is consuming the most storage and optimize the layers if possible.
     It prevents container images and its layers beeing polluted with files like apt or yum cache&#39;s.
+    The output produced by `dive` is uploaded as an artifact to the GitLab instance.
 
     Args:
         dive_image (Image): Container Image used for this job. This image has to contain the `dive` command available.
@@ -215,8 +223,10 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
             (default &#34;docker&#34;). Defaults to &#34;docker-archive&#34;.
 
     Returns:
-        Job: gcip.Job returned which will scan your image(s).
+        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```namespace=check```.
     &#34;&#34;&#34;
+    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
+
     if not dive_image:
         dive_image = PredefinedImages.DIVE
     if not image_path:
@@ -228,7 +238,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
     if source == &#34;docker-archive&#34;:
-        image_name = f&#34;{image_name}.tar&#34;
+        image_name = f&#34;{image_name}.tar&#34;.replace(&#34;/&#34;, &#34;_&#34;)
 
     dive_command: List[str] = [&#34;dive&#34;, f&#34;{source}://{image_path}/{image_name}&#34;, &#34;--ci&#34;]
 
@@ -241,7 +251,9 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
     if ignore_errors:
         dive_command.append(&#34;--ignore-errors&#34;)
 
-    job = Job(script=[&#34;date&#34;, &#34; &#34;.join(dive_command)], namespace=&#34;check_container_image&#34;)
+    dive_command.append(&#34;|tee &#34; + path.join(PredefinedVariables.CI_PROJECT_DIR, &#34;dive.txt&#34;))
+    job.append_scripts(&#34; &#34;.join(dive_command))
+    job.add_artifacts_paths(&#34;dive.txt&#34;)
     job.set_image(dive_image)
     return job</code></pre>
 </details>

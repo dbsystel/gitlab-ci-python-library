@@ -143,6 +143,8 @@ class DockerClientConfig:
             username_env_var (str): Name of the environment variable which as the registry username stored. Defaults to REGISTRY_USERNAME.
             password_env_var (str): Name of the environment variable which as the registry password stored. Defaults to REGISTRY_PASSWORD.
         &#34;&#34;&#34;
+        if registry == Registry.DOCKER:
+            registry = f&#34;https://{registry}/v1/&#34;
         compose = {
             registry: {
                 &#34;username&#34;: &#34;$&#34; + username_env_var,
@@ -292,6 +294,8 @@ basic authentication settings. Or set a default credential store.</p></div>
             username_env_var (str): Name of the environment variable which as the registry username stored. Defaults to REGISTRY_USERNAME.
             password_env_var (str): Name of the environment variable which as the registry password stored. Defaults to REGISTRY_PASSWORD.
         &#34;&#34;&#34;
+        if registry == Registry.DOCKER:
+            registry = f&#34;https://{registry}/v1/&#34;
         compose = {
             registry: {
                 &#34;username&#34;: &#34;$&#34; + username_env_var,
@@ -378,6 +382,8 @@ Arguments ending wit *_env_var, are ment to be available as a <code>gcip.Job</co
         username_env_var (str): Name of the environment variable which as the registry username stored. Defaults to REGISTRY_USERNAME.
         password_env_var (str): Name of the environment variable which as the registry password stored. Defaults to REGISTRY_PASSWORD.
     &#34;&#34;&#34;
+    if registry == Registry.DOCKER:
+        registry = f&#34;https://{registry}/v1/&#34;
     compose = {
         registry: {
             &#34;username&#34;: &#34;$&#34; + username_env_var,
