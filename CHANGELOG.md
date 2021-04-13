@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added default `DockerClientConfig` in `crane.push`
 * Added `|tee` to get `dive` output to stdout and to dive.txt. Updload dive.txt to GitLab artifacts store.
 * Added `|tee` to get `trivy` output to stdout and to trivy.txt. Updload trivy.txt to GitLab artifacts store.
+* Added new container sequence. Container sequence build, scans and pushes an container image.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
