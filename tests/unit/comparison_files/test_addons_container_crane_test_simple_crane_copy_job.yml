@@ -3,6 +3,8 @@ stages:
 push-container-image-default:
   image:
     name: gcr.io/go-containerregistry/crane:latest
+    entrypoint:
+    - ''
   stage: push_container_image
   script:
   - crane validate --remote index.docker.io/alpine:3

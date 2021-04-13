@@ -3,6 +3,8 @@ stages:
 check-default:
   image:
     name: wagoodman/dive:latest
+    entrypoint: &id001
+    - ''
   stage: check
   script:
   - set -eo pipefail
@@ -13,6 +15,7 @@ check-default:
 check-custom-image-and-path:
   image:
     name: wagoodman/dive:latest
+    entrypoint: *id001
   stage: check
   script:
   - set -eo pipefail
@@ -23,6 +26,7 @@ check-custom-image-and-path:
 check-custom-settings:
   image:
     name: wagoodman/dive:latest
+    entrypoint: *id001
   stage: check
   script:
   - set -eo pipefail

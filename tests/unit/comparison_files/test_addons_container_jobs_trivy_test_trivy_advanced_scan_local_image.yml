@@ -3,6 +3,8 @@ stages:
 check-advanced-scan:
   image:
     name: aquasec/trivy:latest
+    entrypoint:
+    - ''
   stage: check
   script:
   - set -eo pipefail

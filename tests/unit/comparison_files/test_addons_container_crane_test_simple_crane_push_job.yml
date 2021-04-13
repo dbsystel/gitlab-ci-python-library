@@ -3,6 +3,8 @@ stages:
 push-push-image:
   image:
     name: gcr.io/go-containerregistry/crane:latest
+    entrypoint:
+    - ''
   stage: push
   script:
   - mkdir -p $HOME/.docker
