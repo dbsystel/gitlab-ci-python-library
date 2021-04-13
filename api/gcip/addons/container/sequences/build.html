@@ -85,7 +85,7 @@ def build_scan_push_image(
     Returns:
         Sequence: `gcip.Sequence` to build, scan and push a container image.
     &#34;&#34;&#34;
-    cache = Cache(paths=&#34;image&#34;)
+    cache = Cache(paths=[&#34;image&#34;])
     kaniko_execute = kaniko.execute(
         image_name=image_name,
         image_tag=image_tag,
@@ -211,7 +211,7 @@ and expecting credentials given as environment variables <code>REGISTRY_USER</co
     Returns:
         Sequence: `gcip.Sequence` to build, scan and push a container image.
     &#34;&#34;&#34;
-    cache = Cache(paths=&#34;image&#34;)
+    cache = Cache(paths=[&#34;image&#34;])
     kaniko_execute = kaniko.execute(
         image_name=image_name,
         image_tag=image_tag,
