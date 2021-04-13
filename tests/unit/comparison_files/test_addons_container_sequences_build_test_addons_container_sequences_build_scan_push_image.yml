@@ -1,0 +1,62 @@
+stages:
+- build
+- check
+- push
+build-kaniko:
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint:
+    - ''
+  stage: build
+  script:
+  - mkdir -p /kaniko/.docker
+  - 'echo "{\"auths\": {\"https://index.docker.io/v1/\": {\"username\": \"$REGISTRY_USERNAME\",
+    \"password\": \"$REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json'
+  - mkdir -p image
+  - executor --context /path/to/project --dockerfile /path/to/project/Dockerfile --tarPath
+    ./image/gitlab-ci-project.tar --no-push --build-arg 'first_arg=foo' --build-arg
+    'second_arg=bar' --destination index.docker.io/gitlab-ci-project:11.22.33
+  cache:
+    paths: &id001
+    - ./image
+    key: my-awsome-feature-branch
+check-dive:
+  image:
+    name: wagoodman/dive:latest
+  stage: check
+  script:
+  - set -eo pipefail
+  - dive docker-archive://./image/gitlab-ci-project.tar --ci |tee /path/to/project/dive.txt
+  artifacts:
+    paths:
+    - dive.txt
+  cache:
+    paths: *id001
+    key: my-awsome-feature-branch
+check-trivy:
+  image:
+    name: custom/trivy:v1.2.3
+  stage: check
+  script:
+  - set -eo pipefail
+  - trivy image --input ./image/gitlab-ci-project.tar --no-progress --exit-code 1
+    |tee /path/to/project/trivi.txt
+  artifacts:
+    paths:
+    - trivi.txt
+  cache:
+    paths: *id001
+    key: my-awsome-feature-branch
+push-crane:
+  image:
+    name: gcr.io/go-containerregistry/crane:latest
+  stage: push
+  script:
+  - mkdir -p /kaniko/.docker
+  - 'echo "{\"auths\": {\"https://index.docker.io/v1/\": {\"username\": \"$REGISTRY_USERNAME\",
+    \"password\": \"$REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json'
+  - crane validate --tarball ./image/gitlab-ci-project.tar
+  - crane push ./image/gitlab-ci-project.tar index.docker.io/gitlab-ci-project:11.22.33
+  cache:
+    paths: *id001
+    key: my-awsome-feature-branch
