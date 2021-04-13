@@ -18,11 +18,10 @@ __email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 def execute(
-    gitlab_executor_image: Optional[Union[Image, str]] = None,
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
-    registries: List[str] = list(),
+    registries: List[Union[Registry, str]] = list(),
     tar_path: Optional[str] = None,
     build_args: Dict[str, str] = {},
     build_target: Optional[str] = None,
@@ -30,6 +29,7 @@ def execute(
     enable_push: bool = False,
     docker_client_config: Optional[DockerClientConfig] = None,
     verbosity: Optional[str] = None,
+    kaniko_image: Optional[Union[Image, str]] = None,
 ) -> Job:
     """
     Creates a job which builds container images.
@@ -38,12 +38,11 @@ def execute(
     e.g If the branch which gets pushed to the remote is named `my_awsome_feature` the image will be tagged with `my-awsome-feature`.
 
     Args:
-        gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
-        image_tag (Optional[str]): The tag the image will be tagged with. Defaults to `PredefinedVariables.CI_COMMIT_REF_SLUG`.
+        image_tag (Optional[str]): The tag the image will be tagged with.
+            Defaults to `PredefinedVariables.CI_COMMIT_REF_SLUG` or `PredefinedVariables.CI_COMMIT_TAG`.
         registries (Optional[List[str]], optional): List of container registries to push created image to. Defaults to an empty list.
         tar_path (Optional[str], optional): Container images created by kaniko are tarball files.
             This is the path where to store the image, will be named with suffix `.tar`. This path will be created if not present.
@@ -58,17 +57,18 @@ def execute(
             to authenticate against given registries. Defaults to a `DockerClientConfig` with login to the official Docker Hub
             and expecting credentials given as environment variables `REGISTRY_USER` and `REGISTRY_LOGIN`.
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to "info".
-
+        kaniko_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
+            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
     Returns:
-        Job: gcip.Job will be returned to create container images with ```namespace=build```.
+        Job: gcip.Job will be returned to create container images with. Job runs in ```namespace=build```.
     """
     job = Job(
         script=[],
         namespace="build",
     )
 
-    if not gitlab_executor_image:
-        gitlab_executor_image = PredefinedImages.KANIKO
+    if not kaniko_image:
+        kaniko_image = PredefinedImages.KANIKO
     if not image_name:
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
@@ -100,7 +100,8 @@ def execute(
 
     if tar_path:
         job.prepend_scripts(f"mkdir -p {os.path.normpath(tar_path)}")
-        executor_cmd.append(f"--tarPath {os.path.join(tar_path, image_name)}.tar")
+        image_path = image_name.replace("/", "_")
+        executor_cmd.append(f"--tarPath {os.path.join(tar_path, image_path)}.tar")
 
     if verbosity:
         executor_cmd.append(f"--verbosity {verbosity}")
@@ -132,7 +133,7 @@ def execute(
             executor_cmd.append(f"--destination {registry}/{image_name}:latest{build_target_postfix}")
 
     job.append_scripts(" ".join(executor_cmd))
-    job.set_image(gitlab_executor_image)
+    job.set_image(kaniko_image)
 
     # Set static config path. Kaniko uses /kaniko/.docker/config.json path
     docker_client_config.set_config_file_path("/kaniko/.docker/config.json")
