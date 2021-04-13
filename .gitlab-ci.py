@@ -1,14 +1,16 @@
 from gcip import Image, Pipeline, PredefinedVariables
 from gcip.addons.python import jobs as python
-from gcip.addons.container.jobs import kaniko
+from gcip.addons.container.sequences import build
 
 pipeline = Pipeline()
 pipeline.initialize_image("python:3.9-slim")
 
-# gitlabci-local only works with 'sh' as kaniko entrypoint
+# gitlabci-local only works with 'sh' as kaniko and crane entrypoint
 kaniko_image = None
+crane_image = None
 if PredefinedVariables.CI_COMMIT_REF_SLUG == "gitlab-local-sh":
     kaniko_image = Image("gcr.io/kaniko-project/executor:debug", entrypoint=["sh"])
+    crane_image = Image("gcr.io/go-containerregistry/crane:debug", entrypoint=["sh"])
 
 pipeline.add_children(
     python.isort(),
@@ -19,10 +21,10 @@ pipeline.add_children(
 )
 
 pipeline.add_children(
-    kaniko.execute(
-        gitlab_executor_image=kaniko_image,
+    build.build_scan_push_image(
         image_name="thomass/gcip",
-        enable_push=PredefinedVariables.CI_COMMIT_TAG is not None or PredefinedVariables.CI_COMMIT_BRANCH == "main",
+        kaniko_kwargs={"kaniko_image": kaniko_image},
+        crane_kwargs={"crane_image": crane_image},
     ),
     name="gcip",
 )
