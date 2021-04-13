@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **BREAKING** Moved all function arguments of `crane.push` function to be keyword arguments.
 * **BREAKING** Renamed `dst` to `dst_registry` in `crane.push` function.
 * **BREAKING** Renamed `image_path` to `tar_path` keyword argument to aligne with kaniko module.
+* **BREAKING** Renamed `dst` and `src` to `dst_registry` and `src_registry`.
 
 ### Removed
 * Removed `date` call from dive job.
