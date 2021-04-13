@@ -5,5 +5,13 @@
     "autoDocstring.docstringFormat": "google",
     "autoDocstring.guessTypes": true,
     "autoDocstring.quoteStyle": "\"\"\"",
-    "autoDocstring.includeExtendedSummary": true
+    "autoDocstring.includeExtendedSummary": true,
+    "python.testing.pytestArgs": [
+        "tests",
+        "--cov=gcip",
+        "--cov-report=xml:cov.xml"
+    ],
+    "coverage-gutters.coverageFileNames": [
+        "cov.xml",
+    ]
 }
