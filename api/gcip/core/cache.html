@@ -209,7 +209,7 @@ class Cache:
 
     def __init__(
         self,
-        paths: str,
+        paths: List[str],
         cache_key: Optional[CacheKey] = None,
         untracked: Optional[bool] = None,
         when: Optional[WhenStatement] = None,
@@ -224,8 +224,8 @@ class Cache:
         # Prepend ./ to path to clearify that cache paths
         # are relative to CI_PROJECT_PATH
         for path in paths:
-            if path.startswith(PredefinedVariables.CI_PROJECT_DIR):
-                path = path[len(PredefinedVariables.CI_PROJECT_DIR) :]
+            if PredefinedVariables.CI_PROJECT_PATH and path.startswith(PredefinedVariables.CI_PROJECT_PATH):
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH) :]
 
             if not path.startswith(&#34;./&#34;):
                 path = &#34;./&#34; + path
@@ -303,7 +303,7 @@ class Cache:
 <dl>
 <dt id="gcip.core.cache.Cache"><code class="flex name class">
 <span>class <span class="ident">Cache</span></span>
-<span>(</span><span>paths: str, cache_key: Optional[<a title="gcip.core.cache.CacheKey" href="#gcip.core.cache.CacheKey">CacheKey</a>] = None, untracked: Optional[bool] = None, when: Optional[<a title="gcip.core.rule.WhenStatement" href="rule.html#gcip.core.rule.WhenStatement">WhenStatement</a>] = None, policy: Optional[<a title="gcip.core.cache.CachePolicy" href="#gcip.core.cache.CachePolicy">CachePolicy</a>] = None)</span>
+<span>(</span><span>paths: List[str], cache_key: Optional[<a title="gcip.core.cache.CacheKey" href="#gcip.core.cache.CacheKey">CacheKey</a>] = None, untracked: Optional[bool] = None, when: Optional[<a title="gcip.core.rule.WhenStatement" href="rule.html#gcip.core.rule.WhenStatement">WhenStatement</a>] = None, policy: Optional[<a title="gcip.core.cache.CachePolicy" href="#gcip.core.cache.CachePolicy">CachePolicy</a>] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This class represents the <a href="https://docs.gitlab.com/ee/ci/yaml/#cache">cache</a> keyword.</p>
@@ -362,7 +362,7 @@ Defaults to None (unset).</dd>
 
     def __init__(
         self,
-        paths: str,
+        paths: List[str],
         cache_key: Optional[CacheKey] = None,
         untracked: Optional[bool] = None,
         when: Optional[WhenStatement] = None,
@@ -377,8 +377,8 @@ Defaults to None (unset).</dd>
         # Prepend ./ to path to clearify that cache paths
         # are relative to CI_PROJECT_PATH
         for path in paths:
-            if path.startswith(PredefinedVariables.CI_PROJECT_DIR):
-                path = path[len(PredefinedVariables.CI_PROJECT_DIR) :]
+            if PredefinedVariables.CI_PROJECT_PATH and path.startswith(PredefinedVariables.CI_PROJECT_PATH):
+                path = path[len(PredefinedVariables.CI_PROJECT_PATH) :]
 
             if not path.startswith(&#34;./&#34;):
                 path = &#34;./&#34; + path

@@ -46,10 +46,11 @@ __email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
 def execute(
+    gitlab_executor_image: Optional[Union[Image, str]] = None,
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
-    registries: List[Union[Registry, str]] = list(),
+    registries: List[str] = list(),
     tar_path: Optional[str] = None,
     build_args: Dict[str, str] = {},
     build_target: Optional[str] = None,
@@ -57,7 +58,6 @@ def execute(
     enable_push: bool = False,
     docker_client_config: Optional[DockerClientConfig] = None,
     verbosity: Optional[str] = None,
-    kaniko_image: Optional[Union[Image, str]] = None,
 ) -&gt; Job:
     &#34;&#34;&#34;
     Creates a job which builds container images.
@@ -66,11 +66,12 @@ def execute(
     e.g If the branch which gets pushed to the remote is named `my_awsome_feature` the image will be tagged with `my-awsome-feature`.
 
     Args:
+        gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
+            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
-        image_tag (Optional[str]): The tag the image will be tagged with.
-            Defaults to `PredefinedVariables.CI_COMMIT_REF_SLUG` or `PredefinedVariables.CI_COMMIT_TAG`.
+        image_tag (Optional[str]): The tag the image will be tagged with. Defaults to `PredefinedVariables.CI_COMMIT_REF_SLUG`.
         registries (Optional[List[str]], optional): List of container registries to push created image to. Defaults to an empty list.
         tar_path (Optional[str], optional): Container images created by kaniko are tarball files.
             This is the path where to store the image, will be named with suffix `.tar`. This path will be created if not present.
@@ -85,18 +86,12 @@ def execute(
             to authenticate against given registries. Defaults to a `DockerClientConfig` with login to the official Docker Hub
             and expecting credentials given as environment variables `REGISTRY_USER` and `REGISTRY_LOGIN`.
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to &#34;info&#34;.
-        kaniko_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
-    Returns:
-        Job: gcip.Job will be returned to create container images with. Job runs in ```namespace=build```.
-    &#34;&#34;&#34;
-    job = Job(
-        script=[],
-        namespace=&#34;build&#34;,
-    )
 
-    if not kaniko_image:
-        kaniko_image = PredefinedImages.KANIKO
+    Returns:
+        Job: gcip.Job will be returned to create container images with ```namespace=build```.
+    &#34;&#34;&#34;
+    if not gitlab_executor_image:
+        gitlab_executor_image = PredefinedImages.KANIKO
     if not image_name:
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
@@ -127,9 +122,9 @@ def execute(
     executor_cmd.append(f&#34;--dockerfile {dockerfile}&#34;)
 
     if tar_path:
-        job.prepend_scripts(f&#34;mkdir -p {os.path.normpath(tar_path)}&#34;)
-        image_path = image_name.replace(&#34;/&#34;, &#34;_&#34;)
-        executor_cmd.append(f&#34;--tarPath {os.path.join(tar_path, image_path)}.tar&#34;)
+        tar_path = os.path.normpath(tar_path)
+        executor_cmd.insert(0, f&#34;mkdir -p {tar_path}&#34;)
+        executor_cmd.append(f&#34;--tarPath {os.path.join(tar_path, image_name)}.tar&#34;)
 
     if verbosity:
         executor_cmd.append(f&#34;--verbosity {verbosity}&#34;)
@@ -160,12 +155,19 @@ def execute(
         if image_tag and (image_tag == &#34;main&#34; or image_tag == &#34;master&#34;):
             executor_cmd.append(f&#34;--destination {registry}/{image_name}:latest{build_target_postfix}&#34;)
 
-    job.append_scripts(&#34; &#34;.join(executor_cmd))
-    job.set_image(kaniko_image)
+    job = Job(
+        script=&#34; &#34;.join(executor_cmd),
+        namespace=&#34;build&#34;,
+    )
+    job.set_image(gitlab_executor_image)
 
-    # Set static config path. Kaniko uses /kaniko/.docker/config.json path
     docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
-    job.prepend_scripts(*docker_client_config.get_shell_command())
+
+    # Workaround to replace v2 api endpoint from dockerhub with v1 endpoint.
+    # https://github.com/GoogleContainerTools/kaniko/issues/1209
+    docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
+
+    job.prepend_scripts(*docker_client_shell_commands)
     return job</code></pre>
 </details>
 </section>
@@ -177,7 +179,7 @@ def execute(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="gcip.addons.container.jobs.kaniko.execute"><code class="name flex">
-<span>def <span class="ident">execute</span></span>(<span>context: Optional[str] = None, image_name: Optional[str] = None, image_tag: Optional[str] = None, registries: List[Union[<a title="gcip.addons.container.registries.Registry" href="../registries.html#gcip.addons.container.registries.Registry">Registry</a>, str]] = [], tar_path: Optional[str] = None, build_args: Dict[str, str] = {}, build_target: Optional[str] = None, dockerfile: Optional[str] = None, enable_push: bool = False, docker_client_config: Optional[<a title="gcip.addons.container.config.DockerClientConfig" href="../config.html#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a>] = None, verbosity: Optional[str] = None, kaniko_image: Union[<a title="gcip.core.image.Image" href="../../../core/image.html#gcip.core.image.Image">Image</a>, str, NoneType] = None) ‑> <a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></span>
+<span>def <span class="ident">execute</span></span>(<span>gitlab_executor_image: Union[<a title="gcip.core.image.Image" href="../../../core/image.html#gcip.core.image.Image">Image</a>, str, NoneType] = None, context: Optional[str] = None, image_name: Optional[str] = None, image_tag: Optional[str] = None, registries: List[str] = [], tar_path: Optional[str] = None, build_args: Dict[str, str] = {}, build_target: Optional[str] = None, dockerfile: Optional[str] = None, enable_push: bool = False, docker_client_config: Optional[<a title="gcip.addons.container.config.DockerClientConfig" href="../config.html#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a>] = None, verbosity: Optional[str] = None) ‑> <a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a job which builds container images.</p>
@@ -185,14 +187,16 @@ def execute(
 e.g If the branch which gets pushed to the remote is named <code>my_awsome_feature</code> the image will be tagged with <code>my-awsome-feature</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>gitlab_executor_image</code></strong> :&ensp;<code>Optional[Union[Image, str]]</code></dt>
+<dd>The Gitlab executor image this <code><a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></code> should run with.
+Must contain the kaniko <code>executor</code> binary. Defaults to <code>PredefinedImages.KANIKO</code>.</dd>
 <dt><strong><code>context</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
 <dd>Context which will be send to kaniko. Defaults to <code>None</code> which implies the local
 directory is the context.</dd>
 <dt><strong><code>image_name</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
 <dd>Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.</dd>
 <dt><strong><code>image_tag</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>The tag the image will be tagged with.
-Defaults to <code>PredefinedVariables.CI_COMMIT_REF_SLUG</code> or <code>PredefinedVariables.CI_COMMIT_TAG</code>.</dd>
+<dd>The tag the image will be tagged with. Defaults to <code>PredefinedVariables.CI_COMMIT_REF_SLUG</code>.</dd>
 <dt><strong><code>registries</code></strong> :&ensp;<code>Optional[List[str]]</code>, optional</dt>
 <dd>List of container registries to push created image to. Defaults to an empty list.</dd>
 <dt><strong><code>tar_path</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
@@ -215,24 +219,22 @@ to authenticate against given registries. Defaults to a <code>DockerClientConfig
 and expecting credentials given as environment variables <code>REGISTRY_USER</code> and <code>REGISTRY_LOGIN</code>.</dd>
 <dt><strong><code>verbosity</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Verbosity of kaniko logging. Defaults to "info".</dd>
-<dt><strong><code>kaniko_image</code></strong> :&ensp;<code>Optional[Union[Image, str]]</code></dt>
-<dd>The Gitlab executor image this <code><a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></code> should run with.
-Must contain the kaniko <code>executor</code> binary. Defaults to <code>PredefinedImages.KANIKO</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd>gcip.Job will be returned to create container images with. Job runs in <code>namespace=build</code>.</dd>
+<dd>gcip.Job will be returned to create container images with <code>namespace=build</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def execute(
+    gitlab_executor_image: Optional[Union[Image, str]] = None,
     context: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
-    registries: List[Union[Registry, str]] = list(),
+    registries: List[str] = list(),
     tar_path: Optional[str] = None,
     build_args: Dict[str, str] = {},
     build_target: Optional[str] = None,
@@ -240,7 +242,6 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
     enable_push: bool = False,
     docker_client_config: Optional[DockerClientConfig] = None,
     verbosity: Optional[str] = None,
-    kaniko_image: Optional[Union[Image, str]] = None,
 ) -&gt; Job:
     &#34;&#34;&#34;
     Creates a job which builds container images.
@@ -249,11 +250,12 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
     e.g If the branch which gets pushed to the remote is named `my_awsome_feature` the image will be tagged with `my-awsome-feature`.
 
     Args:
+        gitlab_executor_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
+            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
         context (Optional[str], optional): Context which will be send to kaniko. Defaults to `None` which implies the local
             directory is the context.
         image_name (Optional[str], optional): Image name which will be created. Defaults to PredefinedVariables.CI_PROJECT_NAME.
-        image_tag (Optional[str]): The tag the image will be tagged with.
-            Defaults to `PredefinedVariables.CI_COMMIT_REF_SLUG` or `PredefinedVariables.CI_COMMIT_TAG`.
+        image_tag (Optional[str]): The tag the image will be tagged with. Defaults to `PredefinedVariables.CI_COMMIT_REF_SLUG`.
         registries (Optional[List[str]], optional): List of container registries to push created image to. Defaults to an empty list.
         tar_path (Optional[str], optional): Container images created by kaniko are tarball files.
             This is the path where to store the image, will be named with suffix `.tar`. This path will be created if not present.
@@ -268,18 +270,12 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
             to authenticate against given registries. Defaults to a `DockerClientConfig` with login to the official Docker Hub
             and expecting credentials given as environment variables `REGISTRY_USER` and `REGISTRY_LOGIN`.
         verbosity (str, optional): Verbosity of kaniko logging. Defaults to &#34;info&#34;.
-        kaniko_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
-            Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
-    Returns:
-        Job: gcip.Job will be returned to create container images with. Job runs in ```namespace=build```.
-    &#34;&#34;&#34;
-    job = Job(
-        script=[],
-        namespace=&#34;build&#34;,
-    )
 
-    if not kaniko_image:
-        kaniko_image = PredefinedImages.KANIKO
+    Returns:
+        Job: gcip.Job will be returned to create container images with ```namespace=build```.
+    &#34;&#34;&#34;
+    if not gitlab_executor_image:
+        gitlab_executor_image = PredefinedImages.KANIKO
     if not image_name:
         image_name = PredefinedVariables.CI_PROJECT_NAME
 
@@ -310,9 +306,9 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
     executor_cmd.append(f&#34;--dockerfile {dockerfile}&#34;)
 
     if tar_path:
-        job.prepend_scripts(f&#34;mkdir -p {os.path.normpath(tar_path)}&#34;)
-        image_path = image_name.replace(&#34;/&#34;, &#34;_&#34;)
-        executor_cmd.append(f&#34;--tarPath {os.path.join(tar_path, image_path)}.tar&#34;)
+        tar_path = os.path.normpath(tar_path)
+        executor_cmd.insert(0, f&#34;mkdir -p {tar_path}&#34;)
+        executor_cmd.append(f&#34;--tarPath {os.path.join(tar_path, image_name)}.tar&#34;)
 
     if verbosity:
         executor_cmd.append(f&#34;--verbosity {verbosity}&#34;)
@@ -343,12 +339,19 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
         if image_tag and (image_tag == &#34;main&#34; or image_tag == &#34;master&#34;):
             executor_cmd.append(f&#34;--destination {registry}/{image_name}:latest{build_target_postfix}&#34;)
 
-    job.append_scripts(&#34; &#34;.join(executor_cmd))
-    job.set_image(kaniko_image)
+    job = Job(
+        script=&#34; &#34;.join(executor_cmd),
+        namespace=&#34;build&#34;,
+    )
+    job.set_image(gitlab_executor_image)
 
-    # Set static config path. Kaniko uses /kaniko/.docker/config.json path
     docker_client_config.set_config_file_path(&#34;/kaniko/.docker/config.json&#34;)
-    job.prepend_scripts(*docker_client_config.get_shell_command())
+
+    # Workaround to replace v2 api endpoint from dockerhub with v1 endpoint.
+    # https://github.com/GoogleContainerTools/kaniko/issues/1209
+    docker_client_shell_commands = [command.replace(&#34;index.docker.io/v2&#34;, &#34;index.docker.io/v1&#34;) for command in docker_client_config.get_shell_command()]
+
+    job.prepend_scripts(*docker_client_shell_commands)
     return job</code></pre>
 </details>
 </dd>
