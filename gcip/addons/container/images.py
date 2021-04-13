@@ -15,7 +15,7 @@ class PredefinedImages:
     """
 
     KANIKO: Image = Image("gcr.io/kaniko-project/executor:debug", entrypoint=[""])
-    CRANE: Image = Image("gcr.io/go-containerregistry/crane:latest")
-    DIVE: Image = Image("wagoodman/dive:latest")
+    CRANE: Image = Image("gcr.io/go-containerregistry/crane:latest", entrypoint=[""])
+    DIVE: Image = Image("wagoodman/dive:latest", entrypoint=[""])
     GCIP: Image = Image("thomass/gcip:0.3.0")
-    TRIVY: Image = Image("aquasec/trivy:latest")
+    TRIVY: Image = Image("aquasec/trivy:latest", entrypoint=[""])
