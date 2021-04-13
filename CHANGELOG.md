@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added set_config_file_path method to DockerClientConfig.
 * Return own instance on each method call for DockerClientConfig instances.
 * Added Registry class to `gcip.addons.container.registry` module. It contains constants of Container registries.
+* Added defaulting to git tag or git branch for image_tag in `crane.push`.
+* Added default `DockerClientConfig` in `crane.push`
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
@@ -22,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **BREAKING** Removed custom docker client config from kaniko job.
   Added DockerClientConfig as a optional client configuration to kaniko job.
   Simplyfied function and sorted initialisation tests an actuall composing of job.
+* **BREAKING** Moved all function arguments of `crane.push` function to be keyword arguments.
+* **BREAKING** Renamed `dst` to `dst_registry` in `crane.push` function.
+* **BREAKING** Renamed `image_path` to `tar_path` keyword argument to aligne with kaniko module.
 
 ### Removed
 * Removed `date` call from dive job.
