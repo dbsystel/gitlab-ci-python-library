@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added new container sequence. Container sequence build, scans and pushes an container image.
 * Added defaulting to git tag or git branch for image_tag in `crane.push`.
 * Added default `DockerClientConfig` in `crane.push`
-
+* Added `|tee` to get `dive` output to stdout and to dive.txt. Updload dive.txt to GitLab artifacts store.
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
 * Line length check in flake8 linter to 160.
@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `kaniko`: Replaced "/" with "_" to convert image namspaces to filename instead of directory structure assigne it to image_path.
 * `core.cache`: Changed PredefinedVariable from CI_PROJECT_PATH to CI_PROJECT_DIR to ensure its the directory instead of the "namespace" of the git repository.
 * **BREAKING** Changed docker hub registry entry in `Registry` class.
-
+* **BREAKING** Replace "/" with "_" in image_name. Image names contains namespaces which are separated by "/" to ensure image name is a file instead of a directory structure.
 ### Removed
 * Removed `date` call from dive job.
 
