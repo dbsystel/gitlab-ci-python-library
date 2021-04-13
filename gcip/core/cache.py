@@ -177,8 +177,8 @@ class Cache:
         # Prepend ./ to path to clearify that cache paths
         # are relative to CI_PROJECT_PATH
         for path in paths:
-            if PredefinedVariables.CI_PROJECT_PATH and path.startswith(PredefinedVariables.CI_PROJECT_PATH):
-                path = path[len(PredefinedVariables.CI_PROJECT_PATH) :]
+            if path.startswith(PredefinedVariables.CI_PROJECT_DIR):
+                path = path[len(PredefinedVariables.CI_PROJECT_DIR) :]
 
             if not path.startswith("./"):
                 path = "./" + path

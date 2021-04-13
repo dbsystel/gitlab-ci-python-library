@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **BREAKING** `trivy`: Replace "/" with "_" in image_name. Image names contains namespaces which are separated by "/" to ensure image name is a file instead of a directory structure.
 * **BREAKING** Renamed `gitlab_executor_image` to `kaniko_image` in `kaniko.execute()`. Moved argument to last argument in function signature.
 * `kaniko`: Replaced "/" with "_" to convert image namspaces to filename instead of directory structure assigne it to image_path.
+* `core.cache`: Changed PredefinedVariable from CI_PROJECT_PATH to CI_PROJECT_DIR to ensure its the directory instead of the "namespace" of the git repository.
+
 ### Removed
 * Removed `date` call from dive job.
 
