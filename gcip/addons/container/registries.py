@@ -12,6 +12,6 @@ class Registry:
     Container registry urls constants.
     """
 
-    DOCKER: str = "https://index.docker.io/v1/"
+    DOCKER: str = "index.docker.io"
     QUAY: str = "quay.io"
     GCR: str = "gcr.io"
