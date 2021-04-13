@@ -9,8 +9,8 @@ from gcip.addons.container.registries import Registry
 
 
 def copy(
-    src: str,
-    dst: str,
+    src_registry: Union[Registry, str],
+    dst_registry: Union[Registry, str],
     *,
     docker_client_config: Optional[DockerClientConfig] = None,
     crane_image: Optional[Union[Image, str]] = None,
@@ -23,8 +23,8 @@ def copy(
     to your cluster or servers.
 
     Args:
-        src (str): Registry URL to copy container image from.
-        dst (str): Registry URL to copy container image to.
+        src_registry (str): Registry URL to copy container image from.
+        dst_registry (str): Registry URL to copy container image to.
         docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
             used by crane to authenticate against given registries. Defaults to None.
         crane_image (Optional[Union[Image, str]], optional): Container image which contains `crane` command.
@@ -38,8 +38,8 @@ def copy(
 
     job = Job(
         script=[
-            f"crane validate --remote {src}",
-            f"crane copy {src} {dst}",
+            f"crane validate --remote {src_registry}",
+            f"crane copy {src_registry} {dst_registry}",
         ],
         namespace="push_container_image",
     )
