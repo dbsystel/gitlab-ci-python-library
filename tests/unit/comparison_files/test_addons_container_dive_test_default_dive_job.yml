@@ -1,21 +1,34 @@
 stages:
-- check_container_image
-check-container-image-default:
+- check
+check-default:
   image:
     name: wagoodman/dive:latest
-  stage: check_container_image
+  stage: check
   script:
-  - dive docker-archive:///my/awsome/project/gitlab-ci-project.tar --ci
-check-container-image-custom-image-and-path:
+  - set -eo pipefail
+  - dive docker-archive:///my/awsome/project/gitlab-ci-project.tar --ci |tee /path/to/project/dive.txt
+  artifacts:
+    paths:
+    - dive.txt
+check-custom-image-and-path:
   image:
     name: wagoodman/dive:latest
-  stage: check_container_image
+  stage: check
   script:
-  - dive docker-archive:///absolute/path/image_name.tar --ci
-check-container-image-custom-settings:
+  - set -eo pipefail
+  - dive docker-archive:///absolute/path/image_name.tar --ci |tee /path/to/project/dive.txt
+  artifacts:
+    paths:
+    - dive.txt
+check-custom-settings:
   image:
     name: wagoodman/dive:latest
-  stage: check_container_image
+  stage: check
   script:
+  - set -eo pipefail
   - dive docker-archive:///my/awsome/project/gitlab-ci-project.tar --ci --highestUserWastedPercent
-    "0.1" --highestWastedBytes "0.2" --lowestEfficiency "0.3" --ignore-errors
+    "0.1" --highestWastedBytes "0.2" --lowestEfficiency "0.3" --ignore-errors |tee
+    /path/to/project/dive.txt
+  artifacts:
+    paths:
+    - dive.txt

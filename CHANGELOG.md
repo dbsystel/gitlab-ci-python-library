@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `gcip.core.sequence.Sequence.initialize_artifacts_paths()` and `gcip.core.sequence.Sequence.override_artifacts_paths()`.
 * Added defaulting to git tag or git branch for image_tag in `crane.push`.
 * Added default `DockerClientConfig` in `crane.push`
-
+* Added `|tee` to get `dive` output to stdout and to dive.txt. Updload dive.txt to GitLab artifacts store.
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
 * Line length check in flake8 linter to 160.
@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **BREAKING** Renamed `dst` to `dst_registry` in `crane.push` function.
 * **BREAKING** Renamed `image_path` to `tar_path` keyword argument to aligne with kaniko module.
 * **BREAKING** Renamed `dst` and `src` to `dst_registry` and `src_registry`.
-
+* **BREAKING** Replace "/" with "_" in image_name. Image names contains namespaces which are separated by "/" to ensure image name is a file instead of a directory structure.
 ### Removed
 * Removed `date` call from dive job.
 
