@@ -1,5 +1,7 @@
 *.swp
 .pytest_cache
+.coverage
+cov.xml
 
 build
 dist
