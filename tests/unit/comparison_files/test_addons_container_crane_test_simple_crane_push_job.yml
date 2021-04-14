@@ -2,7 +2,7 @@ stages:
 - push
 push-push-image:
   image:
-    name: gcr.io/go-containerregistry/crane:latest
+    name: gcr.io/go-containerregistry/crane:debug
     entrypoint:
     - ''
   stage: push
