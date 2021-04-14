@@ -2,7 +2,7 @@ stages:
 - push_container_image
 push-container-image-with-authentication:
   image:
-    name: gcr.io/go-containerregistry/crane:latest
+    name: gcr.io/go-containerregistry/crane:debug
     entrypoint:
     - ''
   stage: push_container_image

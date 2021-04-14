@@ -51,7 +51,7 @@ check-trivy:
     key: my-awsome-feature-branch
 push-crane:
   image:
-    name: gcr.io/go-containerregistry/crane:latest
+    name: gcr.io/go-containerregistry/crane:debug
     entrypoint:
     - ''
   stage: push
