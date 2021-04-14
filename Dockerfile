@@ -1,4 +1,8 @@
-FROM python:3.9-slim
+FROM python:3.9-alpine
+
+RUN apk add --update-cache \
+    gcc musl-dev \
+  && rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
 
