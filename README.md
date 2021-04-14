@@ -57,6 +57,21 @@ features of the gcip.
 You can consult the [API Reference](https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html) to get an overview of all classes and methods
 and a deeper view into their paramters.
 
+## IDE setup hints
+
+To participate onto this project and get into it as quick as possible, we advice to use our Visual Studio Code configuration shipped with this project. To activate:
+
+* Install Docker.
+* In VSCode CMD+Shift+P and select "Remote-Containers: Reopen in Container"
+
+Feel free to use any other editor you like, as long as you will ensure following quality requirements before contributing your commits:
+
+* Organizing and sorting imports with `isort`.
+* Formatting code with `black`.
+* Type checking with `mypy`.
+* Unit testing with `pytest`.
+
+The VSCode settings delivered will do most of that automatically (organize imports, formatting, type checking) or setup the required tools (unit testing with code coverage).
 
 ## Why is this Gitlab Project hosted on Github?
 
