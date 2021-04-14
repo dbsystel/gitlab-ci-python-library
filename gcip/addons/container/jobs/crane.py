@@ -101,7 +101,7 @@ def push(
     if not image_tag:
         if PredefinedVariables.CI_COMMIT_TAG:
             image_tag = PredefinedVariables.CI_COMMIT_TAG
-        elif PredefinedVariables.CI_COMMIT_REF_SLUG:
+        else:
             image_tag = PredefinedVariables.CI_COMMIT_REF_SLUG
     image_tag_postfix = f":{image_tag}"
 
