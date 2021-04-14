@@ -26,8 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from os import path
-from typing import Union, Optional
+<pre><code class="python">from typing import Union, Optional
 
 from gcip.core.job import Job
 from gcip.core.image import Image
@@ -51,6 +50,7 @@ def scan_local_image(
     This job fails with exit code 1 if severities are found.
     The scan output is printed to stdout and uploaded to the artifacts of GitLab.
 
+
     Args:
         image_path (Optional[str]): Path where to find the container image.
             If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
@@ -68,18 +68,18 @@ def scan_local_image(
             Defaults to PredefindedImages.TRIVY.
 
     Returns:
-        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```namespace=check```.
+        Job: `gcip.Job` will be returned to create container images with ```namespace=check_container_image```.
     &#34;&#34;&#34;
-    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
     if not image_path:
         image_path = PredefinedVariables.CI_PROJECT_DIR
     if not image_name:
         image_name = PredefinedVariables.CI_PROJECT_NAME
     if not trivy_image:
         trivy_image = PredefinedImages.TRIVY
-    image_name = image_name.replace(&#34;/&#34;, &#34;_&#34;)
+
     trivy_cmd = [&#34;trivy image&#34;]
     trivy_cmd.append(f&#34;--input {image_path}/{image_name}.tar&#34;)
+    trivy_cmd.append(f&#34;--output {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt&#34;)
     trivy_cmd.append(&#34;--no-progress&#34;)
 
     if output_format:
@@ -97,10 +97,10 @@ def scan_local_image(
     if trivy_config:
         trivy_cmd.append(trivy_config)
 
-    trivy_cmd.append(&#34;|tee &#34; + path.join(PredefinedVariables.CI_PROJECT_DIR, &#34;trivi.txt&#34;))
-    job.append_scripts(&#34; &#34;.join(trivy_cmd))
-    job.add_artifacts_paths(&#34;trivi.txt&#34;)
+    job = Job(script=&#34; &#34;.join(trivy_cmd), namespace=&#34;check_container_image&#34;)
+    job.append_scripts(f&#34;cat {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt&#34;)
     job.set_image(trivy_image)
+    job.add_artifacts_paths(&#34;trivi.txt&#34;)
     return job</code></pre>
 </details>
 </section>
@@ -146,7 +146,7 @@ Defaults to PredefindedImages.TRIVY.</dd>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd><code>gcip.Job</code> will be returned to which checks container images of vulnerabilities. Job runs in <code>namespace=check</code>.</dd>
+<dd><code>gcip.Job</code> will be returned to create container images with <code>namespace=check_container_image</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -168,6 +168,7 @@ Defaults to PredefindedImages.TRIVY.</dd>
     This job fails with exit code 1 if severities are found.
     The scan output is printed to stdout and uploaded to the artifacts of GitLab.
 
+
     Args:
         image_path (Optional[str]): Path where to find the container image.
             If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
@@ -185,18 +186,18 @@ Defaults to PredefindedImages.TRIVY.</dd>
             Defaults to PredefindedImages.TRIVY.
 
     Returns:
-        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```namespace=check```.
+        Job: `gcip.Job` will be returned to create container images with ```namespace=check_container_image```.
     &#34;&#34;&#34;
-    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
     if not image_path:
         image_path = PredefinedVariables.CI_PROJECT_DIR
     if not image_name:
         image_name = PredefinedVariables.CI_PROJECT_NAME
     if not trivy_image:
         trivy_image = PredefinedImages.TRIVY
-    image_name = image_name.replace(&#34;/&#34;, &#34;_&#34;)
+
     trivy_cmd = [&#34;trivy image&#34;]
     trivy_cmd.append(f&#34;--input {image_path}/{image_name}.tar&#34;)
+    trivy_cmd.append(f&#34;--output {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt&#34;)
     trivy_cmd.append(&#34;--no-progress&#34;)
 
     if output_format:
@@ -214,10 +215,10 @@ Defaults to PredefindedImages.TRIVY.</dd>
     if trivy_config:
         trivy_cmd.append(trivy_config)
 
-    trivy_cmd.append(&#34;|tee &#34; + path.join(PredefinedVariables.CI_PROJECT_DIR, &#34;trivi.txt&#34;))
-    job.append_scripts(&#34; &#34;.join(trivy_cmd))
-    job.add_artifacts_paths(&#34;trivi.txt&#34;)
+    job = Job(script=&#34; &#34;.join(trivy_cmd), namespace=&#34;check_container_image&#34;)
+    job.append_scripts(f&#34;cat {PredefinedVariables.CI_PROJECT_DIR}/trivi.txt&#34;)
     job.set_image(trivy_image)
+    job.add_artifacts_paths(&#34;trivi.txt&#34;)
     return job</code></pre>
 </details>
 </dd>
