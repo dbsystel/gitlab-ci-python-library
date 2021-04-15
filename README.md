@@ -1,6 +1,6 @@
-# gcip - The Gitlab CI Python Library
+# gcip - Write your Gitlab CI pipelines in Python
 
-A Python Library for creating dynamic pipelines for Gitlab CI.
+The Gitlab CI Python Library (gcip) is a Python Library for creating dynamic pipelines for Gitlab CI.
 
 [User Documentation](https://dbsystel.github.io/gitlab-ci-python-library/user/index.html) | [API Reference](https://dbsystel.github.io/gitlab-ci-python-library/api/gcip/index.html)
 
