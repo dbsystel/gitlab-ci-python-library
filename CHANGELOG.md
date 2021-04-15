@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added new container sequence. Container sequence build, scans and pushes an container image.
 * Added full API documentation of the `gcip.core.job.Job` class.
 * Added full API documentation of the `gcip.core.pipeline.Pipeline` class.
+* Added full API documentation of the `gcip.core.pipeline.Image` class.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
