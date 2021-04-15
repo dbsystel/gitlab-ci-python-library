@@ -1,3 +1,5 @@
+"""The Pipeline is the root container for all `gcip.core.job.Job`s and `gcip.core.sequence.Sequence`s
+"""
 from __future__ import annotations
 
 from typing import Any, Dict, List, Union, Optional
@@ -21,11 +23,11 @@ class JobNameConflictError(Exception):
     """This exception is used by the `Pipeline` when two rendered jobs have the same name.
 
     When two or more jobs have the same name within a pipeline means that one job will overwrite
-    all other jobs. This is absolutely nonsense and could (nearly?) never be the intention of
-    the user so he must be informed about that exception.
+    all those other jobs. This is absolutely nonsense and could (nearly?) never be the intention of
+    the user, so he must be informed about that exception.
 
     Attributes:
-        job (Job): The `Job` whose name equals to another job already added to the rendered pipeline.
+        job (Job): A `gcip.core.job.Job` whose name equals to another job already added to the rendered pipeline.
     """
 
     def __init__(self, job: Job):
@@ -38,18 +40,19 @@ class JobNameConflictError(Exception):
 
 class Pipeline(Sequence):
     def __init__(self, *, includes: Optional[Union[Include, List[Include]]] = None):
-        """
-        Pipeline class creates an empty Gitlab pipeline.
+        """A Pipeline is the uppermost container of `gcip.core.job.Job`s and `gcip.core.sequence.Sequence`s.
+
+        A Pipeline is a `gcip.core.sequence.Sequence` itself but has the additional method `Pipeline.write_yaml()`.
+        This method is responsible for writing the whole Gitlab CI pipeline to a YAML file which could then feed
+        the dynamic child pipeline.
 
         Args:
-            includes (Optional[Union[Include, List[Include]]]): You can add global Gitlab includes.
-                See `Gitlab CI Reference include`_. Defaults to None.
+            includes (Optional[Union[Include, List[Include]]]): You can add global `gcip.core.include.Include`s to the pipeline.
+                [Gitlab CI Documentation](https://docs.gitlab.com/ee/ci/yaml/#include): _"Use include to include external YAML files
+                in your CI/CD configuration."_ Defaults to None.
 
         Raises:
-            ValueError: If ``includes`` is not of type :class:`list` or :class:`list` of :class:`Includes`
-
-        .. _Gitlab CI Reference include:
-           https://docs.gitlab.com/ee/ci/yaml/#include
+            ValueError: If `includes` is not of type `Include` or `list` of `Includes`
         """
         self._services: List[Service] = list()
 
@@ -64,11 +67,14 @@ class Pipeline(Sequence):
         super().__init__()
 
     def add_services(self, *services: Union[str, Service]) -> Pipeline:
-        """Add one or more [services](https://docs.gitlab.com/ee/ci/yaml/README.html#services) to the pipeline.
+        """Add one or more `gcip.core.service.Service`s to the pipeline.
+
+        Gitlab CI Documentation: _"The services keyword defines a Docker image that runs during a job linked to the Docker image
+        that the image keyword defines."_
 
         Args:
-            *services (Rule): If strings are provided, then for every string a `Service(string)` will be created.
-                Use objects of the `gcip.core.service.Service` class directly for more complex service configurations.
+            services (Union[str, Service]): Simply use strings to name the services to link to the pipeline.
+                Use objects of the `gcip.core.service.Service` class for more complex service configurations.
 
         Returns:
             `Pipeline`: The modified `Pipeline` object.
@@ -79,7 +85,26 @@ class Pipeline(Sequence):
             self._services.append(service)
         return self
 
+    def add_include(self, include: Include) -> Pipeline:
+        """Let you add global `gcip.core.include.Include`s to the pipeline.
+        [Gitlab CI Documentation](https://docs.gitlab.com/ee/ci/yaml/#include): _"Use include to include external YAML files
+        in your CI/CD configuration."_
+
+        Returns:
+            `Pipeline`: The modified `Pipeline` object.
+        """
+        self._includes.append(include)
+        return self
+
     def render(self) -> Dict[str, Any]:
+        """Return a representation of this Pipeline object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Return:
+            Dict[str, Any]: A dictionary prepresenting the pipeline object in Gitlab CI.
+        """
         stages: OrderedSetType = {}
         pipeline: Dict[str, Any] = {}
         job_copies = self.populated_jobs
@@ -102,16 +127,15 @@ class Pipeline(Sequence):
             pipeline[job.name] = job.render()
         return pipeline
 
-    def add_include(self, include: Include) -> Pipeline:
-        self._includes.append(include)
-        return self
-
-    def dump_yaml(self) -> None:
-        import yaml
-
-        print(yaml.dump(self.render(), default_flow_style=False, sort_keys=False))
-
     def write_yaml(self, filename: str = "generated-config.yml") -> None:
+        """
+        Create the Gitlab CI YAML file from this pipeline object.
+
+        Use that YAML file to trigger a child pipeline.
+
+        Args:
+            filename (str, optional): The file name of the created yaml file. Defaults to "generated-config.yml".
+        """
         import yaml
 
         with open(filename, "w") as generated_config:
