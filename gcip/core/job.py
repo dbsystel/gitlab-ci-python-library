@@ -195,6 +195,46 @@ class Job:
         """
         return self._stage
 
+    @property
+    def image(self) -> Optional[Image]:
+        """The [image](https://docs.gitlab.com/ee/ci/yaml/README.html#image) of the Job"""
+        return self._image
+
+    @property
+    def variables(self) -> Dict[str, str]:
+        """The [variables](https://docs.gitlab.com/ee/ci/yaml/README.html#variables) of the Job"""
+        return self._variables
+
+    @property
+    def tags(self) -> OrderedSetType:
+        """The [tags](https://docs.gitlab.com/ee/ci/yaml/README.html#tags) of the Job"""
+        return self._tags
+
+    @property
+    def rules(self) -> List[Rule]:
+        """The [rules](https://docs.gitlab.com/ee/ci/yaml/README.html#rules) of the Job"""
+        return self._rules
+
+    @property
+    def needs(self) -> List[Union[Need, Job, Sequence]]:
+        """The [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) of the Job"""
+        return self._needs
+
+    @property
+    def scripts(self) -> List[str]:
+        """The [script](https://docs.gitlab.com/ee/ci/yaml/README.html#script) of the Job"""
+        return self._scripts
+
+    @property
+    def artifacts_paths(self) -> OrderedSetType:
+        """The [artifactspaths](https://docs.gitlab.com/ee/ci/yaml/README.html#artifactspaths) of the Job"""
+        return self._artifacts_paths
+
+    @property
+    def cache(self) -> Optional[Cache]:
+        """The [cache](https://docs.gitlab.com/ee/ci/yaml/README.html#cache) of the Job"""
+        return self._cache
+
     def _extend_name(self, name: Optional[str]) -> None:
         """This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name."""
         if name:
