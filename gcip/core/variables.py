@@ -1,3 +1,5 @@
+"""This module contains constants for [Gitlab CI predefined variables](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html)
+"""
 import os
 from typing import Any, Optional
 
@@ -82,10 +84,7 @@ class OptionalEnvProxy:
 
 
 class PredefinedVariables:
-    """
-    Gitlab CI predefined variables.
-    https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
-    """
+    """This class contains constants for [Gitlab CI predefined variables](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html)"""
 
     CHAT_CHANNEL: EnvProxy = EnvProxy("CHAT_CHANNEL")
     """
