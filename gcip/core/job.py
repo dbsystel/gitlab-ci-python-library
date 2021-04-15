@@ -405,8 +405,8 @@ class Job:
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
-        Return:
-            Dict[str, Any]: A dictionary prepresenting the job object in Gitlab CI.
+        Returns:
+            Dict[str, Any]: A dictionary representing the job object in Gitlab CI.
         """
         # late import to avoid circular dependencies
         from .sequence import Sequence
@@ -564,6 +564,14 @@ class TriggerJob(Job):
         return job_copy
 
     def render(self) -> Dict[Any, Any]:
+        """Return a representation of this TriggerJob object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, Any]: A dictionary representing the trigger job object in Gitlab CI.
+        """
         rendered_job = super().render()
 
         # remove unsupported keywords from TriggerJob
