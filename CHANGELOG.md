@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added full API documentation of the `gcip.core.pipeline` module.
 * Added full API documentation of the `gcip.core.image` module.
 * Added full API documentation of the `gcip.core.include` module.
+* Added documentation to the `gcip.core.variables` module.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
