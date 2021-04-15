@@ -406,7 +406,7 @@ class Job:
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Return:
-            Dict[str, Any]: A dictionary prepresenting the cache object in Gitlab CI.
+            Dict[str, Any]: A dictionary prepresenting the job object in Gitlab CI.
         """
         # late import to avoid circular dependencies
         from .sequence import Sequence
