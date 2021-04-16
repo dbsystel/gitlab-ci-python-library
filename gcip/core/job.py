@@ -21,7 +21,7 @@ pipeline.write_yaml()
 #   script: build my artifact
 ```
 
-A `Job` has always a `script` and at least one of `stage` and `name`.
+A `Job` has always a `script` and at least one of `stage` or `name`.
 The `stage` will be used for the name of the stage of the job and the
 job name itself, whereas `name` is only used for the job`s name. When adding
 a job to a `gcip.core.pipeline.Pipeline` or a `gcip.core.sequence.Sequence`

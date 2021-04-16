@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `kaniko`: Replaced "/" with "_" to convert image namspaces to filename instead of directory structure assigne it to image_path.
 * `core.cache`: Changed PredefinedVariable from CI_PROJECT_PATH to CI_PROJECT_DIR to ensure its the directory instead of the "namespace" of the git repository.
 * **BREAKING** Changed docker hub registry entry in `Registry` class.
-* **BREAKING** Renamed all occurences of `stage` to `stage`. Because 'stage' is what the current 'stage' really expresses. You could try following commands to align your
+* **BREAKING** Renamed all occurences of `namespace` to `stage`. Because 'stage' is what the current 'stage' really expresses. You could try following commands to align your
   gcip code with this breaking change:
   ```
   LC_ALL=C find . -type f ! -path './.git/*' ! -path '*/__pycache__/*' -exec sed -i '' s/Stage/Stage/g {} +
