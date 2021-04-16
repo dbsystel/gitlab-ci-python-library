@@ -86,7 +86,7 @@ class Include(metaclass=ABCMeta):
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
         Returns:
-            Dict[str, Any]: A dictionary representing the include object in Gitlab CI.
+            Dict[str, str]: A dictionary representing the include object in Gitlab CI.
         """
         return self._rendered_include
 
