@@ -126,7 +126,7 @@ class IncludeRemote(Include):
     """This module represents the Gitlab CI [include:remote](https://docs.gitlab.com/ee/ci/yaml/#includeremote) keyword.
 
     Args:
-        remote (str): The URL to include the a file from.
+        remote (str): URL to include the file from.
 
     Raises:
         ValueError: When the `remote` is not a valid URL.
