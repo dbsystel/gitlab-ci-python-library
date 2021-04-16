@@ -52,7 +52,7 @@ def bootstrap(
     Test
     &#34;&#34;&#34;
     return Job(
-        namespace=&#34;cdk_bootstrap&#34;,
+        stage=&#34;cdk_bootstrap&#34;,
         script=&#34;cdk bootstrap&#34;
         f&#34; --toolkit-stack-name {toolkit_stack_name}&#34;
         f&#34; --qualifier {qualifier}&#34;
@@ -76,7 +76,7 @@ def diff(*stacks: str, synth_options: str = &#34;&#34;, diff_options: str = &#34
     stacks_string = &#34; &#34;.join(stacks)
     return Job(
         name=&#34;cdk&#34;,
-        namespace=&#34;diff&#34;,
+        stage=&#34;diff&#34;,
         script=[
             f&#34;cdk synth {_space(synth_options)}{stacks_string}&#34;,
             f&#34;cdk diff {_space(diff_options)}{_context_options(context)}{stacks_string}&#34;,
@@ -97,7 +97,7 @@ def deploy(
 
     job = Job(
         name=&#34;cdk&#34;,
-        namespace=&#34;deploy&#34;,
+        stage=&#34;deploy&#34;,
         script=[
             f&#34;cdk deploy --strict --require-approval &#39;never&#39; {_space(options)}&#34;
             f&#34;--toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}&#34;,
@@ -149,7 +149,7 @@ def deploy(
     Test
     &#34;&#34;&#34;
     return Job(
-        namespace=&#34;cdk_bootstrap&#34;,
+        stage=&#34;cdk_bootstrap&#34;,
         script=&#34;cdk bootstrap&#34;
         f&#34; --toolkit-stack-name {toolkit_stack_name}&#34;
         f&#34; --qualifier {qualifier}&#34;
@@ -179,7 +179,7 @@ def deploy(
 
     job = Job(
         name=&#34;cdk&#34;,
-        namespace=&#34;deploy&#34;,
+        stage=&#34;deploy&#34;,
         script=[
             f&#34;cdk deploy --strict --require-approval &#39;never&#39; {_space(options)}&#34;
             f&#34;--toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}&#34;,
@@ -216,7 +216,7 @@ def deploy(
     stacks_string = &#34; &#34;.join(stacks)
     return Job(
         name=&#34;cdk&#34;,
-        namespace=&#34;diff&#34;,
+        stage=&#34;diff&#34;,
         script=[
             f&#34;cdk synth {_space(synth_options)}{stacks_string}&#34;,
             f&#34;cdk diff {_space(diff_options)}{_context_options(context)}{stacks_string}&#34;,

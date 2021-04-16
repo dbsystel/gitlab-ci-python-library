@@ -68,9 +68,9 @@ def scan_local_image(
             Defaults to PredefindedImages.TRIVY.
 
     Returns:
-        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```namespace=check```.
+        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```stage=check```.
     &#34;&#34;&#34;
-    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
+    job = Job(script=&#34;set -eo pipefail&#34;, stage=&#34;check&#34;)
     if not image_path:
         image_path = PredefinedVariables.CI_PROJECT_DIR
     if not image_name:
@@ -146,7 +146,7 @@ Defaults to PredefindedImages.TRIVY.</dd>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd><code>gcip.Job</code> will be returned to which checks container images of vulnerabilities. Job runs in <code>namespace=check</code>.</dd>
+<dd><code>gcip.Job</code> will be returned to which checks container images of vulnerabilities. Job runs in <code>stage=check</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -185,9 +185,9 @@ Defaults to PredefindedImages.TRIVY.</dd>
             Defaults to PredefindedImages.TRIVY.
 
     Returns:
-        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```namespace=check```.
+        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```stage=check```.
     &#34;&#34;&#34;
-    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
+    job = Job(script=&#34;set -eo pipefail&#34;, stage=&#34;check&#34;)
     if not image_path:
         image_path = PredefinedVariables.CI_PROJECT_DIR
     if not image_name:

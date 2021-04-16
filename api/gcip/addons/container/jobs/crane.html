@@ -69,7 +69,7 @@ def copy(
             f&#34;crane validate --remote {src_registry}&#34;,
             f&#34;crane copy {src_registry} {dst_registry}&#34;,
         ],
-        namespace=&#34;push_container_image&#34;,
+        stage=&#34;push_container_image&#34;,
     )
     job.set_image(crane_image)
 
@@ -111,7 +111,7 @@ def push(
 
     Returns:
         Job: Returns a `gcip.Job`, with neccessary configuration to push a container image stored as a `tarball` to a remote registry.
-            Job runs in ```namespace=push```
+            Job runs in ```stage=push```
     &#34;&#34;&#34;
     if not crane_image:
         crane_image = PredefinedImages.CRANE
@@ -138,7 +138,7 @@ def push(
             f&#34;crane validate --tarball {tar_path}/{image_path}.tar&#34;,
             f&#34;crane push {tar_path}/{image_path}.tar {dst_registry}/{image_name}{image_tag_postfix}&#34;,
         ],
-        namespace=&#34;push&#34;,
+        stage=&#34;push&#34;,
     )
     job.set_image(crane_image)
 
@@ -218,7 +218,7 @@ Defaults to PredefindedImages.CRANE.</dd>
             f&#34;crane validate --remote {src_registry}&#34;,
             f&#34;crane copy {src_registry} {dst_registry}&#34;,
         ],
-        namespace=&#34;push_container_image&#34;,
+        stage=&#34;push_container_image&#34;,
     )
     job.set_image(crane_image)
 
@@ -260,7 +260,7 @@ Defaults to PredefindedImages.CRANE.</dd>
 <dl>
 <dt><code>Job</code></dt>
 <dd>Returns a <code>gcip.Job</code>, with neccessary configuration to push a container image stored as a <code>tarball</code> to a remote registry.
-Job runs in <code>namespace=push</code></dd>
+Job runs in <code>stage=push</code></dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -298,7 +298,7 @@ Job runs in <code>namespace=push</code></dd>
 
     Returns:
         Job: Returns a `gcip.Job`, with neccessary configuration to push a container image stored as a `tarball` to a remote registry.
-            Job runs in ```namespace=push```
+            Job runs in ```stage=push```
     &#34;&#34;&#34;
     if not crane_image:
         crane_image = PredefinedImages.CRANE
@@ -325,7 +325,7 @@ Job runs in <code>namespace=push</code></dd>
             f&#34;crane validate --tarball {tar_path}/{image_path}.tar&#34;,
             f&#34;crane push {tar_path}/{image_path}.tar {dst_registry}/{image_name}{image_tag_postfix}&#34;,
         ],
-        namespace=&#34;push&#34;,
+        stage=&#34;push&#34;,
     )
     job.set_image(crane_image)
 

@@ -88,11 +88,11 @@ def execute(
         kaniko_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
             Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
     Returns:
-        Job: gcip.Job will be returned to create container images with. Job runs in ```namespace=build```.
+        Job: gcip.Job will be returned to create container images with. Job runs in ```stage=build```.
     &#34;&#34;&#34;
     job = Job(
         script=[],
-        namespace=&#34;build&#34;,
+        stage=&#34;build&#34;,
     )
 
     if not kaniko_image:
@@ -222,7 +222,7 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd>gcip.Job will be returned to create container images with. Job runs in <code>namespace=build</code>.</dd>
+<dd>gcip.Job will be returned to create container images with. Job runs in <code>stage=build</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -271,11 +271,11 @@ Must contain the kaniko <code>executor</code> binary. Defaults to <code>Predefin
         kaniko_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
             Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
     Returns:
-        Job: gcip.Job will be returned to create container images with. Job runs in ```namespace=build```.
+        Job: gcip.Job will be returned to create container images with. Job runs in ```stage=build```.
     &#34;&#34;&#34;
     job = Job(
         script=[],
-        namespace=&#34;build&#34;,
+        stage=&#34;build&#34;,
     )
 
     if not kaniko_image:

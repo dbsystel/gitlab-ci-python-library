@@ -76,7 +76,7 @@ def build(
         _fq_image_name += f&#34;:{tag}&#34;
     return Job(
         name=&#34;docker&#34;,
-        namespace=&#34;build&#34;,
+        stage=&#34;build&#34;,
         script=f&#34;docker build -t {_fq_image_name} {context}&#34;,
     ).add_variables(DOCKER_DRIVER=&#34;overlay2&#34;, DOCKER_TLS_CERTDIR=&#34;&#34;)
 
@@ -135,7 +135,7 @@ def push(
 
     job = Job(
         name=&#34;docker&#34;,
-        namespace=&#34;deploy&#34;,
+        stage=&#34;deploy&#34;,
         script=f&#34;docker push {_fq_image_name}&#34;,
     )
 
@@ -208,7 +208,7 @@ the current directory <code>.</code>.</dd>
         _fq_image_name += f&#34;:{tag}&#34;
     return Job(
         name=&#34;docker&#34;,
-        namespace=&#34;build&#34;,
+        stage=&#34;build&#34;,
         script=f&#34;docker build -t {_fq_image_name} {context}&#34;,
     ).add_variables(DOCKER_DRIVER=&#34;overlay2&#34;, DOCKER_TLS_CERTDIR=&#34;&#34;)</code></pre>
 </details>
@@ -311,7 +311,7 @@ Defaults to <code>None</code> which skips the docker login attempt.</dd>
 
     job = Job(
         name=&#34;docker&#34;,
-        namespace=&#34;deploy&#34;,
+        stage=&#34;deploy&#34;,
         script=f&#34;docker push {_fq_image_name}&#34;,
     )
 
