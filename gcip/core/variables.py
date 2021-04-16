@@ -754,7 +754,7 @@ class PredefinedVariables:
     CI_MERGE_REQUEST_PROJECT_PATH: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_PROJECT_PATH")
     """
     The path of the project of the merge request if the pipelines are for
-    merge requests (for example namespace/awesome-project). Available only
+    merge requests (for example stage/awesome-project). Available only
     if only [merge_requests] or rules syntax is used and the merge request
     is created.
 
@@ -766,7 +766,7 @@ class PredefinedVariables:
     CI_MERGE_REQUEST_PROJECT_URL: OptionalEnvProxy = OptionalEnvProxy("CI_MERGE_REQUEST_PROJECT_URL")
     """
     The URL of the project of the merge request if the pipelines are for
-    merge requests (for example http://192.168.10.15:3000/namespace/awesome-project).
+    merge requests (for example http://192.168.10.15:3000/stage/awesome-project).
     Available only if only [merge_requests] or rules syntax is used and the merge
     request is created.
 
@@ -1054,7 +1054,7 @@ class PredefinedVariables:
 
     CI_PROJECT_NAMESPACE: EnvProxy = EnvProxy("CI_PROJECT_NAMESPACE")
     """
-    The project namespace (username or group name) that is being built.
+    The project stage (username or group name) that is being built.
 
     Added in GitLab 8.10
     Available in GitLab Runner 0.5
@@ -1065,7 +1065,7 @@ class PredefinedVariables:
 
     CI_PROJECT_ROOT_NAMESPACE: EnvProxy = EnvProxy("CI_PROJECT_ROOT_NAMESPACE")
     """
-    The root project namespace (username or group name) that is being built.
+    The root project stage (username or group name) that is being built.
     For example, if CI_PROJECT_NAMESPACE is root-group/child-group/grandchild-group,
     CI_PROJECT_ROOT_NAMESPACE would be root-group.
 
@@ -1078,7 +1078,7 @@ class PredefinedVariables:
 
     CI_PROJECT_PATH: EnvProxy = EnvProxy("CI_PROJECT_PATH")
     """
-    The namespace with project name.
+    The stage with project name.
 
     Added in GitLab 8.10
     Available in GitLab Runner 0.5

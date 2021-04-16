@@ -10,7 +10,7 @@ Here is a simple example how you define and use a `Job`:
 from gcip import Pipeline, Job
 
 pipeline = Pipeline()
-job = Job(namespace="build", script="build my artefact")
+job = Job(stage="build", script="build my artefact")
 pipeline.add_children(job, name="artifact")
 pipeline.write_yaml()
 
@@ -21,16 +21,16 @@ pipeline.write_yaml()
 #   script: build my artifact
 ```
 
-A `Job` has always a `script` and at least one of `namespace` and `name`.
-The `namespace` will be used for the name of the stage of the job and the
+A `Job` has always a `script` and at least one of `stage` and `name`.
+The `stage` will be used for the name of the stage of the job and the
 job name itself, whereas `name` is only used for the job`s name. When adding
 a job to a `gcip.core.pipeline.Pipeline` or a `gcip.core.sequence.Sequence`
-you can and should define a `name` or `namespace` too. This is how you
+you can and should define a `name` or `stage` too. This is how you
 distinguish between two jobs of the same kind added to a pipeline:
 
 ```python
 def create_build_job(artifact: str) -> Job:
-    return Job(namespace="build", script=f"build my {artifact}")
+    return Job(stage="build", script=f"build my {artifact}")
 
 pipeline.add_children(create_build_job("foo"), name="bar")
 pipeline.add_children(create_build_job("john"), name="deere")
@@ -45,15 +45,15 @@ pipeline.add_children(create_build_job("john"), name="deere")
 #     script: build my john
 ```
 
-Again `name` or `namespace` decide whether to add the string to the
+Again `name` or `stage` decide whether to add the string to the
 stage of a job or not:
 
 ```python
 def create_build_job(artifact: str) -> Job:
-    return Job(namespace="build", script=f"build my {artifact}")
+    return Job(stage="build", script=f"build my {artifact}")
 
-pipeline.add_children(create_build_job("foo"), namespace="bar")
-pipeline.add_children(create_build_job("john"), namespace="deere")
+pipeline.add_children(create_build_job("foo"), stage="bar")
+pipeline.add_children(create_build_job("john"), stage="deere")
 
 # stages:
 #   - build_bar
@@ -67,7 +67,7 @@ pipeline.add_children(create_build_job("john"), namespace="deere")
 ```
 
 This also decides whether to run the jobs in parralel or sequential. When using
-`namespace` and adding the string also to the jobs stage the stages for both jobs
+`stage` and adding the string also to the jobs stage the stages for both jobs
 differ. When using `name` only the name of the jobs differ but the name of the stage
 remains the same.
 
@@ -124,11 +124,11 @@ class Job:
 
     Attributes:
         script (Union[AnyStr, List[str]]): The [script(s)](https://docs.gitlab.com/ee/ci/yaml/README.html#script) to be executed.
-        name (Optional[str]): The name of the job. In opposite to `namespace` only the name is set and not the stage of the job.
+        name (Optional[str]): The name of the job. In opposite to `stage` only the name is set and not the stage of the job.
             If `name` is set, than the jobs stage has no value, which defaults to the 'test' stage.
-            Either `name` or `namespace` must be set. Defaults to `None`.
-        namespace (Optional[str]): The name and stage of the job. In opposite to `name` also the jobs stage will be setup with this value.
-            Either `name` or `namespace` must be set. Defaults to `None`.
+            Either `name` or `stage` must be set. Defaults to `None`.
+        stage (Optional[str]): The name and stage of the job. In opposite to `name` also the jobs stage will be setup with this value.
+            Either `name` or `stage` must be set. Defaults to `None`.
     """
 
     def __init__(
@@ -136,7 +136,7 @@ class Job:
         *,
         script: Union[AnyStr, List[str]],
         name: Optional[str] = None,
-        namespace: Optional[str] = None,
+        stage: Optional[str] = None,
     ):
         self._stage = ""
         self._name = ""
@@ -152,18 +152,18 @@ class Job:
         self._original: Optional[Job]
         """Only set if you get a :meth:`copy()` of this job"""
 
-        if namespace and name:
-            self._name = f"{namespace}-{name}"
-            self._stage = namespace
-        elif namespace:
-            self._name = namespace
-            self._stage = namespace
+        if stage and name:
+            self._name = f"{stage}-{name}"
+            self._stage = stage
+        elif stage:
+            self._name = stage
+            self._stage = stage
         elif name:
             self._name = name
             # default for unset stages is 'test' -> https://docs.gitlab.com/ee/ci/yaml/#stages
             self._stage = "test"
         else:
-            raise ValueError("At least one of the parameters `name` or `namespace` have to be set.")
+            raise ValueError("At least one of the parameters `name` or `stage` have to be set.")
 
         self._name = self._name.replace("_", "-")
         self._stage = self._stage.replace("-", "_")
@@ -190,7 +190,7 @@ class Job:
         """The [stage](https://docs.gitlab.com/ee/ci/yaml/README.html#stage) of the Job
 
         This property is affected by the rendering process, where `gcip.core.sequence.Sequence`s will
-        populate the job stage depending on their namespaces. That means you can be sure to get the jobs
+        populate the job stage depending on their stages. That means you can be sure to get the jobs
         final stage when rendered.
         """
         return self._stage
@@ -200,16 +200,16 @@ class Job:
         if name:
             self._name += "-" + name.replace("_", "-")
 
-    def _extend_stage(self, stage: Optional[str]) -> None:
+    def _extend_stage_value(self, stage: Optional[str]) -> None:
         """This method is used by `gcip.core.sequence.Sequence`s to populate the jobs stage."""
         if stage:
             self._stage += "_" + stage.replace("-", "_")
 
-    def _extend_namespace(self, namespace: Optional[str]) -> None:
+    def _extend_stage(self, stage: Optional[str]) -> None:
         """This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name and stage."""
-        if namespace:
-            self._extend_name(namespace)
-            self._extend_stage(namespace)
+        if stage:
+            self._extend_name(stage)
+            self._extend_stage_value(stage)
 
     def _add_parent(self, parent: Sequence) -> None:
         """This method is called by `gcip.core.sequence.Sequence`s when the job is added to that sequence.
@@ -494,7 +494,7 @@ class TriggerJob(Job):
 
     ```python
     trigger_job = TriggerJob(
-        namespace="trigger-other-job",
+        stage="trigger-other-job",
         project="myteam/other-project",
         branch="main",
         strategy=TriggerStrategy.DEPEND,
@@ -521,7 +521,7 @@ class TriggerJob(Job):
         self,
         *args: Any,
         name: Optional[str] = None,
-        namespace: Optional[str] = None,
+        stage: Optional[str] = None,
         project: Optional[str] = None,
         branch: Optional[str] = None,
         includes: Union[Include, List[Include], None] = None,
@@ -534,7 +534,7 @@ class TriggerJob(Job):
         if not includes and not project:
             raise ValueError("Neither 'includes' nor 'project' is given.")
 
-        super().__init__(name=name, namespace=namespace, script="none")
+        super().__init__(name=name, stage=stage, script="none")
 
         self._project = project
         self._branch = branch

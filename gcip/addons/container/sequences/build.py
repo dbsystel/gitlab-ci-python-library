@@ -42,7 +42,7 @@ def build_scan_push_image(
     Args:
         registry (Union[Registry, str], optional): Container registry to push the image to. If the container registry needs authentication,
             you have to provide a `gcip.addons.container.config.DockerClientConfig` object with credentials. Defaults to Registry.DOCKER.
-        image_name (Optional[str]): Image name with namespace in the registry. e.g. username/image_name.
+        image_name (Optional[str]): Image name with stage in the registry. e.g. username/image_name.
             Defaults to `gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME`.
         image_tag (Optional[str]): Image tag. The default is either `PredefinedVariables.CI_COMMIT_TAG` or
             `PredefinedVariables.CI_COMMIT_REF_SLUG` depending of building from a git tag or from a branch.

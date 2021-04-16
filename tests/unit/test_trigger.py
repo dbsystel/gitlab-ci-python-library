@@ -21,19 +21,19 @@ def test_include_methods():
 
 def test_include_exceptions():
     with pytest.raises(ValueError):
-        assert TriggerJob(namespace="foobar", project="please/raise/execption", includes=[IncludeLocal("TestConfig.yml")])
-        assert TriggerJob(namespace="foobar", branch="Missing/Project")
-        assert TriggerJob(namespace="foobar", includes=[IncludeLocal(f"Localfile_{i}.yml") for i in range(4)])
+        assert TriggerJob(stage="foobar", project="please/raise/execption", includes=[IncludeLocal("TestConfig.yml")])
+        assert TriggerJob(stage="foobar", branch="Missing/Project")
+        assert TriggerJob(stage="foobar", includes=[IncludeLocal(f"Localfile_{i}.yml") for i in range(4)])
 
 
 def test_parent_child_trigger():
-    conftest.check(TriggerJob(namespace="trigger-child", includes=[IncludeLocal("Test-File.yml")]).render())
+    conftest.check(TriggerJob(stage="trigger-child", includes=[IncludeLocal("Test-File.yml")]).render())
 
 
 def test_multi_project_trigger():
     conftest.check(
         TriggerJob(
-            namespace="trigger-project",
+            stage="trigger-project",
             project="my/project",
             branch="staging",
             strategy=TriggerStrategy.DEPEND,
@@ -42,7 +42,7 @@ def test_multi_project_trigger():
 
 
 def test_trigger_job_keywords():
-    trigger_job = TriggerJob(namespace="foobar", project="my/project")
+    trigger_job = TriggerJob(stage="foobar", project="my/project")
 
     # add supported keywords
     trigger_job.add_variables(USER="Max Power", URL="https://example.com")

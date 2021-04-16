@@ -11,7 +11,7 @@ def test():
     pipeline = Pipeline()
     pipeline.add_children(
         TriggerJob(
-            namespace="trigger-subpipe",
+            stage="trigger-subpipe",
             includes=IncludeLocal("./my-subpipe.yml"),
             strategy=TriggerStrategy.DEPEND,
         )

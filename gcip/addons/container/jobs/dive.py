@@ -72,9 +72,9 @@ def scan(
             (default "docker"). Defaults to "docker-archive".
 
     Returns:
-        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```namespace=check```.
+        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```stage=check```.
     """
-    job = Job(script="set -eo pipefail", namespace="check")
+    job = Job(script="set -eo pipefail", stage="check")
 
     if not dive_image:
         dive_image = PredefinedImages.DIVE

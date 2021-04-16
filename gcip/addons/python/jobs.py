@@ -26,7 +26,7 @@ def flake8() -> Job:
     """
     return Job(
         name="flake8",
-        namespace="lint",
+        stage="lint",
         script=[
             "pip3 install --upgrade flake8",
             "flake8",
@@ -50,7 +50,7 @@ def mypy(package_dir: str) -> Job:
     """
     return Job(
         name="mypy",
-        namespace="test",
+        stage="test",
         script=["pip3 install --upgrade mypy", f"mypy {package_dir}"],
     )
 
@@ -66,7 +66,7 @@ def isort() -> Job:
     """
     return Job(
         name="isort",
-        namespace="lint",
+        stage="lint",
         script=[
             "pip3 install --upgrade isort",
             "isort --check .",
@@ -82,7 +82,7 @@ def pytest() -> Job:
     """
     return Job(
         name="pytest",
-        namespace="test",
+        stage="test",
         script=[
             scripts.pip_install_requirements(),
             "pytest",
@@ -99,7 +99,7 @@ def evaluate_git_tag_pep440_conformity() -> Job:
     """
     job = Job(
         name="evaluate_git_tag_pep440_conformity",
-        namespace="test",
+        stage="test",
         script="python3 -m gcip.tools.evaluate_git_tag_pep440_conformity",
     )
     job.append_rules(rules.on_tags())
@@ -117,7 +117,7 @@ def bdist_wheel() -> Job:
     """
     job = Job(
         name="bdist_wheel",
-        namespace="build",
+        stage="build",
         script=[
             scripts.pip_install_requirements(),
             "python3 setup.py bdist_wheel",
@@ -137,7 +137,7 @@ def pages_sphinx() -> Job:
     """
     job = Job(
         name="pages_python_sphinx",
-        namespace="build",
+        stage="build",
         script=[
             scripts.pip_install_requirements("docs/requirements.txt"),
             "sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}",
@@ -172,7 +172,7 @@ def twine_upload(
     """
     job = Job(
         name="twine_upload",
-        namespace="deploy",
+        stage="deploy",
         script=[
             "pip3 install --upgrade twine",
             "python3 -m twine upload --non-interactive --disable-progress-bar dist/*",

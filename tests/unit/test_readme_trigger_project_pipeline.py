@@ -6,7 +6,7 @@ def test():
     pipeline = Pipeline()
     pipeline.add_children(
         TriggerJob(
-            namespace="trigger-banana",
+            stage="trigger-banana",
             project="myteam/banana",
             branch="test",
             strategy=TriggerStrategy.DEPEND,

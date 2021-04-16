@@ -6,7 +6,7 @@ from tests import conftest
 
 @pytest.fixture
 def testjob() -> Job:
-    return Job(namespace="testjob", script="foobar")
+    return Job(stage="testjob", script="foobar")
 
 
 def test_init_unset_image(testjob):

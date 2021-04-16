@@ -37,12 +37,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **BREAKING** Renamed `dst` to `dst_registry` in `crane.push` function.
 * **BREAKING** Renamed `image_path` to `tar_path` keyword argument to aligne with kaniko module.
 * **BREAKING** Renamed `dst` and `src` to `dst_registry` and `src_registry`.
-* **BREAKING** `dive`: Replace "/" with "_" in image_name. Image names contains namespaces which are separated by "/" to ensure image name is a file instead of a directory structure.
-* **BREAKING** `trivy`: Replace "/" with "_" in image_name. Image names contains namespaces which are separated by "/" to ensure image name is a file instead of a directory structure.
+* **BREAKING** `dive`: Replace "/" with "_" in image_name. Image names contains stages which are separated by "/" to ensure image name is a file instead of a directory structure.
+* **BREAKING** `trivy`: Replace "/" with "_" in image_name. Image names contains stages which are separated by "/" to ensure image name is a file instead of a directory structure.
 * **BREAKING** Renamed `gitlab_executor_image` to `kaniko_image` in `kaniko.execute()`. Moved argument to last argument in function signature.
 * `kaniko`: Replaced "/" with "_" to convert image namspaces to filename instead of directory structure assigne it to image_path.
-* `core.cache`: Changed PredefinedVariable from CI_PROJECT_PATH to CI_PROJECT_DIR to ensure its the directory instead of the "namespace" of the git repository.
+* `core.cache`: Changed PredefinedVariable from CI_PROJECT_PATH to CI_PROJECT_DIR to ensure its the directory instead of the "stage" of the git repository.
 * **BREAKING** Changed docker hub registry entry in `Registry` class.
+* **BREAKING** Renamed all occurences of `stage` to `stage`. Because 'stage' is what the current 'stage' really expresses. You could try following commands to align your
+  gcip code with this breaking change:
+  ```
+  LC_ALL=C find . -type f ! -path './.git/*' ! -path '*/__pycache__/*' -exec sed -i '' s/Stage/Stage/g {} +
+  LC_ALL=C find . -type f ! -path './.git/*' ! -path '*/__pycache__/*' -exec sed -i '' s/stage/stage/g {} +
+  ```
 
 ### Removed
 * Removed `date` call from dive job.

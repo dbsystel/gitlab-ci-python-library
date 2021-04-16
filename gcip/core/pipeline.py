@@ -33,7 +33,7 @@ class JobNameConflictError(Exception):
     def __init__(self, job: Job):
         super().__init__(
             f"Two jobs have the same name '{job.name}' when rendering the pipeline."
-            "\nPlease fix this by providing a different name and/or namespace when adding those jobs to"
+            "\nPlease fix this by providing a different name and/or stage when adding those jobs to"
             " their sequences/pipeline."
         )
 

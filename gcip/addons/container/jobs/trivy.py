@@ -40,9 +40,9 @@ def scan_local_image(
             Defaults to PredefindedImages.TRIVY.
 
     Returns:
-        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```namespace=check```.
+        Job: `gcip.Job` will be returned to which checks container images of vulnerabilities. Job runs in ```stage=check```.
     """
-    job = Job(script="set -eo pipefail", namespace="check")
+    job = Job(script="set -eo pipefail", stage="check")
     if not image_path:
         image_path = PredefinedVariables.CI_PROJECT_DIR
     if not image_name:
