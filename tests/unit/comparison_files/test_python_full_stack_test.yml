@@ -16,7 +16,7 @@ lint-flake8:
 test-pytest:
   stage: test
   script:
-  - pip3 install --upgrade -v -r requirements.txt
+  - pip3 install --upgrade -r requirements.txt
   - pytest
 test-evaluate-git-tag-pep440-conformity:
   image:
@@ -31,7 +31,7 @@ test-evaluate-git-tag-pep440-conformity:
 build-bdist-wheel:
   stage: build
   script:
-  - pip3 install --upgrade -v -r requirements.txt
+  - pip3 install --upgrade -r requirements.txt
   - python3 setup.py bdist_wheel
   artifacts:
     paths:
@@ -39,7 +39,7 @@ build-bdist-wheel:
 build-pages-python-sphinx:
   stage: build
   script:
-  - pip3 install --upgrade -v -r docs/requirements.txt
+  - pip3 install --upgrade -r docs/requirements.txt
   - sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}
   rules:
   - if: $CI_COMMIT_BRANCH == "main"

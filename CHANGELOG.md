@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 * Removed `date` call from dive job.
 * Removed `gcip.core.pipeline.Pipeline.dump_yaml()` method. There is no need to print a pipeline to stdout. You should use `gcip.core.pipeline.Pipeline.write_yaml()` instead.
+* Removed `-v` flag from from `gcp.addons.python.jobs.pip_install_requirements()`
 
 ### Fixed
 * Several linter issues has been fixed
