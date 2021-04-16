@@ -17,11 +17,11 @@ the `Pipeline` by that Sequence. Not adding that Sequence to a Pipeline means al
 to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs, they will be broken.
 
 As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
-you should set `name` and/or `namespace` when adding the job (or child sequence). The sequence will add
-the `name` / `namespace` to the ones of the Job, when rendering the pipeline. If you do not set those
-identifiers, or you set equal name/namespaces for jobs and sequences, you provoke having two or more
+you should set `name` and/or `stage` when adding the job (or child sequence). The sequence will add
+the `name` / `stage` to the ones of the Job, when rendering the pipeline. If you do not set those
+identifiers, or you set equal name/stages for jobs and sequences, you provoke having two or more
 jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
-pipeline behavior. You can read more information in the chapter "Namespaces allow reuse of jobs
+pipeline behavior. You can read more information in the chapter "Stages allow reuse of jobs
 and sequences" of the user documantation.
 """
 from __future__ import annotations
@@ -57,8 +57,8 @@ class ChildDict(TypedDict):
 
     child: Union[Job, Sequence]
     """The child to store - a `gcip.core.job.Job` or `Sequence`."""
-    namespace: Optional[str]
-    """The namespace with whom the `child` was added to the `Sequence`."""
+    stage: Optional[str]
+    """The stage with whom the `child` was added to the `Sequence`."""
     name: Optional[str]
     """The name with whom the `child` was added to the `Sequence`."""
 
@@ -97,17 +97,17 @@ class Sequence:
     def add_children(
         self,
         *jobs_or_sequences: Union[Job, Sequence],
-        namespace: Optional[str] = None,
+        stage: Optional[str] = None,
         name: Optional[str] = None,
     ) -> Sequence:
         """Add `gcip.core.job.Job`s or other `gcip.core.sequence.Sequence`s to this sequence.
 
-        Adding a child creates a copy of that child. You should provide a name or namespace
+        Adding a child creates a copy of that child. You should provide a name or stage
         when adding children, to make them different from other places where they will be used.
 
         Args:
             jobs_or_sequences (Union[Job, Sequence]): One or more jobs or sequences to be added to this sequence.
-            namespace (Optional[str], optional): Adds a namespaces component to all children added. Defaults to None.
+            stage (Optional[str], optional): Adds a stages component to all children added. Defaults to None.
             name (Optional[str], optional): Adds a name component to all children added. Defaults to None.
 
         Returns:
@@ -115,7 +115,7 @@ class Sequence:
         """
         for child in jobs_or_sequences:
             child._add_parent(self)
-            self._children.append({"child": child, "namespace": namespace, "name": name})
+            self._children.append({"child": child, "stage": stage, "name": name})
         return self
 
     def add_variables(self, **variables: str) -> Sequence:
@@ -309,7 +309,7 @@ class Sequence:
     def _get_all_instance_names(self, child: Union[Job, Sequence]) -> Set[str]:
         """Return all instance names from the given child.
 
-        That means all combinations of the childs name and namespace within this
+        That means all combinations of the childs name and stage within this
         sequence and all parent sequences.
         """
 
@@ -324,12 +324,12 @@ class Sequence:
         for item in self._children:
             if item["child"] == child:
                 child_name = item["name"]
-                child_namespace = item["namespace"]
-                if child_namespace:
+                child_stage = item["stage"]
+                if child_stage:
                     if child_name:
-                        child_instance_name = f"{child_namespace}-{child_name}"
+                        child_instance_name = f"{child_stage}-{child_name}"
                     else:
-                        child_instance_name = child_namespace
+                        child_instance_name = child_stage
                 elif child_name:
                     child_instance_name = child_name
                 else:
@@ -399,15 +399,15 @@ class Sequence:
         for item in self._children:
             child = item["child"]
             child_name = item["name"]
-            child_namespace = item["namespace"]
+            child_stage = item["stage"]
             if isinstance(child, Sequence):
                 for job_copy in child.populated_jobs:
-                    job_copy._extend_namespace(child_namespace)
+                    job_copy._extend_stage(child_stage)
                     job_copy._extend_name(child_name)
                     all_jobs.append(job_copy)
             elif isinstance(child, Job):
                 job_copy = child.copy()
-                job_copy._extend_namespace(child_namespace)
+                job_copy._extend_stage(child_stage)
                 job_copy._extend_name(child_name)
                 all_jobs.append(job_copy)
 

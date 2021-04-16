@@ -4,7 +4,7 @@ from gcip import Job, Pipeline, JobNameConflictError
 
 
 def job_for(environment: str) -> Job:
-    return Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
+    return Job(stage="do_something", script=f"./do-something-on.sh {environment}")
 
 
 def test():

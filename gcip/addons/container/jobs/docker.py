@@ -46,7 +46,7 @@ def build(
         _fq_image_name += f":{tag}"
     return Job(
         name="docker",
-        namespace="build",
+        stage="build",
         script=f"docker build -t {_fq_image_name} {context}",
     ).add_variables(DOCKER_DRIVER="overlay2", DOCKER_TLS_CERTDIR="")
 
@@ -105,7 +105,7 @@ def push(
 
     job = Job(
         name="docker",
-        namespace="deploy",
+        stage="deploy",
         script=f"docker push {_fq_image_name}",
     )
 

@@ -14,7 +14,7 @@ def test_bootstrap() -> None:
             toolkit_stack_name="my-cdk-toolkit-dev",
             qualifier="beautifulapp",
         ),
-        namespace="dev"
+        stage="dev"
     )
     pipeline.add_children(
         cdk.bootstrap(
@@ -25,7 +25,7 @@ def test_bootstrap() -> None:
             ApplicationName="testapp",
             Subsystem="testsystem",
         ),
-        namespace="tst"
+        stage="tst"
     )
 
     conftest.check(pipeline.render())
@@ -49,7 +49,7 @@ def test_deploy_with_assume_role() -> None:
             toolkit_stack_name="CDKToolkit",
             wait_for_stack_assume_role="MasterOfDesaster",
         ),
-        namespace="local-role",
+        stage="local-role",
     )
     pipeline.add_children(
         cdk.deploy(
@@ -58,7 +58,7 @@ def test_deploy_with_assume_role() -> None:
             wait_for_stack_assume_role="MasterOfDesaster",
             wait_for_stack_account_id="1234567890",
         ),
-        namespace="remote-role",
+        stage="remote-role",
     )
     conftest.check(pipeline.render())
 

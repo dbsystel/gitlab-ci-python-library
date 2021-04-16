@@ -60,11 +60,11 @@ def execute(
         kaniko_image (Optional[Union[Image, str]]): The Gitlab executor image this `gcip.core.job.Job` should run with.
             Must contain the kaniko ```executor``` binary. Defaults to ```PredefinedImages.KANIKO```.
     Returns:
-        Job: gcip.Job will be returned to create container images with. Job runs in ```namespace=build```.
+        Job: gcip.Job will be returned to create container images with. Job runs in ```stage=build```.
     """
     job = Job(
         script=[],
-        namespace="build",
+        stage="build",
     )
 
     if not kaniko_image:

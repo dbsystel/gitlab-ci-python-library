@@ -7,12 +7,12 @@ from gcip.lib import rules
 
 @pytest.fixture
 def testjob():
-    return Job(namespace="testjob", script="foobar")
+    return Job(stage="testjob", script="foobar")
 
 
 def test_on_success():
     pipeline = Pipeline()
-    job = Job(namespace="testjob", script="foo")
+    job = Job(stage="testjob", script="foo")
     job.append_rules(rules.on_success())
     pipeline.add_children(job)
 
@@ -25,7 +25,7 @@ def test_rule_order():
     sequence.prepend_rules(Rule(if_statement="1"))
     sequence.append_rules(Rule(if_statement="2"))
 
-    job = Job(namespace="testjob", script="foo")
+    job = Job(stage="testjob", script="foo")
     sequence.add_children(job)
 
     job.append_rules(Rule(if_statement="a"), Rule(if_statement="b"))

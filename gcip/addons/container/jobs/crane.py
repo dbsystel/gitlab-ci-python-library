@@ -41,7 +41,7 @@ def copy(
             f"crane validate --remote {src_registry}",
             f"crane copy {src_registry} {dst_registry}",
         ],
-        namespace="push_container_image",
+        stage="push_container_image",
     )
     job.set_image(crane_image)
 
@@ -83,7 +83,7 @@ def push(
 
     Returns:
         Job: Returns a `gcip.Job`, with neccessary configuration to push a container image stored as a `tarball` to a remote registry.
-            Job runs in ```namespace=push```
+            Job runs in ```stage=push```
     """
     if not crane_image:
         crane_image = PredefinedImages.CRANE
@@ -110,7 +110,7 @@ def push(
             f"crane validate --tarball {tar_path}/{image_path}.tar",
             f"crane push {tar_path}/{image_path}.tar {dst_registry}/{image_name}{image_tag_postfix}",
         ],
-        namespace="push",
+        stage="push",
     )
     job.set_image(crane_image)
 

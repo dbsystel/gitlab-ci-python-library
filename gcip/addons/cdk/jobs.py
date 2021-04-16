@@ -24,7 +24,7 @@ def bootstrap(
     Test
     """
     return Job(
-        namespace="cdk_bootstrap",
+        stage="cdk_bootstrap",
         script="cdk bootstrap"
         f" --toolkit-stack-name {toolkit_stack_name}"
         f" --qualifier {qualifier}"
@@ -48,7 +48,7 @@ def diff(*stacks: str, synth_options: str = "", diff_options: str = "", **contex
     stacks_string = " ".join(stacks)
     return Job(
         name="cdk",
-        namespace="diff",
+        stage="diff",
         script=[
             f"cdk synth {_space(synth_options)}{stacks_string}",
             f"cdk diff {_space(diff_options)}{_context_options(context)}{stacks_string}",
@@ -69,7 +69,7 @@ def deploy(
 
     job = Job(
         name="cdk",
-        namespace="deploy",
+        stage="deploy",
         script=[
             f"cdk deploy --strict --require-approval 'never' {_space(options)}"
             f"--toolkit-stack-name {toolkit_stack_name} {_context_options(context)}{stacks_string}",

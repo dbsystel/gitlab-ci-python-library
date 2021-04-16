@@ -5,7 +5,7 @@ Simple example:
 ```
 from gcip import Job, Cache
 
-job1 = Job(namespace="buildit", script="build my app")
+job1 = Job(stage="buildit", script="build my app")
 job1.set_cache(Cache(["file1.txt", "file2.txt", "path/to/file3.txt"]))
 ```
 
@@ -16,7 +16,7 @@ from gcip import Job, Cache, CacheKey, CachePolicy, WhenStatement
 
 files = ["file1.txt", "file2.txt", "path/to/file3.txt"]
 
-job1 = Job(namespace="buildit", script="build my app")
+job1 = Job(stage="buildit", script="build my app")
 job1.set_cache(Cache(
     files,
     cache_key=CacheKey(files=files),
