@@ -1,5 +1,4 @@
-"""This module contains constants for [Gitlab CI predefined variables](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html)
-"""
+"""This module contains constants for [Gitlab CI predefined variables](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html)"""
 import os
 from typing import Any, Optional
 
