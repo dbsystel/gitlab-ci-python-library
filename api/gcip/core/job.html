@@ -40,7 +40,7 @@ pipeline.write_yaml()
 #   stage: build
 #   script: build my artifact
 </code></pre>
-<p>A <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> has always a <code>script</code> and at least one of <code>stage</code> and <code>name</code>.
+<p>A <code><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></code> has always a <code>script</code> and at least one of <code>stage</code> or <code>name</code>.
 The <code>stage</code> will be used for the name of the stage of the job and the
 job name itself, whereas <code>name</code> is only used for the job`s name. When adding
 a job to a <code><a title="gcip.core.pipeline.Pipeline" href="pipeline.html#gcip.core.pipeline.Pipeline">Pipeline</a></code> or a <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>
@@ -121,7 +121,7 @@ pipeline.write_yaml()
 #   script: build my artifact
 ```
 
-A `Job` has always a `script` and at least one of `stage` and `name`.
+A `Job` has always a `script` and at least one of `stage` or `name`.
 The `stage` will be used for the name of the stage of the job and the
 job name itself, whereas `name` is only used for the job`s name. When adding
 a job to a `gcip.core.pipeline.Pipeline` or a `gcip.core.sequence.Sequence`
