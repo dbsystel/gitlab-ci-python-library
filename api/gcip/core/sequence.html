@@ -37,11 +37,11 @@ This is because adding a Job to a Sequence creates a copy of that Job, which wil
 the <code>Pipeline</code> by that Sequence. Not adding that Sequence to a Pipeline means also not adding its Jobs
 to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs, they will be broken.</p>
 <p>As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
-you should set <code>name</code> and/or <code>namespace</code> when adding the job (or child sequence). The sequence will add
-the <code>name</code> / <code>namespace</code> to the ones of the Job, when rendering the pipeline. If you do not set those
-identifiers, or you set equal name/namespaces for jobs and sequences, you provoke having two or more
+you should set <code>name</code> and/or <code>stage</code> when adding the job (or child sequence). The sequence will add
+the <code>name</code> / <code>stage</code> to the ones of the Job, when rendering the pipeline. If you do not set those
+identifiers, or you set equal name/stages for jobs and sequences, you provoke having two or more
 jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
-pipeline behavior. You can read more information in the chapter "Namespaces allow reuse of jobs
+pipeline behavior. You can read more information in the chapter "Stages allow reuse of jobs
 and sequences" of the user documantation.</p>
 <details class="source">
 <summary>
@@ -66,11 +66,11 @@ the `Pipeline` by that Sequence. Not adding that Sequence to a Pipeline means al
 to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs, they will be broken.
 
 As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
-you should set `name` and/or `namespace` when adding the job (or child sequence). The sequence will add
-the `name` / `namespace` to the ones of the Job, when rendering the pipeline. If you do not set those
-identifiers, or you set equal name/namespaces for jobs and sequences, you provoke having two or more
+you should set `name` and/or `stage` when adding the job (or child sequence). The sequence will add
+the `name` / `stage` to the ones of the Job, when rendering the pipeline. If you do not set those
+identifiers, or you set equal name/stages for jobs and sequences, you provoke having two or more
 jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
-pipeline behavior. You can read more information in the chapter &#34;Namespaces allow reuse of jobs
+pipeline behavior. You can read more information in the chapter &#34;Stages allow reuse of jobs
 and sequences&#34; of the user documantation.
 &#34;&#34;&#34;
 from __future__ import annotations
@@ -106,8 +106,8 @@ class ChildDict(TypedDict):
 
     child: Union[Job, Sequence]
     &#34;&#34;&#34;The child to store - a `gcip.core.job.Job` or `Sequence`.&#34;&#34;&#34;
-    namespace: Optional[str]
-    &#34;&#34;&#34;The namespace with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;
+    stage: Optional[str]
+    &#34;&#34;&#34;The stage with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;
     name: Optional[str]
     &#34;&#34;&#34;The name with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;
 
@@ -146,17 +146,17 @@ class Sequence:
     def add_children(
         self,
         *jobs_or_sequences: Union[Job, Sequence],
-        namespace: Optional[str] = None,
+        stage: Optional[str] = None,
         name: Optional[str] = None,
     ) -&gt; Sequence:
         &#34;&#34;&#34;Add `gcip.core.job.Job`s or other `gcip.core.sequence.Sequence`s to this sequence.
 
-        Adding a child creates a copy of that child. You should provide a name or namespace
+        Adding a child creates a copy of that child. You should provide a name or stage
         when adding children, to make them different from other places where they will be used.
 
         Args:
             jobs_or_sequences (Union[Job, Sequence]): One or more jobs or sequences to be added to this sequence.
-            namespace (Optional[str], optional): Adds a namespaces component to all children added. Defaults to None.
+            stage (Optional[str], optional): Adds a stages component to all children added. Defaults to None.
             name (Optional[str], optional): Adds a name component to all children added. Defaults to None.
 
         Returns:
@@ -164,7 +164,7 @@ class Sequence:
         &#34;&#34;&#34;
         for child in jobs_or_sequences:
             child._add_parent(self)
-            self._children.append({&#34;child&#34;: child, &#34;namespace&#34;: namespace, &#34;name&#34;: name})
+            self._children.append({&#34;child&#34;: child, &#34;stage&#34;: stage, &#34;name&#34;: name})
         return self
 
     def add_variables(self, **variables: str) -&gt; Sequence:
@@ -358,7 +358,7 @@ class Sequence:
     def _get_all_instance_names(self, child: Union[Job, Sequence]) -&gt; Set[str]:
         &#34;&#34;&#34;Return all instance names from the given child.
 
-        That means all combinations of the childs name and namespace within this
+        That means all combinations of the childs name and stage within this
         sequence and all parent sequences.
         &#34;&#34;&#34;
 
@@ -373,12 +373,12 @@ class Sequence:
         for item in self._children:
             if item[&#34;child&#34;] == child:
                 child_name = item[&#34;name&#34;]
-                child_namespace = item[&#34;namespace&#34;]
-                if child_namespace:
+                child_stage = item[&#34;stage&#34;]
+                if child_stage:
                     if child_name:
-                        child_instance_name = f&#34;{child_namespace}-{child_name}&#34;
+                        child_instance_name = f&#34;{child_stage}-{child_name}&#34;
                     else:
-                        child_instance_name = child_namespace
+                        child_instance_name = child_stage
                 elif child_name:
                     child_instance_name = child_name
                 else:
@@ -448,15 +448,15 @@ class Sequence:
         for item in self._children:
             child = item[&#34;child&#34;]
             child_name = item[&#34;name&#34;]
-            child_namespace = item[&#34;namespace&#34;]
+            child_stage = item[&#34;stage&#34;]
             if isinstance(child, Sequence):
                 for job_copy in child.populated_jobs:
-                    job_copy._extend_namespace(child_namespace)
+                    job_copy._extend_stage(child_stage)
                     job_copy._extend_name(child_name)
                     all_jobs.append(job_copy)
             elif isinstance(child, Job):
                 job_copy = child.copy()
-                job_copy._extend_namespace(child_namespace)
+                job_copy._extend_stage(child_stage)
                 job_copy._extend_name(child_name)
                 all_jobs.append(job_copy)
 
@@ -533,8 +533,8 @@ class Sequence:
 
     child: Union[Job, Sequence]
     &#34;&#34;&#34;The child to store - a `gcip.core.job.Job` or `Sequence`.&#34;&#34;&#34;
-    namespace: Optional[str]
-    &#34;&#34;&#34;The namespace with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;
+    stage: Optional[str]
+    &#34;&#34;&#34;The stage with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;
     name: Optional[str]
     &#34;&#34;&#34;The name with whom the `child` was added to the `Sequence`.&#34;&#34;&#34;</code></pre>
 </details>
@@ -552,9 +552,9 @@ class Sequence:
 <dd>
 <div class="desc"><p>The name with whom the <code>child</code> was added to the <code><a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a></code>.</p></div>
 </dd>
-<dt id="gcip.core.sequence.ChildDict.namespace"><code class="name">var <span class="ident">namespace</span> : Optional[str]</code></dt>
+<dt id="gcip.core.sequence.ChildDict.stage"><code class="name">var <span class="ident">stage</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"><p>The namespace with whom the <code>child</code> was added to the <code><a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a></code>.</p></div>
+<div class="desc"><p>The stage with whom the <code>child</code> was added to the <code><a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a></code>.</p></div>
 </dd>
 </dl>
 </dd>
@@ -601,17 +601,17 @@ class Sequence:
     def add_children(
         self,
         *jobs_or_sequences: Union[Job, Sequence],
-        namespace: Optional[str] = None,
+        stage: Optional[str] = None,
         name: Optional[str] = None,
     ) -&gt; Sequence:
         &#34;&#34;&#34;Add `gcip.core.job.Job`s or other `gcip.core.sequence.Sequence`s to this sequence.
 
-        Adding a child creates a copy of that child. You should provide a name or namespace
+        Adding a child creates a copy of that child. You should provide a name or stage
         when adding children, to make them different from other places where they will be used.
 
         Args:
             jobs_or_sequences (Union[Job, Sequence]): One or more jobs or sequences to be added to this sequence.
-            namespace (Optional[str], optional): Adds a namespaces component to all children added. Defaults to None.
+            stage (Optional[str], optional): Adds a stages component to all children added. Defaults to None.
             name (Optional[str], optional): Adds a name component to all children added. Defaults to None.
 
         Returns:
@@ -619,7 +619,7 @@ class Sequence:
         &#34;&#34;&#34;
         for child in jobs_or_sequences:
             child._add_parent(self)
-            self._children.append({&#34;child&#34;: child, &#34;namespace&#34;: namespace, &#34;name&#34;: name})
+            self._children.append({&#34;child&#34;: child, &#34;stage&#34;: stage, &#34;name&#34;: name})
         return self
 
     def add_variables(self, **variables: str) -&gt; Sequence:
@@ -813,7 +813,7 @@ class Sequence:
     def _get_all_instance_names(self, child: Union[Job, Sequence]) -&gt; Set[str]:
         &#34;&#34;&#34;Return all instance names from the given child.
 
-        That means all combinations of the childs name and namespace within this
+        That means all combinations of the childs name and stage within this
         sequence and all parent sequences.
         &#34;&#34;&#34;
 
@@ -828,12 +828,12 @@ class Sequence:
         for item in self._children:
             if item[&#34;child&#34;] == child:
                 child_name = item[&#34;name&#34;]
-                child_namespace = item[&#34;namespace&#34;]
-                if child_namespace:
+                child_stage = item[&#34;stage&#34;]
+                if child_stage:
                     if child_name:
-                        child_instance_name = f&#34;{child_namespace}-{child_name}&#34;
+                        child_instance_name = f&#34;{child_stage}-{child_name}&#34;
                     else:
-                        child_instance_name = child_namespace
+                        child_instance_name = child_stage
                 elif child_name:
                     child_instance_name = child_name
                 else:
@@ -903,15 +903,15 @@ class Sequence:
         for item in self._children:
             child = item[&#34;child&#34;]
             child_name = item[&#34;name&#34;]
-            child_namespace = item[&#34;namespace&#34;]
+            child_stage = item[&#34;stage&#34;]
             if isinstance(child, Sequence):
                 for job_copy in child.populated_jobs:
-                    job_copy._extend_namespace(child_namespace)
+                    job_copy._extend_stage(child_stage)
                     job_copy._extend_name(child_name)
                     all_jobs.append(job_copy)
             elif isinstance(child, Job):
                 job_copy = child.copy()
-                job_copy._extend_namespace(child_namespace)
+                job_copy._extend_stage(child_stage)
                 job_copy._extend_name(child_name)
                 all_jobs.append(job_copy)
 
@@ -1045,15 +1045,15 @@ def populated_jobs(self) -&gt; List[Job]:
     for item in self._children:
         child = item[&#34;child&#34;]
         child_name = item[&#34;name&#34;]
-        child_namespace = item[&#34;namespace&#34;]
+        child_stage = item[&#34;stage&#34;]
         if isinstance(child, Sequence):
             for job_copy in child.populated_jobs:
-                job_copy._extend_namespace(child_namespace)
+                job_copy._extend_stage(child_stage)
                 job_copy._extend_name(child_name)
                 all_jobs.append(job_copy)
         elif isinstance(child, Job):
             job_copy = child.copy()
-            job_copy._extend_namespace(child_namespace)
+            job_copy._extend_stage(child_stage)
             job_copy._extend_name(child_name)
             all_jobs.append(job_copy)
 
@@ -1132,18 +1132,18 @@ def populated_jobs(self) -&gt; List[Job]:
 </details>
 </dd>
 <dt id="gcip.core.sequence.Sequence.add_children"><code class="name flex">
-<span>def <span class="ident">add_children</span></span>(<span>self, *jobs_or_sequences: Union[Job, <a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a>], namespace: Optional[str] = None, name: Optional[str] = None) ‑> <a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a></span>
+<span>def <span class="ident">add_children</span></span>(<span>self, *jobs_or_sequences: Union[Job, <a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a>], stage: Optional[str] = None, name: Optional[str] = None) ‑> <a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add <code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code>s or other <code><a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a></code>s to this sequence.</p>
-<p>Adding a child creates a copy of that child. You should provide a name or namespace
+<p>Adding a child creates a copy of that child. You should provide a name or stage
 when adding children, to make them different from other places where they will be used.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>jobs_or_sequences</code></strong> :&ensp;<code>Union[Job, <a title="gcip.core.sequence.Sequence" href="#gcip.core.sequence.Sequence">Sequence</a>]</code></dt>
 <dd>One or more jobs or sequences to be added to this sequence.</dd>
-<dt><strong><code>namespace</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
-<dd>Adds a namespaces component to all children added. Defaults to None.</dd>
+<dt><strong><code>stage</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Adds a stages component to all children added. Defaults to None.</dd>
 <dt><strong><code>name</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
 <dd>Adds a name component to all children added. Defaults to None.</dd>
 </dl>
@@ -1156,17 +1156,17 @@ when adding children, to make them different from other places where they will b
 <pre><code class="python">def add_children(
     self,
     *jobs_or_sequences: Union[Job, Sequence],
-    namespace: Optional[str] = None,
+    stage: Optional[str] = None,
     name: Optional[str] = None,
 ) -&gt; Sequence:
     &#34;&#34;&#34;Add `gcip.core.job.Job`s or other `gcip.core.sequence.Sequence`s to this sequence.
 
-    Adding a child creates a copy of that child. You should provide a name or namespace
+    Adding a child creates a copy of that child. You should provide a name or stage
     when adding children, to make them different from other places where they will be used.
 
     Args:
         jobs_or_sequences (Union[Job, Sequence]): One or more jobs or sequences to be added to this sequence.
-        namespace (Optional[str], optional): Adds a namespaces component to all children added. Defaults to None.
+        stage (Optional[str], optional): Adds a stages component to all children added. Defaults to None.
         name (Optional[str], optional): Adds a name component to all children added. Defaults to None.
 
     Returns:
@@ -1174,7 +1174,7 @@ when adding children, to make them different from other places where they will b
     &#34;&#34;&#34;
     for child in jobs_or_sequences:
         child._add_parent(self)
-        self._children.append({&#34;child&#34;: child, &#34;namespace&#34;: namespace, &#34;name&#34;: name})
+        self._children.append({&#34;child&#34;: child, &#34;stage&#34;: stage, &#34;name&#34;: name})
     return self</code></pre>
 </details>
 </dd>
@@ -1607,7 +1607,7 @@ when adding children, to make them different from other places where they will b
 <ul class="">
 <li><code><a title="gcip.core.sequence.ChildDict.child" href="#gcip.core.sequence.ChildDict.child">child</a></code></li>
 <li><code><a title="gcip.core.sequence.ChildDict.name" href="#gcip.core.sequence.ChildDict.name">name</a></code></li>
-<li><code><a title="gcip.core.sequence.ChildDict.namespace" href="#gcip.core.sequence.ChildDict.namespace">namespace</a></code></li>
+<li><code><a title="gcip.core.sequence.ChildDict.stage" href="#gcip.core.sequence.ChildDict.stage">stage</a></code></li>
 </ul>
 </li>
 <li>

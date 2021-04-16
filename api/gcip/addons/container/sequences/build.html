@@ -70,7 +70,7 @@ def build_scan_push_image(
     Args:
         registry (Union[Registry, str], optional): Container registry to push the image to. If the container registry needs authentication,
             you have to provide a `gcip.addons.container.config.DockerClientConfig` object with credentials. Defaults to Registry.DOCKER.
-        image_name (Optional[str]): Image name with namespace in the registry. e.g. username/image_name.
+        image_name (Optional[str]): Image name with stage in the registry. e.g. username/image_name.
             Defaults to `gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME`.
         image_tag (Optional[str]): Image tag. The default is either `PredefinedVariables.CI_COMMIT_TAG` or
             `PredefinedVariables.CI_COMMIT_REF_SLUG` depending of building from a git tag or from a branch.
@@ -147,7 +147,7 @@ Built container image is uploaded with <code><a title="gcip.addons.container.job
 <dd>Container registry to push the image to. If the container registry needs authentication,
 you have to provide a <code><a title="gcip.addons.container.config.DockerClientConfig" href="../config.html#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a></code> object with credentials. Defaults to Registry.DOCKER.</dd>
 <dt><strong><code>image_name</code></strong> :&ensp;<code>Optional[str]</code></dt>
-<dd>Image name with namespace in the registry. e.g. username/image_name.
+<dd>Image name with stage in the registry. e.g. username/image_name.
 Defaults to <code>gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME</code>.</dd>
 <dt><strong><code>image_tag</code></strong> :&ensp;<code>Optional[str]</code></dt>
 <dd>Image tag. The default is either <code>PredefinedVariables.CI_COMMIT_TAG</code> or
@@ -196,7 +196,7 @@ and expecting credentials given as environment variables <code>REGISTRY_USER</co
     Args:
         registry (Union[Registry, str], optional): Container registry to push the image to. If the container registry needs authentication,
             you have to provide a `gcip.addons.container.config.DockerClientConfig` object with credentials. Defaults to Registry.DOCKER.
-        image_name (Optional[str]): Image name with namespace in the registry. e.g. username/image_name.
+        image_name (Optional[str]): Image name with stage in the registry. e.g. username/image_name.
             Defaults to `gcip.core.variables.PredefinedVariables.CI_PROJECT_NAME`.
         image_tag (Optional[str]): Image tag. The default is either `PredefinedVariables.CI_COMMIT_TAG` or
             `PredefinedVariables.CI_COMMIT_REF_SLUG` depending of building from a git tag or from a branch.

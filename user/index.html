@@ -459,13 +459,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_bundling_jobs_as_sequence">Bundling jobs as sequence</a></li>
 <li><a href="#_stacking_sequences">Stacking sequences</a></li>
 <li><a href="#_pipelines_are_sequences">Pipelines are sequences</a></li>
-<li><a href="#_namespaces_allow_reuse_of_jobs_and_sequences">Namespaces allow reuse of jobs and sequences</a>
+<li><a href="#_stages_allow_reuse_of_jobs_and_sequences">Stages allow reuse of jobs and sequences</a>
 <ul class="sectlevel2">
 <li><a href="#_reuse_jobs">Reuse jobs</a></li>
 </ul>
 </li>
 <li><a href="#_reuse_sequences">Reuse sequences</a></li>
-<li><a href="#_parallelization_name_namespace_and_stage">Parallelization - name, namespace (and stage)</a>
+<li><a href="#_parallelization_name_stage_and_stage">Parallelization - name, stage (and stage)</a>
 <ul class="sectlevel2">
 <li><a href="#_name_parameter_when_creating_jobs"><code>name</code> parameter when creating jobs</a></li>
 <li><a href="#_name_parameter_when_adding_jobs_and_sequences_to_sequences"><code>name</code> parameter when adding jobs (and sequences) to sequences</a></li>
@@ -565,7 +565,7 @@ from tests import conftest
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+    pipeline.add_children(gcip.Job(stage="print_date", script="date"))
 
     conftest.check(pipeline.render())</code></pre>
 </div>
@@ -595,7 +595,7 @@ write the <code>generated-pipeline.yml</code> with <code>pipeline.write_yaml()</
 <pre class="highlight"><code class="language-python" data-lang="python">from tests import conftest
 
 pipeline = gcip.Pipeline()
-pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+pipeline.add_children(gcip.Job(stage="print_date", script="date"))
 
 pipeline.write_yaml()</code></pre>
 </div>
@@ -616,7 +616,7 @@ from tests import conftest
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_children(gcip.Job(namespace="print_date", script="date"))
+    pipeline.add_children(gcip.Job(stage="print_date", script="date"))
 
     conftest.check(pipeline.render())</code></pre>
 </div>
@@ -658,7 +658,7 @@ from tests import conftest
 def test():
     pipeline = gcip.Pipeline()
 
-    job = gcip.Job(namespace="print_date", script="date")
+    job = gcip.Job(stage="print_date", script="date")
     job.set_image("docker/image:example")
     job.prepend_scripts("./before-script.sh")
     job.append_scripts("./after-script.sh")
@@ -728,12 +728,12 @@ from tests import conftest
 def test():
     sequence = gcip.Sequence()
 
-    job1 = gcip.Job(namespace="job1", script="script1.sh")
+    job1 = gcip.Job(stage="job1", script="script1.sh")
     job1.prepend_scripts("from-job-1.sh")
 
     sequence.add_children(
         job1,
-        gcip.Job(namespace="job2", script="script2.sh"),
+        gcip.Job(stage="job2", script="script2.sh"),
     )
 
     sequence.prepend_scripts("from-sequence.sh")
@@ -785,12 +785,12 @@ from tests import conftest
 
 def test():
     sequence_a = gcip.Sequence()
-    sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
+    sequence_a.add_children(gcip.Job(stage="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence-a.sh")
 
     sequence_b = gcip.Sequence()
     sequence_b.add_children(sequence_a)
-    sequence_b.add_children(gcip.Job(namespace="job2", script="script2.sh"))
+    sequence_b.add_children(gcip.Job(stage="job2", script="script2.sh"))
     sequence_b.prepend_scripts("from-sequence-b.sh")
 
     pipeline = gcip.Pipeline()
@@ -841,12 +841,12 @@ from tests import conftest
 
 def test():
     sequence_a = gcip.Sequence()
-    sequence_a.add_children(gcip.Job(namespace="job1", script="script1.sh"))
+    sequence_a.add_children(gcip.Job(stage="job1", script="script1.sh"))
     sequence_a.prepend_scripts("from-sequence.sh")
 
     pipeline = gcip.Pipeline()
     pipeline.add_children(sequence_a)
-    pipeline.add_children(gcip.Job(namespace="job2", script="script2.sh"))
+    pipeline.add_children(gcip.Job(stage="job2", script="script2.sh"))
     pipeline.prepend_scripts("from-pipeline.sh")
 
     conftest.check(pipeline.render())</code></pre>
@@ -876,29 +876,14 @@ job2:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_namespaces_allow_reuse_of_jobs_and_sequences">Namespaces allow reuse of jobs and sequences</h2>
+<h2 id="_stages_allow_reuse_of_jobs_and_sequences">Stages allow reuse of jobs and sequences</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Assume you want to reuse a parameterized job. Following code shows an <strong>incorrect</strong> example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">import pytest
-
-from gcip import Job, Pipeline, JobNameConflictError
-
-
-def job_for(environment: str) -&gt; Job:
-    return Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
-
-
-def test():
-    pipeline = Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(job_for(env))
-
-    with pytest.raises(JobNameConflictError):
-        pipeline.render()</code></pre>
+<pre class="highlight"><code class="language-python" data-lang="python">Unresolved directive in index.adoc - include::../../tests/unit/test_readme_missing_stage.py[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -907,7 +892,7 @@ def test():
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>JobNameConflictError: Two jobs have the same name 'do-something' when rendering the pipeline.
-Please fix this by providing a different name and/or namespace when adding those jobs to their sequences/pipeline.</code></pre>
+Please fix this by providing a different name and/or stage when adding those jobs to their sequences/pipeline.</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -915,8 +900,8 @@ Please fix this by providing a different name and/or namespace when adding those
 overwrite the first one.</p>
 </div>
 <div class="paragraph">
-<p>When adding jobs or sequences to a sequence, the <code>.add_children()</code>  method accepts the <code>namespace</code> parameter,
-you should use to modify the name of the jobs added. The value of <code>namespaces</code> will be appended to the jobs
+<p>When adding jobs or sequences to a sequence, the <code>.add_children()</code>  method accepts the <code>stage</code> parameter,
+you should use to modify the name of the jobs added. The value of <code>stages</code> will be appended to the jobs
 <code>name</code> and <code>stage</code>. This only applies to the jobs (sequences) added but not to the jobs (and sequences) already
 contained in the sequence.</p>
 </div>
@@ -927,24 +912,11 @@ contained in the sequence.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">import gcip
-from tests import conftest
-
-
-def job_for(environment: str) -&gt; gcip.Job:
-    return gcip.Job(namespace="do_something", script=f"./do-something-on.sh {environment}")
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(job_for(env), namespace=env)
-
-    conftest.check(pipeline.render())</code></pre>
+<pre class="highlight"><code class="language-python" data-lang="python">Unresolved directive in index.adoc - include::../../tests/unit/test_readme_stage_job.py[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Mention that we added both jobs with a different <code>namespace</code> to the sequence.
+<p>Mention that we added both jobs with a different <code>stage</code> to the sequence.
 Thus in the output we correctly populate the one job per environment:</p>
 </div>
 <div class="paragraph">
@@ -952,17 +924,7 @@ Thus in the output we correctly populate the one job per environment:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
-- do_something_development
-- do_something_test
-do-something-development:
-  stage: do_something_development
-  script:
-  - ./do-something-on.sh development
-do-something-test:
-  stage: do_something_test
-  script:
-  - ./do-something-on.sh test</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">Unresolved directive in index.adoc - include::../../tests/unit/comparison_files/test_readme_stage_job_test.yml[]</code></pre>
 </div>
 </div>
 </div>
@@ -982,25 +944,7 @@ allows that all jobs of the sequence are populated per environment.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">import gcip
-from tests import conftest
-
-
-def environment_pipeline(environment: str) -&gt; gcip.Sequence:
-    sequence = gcip.Sequence()
-    sequence.add_children(
-        gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
-        gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
-    )
-    return sequence
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        pipeline.add_children(environment_pipeline(env), namespace=env)
-
-    conftest.check(pipeline.render())</code></pre>
+<pre class="highlight"><code class="language-python" data-lang="python">Unresolved directive in index.adoc - include::../../tests/unit/test_readme_stage_sequence.py[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1008,37 +952,17 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
-- job1_development
-- job2_development
-- job1_test
-- job2_test
-job1-development:
-  stage: job1_development
-  script:
-  - job-1-on-development
-job2-development:
-  stage: job2_development
-  script:
-  - job-2-on-development
-job1-test:
-  stage: job1_test
-  script:
-  - job-1-on-test
-job2-test:
-  stage: job2_test
-  script:
-  - job-2-on-test</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">Unresolved directive in index.adoc - include::../../tests/unit/comparison_files/test_readme_stage_sequence_test.yml[]</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_parallelization_name_namespace_and_stage">Parallelization - name, namespace (and stage)</h2>
+<h2 id="_parallelization_name_stage_and_stage">Parallelization - name, stage (and stage)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>As you may have mentioned from the previous examples, all jobs have a distinct stage and thus run in sequence.
-This is because <code>namespace</code> will always extend the jobs <code>name</code> and <code>stage</code>. This applies to all <code>namespace</code>
+This is because <code>stage</code> will always extend the jobs <code>name</code> and <code>stage</code>. This applies to all <code>stage</code>
 parametes, either of the constructor of a Job object or to the <code>.add_*()</code> methods of a sequence.</p>
 </div>
 <div class="paragraph">
@@ -1046,7 +970,7 @@ parametes, either of the constructor of a Job object or to the <code>.add_*()</c
 extend the <code>name</code> of the jobs but not their <code>stage</code>, such that jobs with equal stages run in parallel.</p>
 </div>
 <div class="paragraph">
-<p>This is possible by setting equal values for the <code>namespace</code> paramter but providing different values for the
+<p>This is possible by setting equal values for the <code>stage</code> paramter but providing different values for the
 <code>name</code> parameter when creating jobs or adding them to sequences. The value of the <code>name</code> parameter will extend
 only the <code>name</code> of a job but not its <code>stage</code>.</p>
 </div>
@@ -1064,8 +988,8 @@ from tests import conftest
 def test():
     pipeline = gcip.Pipeline()
     pipeline.add_children(
-        gcip.Job(name="job1", namespace="single-stage", script="date"),
-        gcip.Job(name="job2", namespace="single-stage", script="date"),
+        gcip.Job(name="job1", stage="single-stage", script="date"),
+        gcip.Job(name="job2", stage="single-stage", script="date"),
     )
 
     conftest.check(pipeline.render())</code></pre>
@@ -1089,25 +1013,25 @@ single-stage-job2:
 </div>
 </div>
 <div class="paragraph">
-<p>This time we have chosen an equal value for <code>namespace</code>, such that the <code>stage</code>s of both jobs will be set equally. To avoid that also the
+<p>This time we have chosen an equal value for <code>stage</code>, such that the <code>stage</code>s of both jobs will be set equally. To avoid that also the
 <code>name</code> values of both jobs are equal (and the second job overwrites the first one), we also have provided the <code>name</code> parameter, whose
 value will be appended to the <code>name</code> of the jobs. Both jobs will run in parallel within the same stage.</p>
 </div>
 <div class="paragraph">
-<p>First you might wonder, why there is nothing like a <code>stage</code> parameter. When thinking of sequences, the <code>namespace</code> parameter will extend
+<p>First you might wonder, why there is nothing like a <code>stage</code> parameter. When thinking of sequences, the <code>stage</code> parameter will extend
 both, the <code>name</code> and <code>stage</code> of a job, and the <code>name</code> parameter will just extend the <code>name</code> of a job. Extends means their values will
 be appended to the current values of <code>name</code> or <code>stage</code> of a job. However there is no need to extend just the <code>stage</code> of a job, such that
 two jobs have distinct stages but unique names. Unique names means, that the latter job will overwrite all other jobs with the same name,
 as a Job in Gitlab CI must have a unique name. It is only usefull to extend both values, such that two jobs are different and run in different
 stages, or only to extend the <code>name</code> of jubs, such that two jobs are different but run in the same stage in parallel. To have the consistent
-concpet of only the <code>name</code> and <code>namespace</code> parameter, this applies also to jobs.</p>
+concpet of only the <code>name</code> and <code>stage</code> parameter, this applies also to jobs.</p>
 </div>
 <div class="paragraph">
-<p>Second you might wonder, why we haven&#8217;t omit the <code>namespace</code> parameter when creating the jobs. This would be possible. But because of the
-explanation in the previous paragraph, when creating jobs we can&#8217;t set the <code>stage</code> value. Omitting the <code>namespace</code> parameter means we will
+<p>Second you might wonder, why we haven&#8217;t omit the <code>stage</code> parameter when creating the jobs. This would be possible. But because of the
+explanation in the previous paragraph, when creating jobs we can&#8217;t set the <code>stage</code> value. Omitting the <code>stage</code> parameter means we will
 not set any value for <code>stage</code>. By default Gitlab CI jobs without a <code>stage</code> value will be in the <code>test</code> stage. To define a stage other than
-<code>test</code>, we used the <code>namespace</code> parameter. Yes - that means that also the jobs <code>name</code> will include the value of the <code>namespace</code>. But this
-design decision will make the concept of <code>name</code> and <code>namespace</code> much more clear that also providing a <code>stage</code> parameter for jobs while
+<code>test</code>, we used the <code>stage</code> parameter. Yes - that means that also the jobs <code>name</code> will include the value of the <code>stage</code>. But this
+design decision will make the concept of <code>name</code> and <code>stage</code> much more clear that also providing a <code>stage</code> parameter for jobs while
 sequences haven&#8217;t such a (useless) <code>stage</code> parameter (because it makes no sense to extend the <code>stage</code> over the <code>name</code> of a job).</p>
 </div>
 <div class="paragraph">
@@ -1116,13 +1040,13 @@ sequences haven&#8217;t such a (useless) <code>stage</code> parameter (because i
 <div class="ulist">
 <ul>
 <li>
-<p>Set different values for just the <code>namespace</code> parameter when creating distinct jobs which will run in sequence (separate stages).</p>
+<p>Set different values for just the <code>stage</code> parameter when creating distinct jobs which will run in sequence (separate stages).</p>
 </li>
 <li>
 <p>Set different values for just the <code>name</code> parameter when creating distinct jobs which will run in parallel (equal stage).</p>
 </li>
 <li>
-<p>Set different values for the <code>name</code> parameters but equal values for the <code>namespace</code> parameters when creating distinct jobs which will run in parallel (equal stage) but defining the name of the stage.</p>
+<p>Set different values for the <code>name</code> parameters but equal values for the <code>stage</code> parameters when creating distinct jobs which will run in parallel (equal stage) but defining the name of the stage.</p>
 </li>
 <li>
 <p>Setting different values for both parameters is nonsense and will lead to the first result of distinct jobs which will run in sequence.</p>
@@ -1133,8 +1057,8 @@ sequences haven&#8217;t such a (useless) <code>stage</code> parameter (because i
 <div class="sect2">
 <h3 id="_name_parameter_when_adding_jobs_and_sequences_to_sequences"><code>name</code> parameter when adding jobs (and sequences) to sequences</h3>
 <div class="paragraph">
-<p>Lets take the sequence example from the chapter <a href="#namespaces-allow-reuse-of-jobs-and-sequence">Namespaces allow reuse of jobs and sequence</a>
-and instead of using the <code>namespace</code> when adding the sequence several times to the pipeline we now use the <code>name</code> parameter.</p>
+<p>Lets take the sequence example from the chapter <a href="#stages-allow-reuse-of-jobs-and-sequence">Stages allow reuse of jobs and sequence</a>
+and instead of using the <code>stage</code> when adding the sequence several times to the pipeline we now use the <code>name</code> parameter.</p>
 </div>
 <div class="paragraph">
 <p><strong>Input:</strong></p>
@@ -1148,8 +1072,8 @@ from tests import conftest
 def environment_pipeline(environment: str) -&gt; gcip.Sequence:
     sequence = gcip.Sequence()
     sequence.add_children(
-        gcip.Job(namespace="job1", script=f"job-1-on-{environment}"),
-        gcip.Job(namespace="job2", script=f"job-2-on-{environment}"),
+        gcip.Job(stage="job1", script=f"job-1-on-{environment}"),
+        gcip.Job(stage="job2", script=f"job-2-on-{environment}"),
     )
     return sequence
 
@@ -1193,7 +1117,7 @@ job2-test:
 </div>
 </div>
 <div class="paragraph">
-<p>You can also mix the usage of <code>namespace</code> and <code>name</code>. This makes sense when adding lots of jobs
+<p>You can also mix the usage of <code>stage</code> and <code>name</code>. This makes sense when adding lots of jobs
 where groups of jobs should run sequentially but jobs within a group in parallel.
 Here an Example:</p>
 </div>
@@ -1202,21 +1126,7 @@ Here an Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-python" data-lang="python">import gcip
-from tests import conftest
-
-
-def job_for(service: str) -&gt; gcip.Job:
-    return gcip.Job(namespace="update_service", script=f"./update-service.sh {service}")
-
-
-def test():
-    pipeline = gcip.Pipeline()
-    for env in ["development", "test"]:
-        for service in ["service1", "service2"]:
-            pipeline.add_children(job_for(f"{service}_{env}"), namespace=env, name=service)
-
-    conftest.check(pipeline.render())</code></pre>
+<pre class="highlight"><code class="language-python" data-lang="python">Unresolved directive in index.adoc - include::../../tests/unit/test_readme_mix_stage_and_name.py[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1227,25 +1137,7 @@ def test():
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">stages:
-- update_service_development
-- update_service_test
-update-service-development-service1:
-  stage: update_service_development
-  script:
-  - ./update-service.sh service1_development
-update-service-development-service2:
-  stage: update_service_development
-  script:
-  - ./update-service.sh service2_development
-update-service-test-service1:
-  stage: update_service_test
-  script:
-  - ./update-service.sh service1_test
-update-service-test-service2:
-  stage: update_service_test
-  script:
-  - ./update-service.sh service2_test</code></pre>
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">Unresolved directive in index.adoc - include::../../tests/unit/comparison_files/test_readme_mix_stage_and_name_test.yml[]</code></pre>
 </div>
 </div>
 </div>
@@ -1292,7 +1184,7 @@ from gcip.addons.gitlab import job_scripts as scripts
 
 def test():
     pipeline = gcip.Pipeline()
-    pipeline.add_children(gcip.Job(namespace="print_date", script=scripts.clone_repository("path/to/group")))
+    pipeline.add_children(gcip.Job(stage="print_date", script=scripts.clone_repository("path/to/group")))
 
     conftest.check(pipeline.render())</code></pre>
 </div>
@@ -1404,7 +1296,7 @@ from gcip.lib import rules
 
 
 def test():
-    job = gcip.Job(namespace="print_date", script="date")
+    job = gcip.Job(stage="print_date", script="date")
     job.append_rules(
         rules.on_merge_request_events().never(),
         rules.on_master(),
@@ -1545,7 +1437,7 @@ def test():
 
     # yapf: disable
     pipeline.add_children(
-        Job(namespace="print_date", script="date")
+        Job(stage="print_date", script="date")
         .set_image("docker/image:example")
         .prepend_scripts("./before-script.sh")
         .append_scripts("./after-script.sh")
@@ -1615,7 +1507,7 @@ def test():
     pipeline = Pipeline()
     pipeline.add_children(
         TriggerJob(
-            namespace="trigger-banana",
+            stage="trigger-banana",
             project="myteam/banana",
             branch="test",
             strategy=TriggerStrategy.DEPEND,
@@ -1661,7 +1553,7 @@ def test():
     pipeline = Pipeline()
     pipeline.add_children(
         TriggerJob(
-            namespace="trigger-subpipe",
+            stage="trigger-subpipe",
             includes=IncludeLocal("./my-subpipe.yml"),
             strategy=TriggerStrategy.DEPEND,
         )
@@ -1713,7 +1605,7 @@ trigger-subpipe:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 07:06:27 UTC
+Last updated 2021-04-16 09:00:48 UTC
 </div>
 </div>
 </body>
