@@ -26,7 +26,7 @@
 <p>Simple example:</p>
 <pre><code>from gcip import Job, Cache
 
-job1 = Job(stage=&quot;buildit&quot;, script=&quot;build my app&quot;)
+job1 = Job(namespace=&quot;buildit&quot;, script=&quot;build my app&quot;)
 job1.set_cache(Cache([&quot;file1.txt&quot;, &quot;file2.txt&quot;, &quot;path/to/file3.txt&quot;]))
 </code></pre>
 <p>More complex example:</p>
@@ -34,7 +34,7 @@ job1.set_cache(Cache([&quot;file1.txt&quot;, &quot;file2.txt&quot;, &quot;path/t
 
 files = [&quot;file1.txt&quot;, &quot;file2.txt&quot;, &quot;path/to/file3.txt&quot;]
 
-job1 = Job(stage=&quot;buildit&quot;, script=&quot;build my app&quot;)
+job1 = Job(namespace=&quot;buildit&quot;, script=&quot;build my app&quot;)
 job1.set_cache(Cache(
     files,
     cache_key=CacheKey(files=files),
@@ -52,7 +52,7 @@ Simple example:
 ```
 from gcip import Job, Cache
 
-job1 = Job(stage=&#34;buildit&#34;, script=&#34;build my app&#34;)
+job1 = Job(namespace=&#34;buildit&#34;, script=&#34;build my app&#34;)
 job1.set_cache(Cache([&#34;file1.txt&#34;, &#34;file2.txt&#34;, &#34;path/to/file3.txt&#34;]))
 ```
 
@@ -63,7 +63,7 @@ from gcip import Job, Cache, CacheKey, CachePolicy, WhenStatement
 
 files = [&#34;file1.txt&#34;, &#34;file2.txt&#34;, &#34;path/to/file3.txt&#34;]
 
-job1 = Job(stage=&#34;buildit&#34;, script=&#34;build my app&#34;)
+job1 = Job(namespace=&#34;buildit&#34;, script=&#34;build my app&#34;)
 job1.set_cache(Cache(
     files,
     cache_key=CacheKey(files=files),

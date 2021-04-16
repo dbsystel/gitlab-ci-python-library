@@ -100,9 +100,9 @@ def scan(
             (default &#34;docker&#34;). Defaults to &#34;docker-archive&#34;.
 
     Returns:
-        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```stage=check```.
+        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```namespace=check```.
     &#34;&#34;&#34;
-    job = Job(script=&#34;set -eo pipefail&#34;, stage=&#34;check&#34;)
+    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
 
     if not dive_image:
         dive_image = PredefinedImages.DIVE
@@ -180,7 +180,7 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Job</code></dt>
-<dd>gcip.Job returned which will scan your image(s) for optimizations. Job runs in <code>stage=check</code>.</dd>
+<dd>gcip.Job returned which will scan your image(s) for optimizations. Job runs in <code>namespace=check</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -223,9 +223,9 @@ otherwise CI validation will fail. (default "0.9"). Defaults to None.</dd>
             (default &#34;docker&#34;). Defaults to &#34;docker-archive&#34;.
 
     Returns:
-        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```stage=check```.
+        Job: gcip.Job returned which will scan your image(s) for optimizations. Job runs in ```namespace=check```.
     &#34;&#34;&#34;
-    job = Job(script=&#34;set -eo pipefail&#34;, stage=&#34;check&#34;)
+    job = Job(script=&#34;set -eo pipefail&#34;, namespace=&#34;check&#34;)
 
     if not dive_image:
         dive_image = PredefinedImages.DIVE

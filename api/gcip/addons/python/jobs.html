@@ -54,7 +54,7 @@ def flake8() -&gt; Job:
     &#34;&#34;&#34;
     return Job(
         name=&#34;flake8&#34;,
-        stage=&#34;lint&#34;,
+        namespace=&#34;lint&#34;,
         script=[
             &#34;pip3 install --upgrade flake8&#34;,
             &#34;flake8&#34;,
@@ -78,7 +78,7 @@ def mypy(package_dir: str) -&gt; Job:
     &#34;&#34;&#34;
     return Job(
         name=&#34;mypy&#34;,
-        stage=&#34;test&#34;,
+        namespace=&#34;test&#34;,
         script=[&#34;pip3 install --upgrade mypy&#34;, f&#34;mypy {package_dir}&#34;],
     )
 
@@ -94,7 +94,7 @@ def isort() -&gt; Job:
     &#34;&#34;&#34;
     return Job(
         name=&#34;isort&#34;,
-        stage=&#34;lint&#34;,
+        namespace=&#34;lint&#34;,
         script=[
             &#34;pip3 install --upgrade isort&#34;,
             &#34;isort --check .&#34;,
@@ -110,7 +110,7 @@ def pytest() -&gt; Job:
     &#34;&#34;&#34;
     return Job(
         name=&#34;pytest&#34;,
-        stage=&#34;test&#34;,
+        namespace=&#34;test&#34;,
         script=[
             scripts.pip_install_requirements(),
             &#34;pytest&#34;,
@@ -127,7 +127,7 @@ def evaluate_git_tag_pep440_conformity() -&gt; Job:
     &#34;&#34;&#34;
     job = Job(
         name=&#34;evaluate_git_tag_pep440_conformity&#34;,
-        stage=&#34;test&#34;,
+        namespace=&#34;test&#34;,
         script=&#34;python3 -m gcip.tools.evaluate_git_tag_pep440_conformity&#34;,
     )
     job.append_rules(rules.on_tags())
@@ -145,7 +145,7 @@ def bdist_wheel() -&gt; Job:
     &#34;&#34;&#34;
     job = Job(
         name=&#34;bdist_wheel&#34;,
-        stage=&#34;build&#34;,
+        namespace=&#34;build&#34;,
         script=[
             scripts.pip_install_requirements(),
             &#34;python3 setup.py bdist_wheel&#34;,
@@ -165,7 +165,7 @@ def pages_sphinx() -&gt; Job:
     &#34;&#34;&#34;
     job = Job(
         name=&#34;pages_python_sphinx&#34;,
-        stage=&#34;build&#34;,
+        namespace=&#34;build&#34;,
         script=[
             scripts.pip_install_requirements(&#34;docs/requirements.txt&#34;),
             &#34;sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}&#34;,
@@ -200,7 +200,7 @@ def twine_upload(
     &#34;&#34;&#34;
     job = Job(
         name=&#34;twine_upload&#34;,
-        stage=&#34;deploy&#34;,
+        namespace=&#34;deploy&#34;,
         script=[
             &#34;pip3 install --upgrade twine&#34;,
             &#34;python3 -m twine upload --non-interactive --disable-progress-bar dist/*&#34;,
@@ -248,7 +248,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
     &#34;&#34;&#34;
     job = Job(
         name=&#34;bdist_wheel&#34;,
-        stage=&#34;build&#34;,
+        namespace=&#34;build&#34;,
         script=[
             scripts.pip_install_requirements(),
             &#34;python3 setup.py bdist_wheel&#34;,
@@ -278,7 +278,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
     &#34;&#34;&#34;
     job = Job(
         name=&#34;evaluate_git_tag_pep440_conformity&#34;,
-        stage=&#34;test&#34;,
+        namespace=&#34;test&#34;,
         script=&#34;python3 -m gcip.tools.evaluate_git_tag_pep440_conformity&#34;,
     )
     job.append_rules(rules.on_tags())
@@ -309,7 +309,7 @@ flake8
     &#34;&#34;&#34;
     return Job(
         name=&#34;flake8&#34;,
-        stage=&#34;lint&#34;,
+        namespace=&#34;lint&#34;,
         script=[
             &#34;pip3 install --upgrade flake8&#34;,
             &#34;flake8&#34;,
@@ -340,7 +340,7 @@ isort --check .
     &#34;&#34;&#34;
     return Job(
         name=&#34;isort&#34;,
-        stage=&#34;lint&#34;,
+        namespace=&#34;lint&#34;,
         script=[
             &#34;pip3 install --upgrade isort&#34;,
             &#34;isort --check .&#34;,
@@ -386,7 +386,7 @@ mypy package_dir
     &#34;&#34;&#34;
     return Job(
         name=&#34;mypy&#34;,
-        stage=&#34;test&#34;,
+        namespace=&#34;test&#34;,
         script=[&#34;pip3 install --upgrade mypy&#34;, f&#34;mypy {package_dir}&#34;],
     )</code></pre>
 </details>
@@ -415,7 +415,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
     &#34;&#34;&#34;
     job = Job(
         name=&#34;pages_python_sphinx&#34;,
-        stage=&#34;build&#34;,
+        namespace=&#34;build&#34;,
         script=[
             scripts.pip_install_requirements(&#34;docs/requirements.txt&#34;),
             &#34;sphinx-build -b html -E -a docs public/${CI_COMMIT_REF_NAME}&#34;,
@@ -445,7 +445,7 @@ before (<code>scripts.pip_install_requirements()</code>)</p>
     &#34;&#34;&#34;
     return Job(
         name=&#34;pytest&#34;,
-        stage=&#34;test&#34;,
+        namespace=&#34;test&#34;,
         script=[
             scripts.pip_install_requirements(),
             &#34;pytest&#34;,
@@ -505,7 +505,7 @@ to <code>None</code>, which means the package is published to <code>https://pypi
     &#34;&#34;&#34;
     job = Job(
         name=&#34;twine_upload&#34;,
-        stage=&#34;deploy&#34;,
+        namespace=&#34;deploy&#34;,
         script=[
             &#34;pip3 install --upgrade twine&#34;,
             &#34;python3 -m twine upload --non-interactive --disable-progress-bar dist/*&#34;,
