@@ -106,7 +106,7 @@ class IncludeFile(Include):
     """This module represents the Gitlab CI [include:file](https://docs.gitlab.com/ee/ci/yaml/#includefile) keyword.
 
     Args:
-        file (str): The path to the file to include.
+        file (str): Relative path to the file to include.
         project (str): The project to include the file from.
         ref (Optional[str], optional): The branch of the project to include the file from. Defaults to None.
     """
