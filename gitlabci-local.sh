@@ -17,6 +17,9 @@ fi
 if [ -z $REGISTRY_PASSWORD ]; then
     read -sp "Enter container registry password: " REGISTRY_PASSWORD
 fi
+
+./remove-caches.sh
+
 gitlabci_local_envs="-e CI=true
     -e CI_PROJECT_NAME=gitlab-ci-python-library
     -e CI_PROJECT_DIR=/builds/gitlab-ci-python-library
@@ -28,9 +31,4 @@ gitlabci-local -p $gitlabci_local_envs && \
 cat generated-config.yml && \
 gitlabci-local $gitlabci_local_envs -c generated-config.yml $@
 
-rm -rf generated-config.yml
-rm -rf dist
-rm -rf build
-rm -rf .pytest_cache
-rm -rf .mypy_cache
-rm -rf gcip.egg-info
+./remove-caches.sh
