@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
 <title>gcip.core.include API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="This module represents the Gitlab CI [Include](https://docs.gitlab.com/ee/ci/yaml/#include) keyword …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,92 @@
 <h1 class="title">Module <code>gcip.core.include</code></h1>
 </header>
 <section id="section-intro">
+<p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#include">Include</a> keyword.</p>
+<p>Use include to include external YAML files in your CI/CD configuration.</p>
+<hr>
+<p><a href="https://docs.gitlab.com/ee/ci/yaml/#includelocal">include:local</a> example:</p>
+<pre><code>pipeline.add_include(IncludeLocal(&quot;/templates/.gitlab-ci-template.yml&quot;))
+</code></pre>
+<hr>
+<p><a href="https://docs.gitlab.com/ee/ci/yaml/#includefile">include:file</a> example:</p>
+<pre><code>pipeline.add_include(IncludeFile(
+        project=&quot;my-group/my-project&quot;,
+        ref=&quot;master&quot;,
+        file=&quot;/templates/.gitlab-ci-template.yml&quot;
+    ))
+</code></pre>
+<hr>
+<p><a href="https://docs.gitlab.com/ee/ci/yaml/#includeremote">include:remote</a> example:</p>
+<pre><code>pipeline.add_include(IncludeRemote(&quot;https://gitlab.com/example-project/-/raw/master/.gitlab-ci.yml&quot;))
+</code></pre>
+<hr>
+<p><a href="https://docs.gitlab.com/ee/ci/yaml/#includetemplate">include:template</a> example:</p>
+<pre><code>pipeline.add_include(IncludeTemplate(&quot;Auto-DevOps.gitlab-ci.yml&quot;))
+</code></pre>
+<hr>
+<p>Special type of include: Use a <code><a title="gcip.core.job.TriggerJob" href="job.html#gcip.core.job.TriggerJob">TriggerJob</a></code> with <code><a title="gcip.core.include.IncludeArtifact" href="#gcip.core.include.IncludeArtifact">IncludeArtifact</a></code> to run <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#trigger-child-pipeline-with-generated-configuration-file">a child pipeline with a generated
+configuration file from a previous job</a>:</p>
+<pre><code>TriggerJob(includes=IncludeArtifact(job=&quot;generate-config&quot;, artifact=&quot;generated-config.yml&quot;))
+</code></pre>
+<p>Note: The <code><a title="gcip.core.include.IncludeArtifact" href="#gcip.core.include.IncludeArtifact">IncludeArtifact</a></code> isn't implemented very well as it currently cannot handle <code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code> objects. You need to know the jobs final name,
+which is not very handy. This could be implemented much better in future.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from abc import ABCMeta
+<pre><code class="python">&#34;&#34;&#34;This module represents the Gitlab CI [Include](https://docs.gitlab.com/ee/ci/yaml/#include) keyword.
+
+Use include to include external YAML files in your CI/CD configuration.
+
+----
+
+[include:local](https://docs.gitlab.com/ee/ci/yaml/#includelocal) example:
+
+```
+pipeline.add_include(IncludeLocal(&#34;/templates/.gitlab-ci-template.yml&#34;))
+```
+
+----
+
+[include:file](https://docs.gitlab.com/ee/ci/yaml/#includefile) example:
+
+```
+pipeline.add_include(IncludeFile(
+        project=&#34;my-group/my-project&#34;,
+        ref=&#34;master&#34;,
+        file=&#34;/templates/.gitlab-ci-template.yml&#34;
+    ))
+```
+
+----
+
+[include:remote](https://docs.gitlab.com/ee/ci/yaml/#includeremote) example:
+
+```
+pipeline.add_include(IncludeRemote(&#34;https://gitlab.com/example-project/-/raw/master/.gitlab-ci.yml&#34;))
+```
+
+----
+
+[include:template](https://docs.gitlab.com/ee/ci/yaml/#includetemplate) example:
+
+```
+pipeline.add_include(IncludeTemplate(&#34;Auto-DevOps.gitlab-ci.yml&#34;))
+```
+
+----
+
+Special type of include: Use a `gcip.core.job.TriggerJob` with `IncludeArtifact` to run [a child pipeline with a generated
+configuration file from a previous job](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger-child-pipeline-with-generated-configuration-file):
+
+```
+TriggerJob(includes=IncludeArtifact(job=&#34;generate-config&#34;, artifact=&#34;generated-config.yml&#34;))
+```
+
+Note: The `IncludeArtifact` isn&#39;t implemented very well as it currently cannot handle `gcip.core.job.Job` objects. You need to know the jobs final name,
+which is not very handy. This could be implemented much better in future.
+&#34;&#34;&#34;
+from abc import ABCMeta
 from typing import Dict, Optional
 
 from ..tools.url import is_valid_url
@@ -41,19 +122,52 @@ __email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
 class Include(metaclass=ABCMeta):
+    &#34;&#34;&#34;
+    This is just an abstract superclass.
+
+    Please use one of the subclasses:
+
+    * `IncludeLocal`
+    * `IncludeFile`
+    * `IncludeRemote`
+    * `IncludeTemplate`
+    * `IncludeArtifact`
+    &#34;&#34;&#34;
 
     _rendered_include: Dict[str, str]
 
     def render(self) -&gt; Dict[str, str]:
+        &#34;&#34;&#34;Returns a representation of this Include object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, str]: A dictionary representing the include object in Gitlab CI.
+        &#34;&#34;&#34;
         return self._rendered_include
 
 
 class IncludeLocal(Include):
+    &#34;&#34;&#34;This module represents the Gitlab CI [include:local](https://docs.gitlab.com/ee/ci/yaml/#includelocal) keyword.
+
+    Args:
+        local (str): Relative path to the file within this repository to include.
+    &#34;&#34;&#34;
+
     def __init__(self, local: str) -&gt; None:
         self._rendered_include = {&#34;local&#34;: local}
 
 
 class IncludeFile(Include):
+    &#34;&#34;&#34;This module represents the Gitlab CI [include:file](https://docs.gitlab.com/ee/ci/yaml/#includefile) keyword.
+
+    Args:
+        file (str): Relative path to the file to include.
+        project (str): Project to include the file from.
+        ref (Optional[str], optional): Project branch to include the file from. Defaults to None.
+    &#34;&#34;&#34;
+
     def __init__(
         self,
         file: str,
@@ -66,6 +180,15 @@ class IncludeFile(Include):
 
 
 class IncludeRemote(Include):
+    &#34;&#34;&#34;This module represents the Gitlab CI [include:remote](https://docs.gitlab.com/ee/ci/yaml/#includeremote) keyword.
+
+    Args:
+        remote (str): URL to include the file from.
+
+    Raises:
+        ValueError: If `remote` is not a valid URL.
+    &#34;&#34;&#34;
+
     def __init__(self, remote: str) -&gt; None:
         if not is_valid_url(remote):
             raise ValueError(f&#34;`remote` is not a valid URL: {remote}&#34;)
@@ -74,14 +197,26 @@ class IncludeRemote(Include):
 
 
 class IncludeTemplate(Include):
-    def __init__(self, template: str):
+    &#34;&#34;&#34;This class represents the Gitlab CI [include:template](https://docs.gitlab.com/ee/ci/yaml/#includetemplate) keyword.
+
+    Args:
+        template (str): Gitlab template pipeline to include.
+    &#34;&#34;&#34;
+
+    def __init__(self, template: str) -&gt; None:
         self._rendered_include = {&#34;template&#34;: template}
 
 
 class IncludeArtifact(Include):
-    &#34;&#34;&#34;for triggering a child pipeline with generated configuration file&#34;&#34;&#34;
+    &#34;&#34;&#34;A special type of include: Use a `gcip.core.job.TriggerJob` with `IncludeArtifact` to run [a child pipeline with a generated configuration
+    file from a previous job](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger-child-pipeline-with-generated-configuration-file):
 
-    def __init__(self, job: str, artifact: str):
+    Args:
+        job (str): Job name to include the artifact from.
+        artifact (str): Relative path to the artifact which is produced by `job`.
+    &#34;&#34;&#34;
+
+    def __init__(self, job: str, artifact: str) -&gt; None:
         self._rendered_include = {&#34;job&#34;: job, &#34;artifact&#34;: artifact}</code></pre>
 </details>
 </section>
@@ -98,16 +233,43 @@ class IncludeArtifact(Include):
 <span>class <span class="ident">Include</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is just an abstract superclass.</p>
+<p>Please use one of the subclasses:</p>
+<ul>
+<li><code><a title="gcip.core.include.IncludeLocal" href="#gcip.core.include.IncludeLocal">IncludeLocal</a></code></li>
+<li><code><a title="gcip.core.include.IncludeFile" href="#gcip.core.include.IncludeFile">IncludeFile</a></code></li>
+<li><code><a title="gcip.core.include.IncludeRemote" href="#gcip.core.include.IncludeRemote">IncludeRemote</a></code></li>
+<li><code><a title="gcip.core.include.IncludeTemplate" href="#gcip.core.include.IncludeTemplate">IncludeTemplate</a></code></li>
+<li><code><a title="gcip.core.include.IncludeArtifact" href="#gcip.core.include.IncludeArtifact">IncludeArtifact</a></code></li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Include(metaclass=ABCMeta):
+    &#34;&#34;&#34;
+    This is just an abstract superclass.
+
+    Please use one of the subclasses:
+
+    * `IncludeLocal`
+    * `IncludeFile`
+    * `IncludeRemote`
+    * `IncludeTemplate`
+    * `IncludeArtifact`
+    &#34;&#34;&#34;
 
     _rendered_include: Dict[str, str]
 
     def render(self) -&gt; Dict[str, str]:
+        &#34;&#34;&#34;Returns a representation of this Include object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, str]: A dictionary representing the include object in Gitlab CI.
+        &#34;&#34;&#34;
         return self._rendered_include</code></pre>
 </details>
 <h3>Subclasses</h3>
@@ -124,12 +286,27 @@ class IncludeArtifact(Include):
 <span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[str, str]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns a representation of this Include object as dictionary with static values.</p>
+<p>The rendered representation is used by the gcip to dump it
+in YAML format as part of the .gitlab-ci.yml pipeline.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Dict[str, str]</code></dt>
+<dd>A dictionary representing the include object in Gitlab CI.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; Dict[str, str]:
+    &#34;&#34;&#34;Returns a representation of this Include object as dictionary with static values.
+
+    The rendered representation is used by the gcip to dump it
+    in YAML format as part of the .gitlab-ci.yml pipeline.
+
+    Returns:
+        Dict[str, str]: A dictionary representing the include object in Gitlab CI.
+    &#34;&#34;&#34;
     return self._rendered_include</code></pre>
 </details>
 </dd>
@@ -140,20 +317,42 @@ class IncludeArtifact(Include):
 <span>(</span><span>job: str, artifact: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>for triggering a child pipeline with generated configuration file</p></div>
+<div class="desc"><p>A special type of include: Use a <code><a title="gcip.core.job.TriggerJob" href="job.html#gcip.core.job.TriggerJob">TriggerJob</a></code> with <code><a title="gcip.core.include.IncludeArtifact" href="#gcip.core.include.IncludeArtifact">IncludeArtifact</a></code> to run <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#trigger-child-pipeline-with-generated-configuration-file">a child pipeline with a generated configuration
+file from a previous job</a>:</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>job</code></strong> :&ensp;<code>str</code></dt>
+<dd>Job name to include the artifact from.</dd>
+<dt><strong><code>artifact</code></strong> :&ensp;<code>str</code></dt>
+<dd>Relative path to the artifact which is produced by <code>job</code>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IncludeArtifact(Include):
-    &#34;&#34;&#34;for triggering a child pipeline with generated configuration file&#34;&#34;&#34;
+    &#34;&#34;&#34;A special type of include: Use a `gcip.core.job.TriggerJob` with `IncludeArtifact` to run [a child pipeline with a generated configuration
+    file from a previous job](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger-child-pipeline-with-generated-configuration-file):
 
-    def __init__(self, job: str, artifact: str):
+    Args:
+        job (str): Job name to include the artifact from.
+        artifact (str): Relative path to the artifact which is produced by `job`.
+    &#34;&#34;&#34;
+
+    def __init__(self, job: str, artifact: str) -&gt; None:
         self._rendered_include = {&#34;job&#34;: job, &#34;artifact&#34;: artifact}</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></b></code>:
+<ul class="hlist">
+<li><code><a title="gcip.core.include.Include.render" href="#gcip.core.include.Include.render">render</a></code></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt id="gcip.core.include.IncludeFile"><code class="flex name class">
@@ -161,12 +360,29 @@ class IncludeArtifact(Include):
 <span>(</span><span>file: str, project: str, ref: Optional[str] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#includefile">include:file</a> keyword.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>file</code></strong> :&ensp;<code>str</code></dt>
+<dd>Relative path to the file to include.</dd>
+<dt><strong><code>project</code></strong> :&ensp;<code>str</code></dt>
+<dd>Project to include the file from.</dd>
+<dt><strong><code>ref</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Project branch to include the file from. Defaults to None.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IncludeFile(Include):
+    &#34;&#34;&#34;This module represents the Gitlab CI [include:file](https://docs.gitlab.com/ee/ci/yaml/#includefile) keyword.
+
+    Args:
+        file (str): Relative path to the file to include.
+        project (str): Project to include the file from.
+        ref (Optional[str], optional): Project branch to include the file from. Defaults to None.
+    &#34;&#34;&#34;
+
     def __init__(
         self,
         file: str,
@@ -181,18 +397,37 @@ class IncludeArtifact(Include):
 <ul class="hlist">
 <li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></b></code>:
+<ul class="hlist">
+<li><code><a title="gcip.core.include.Include.render" href="#gcip.core.include.Include.render">render</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="gcip.core.include.IncludeLocal"><code class="flex name class">
 <span>class <span class="ident">IncludeLocal</span></span>
 <span>(</span><span>local: str)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#includelocal">include:local</a> keyword.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>local</code></strong> :&ensp;<code>str</code></dt>
+<dd>Relative path to the file within this repository to include.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IncludeLocal(Include):
+    &#34;&#34;&#34;This module represents the Gitlab CI [include:local](https://docs.gitlab.com/ee/ci/yaml/#includelocal) keyword.
+
+    Args:
+        local (str): Relative path to the file within this repository to include.
+    &#34;&#34;&#34;
+
     def __init__(self, local: str) -&gt; None:
         self._rendered_include = {&#34;local&#34;: local}</code></pre>
 </details>
@@ -200,18 +435,45 @@ class IncludeArtifact(Include):
 <ul class="hlist">
 <li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></b></code>:
+<ul class="hlist">
+<li><code><a title="gcip.core.include.Include.render" href="#gcip.core.include.Include.render">render</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="gcip.core.include.IncludeRemote"><code class="flex name class">
 <span>class <span class="ident">IncludeRemote</span></span>
 <span>(</span><span>remote: str)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#includeremote">include:remote</a> keyword.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>remote</code></strong> :&ensp;<code>str</code></dt>
+<dd>URL to include the file from.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If <code>remote</code> is not a valid URL.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IncludeRemote(Include):
+    &#34;&#34;&#34;This module represents the Gitlab CI [include:remote](https://docs.gitlab.com/ee/ci/yaml/#includeremote) keyword.
+
+    Args:
+        remote (str): URL to include the file from.
+
+    Raises:
+        ValueError: If `remote` is not a valid URL.
+    &#34;&#34;&#34;
+
     def __init__(self, remote: str) -&gt; None:
         if not is_valid_url(remote):
             raise ValueError(f&#34;`remote` is not a valid URL: {remote}&#34;)
@@ -222,24 +484,51 @@ class IncludeArtifact(Include):
 <ul class="hlist">
 <li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
 </ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></b></code>:
+<ul class="hlist">
+<li><code><a title="gcip.core.include.Include.render" href="#gcip.core.include.Include.render">render</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="gcip.core.include.IncludeTemplate"><code class="flex name class">
 <span>class <span class="ident">IncludeTemplate</span></span>
 <span>(</span><span>template: str)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This class represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#includetemplate">include:template</a> keyword.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>template</code></strong> :&ensp;<code>str</code></dt>
+<dd>Gitlab template pipeline to include.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class IncludeTemplate(Include):
-    def __init__(self, template: str):
+    &#34;&#34;&#34;This class represents the Gitlab CI [include:template](https://docs.gitlab.com/ee/ci/yaml/#includetemplate) keyword.
+
+    Args:
+        template (str): Gitlab template pipeline to include.
+    &#34;&#34;&#34;
+
+    def __init__(self, template: str) -&gt; None:
         self._rendered_include = {&#34;template&#34;: template}</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="gcip.core.include.Include" href="#gcip.core.include.Include">Include</a></b></code>:
+<ul class="hlist">
+<li><code><a title="gcip.core.include.Include.render" href="#gcip.core.include.Include.render">render</a></code></li>
+</ul>
+</li>
 </ul>
 </dd>
 </dl>

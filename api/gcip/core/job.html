@@ -505,8 +505,8 @@ class Job:
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
-        Return:
-            Dict[str, Any]: A dictionary prepresenting the job object in Gitlab CI.
+        Returns:
+            Dict[str, Any]: A dictionary representing the job object in Gitlab CI.
         &#34;&#34;&#34;
         # late import to avoid circular dependencies
         from .sequence import Sequence
@@ -664,6 +664,14 @@ class TriggerJob(Job):
         return job_copy
 
     def render(self) -&gt; Dict[Any, Any]:
+        &#34;&#34;&#34;Return a representation of this TriggerJob object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, Any]: A dictionary representing the trigger job object in Gitlab CI.
+        &#34;&#34;&#34;
         rendered_job = super().render()
 
         # remove unsupported keywords from TriggerJob
@@ -1026,8 +1034,8 @@ Either <code>name</code> or <code>namespace</code> must be set. Defaults to <cod
         The rendered representation is used by the gcip to dump it
         in YAML format as part of the .gitlab-ci.yml pipeline.
 
-        Return:
-            Dict[str, Any]: A dictionary prepresenting the job object in Gitlab CI.
+        Returns:
+            Dict[str, Any]: A dictionary representing the job object in Gitlab CI.
         &#34;&#34;&#34;
         # late import to avoid circular dependencies
         from .sequence import Sequence
@@ -1391,8 +1399,11 @@ to the job.</p>
 <div class="desc"><p>Return a representation of this Job object as dictionary with static values.</p>
 <p>The rendered representation is used by the gcip to dump it
 in YAML format as part of the .gitlab-ci.yml pipeline.</p>
-<h2 id="return">Return</h2>
-<p>Dict[str, Any]: A dictionary prepresenting the job object in Gitlab CI.</p></div>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Dict[str, Any]</code></dt>
+<dd>A dictionary representing the job object in Gitlab CI.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1403,8 +1414,8 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
     The rendered representation is used by the gcip to dump it
     in YAML format as part of the .gitlab-ci.yml pipeline.
 
-    Return:
-        Dict[str, Any]: A dictionary prepresenting the job object in Gitlab CI.
+    Returns:
+        Dict[str, Any]: A dictionary representing the job object in Gitlab CI.
     &#34;&#34;&#34;
     # late import to avoid circular dependencies
     from .sequence import Sequence
@@ -1675,6 +1686,14 @@ for more information.</dd>
         return job_copy
 
     def render(self) -&gt; Dict[Any, Any]:
+        &#34;&#34;&#34;Return a representation of this TriggerJob object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, Any]: A dictionary representing the trigger job object in Gitlab CI.
+        &#34;&#34;&#34;
         rendered_job = super().render()
 
         # remove unsupported keywords from TriggerJob
@@ -1723,6 +1742,79 @@ for more information.</dd>
 <ul class="hlist">
 <li><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></li>
 </ul>
+<h3>Methods</h3>
+<dl>
+<dt id="gcip.core.job.TriggerJob.render"><code class="name flex">
+<span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[Any, Any]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a representation of this TriggerJob object as dictionary with static values.</p>
+<p>The rendered representation is used by the gcip to dump it
+in YAML format as part of the .gitlab-ci.yml pipeline.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Dict[str, Any]</code></dt>
+<dd>A dictionary representing the trigger job object in Gitlab CI.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def render(self) -&gt; Dict[Any, Any]:
+    &#34;&#34;&#34;Return a representation of this TriggerJob object as dictionary with static values.
+
+    The rendered representation is used by the gcip to dump it
+    in YAML format as part of the .gitlab-ci.yml pipeline.
+
+    Returns:
+        Dict[str, Any]: A dictionary representing the trigger job object in Gitlab CI.
+    &#34;&#34;&#34;
+    rendered_job = super().render()
+
+    # remove unsupported keywords from TriggerJob
+    rendered_job.pop(&#34;script&#34;)
+
+    if &#34;image&#34; in rendered_job:
+        rendered_job.pop(&#34;image&#34;)
+
+    if &#34;tags&#34; in rendered_job:
+        rendered_job.pop(&#34;tags&#34;)
+
+    if &#34;artifacts&#34; in rendered_job:
+        rendered_job.pop(&#34;artifacts&#34;)
+
+    if &#34;cache&#34; in rendered_job:
+        rendered_job.pop(&#34;cache&#34;)
+
+    trigger: Dict[str, Union[str, List[Dict[str, str]]]] = {}
+
+    # Child pipelines
+    if self._includes:
+        trigger.update(
+            {
+                &#34;include&#34;: [include.render() for include in self._includes],
+            }
+        )
+
+    # Multiproject pipelines
+    if self._project:
+        trigger.update(
+            {
+                &#34;project&#34;: self._project,
+            }
+        )
+        if self._branch:
+            trigger.update({&#34;branch&#34;: self._branch})
+
+    if self._strategy:
+        trigger.update({&#34;strategy&#34;: self._strategy.value})
+
+    rendered_job = {&#34;trigger&#34;: trigger, **rendered_job}
+
+    return rendered_job</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a></b></code>:
@@ -1737,7 +1829,6 @@ for more information.</dd>
 <li><code><a title="gcip.core.job.Job.name" href="#gcip.core.job.Job.name">name</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_rules" href="#gcip.core.job.Job.prepend_rules">prepend_rules</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_scripts" href="#gcip.core.job.Job.prepend_scripts">prepend_scripts</a></code></li>
-<li><code><a title="gcip.core.job.Job.render" href="#gcip.core.job.Job.render">render</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_cache" href="#gcip.core.job.Job.set_cache">set_cache</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_image" href="#gcip.core.job.Job.set_image">set_image</a></code></li>
 <li><code><a title="gcip.core.job.Job.stage" href="#gcip.core.job.Job.stage">stage</a></code></li>
@@ -1812,6 +1903,9 @@ keyword.</p></div>
 </li>
 <li>
 <h4><code><a title="gcip.core.job.TriggerJob" href="#gcip.core.job.TriggerJob">TriggerJob</a></code></h4>
+<ul class="">
+<li><code><a title="gcip.core.job.TriggerJob.render" href="#gcip.core.job.TriggerJob.render">render</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="gcip.core.job.TriggerStrategy" href="#gcip.core.job.TriggerStrategy">TriggerStrategy</a></code></h4>
