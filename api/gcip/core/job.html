@@ -295,6 +295,46 @@ class Job:
         &#34;&#34;&#34;
         return self._stage
 
+    @property
+    def image(self) -&gt; Optional[Image]:
+        &#34;&#34;&#34;The [image](https://docs.gitlab.com/ee/ci/yaml/README.html#image) of the Job&#34;&#34;&#34;
+        return self._image
+
+    @property
+    def variables(self) -&gt; Dict[str, str]:
+        &#34;&#34;&#34;The [variables](https://docs.gitlab.com/ee/ci/yaml/README.html#variables) of the Job&#34;&#34;&#34;
+        return self._variables
+
+    @property
+    def tags(self) -&gt; OrderedSetType:
+        &#34;&#34;&#34;The [tags](https://docs.gitlab.com/ee/ci/yaml/README.html#tags) of the Job&#34;&#34;&#34;
+        return self._tags
+
+    @property
+    def rules(self) -&gt; List[Rule]:
+        &#34;&#34;&#34;The [rules](https://docs.gitlab.com/ee/ci/yaml/README.html#rules) of the Job&#34;&#34;&#34;
+        return self._rules
+
+    @property
+    def needs(self) -&gt; List[Union[Need, Job, Sequence]]:
+        &#34;&#34;&#34;The [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) of the Job&#34;&#34;&#34;
+        return self._needs
+
+    @property
+    def scripts(self) -&gt; List[str]:
+        &#34;&#34;&#34;The [script](https://docs.gitlab.com/ee/ci/yaml/README.html#script) of the Job&#34;&#34;&#34;
+        return self._scripts
+
+    @property
+    def artifacts_paths(self) -&gt; OrderedSetType:
+        &#34;&#34;&#34;The [artifactspaths](https://docs.gitlab.com/ee/ci/yaml/README.html#artifactspaths) of the Job&#34;&#34;&#34;
+        return self._artifacts_paths
+
+    @property
+    def cache(self) -&gt; Optional[Cache]:
+        &#34;&#34;&#34;The [cache](https://docs.gitlab.com/ee/ci/yaml/README.html#cache) of the Job&#34;&#34;&#34;
+        return self._cache
+
     def _extend_name(self, name: Optional[str]) -&gt; None:
         &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name.&#34;&#34;&#34;
         if name:
@@ -824,6 +864,46 @@ Either <code>name</code> or <code>stage</code> must be set. Defaults to <code>No
         &#34;&#34;&#34;
         return self._stage
 
+    @property
+    def image(self) -&gt; Optional[Image]:
+        &#34;&#34;&#34;The [image](https://docs.gitlab.com/ee/ci/yaml/README.html#image) of the Job&#34;&#34;&#34;
+        return self._image
+
+    @property
+    def variables(self) -&gt; Dict[str, str]:
+        &#34;&#34;&#34;The [variables](https://docs.gitlab.com/ee/ci/yaml/README.html#variables) of the Job&#34;&#34;&#34;
+        return self._variables
+
+    @property
+    def tags(self) -&gt; OrderedSetType:
+        &#34;&#34;&#34;The [tags](https://docs.gitlab.com/ee/ci/yaml/README.html#tags) of the Job&#34;&#34;&#34;
+        return self._tags
+
+    @property
+    def rules(self) -&gt; List[Rule]:
+        &#34;&#34;&#34;The [rules](https://docs.gitlab.com/ee/ci/yaml/README.html#rules) of the Job&#34;&#34;&#34;
+        return self._rules
+
+    @property
+    def needs(self) -&gt; List[Union[Need, Job, Sequence]]:
+        &#34;&#34;&#34;The [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) of the Job&#34;&#34;&#34;
+        return self._needs
+
+    @property
+    def scripts(self) -&gt; List[str]:
+        &#34;&#34;&#34;The [script](https://docs.gitlab.com/ee/ci/yaml/README.html#script) of the Job&#34;&#34;&#34;
+        return self._scripts
+
+    @property
+    def artifacts_paths(self) -&gt; OrderedSetType:
+        &#34;&#34;&#34;The [artifactspaths](https://docs.gitlab.com/ee/ci/yaml/README.html#artifactspaths) of the Job&#34;&#34;&#34;
+        return self._artifacts_paths
+
+    @property
+    def cache(self) -&gt; Optional[Cache]:
+        &#34;&#34;&#34;The [cache](https://docs.gitlab.com/ee/ci/yaml/README.html#cache) of the Job&#34;&#34;&#34;
+        return self._cache
+
     def _extend_name(self, name: Optional[str]) -&gt; None:
         &#34;&#34;&#34;This method is used by `gcip.core.sequence.Sequence`s to populate the jobs name.&#34;&#34;&#34;
         if name:
@@ -1110,6 +1190,45 @@ Either <code>name</code> or <code>stage</code> must be set. Defaults to <code>No
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="gcip.core.job.Job.artifacts_paths"><code class="name">var <span class="ident">artifacts_paths</span> : Dict[str, NoneType]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#artifactspaths">artifactspaths</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def artifacts_paths(self) -&gt; OrderedSetType:
+    &#34;&#34;&#34;The [artifactspaths](https://docs.gitlab.com/ee/ci/yaml/README.html#artifactspaths) of the Job&#34;&#34;&#34;
+    return self._artifacts_paths</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job.Job.cache"><code class="name">var <span class="ident">cache</span> : Optional[<a title="gcip.core.cache.Cache" href="cache.html#gcip.core.cache.Cache">Cache</a>]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#cache">cache</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def cache(self) -&gt; Optional[Cache]:
+    &#34;&#34;&#34;The [cache](https://docs.gitlab.com/ee/ci/yaml/README.html#cache) of the Job&#34;&#34;&#34;
+    return self._cache</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job.Job.image"><code class="name">var <span class="ident">image</span> : Optional[<a title="gcip.core.image.Image" href="image.html#gcip.core.image.Image">Image</a>]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#image">image</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def image(self) -&gt; Optional[Image]:
+    &#34;&#34;&#34;The [image](https://docs.gitlab.com/ee/ci/yaml/README.html#image) of the Job&#34;&#34;&#34;
+    return self._image</code></pre>
+</details>
+</dd>
 <dt id="gcip.core.job.Job.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
 <dd>
 <div class="desc"><p>The name of the Job</p>
@@ -1131,6 +1250,45 @@ def name(self) -&gt; str:
     return self._name</code></pre>
 </details>
 </dd>
+<dt id="gcip.core.job.Job.needs"><code class="name">var <span class="ident">needs</span> : List[Union[Need, <a title="gcip.core.job.Job" href="#gcip.core.job.Job">Job</a>, Sequence]]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#needs">needs</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def needs(self) -&gt; List[Union[Need, Job, Sequence]]:
+    &#34;&#34;&#34;The [needs](https://docs.gitlab.com/ee/ci/yaml/README.html#needs) of the Job&#34;&#34;&#34;
+    return self._needs</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job.Job.rules"><code class="name">var <span class="ident">rules</span> : List[<a title="gcip.core.rule.Rule" href="rule.html#gcip.core.rule.Rule">Rule</a>]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#rules">rules</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rules(self) -&gt; List[Rule]:
+    &#34;&#34;&#34;The [rules](https://docs.gitlab.com/ee/ci/yaml/README.html#rules) of the Job&#34;&#34;&#34;
+    return self._rules</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job.Job.scripts"><code class="name">var <span class="ident">scripts</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#script">script</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scripts(self) -&gt; List[str]:
+    &#34;&#34;&#34;The [script](https://docs.gitlab.com/ee/ci/yaml/README.html#script) of the Job&#34;&#34;&#34;
+    return self._scripts</code></pre>
+</details>
+</dd>
 <dt id="gcip.core.job.Job.stage"><code class="name">var <span class="ident">stage</span> : str</code></dt>
 <dd>
 <div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#stage">stage</a> of the Job</p>
@@ -1150,6 +1308,32 @@ def stage(self) -&gt; str:
     final stage when rendered.
     &#34;&#34;&#34;
     return self._stage</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job.Job.tags"><code class="name">var <span class="ident">tags</span> : Dict[str, NoneType]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#tags">tags</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def tags(self) -&gt; OrderedSetType:
+    &#34;&#34;&#34;The [tags](https://docs.gitlab.com/ee/ci/yaml/README.html#tags) of the Job&#34;&#34;&#34;
+    return self._tags</code></pre>
+</details>
+</dd>
+<dt id="gcip.core.job.Job.variables"><code class="name">var <span class="ident">variables</span> : Dict[str, str]</code></dt>
+<dd>
+<div class="desc"><p>The <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#variables">variables</a> of the Job</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def variables(self) -&gt; Dict[str, str]:
+    &#34;&#34;&#34;The [variables](https://docs.gitlab.com/ee/ci/yaml/README.html#variables) of the Job&#34;&#34;&#34;
+    return self._variables</code></pre>
 </details>
 </dd>
 </dl>
@@ -1825,13 +2009,21 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 <li><code><a title="gcip.core.job.Job.add_variables" href="#gcip.core.job.Job.add_variables">add_variables</a></code></li>
 <li><code><a title="gcip.core.job.Job.append_rules" href="#gcip.core.job.Job.append_rules">append_rules</a></code></li>
 <li><code><a title="gcip.core.job.Job.append_scripts" href="#gcip.core.job.Job.append_scripts">append_scripts</a></code></li>
+<li><code><a title="gcip.core.job.Job.artifacts_paths" href="#gcip.core.job.Job.artifacts_paths">artifacts_paths</a></code></li>
+<li><code><a title="gcip.core.job.Job.cache" href="#gcip.core.job.Job.cache">cache</a></code></li>
 <li><code><a title="gcip.core.job.Job.copy" href="#gcip.core.job.Job.copy">copy</a></code></li>
+<li><code><a title="gcip.core.job.Job.image" href="#gcip.core.job.Job.image">image</a></code></li>
 <li><code><a title="gcip.core.job.Job.name" href="#gcip.core.job.Job.name">name</a></code></li>
+<li><code><a title="gcip.core.job.Job.needs" href="#gcip.core.job.Job.needs">needs</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_rules" href="#gcip.core.job.Job.prepend_rules">prepend_rules</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_scripts" href="#gcip.core.job.Job.prepend_scripts">prepend_scripts</a></code></li>
+<li><code><a title="gcip.core.job.Job.rules" href="#gcip.core.job.Job.rules">rules</a></code></li>
+<li><code><a title="gcip.core.job.Job.scripts" href="#gcip.core.job.Job.scripts">scripts</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_cache" href="#gcip.core.job.Job.set_cache">set_cache</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_image" href="#gcip.core.job.Job.set_image">set_image</a></code></li>
 <li><code><a title="gcip.core.job.Job.stage" href="#gcip.core.job.Job.stage">stage</a></code></li>
+<li><code><a title="gcip.core.job.Job.tags" href="#gcip.core.job.Job.tags">tags</a></code></li>
+<li><code><a title="gcip.core.job.Job.variables" href="#gcip.core.job.Job.variables">variables</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1891,14 +2083,22 @@ keyword.</p></div>
 <li><code><a title="gcip.core.job.Job.add_variables" href="#gcip.core.job.Job.add_variables">add_variables</a></code></li>
 <li><code><a title="gcip.core.job.Job.append_rules" href="#gcip.core.job.Job.append_rules">append_rules</a></code></li>
 <li><code><a title="gcip.core.job.Job.append_scripts" href="#gcip.core.job.Job.append_scripts">append_scripts</a></code></li>
+<li><code><a title="gcip.core.job.Job.artifacts_paths" href="#gcip.core.job.Job.artifacts_paths">artifacts_paths</a></code></li>
+<li><code><a title="gcip.core.job.Job.cache" href="#gcip.core.job.Job.cache">cache</a></code></li>
 <li><code><a title="gcip.core.job.Job.copy" href="#gcip.core.job.Job.copy">copy</a></code></li>
+<li><code><a title="gcip.core.job.Job.image" href="#gcip.core.job.Job.image">image</a></code></li>
 <li><code><a title="gcip.core.job.Job.name" href="#gcip.core.job.Job.name">name</a></code></li>
+<li><code><a title="gcip.core.job.Job.needs" href="#gcip.core.job.Job.needs">needs</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_rules" href="#gcip.core.job.Job.prepend_rules">prepend_rules</a></code></li>
 <li><code><a title="gcip.core.job.Job.prepend_scripts" href="#gcip.core.job.Job.prepend_scripts">prepend_scripts</a></code></li>
 <li><code><a title="gcip.core.job.Job.render" href="#gcip.core.job.Job.render">render</a></code></li>
+<li><code><a title="gcip.core.job.Job.rules" href="#gcip.core.job.Job.rules">rules</a></code></li>
+<li><code><a title="gcip.core.job.Job.scripts" href="#gcip.core.job.Job.scripts">scripts</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_cache" href="#gcip.core.job.Job.set_cache">set_cache</a></code></li>
 <li><code><a title="gcip.core.job.Job.set_image" href="#gcip.core.job.Job.set_image">set_image</a></code></li>
 <li><code><a title="gcip.core.job.Job.stage" href="#gcip.core.job.Job.stage">stage</a></code></li>
+<li><code><a title="gcip.core.job.Job.tags" href="#gcip.core.job.Job.tags">tags</a></code></li>
+<li><code><a title="gcip.core.job.Job.variables" href="#gcip.core.job.Job.variables">variables</a></code></li>
 </ul>
 </li>
 <li>
