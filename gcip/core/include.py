@@ -95,7 +95,7 @@ class IncludeLocal(Include):
     """This module represents the Gitlab CI [include:local](https://docs.gitlab.com/ee/ci/yaml/#includelocal) keyword.
 
     Args:
-        local (str): The path to the file within this repository to include.
+        local (str): Relative path to the file within this repository to include.
     """
 
     def __init__(self, local: str) -> None:
