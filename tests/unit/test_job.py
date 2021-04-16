@@ -7,10 +7,11 @@ from gcip import (
     WhenStatement,
     PredefinedVariables,
 )
+from tests import conftest
 
 
-@pytest.fixture(scope="module")
-def rule():
+@pytest.fixture()
+def rule(gitlab_ci_environment_variables):
     rule = Rule(
         if_statement=f"{PredefinedVariables.CI_COMMIT_REF_NAME} == main",
         when=WhenStatement.ALWAYS,
@@ -19,9 +20,9 @@ def rule():
     return rule
 
 
-@pytest.fixture
-def job(rule):
-    job = Job(script="date", namespace="fixture_stage", name="job_name")
+@pytest.fixture()
+def job(rule, gitlab_ci_environment_variables):
+    job = Job(script="date", stage="fixture_stage", name="job_name")
     job.append_scripts(f'echo "You are running on branch: ${PredefinedVariables.CI_COMMIT_REF_NAME}"')
     job.set_image("busybox")
     job.set_cache(Cache(paths=["path/to/cache/"]))
@@ -33,8 +34,14 @@ def job(rule):
         ENV_VAR="Hello",
         CUSTOM="World",
     )
-    job.add_needs(Job(script=f"echo I am needed by {job.name}", namespace="needs", name="needs_job"))
+    # This add_needs() call will result in an empty list,
+    # this is because the Job() object is not added to a pipeline.
+    job.add_needs(Job(script=f"echo I am needed by {job.name}", stage="needs", name="needs_job"))
     return job
+
+
+def test_job_render(job):
+    conftest.check(job.render())
 
 
 def test_job_properties(job):
@@ -52,6 +59,6 @@ def test_job_properties(job):
 
 def test_job_exceptions():
     with pytest.raises(ValueError):
-        Job(script="Neither name nor namespace")
+        Job(script="Neither name nor stage")
     with pytest.raises(AttributeError):
         Job(script={"Wrong": "Attribute, Type"}, name="test_script_attribute_exception")  # type: ignore

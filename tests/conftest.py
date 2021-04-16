@@ -55,5 +55,6 @@ def gitlab_ci_environment_variables(monkeypatch):
     monkeypatch.setenv("CI_PROJECT_NAME", "gitlab-ci-project")
     monkeypatch.setenv("CI_PROJECT_PATH", "my/awsome/project")
     monkeypatch.setenv("CI_COMMIT_REF_SLUG", "my-awsome-feature-branch")
+    monkeypatch.setenv("CI_COMMIT_REF_NAME", "my_awsome_feature_branch")
     monkeypatch.setenv("CI_COMMIT_TAG", "11.22.33")
     monkeypatch.setenv("CI_PROJECT_DIR", "/path/to/project")
