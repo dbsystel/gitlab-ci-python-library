@@ -107,8 +107,8 @@ class IncludeFile(Include):
 
     Args:
         file (str): Relative path to the file to include.
-        project (str): The project to include the file from.
-        ref (Optional[str], optional): The branch of the project to include the file from. Defaults to None.
+        project (str): Project to include the file from.
+        ref (Optional[str], optional): Project branch to include the file from. Defaults to None.
     """
 
     def __init__(
@@ -129,7 +129,7 @@ class IncludeRemote(Include):
         remote (str): URL to include the file from.
 
     Raises:
-        ValueError: When the `remote` is not a valid URL.
+        ValueError: If `remote` is not a valid URL.
     """
 
     def __init__(self, remote: str) -> None:
@@ -140,10 +140,10 @@ class IncludeRemote(Include):
 
 
 class IncludeTemplate(Include):
-    """This module represents the Gitlab CI [include:template](https://docs.gitlab.com/ee/ci/yaml/#includetemplate) keyword.
+    """This class represents the Gitlab CI [include:template](https://docs.gitlab.com/ee/ci/yaml/#includetemplate) keyword.
 
     Args:
-        template (str): The Gitlab template pipeline to include.
+        template (str): Gitlab template pipeline to include.
     """
 
     def __init__(self, template: str):
@@ -155,9 +155,9 @@ class IncludeArtifact(Include):
     file from a previous job](https://docs.gitlab.com/ee/ci/yaml/README.html#trigger-child-pipeline-with-generated-configuration-file):
 
     Args:
-        job (str): The job name to include the artifact from.
-        artifact (str): The name of the job artifact to include.
+        job (str): Job name to include the artifact from.
+        artifact (str): Relative path to the artifact which is produced by `job`.
     """
 
-    def __init__(self, job: str, artifact: str):
+    def __init__(self, job: str, artifact: str) -> None:
         self._rendered_include = {"job": job, "artifact": artifact}
