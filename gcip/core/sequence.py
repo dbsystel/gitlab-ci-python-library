@@ -18,7 +18,7 @@ to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs,
 
 As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
 you should set `name` and/or `stage` when adding the job (or child sequence). The sequence will add
-the `name` / `stage` to the ones of the Job, when rendering the pipeline. If you do not set those
+the `name`/`stage` to the ones of the Job, when rendering the pipeline. If you do not set those
 identifiers, or you set equal name/stages for jobs and sequences, you provoke having two or more
 jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
 pipeline behavior. You can read more information in the chapter "Stages allow reuse of jobs
