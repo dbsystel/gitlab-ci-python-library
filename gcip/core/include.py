@@ -146,7 +146,7 @@ class IncludeTemplate(Include):
         template (str): Gitlab template pipeline to include.
     """
 
-    def __init__(self, template: str):
+    def __init__(self, template: str) -> None:
         self._rendered_include = {"template": template}
 
 
