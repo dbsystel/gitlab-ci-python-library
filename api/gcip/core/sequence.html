@@ -38,7 +38,7 @@ the <code>Pipeline</code> by that Sequence. Not adding that Sequence to a Pipeli
 to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs, they will be broken.</p>
 <p>As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
 you should set <code>name</code> and/or <code>stage</code> when adding the job (or child sequence). The sequence will add
-the <code>name</code> / <code>stage</code> to the ones of the Job, when rendering the pipeline. If you do not set those
+the <code>name</code>/<code>stage</code> to the ones of the Job, when rendering the pipeline. If you do not set those
 identifiers, or you set equal name/stages for jobs and sequences, you provoke having two or more
 jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
 pipeline behavior. You can read more information in the chapter "Stages allow reuse of jobs
@@ -67,7 +67,7 @@ to the Pipeline. If other parts of the Pipeline have dependencies to those Jobs,
 
 As said before, adding a Job to a Sequence creates copies of that Job. To void conflicts between Jobs,
 you should set `name` and/or `stage` when adding the job (or child sequence). The sequence will add
-the `name` / `stage` to the ones of the Job, when rendering the pipeline. If you do not set those
+the `name`/`stage` to the ones of the Job, when rendering the pipeline. If you do not set those
 identifiers, or you set equal name/stages for jobs and sequences, you provoke having two or more
 jobs having the same name in the pipeline. The gcip will raise a ValueError, to avoid unexpected
 pipeline behavior. You can read more information in the chapter &#34;Stages allow reuse of jobs
