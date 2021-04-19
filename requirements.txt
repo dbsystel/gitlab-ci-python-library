@@ -5,3 +5,4 @@ pytest
 pytest-cov
 mypy
 black
+boto3~=1.17
