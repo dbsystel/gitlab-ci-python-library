@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.7.0] - 2021-04-19
 ### Added
+
+* Added full API documentation of the `gcip.core.need` module.
+
+## [0.7.0] - 2021-04-19
+
+### Added
+
 * Added `gcip.addon.container.job.trivy.scan_local_image` to scan local container images of vulnerabilities.
 * Added set_config_file_path method to DockerClientConfig.
 * Return own instance on each method call for DockerClientConfig instances.
@@ -31,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added new gcip.addons.security.sops module and added sops_export_decrypted_values function to sops module.
 
 ### Changed
+
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
 * Line length check in flake8 linter to 160.
 * **BREAKING** Removed arguments from DockerClientConfig constructor to set config file path, use `set_config_file_path` of DockerClientConfig instance.
@@ -58,16 +65,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ```
 
 ### Removed
+
 * Removed `date` call from dive job.
 * Removed `gcip.core.pipeline.Pipeline.dump_yaml()` method. There is no need to print a pipeline to stdout. You should use `gcip.core.pipeline.Pipeline.write_yaml()` instead.
 * Removed `-v` flag from from `gcp.addons.python.jobs.pip_install_requirements()`
 
 ### Fixed
+
 * Several linter issues has been fixed
 * Fixed kaniko build in gitlabci-local.sh
 * Kankio job's tar_path behavior fixed. If you specified tar_path in `kaniko.execute()`, the `tar_path` was added to the same line as the executor. Now it gets added to a item bevor `execute`.
 * Fixed PredefinedImages entrypoints for GitLab CI runner.
 * Fixed crane image, `latest` image does not have `sh` available. Using `debug` tag.
+
 ## [0.6.1] - 2021-04-07
 
 ### Changed
