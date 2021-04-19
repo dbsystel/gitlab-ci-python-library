@@ -1,19 +1,8 @@
-import pytest
-
 from gcip import Pipeline
 from tests import conftest
 from gcip.core.image import Image
 from gcip.addons.container.jobs import crane
-from gcip.addons.container.config import DockerClientConfig
 from gcip.addons.container.registries import Registry
-
-
-@pytest.fixture()
-def docker_client_config() -> DockerClientConfig:
-    dcc = DockerClientConfig()
-    dcc.add_auth(registry="index.docker.io")
-    dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", cred_helper="ecr-login")
-    return dcc
 
 
 def test_simple_crane_copy_job(gitlab_ci_environment_variables):

@@ -6,6 +6,8 @@ from typing import Any, Dict
 import yaml
 import pytest
 
+from gcip.addons.container.config import DockerClientConfig
+
 
 def check(output: Dict[str, Any]) -> None:
     yaml_output = yaml.safe_dump(output, default_flow_style=False, sort_keys=False)
@@ -58,3 +60,11 @@ def gitlab_ci_environment_variables(monkeypatch):
     monkeypatch.setenv("CI_COMMIT_REF_NAME", "my_awsome_feature_branch")
     monkeypatch.setenv("CI_COMMIT_TAG", "11.22.33")
     monkeypatch.setenv("CI_PROJECT_DIR", "/path/to/project")
+
+
+@pytest.fixture()
+def docker_client_config() -> DockerClientConfig:
+    dcc = DockerClientConfig()
+    dcc.add_auth(registry="index.docker.io")
+    dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", cred_helper="ecr-login")
+    return dcc
