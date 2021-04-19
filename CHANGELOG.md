@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added full API documentation of the `gcip.core.need` module.
 * Added full API documentation of the `gcip.core.rule` module.
+* Added API documentation to the `gcip.core.service` module.
 
 ## [0.7.0] - 2021-04-19
 
