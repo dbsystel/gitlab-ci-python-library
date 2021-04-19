@@ -145,68 +145,6 @@ def push(
     if docker_client_config:
         job.prepend_scripts(*docker_client_config.get_shell_command())
 
-    return job
-
-
-def pull(
-    src_registry: Union[Registry, str],
-    *,
-    tar_path: Optional[str] = None,
-    image_name: Optional[str] = None,
-    image_tag: Optional[str] = None,
-    docker_client_config: Optional[DockerClientConfig] = None,
-    crane_image: Optional[Union[Image, str]] = None,
-) -&gt; Job:
-    &#34;&#34;&#34;
-    Creates a job to pull container image from remote container registry with `crane`.
-
-    Args:
-        src_registry (str): Registry URL to pull container image from.
-        image_name (str): Container image with namespace to pull from `src_registry`.
-        image_tag (str): Tag of the image which will be pulled.
-        tar_path (Optional[str], optional): Path where to save the container image tarball.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
-        docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
-            to authenticate against given registries. Defaults to a `DockerClientConfig` with login to the official Docker Hub
-            and expecting credentials given as environment variables `REGISTRY_USER` and `REGISTRY_LOGIN`.
-        crane_image (Optional[Union[Image, str]], optional): Container image which contains `crane` command.
-            Defaults to PredefindedImages.CRANE.
-
-    Returns:
-        Job: Returns a `gcip.Job`, with neccessary configuration to pull a container image from a remote registry and stores it in `tar_path`.
-            Job runs in ```stage=pull```
-    &#34;&#34;&#34;
-    if not crane_image:
-        crane_image = PredefinedImages.CRANE
-
-    if not tar_path:
-        tar_path = PredefinedVariables.CI_PROJECT_DIR
-
-    if not image_name:
-        image_name = PredefinedVariables.CI_PROJECT_NAME
-    image_path = image_name.replace(&#34;/&#34;, &#34;_&#34;)
-
-    if not docker_client_config:
-        docker_client_config = DockerClientConfig()
-        docker_client_config.add_auth(registry=Registry.DOCKER)
-
-    if not image_tag:
-        if PredefinedVariables.CI_COMMIT_TAG:
-            image_tag = PredefinedVariables.CI_COMMIT_TAG
-        else:
-            image_tag = PredefinedVariables.CI_COMMIT_REF_SLUG
-
-    job = Job(
-        script=[
-            f&#34;crane pull {src_registry}/{image_name}:{image_tag} {tar_path}/{image_path}.tar&#34;,
-        ],
-        stage=&#34;pull&#34;,
-    )
-    job.set_image(crane_image)
-
-    if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
-
     return job</code></pre>
 </details>
 </section>
@@ -281,102 +219,6 @@ Defaults to PredefindedImages.CRANE.</dd>
             f&#34;crane copy {src_registry} {dst_registry}&#34;,
         ],
         stage=&#34;push_container_image&#34;,
-    )
-    job.set_image(crane_image)
-
-    if docker_client_config:
-        job.prepend_scripts(*docker_client_config.get_shell_command())
-
-    return job</code></pre>
-</details>
-</dd>
-<dt id="gcip.addons.container.jobs.crane.pull"><code class="name flex">
-<span>def <span class="ident">pull</span></span>(<span>src_registry: Union[<a title="gcip.addons.container.registries.Registry" href="../registries.html#gcip.addons.container.registries.Registry">Registry</a>, str], *, tar_path: Optional[str] = None, image_name: Optional[str] = None, image_tag: Optional[str] = None, docker_client_config: Optional[<a title="gcip.addons.container.config.DockerClientConfig" href="../config.html#gcip.addons.container.config.DockerClientConfig">DockerClientConfig</a>] = None, crane_image: Union[<a title="gcip.core.image.Image" href="../../../core/image.html#gcip.core.image.Image">Image</a>, str, NoneType] = None) ‑> <a title="gcip.core.job.Job" href="../../../core/job.html#gcip.core.job.Job">Job</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a job to pull container image from remote container registry with <code>crane</code>.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>src_registry</code></strong> :&ensp;<code>str</code></dt>
-<dd>Registry URL to pull container image from.</dd>
-<dt><strong><code>image_name</code></strong> :&ensp;<code>str</code></dt>
-<dd>Container image with namespace to pull from <code>src_registry</code>.</dd>
-<dt><strong><code>image_tag</code></strong> :&ensp;<code>str</code></dt>
-<dd>Tag of the image which will be pulled.</dd>
-<dt><strong><code>tar_path</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
-<dd>Path where to save the container image tarball.
-If <code>None</code> it defaults internally to <code>PredefinedVariables.CI_PROJECT_DIR</code>. Defaults to None.</dd>
-<dt><strong><code>docker_client_config</code></strong> :&ensp;<code>Optional[DockerClientConfig]</code>, optional</dt>
-<dd>Creates the Docker configuration file base on objects settings,
-to authenticate against given registries. Defaults to a <code>DockerClientConfig</code> with login to the official Docker Hub
-and expecting credentials given as environment variables <code>REGISTRY_USER</code> and <code>REGISTRY_LOGIN</code>.</dd>
-<dt><strong><code>crane_image</code></strong> :&ensp;<code>Optional[Union[Image, str]]</code>, optional</dt>
-<dd>Container image which contains <code>crane</code> command.
-Defaults to PredefindedImages.CRANE.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Job</code></dt>
-<dd>Returns a <code>gcip.Job</code>, with neccessary configuration to pull a container image from a remote registry and stores it in <code>tar_path</code>.
-Job runs in <code>stage=pull</code></dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def pull(
-    src_registry: Union[Registry, str],
-    *,
-    tar_path: Optional[str] = None,
-    image_name: Optional[str] = None,
-    image_tag: Optional[str] = None,
-    docker_client_config: Optional[DockerClientConfig] = None,
-    crane_image: Optional[Union[Image, str]] = None,
-) -&gt; Job:
-    &#34;&#34;&#34;
-    Creates a job to pull container image from remote container registry with `crane`.
-
-    Args:
-        src_registry (str): Registry URL to pull container image from.
-        image_name (str): Container image with namespace to pull from `src_registry`.
-        image_tag (str): Tag of the image which will be pulled.
-        tar_path (Optional[str], optional): Path where to save the container image tarball.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
-        docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
-            to authenticate against given registries. Defaults to a `DockerClientConfig` with login to the official Docker Hub
-            and expecting credentials given as environment variables `REGISTRY_USER` and `REGISTRY_LOGIN`.
-        crane_image (Optional[Union[Image, str]], optional): Container image which contains `crane` command.
-            Defaults to PredefindedImages.CRANE.
-
-    Returns:
-        Job: Returns a `gcip.Job`, with neccessary configuration to pull a container image from a remote registry and stores it in `tar_path`.
-            Job runs in ```stage=pull```
-    &#34;&#34;&#34;
-    if not crane_image:
-        crane_image = PredefinedImages.CRANE
-
-    if not tar_path:
-        tar_path = PredefinedVariables.CI_PROJECT_DIR
-
-    if not image_name:
-        image_name = PredefinedVariables.CI_PROJECT_NAME
-    image_path = image_name.replace(&#34;/&#34;, &#34;_&#34;)
-
-    if not docker_client_config:
-        docker_client_config = DockerClientConfig()
-        docker_client_config.add_auth(registry=Registry.DOCKER)
-
-    if not image_tag:
-        if PredefinedVariables.CI_COMMIT_TAG:
-            image_tag = PredefinedVariables.CI_COMMIT_TAG
-        else:
-            image_tag = PredefinedVariables.CI_COMMIT_REF_SLUG
-
-    job = Job(
-        script=[
-            f&#34;crane pull {src_registry}/{image_name}:{image_tag} {tar_path}/{image_path}.tar&#34;,
-        ],
-        stage=&#34;pull&#34;,
     )
     job.set_image(crane_image)
 
@@ -512,7 +354,6 @@ Job runs in <code>stage=push</code></dd>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="gcip.addons.container.jobs.crane.copy" href="#gcip.addons.container.jobs.crane.copy">copy</a></code></li>
-<li><code><a title="gcip.addons.container.jobs.crane.pull" href="#gcip.addons.container.jobs.crane.pull">pull</a></code></li>
 <li><code><a title="gcip.addons.container.jobs.crane.push" href="#gcip.addons.container.jobs.crane.push">push</a></code></li>
 </ul>
 </li>
