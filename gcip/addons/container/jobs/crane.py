@@ -124,8 +124,8 @@ def pull(
     *,
     src_registry: Union[Registry, str],
     image_name: str,
+    image_tag: str = "latest",
     tar_path: Optional[str] = None,
-    image_tag: Optional[str] = None,
     docker_client_config: Optional[DockerClientConfig] = None,
     crane_image: Optional[Union[Image, str]] = None,
 ) -> Job:
@@ -135,9 +135,7 @@ def pull(
     Args:
         src_registry (str): Registry URL to pull container image from.
         image_name (str): Container image with namespace to pull from `src_registry`.
-            If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_NAME`.
-        image_tag (str): Tag of the image which will be pulled.  If `None` it defaults internally to `PredefinedVariables.CI_COMMIT_TAG`
-            or `PredefinedVariables.CI_COMMIT_REF_SLUG` in order.
+        image_tag (str): Tag of the image which will be pulled. Defaults to "latest".
         tar_path (Optional[str], optional): Path where to save the container image tarball.
             If `None` it defaults internally to `PredefinedVariables.CI_PROJECT_DIR`. Defaults to None.
         docker_client_config (Optional[DockerClientConfig], optional): Creates the Docker configuration file base on objects settings,
@@ -161,12 +159,6 @@ def pull(
     if not docker_client_config:
         docker_client_config = DockerClientConfig()
         docker_client_config.add_auth(registry=Registry.DOCKER)
-
-    if not image_tag:
-        if PredefinedVariables.CI_COMMIT_TAG:
-            image_tag = PredefinedVariables.CI_COMMIT_TAG
-        else:
-            image_tag = PredefinedVariables.CI_COMMIT_REF_SLUG
 
     job = Job(
         script=[

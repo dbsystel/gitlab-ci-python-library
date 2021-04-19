@@ -83,14 +83,12 @@ def test_addons_container_jobs_crane_push_registry(gitlab_ci_environment_variabl
 
 def test_crane_simple_pull(gitlab_ci_environment_variables):
     pipeline = Pipeline()
-    pipeline.add_children(crane.pull(Registry.GCR))
-    conftest.check(pipeline.render())
-
-
-def test_crane_simple_pull_with_ref(monkeypatch, gitlab_ci_environment_variables):
-    monkeypatch.delenv("CI_COMMIT_TAG")
-    pipeline = Pipeline()
-    pipeline.add_children(crane.pull(Registry.GCR))
+    pipeline.add_children(
+        crane.pull(
+            src_registry=Registry.GCR,
+            image_name="awsome/image",
+        )
+    )
     conftest.check(pipeline.render())
 
 
@@ -98,7 +96,7 @@ def test_crane_advanced_pull(gitlab_ci_environment_variables, docker_client_conf
     pipeline = Pipeline()
     pipeline.add_children(
         crane.pull(
-            Registry.GCR,
+            src_registry=Registry.GCR,
             docker_client_config=docker_client_config,
             image_name="thomass/gcip",
             image_tag="main",
