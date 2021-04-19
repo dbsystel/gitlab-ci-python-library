@@ -1,9 +1,19 @@
+import pytest
+
 from gcip import Pipeline
 from tests import conftest
 from gcip.core.image import Image
 from gcip.addons.container.jobs import crane
 from gcip.addons.container.config import DockerClientConfig
 from gcip.addons.container.registries import Registry
+
+
+@pytest.fixture()
+def docker_client_config() -> DockerClientConfig:
+    dcc = DockerClientConfig()
+    dcc.add_auth(registry="index.docker.io")
+    dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", cred_helper="ecr-login")
+    return dcc
 
 
 def test_simple_crane_copy_job(gitlab_ci_environment_variables):
@@ -24,17 +34,13 @@ def test_simple_crane_copy_job(gitlab_ci_environment_variables):
     conftest.check(pipeline.render())
 
 
-def test_advanced_crane_copy_job(gitlab_ci_environment_variables):
-    dcc = DockerClientConfig()
-    dcc.add_auth(registry="index.docker.io")
-    dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", "ecr-login")
-
+def test_advanced_crane_copy_job(gitlab_ci_environment_variables, docker_client_config):
     pipeline = Pipeline()
     pipeline.add_children(
         crane.copy(
             "index.docker.io/alpine:3",
             "0132456789.dkr.eu-central-1.amazonaws.com/namespace/alpine:3",
-            docker_client_config=dcc,
+            docker_client_config=docker_client_config,
         ),
         name="with_authentication",
     )
@@ -47,16 +53,13 @@ def test_simple_crane_push_job(gitlab_ci_environment_variables):
     conftest.check(pipeline.render())
 
 
-def test_advanced_crane_push_job(gitlab_ci_environment_variables):
-    dcc = DockerClientConfig()
-    dcc.add_auth(registry="index.docker.io")
-    dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", cred_helper="ecr-login")
+def test_advanced_crane_push_job(gitlab_ci_environment_variables, docker_client_config):
     pipeline = Pipeline()
     pipeline.add_children(
         crane.push(
             dst_registry="index.docker.io",
             image_name="crane",
-            docker_client_config=dcc,
+            docker_client_config=docker_client_config,
             crane_image="crane_image:v1.1.2",
         ),
         name="push_image",
@@ -64,18 +67,42 @@ def test_advanced_crane_push_job(gitlab_ci_environment_variables):
     conftest.check(pipeline.render())
 
 
-def test_addons_container_jobs_crane_push_registry(gitlab_ci_environment_variables):
-    dcc = DockerClientConfig()
-    dcc.add_auth(registry=Registry.DOCKER)
-    dcc.add_cred_helper("0132456789.dkr.eu-central-1.amazonaws.com", cred_helper="ecr-login")
+def test_addons_container_jobs_crane_push_registry(gitlab_ci_environment_variables, docker_client_config):
     pipeline = Pipeline()
     pipeline.add_children(
         crane.push(
             dst_registry=Registry.DOCKER,
             image_name="crane",
-            docker_client_config=dcc,
+            docker_client_config=docker_client_config,
             crane_image="crane_image:v1.1.2",
         ),
         name="push_image",
+    )
+    conftest.check(pipeline.render())
+
+
+def test_crane_simple_pull(gitlab_ci_environment_variables):
+    pipeline = Pipeline()
+    pipeline.add_children(crane.pull(Registry.GCR))
+    conftest.check(pipeline.render())
+
+
+def test_crane_simple_pull_with_ref(monkeypatch, gitlab_ci_environment_variables):
+    monkeypatch.delenv("CI_COMMIT_TAG")
+    pipeline = Pipeline()
+    pipeline.add_children(crane.pull(Registry.GCR))
+    conftest.check(pipeline.render())
+
+
+def test_crane_advanced_pull(gitlab_ci_environment_variables, docker_client_config):
+    pipeline = Pipeline()
+    pipeline.add_children(
+        crane.pull(
+            Registry.GCR,
+            docker_client_config=docker_client_config,
+            image_name="thomass/gcip",
+            image_tag="main",
+            tar_path="test/foo/bar",
+        )
     )
     conftest.check(pipeline.render())
