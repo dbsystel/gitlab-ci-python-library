@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>gcip.addons API documentation</title>
+<title>gcip.addons.security.sops API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,54 +19,81 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>gcip.addons</code></h1>
+<h1 class="title">Module <code>gcip.addons.security.sops</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">__author__ = &#34;Thomas Steinbach&#34;
+<pre><code class="python">__author__ = &#34;Daniel von Eßen&#34;
 __copyright__ = &#34;Copyright 2020 DB Systel GmbH&#34;
-__credits__ = [&#34;Thomas Steinbach&#34;]
+__credits__ = [&#34;Daniel von Eßen&#34;, &#34;Thomas Steinbach&#34;]
 # SPDX-License-Identifier: Apache-2.0
 __license__ = &#34;Apache-2.0&#34;
 __maintainer__ = &#34;Thomas Steinbach&#34;
-__email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;</code></pre>
+__email__ = &#34;daniel.von-essen@deutschebahn.com&#34;
+
+
+def sops_export_decrypted_values(path: str) -&gt; str:
+    &#34;&#34;&#34;Returns a helper string to embedd it into jobs to allow exporting
+    Values which are decrypted by `sops`. e.g. &#39;export $(sops -d sops/encrypted_file.env)&#39;
+
+    This function is usefull, if you want to use environment variables to login to e.g. a container registry.
+
+    Args:
+        path (str): Path to `sops` encrypted file, must be relative to project directory.
+
+    Returns:
+        str: Export string of sops decrypted file.
+    &#34;&#34;&#34;
+    return f&#34;set -eo pipefail; SOPS_OUTPUT=$(sops -d {path}); export $SOPS_OUTPUT&#34;</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="gcip.addons.aws" href="aws/index.html">gcip.addons.aws</a></code></dt>
+<dt id="gcip.addons.security.sops.sops_export_decrypted_values"><code class="name flex">
+<span>def <span class="ident">sops_export_decrypted_values</span></span>(<span>path: str) ‑> str</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="gcip.addons.cdk" href="cdk/index.html">gcip.addons.cdk</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="gcip.addons.container" href="container/index.html">gcip.addons.container</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="gcip.addons.gitlab" href="gitlab/index.html">gcip.addons.gitlab</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="gcip.addons.python" href="python/index.html">gcip.addons.python</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="gcip.addons.security" href="security/index.html">gcip.addons.security</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns a helper string to embedd it into jobs to allow exporting
+Values which are decrypted by <code>sops</code>. e.g. 'export $(sops -d sops/encrypted_file.env)'</p>
+<p>This function is usefull, if you want to use environment variables to login to e.g. a container registry.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to <code>sops</code> encrypted file, must be relative to project directory.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Export string of sops decrypted file.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sops_export_decrypted_values(path: str) -&gt; str:
+    &#34;&#34;&#34;Returns a helper string to embedd it into jobs to allow exporting
+    Values which are decrypted by `sops`. e.g. &#39;export $(sops -d sops/encrypted_file.env)&#39;
+
+    This function is usefull, if you want to use environment variables to login to e.g. a container registry.
+
+    Args:
+        path (str): Path to `sops` encrypted file, must be relative to project directory.
+
+    Returns:
+        str: Export string of sops decrypted file.
+    &#34;&#34;&#34;
+    return f&#34;set -eo pipefail; SOPS_OUTPUT=$(sops -d {path}); export $SOPS_OUTPUT&#34;</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -79,17 +106,12 @@ __email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;</code></pre>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="gcip" href="../index.html">gcip</a></code></li>
+<li><code><a title="gcip.addons.security" href="index.html">gcip.addons.security</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
-<ul>
-<li><code><a title="gcip.addons.aws" href="aws/index.html">gcip.addons.aws</a></code></li>
-<li><code><a title="gcip.addons.cdk" href="cdk/index.html">gcip.addons.cdk</a></code></li>
-<li><code><a title="gcip.addons.container" href="container/index.html">gcip.addons.container</a></code></li>
-<li><code><a title="gcip.addons.gitlab" href="gitlab/index.html">gcip.addons.gitlab</a></code></li>
-<li><code><a title="gcip.addons.python" href="python/index.html">gcip.addons.python</a></code></li>
-<li><code><a title="gcip.addons.security" href="security/index.html">gcip.addons.security</a></code></li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="gcip.addons.security.sops.sops_export_decrypted_values" href="#gcip.addons.security.sops.sops_export_decrypted_values">sops_export_decrypted_values</a></code></li>
 </ul>
 </li>
 </ul>
