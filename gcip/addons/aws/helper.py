@@ -2,8 +2,7 @@ import os
 
 import boto3
 
-session = boto3.Session()
-sts = session.client("sts")
+sts = boto3.Session().client("sts")
 
 
 def aws_account_id() -> str:
@@ -20,8 +19,7 @@ def aws_account_id() -> str:
     if os.environ.get("AWS_ACCOUNT_ID"):
         return os.environ["AWS_ACCOUNT_ID"]
 
-    sts_response = sts.get_caller_identity()
-    return sts_response["Account"]
+    return sts.get_caller_identity()["Account"]
 
 
 def aws_region() -> str:

@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added documentation to the `gcip.core.variables` module.
 * Added @properties to all public Job attributes.
 * New addons: *aws* to allow receiving AWS account id and region.
+* New `gcip.addons.container.registries.Registry.AWS()` allows getting an ECR URL to be used in pipeline.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
