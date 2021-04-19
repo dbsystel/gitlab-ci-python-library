@@ -1,6 +1,6 @@
 import os
 
-import boto3
+import boto3  # type: ignore
 
 sts = boto3.Session().client("sts")
 
@@ -19,7 +19,7 @@ def aws_account_id() -> str:
     if os.environ.get("AWS_ACCOUNT_ID"):
         return os.environ["AWS_ACCOUNT_ID"]
 
-    return sts.get_caller_identity()["Account"]
+    return str(sts.get_caller_identity()["Account"])
 
 
 def aws_region() -> str:
@@ -39,7 +39,7 @@ def aws_region() -> str:
     if os.environ.get("AWS_DEFAULT_REGION"):
         return os.environ["AWS_DEFAULT_REGION"]
     elif sts.meta.region_name:
-        return sts.meta.region_name
+        return str(sts.meta.region_name)
 
     raise ValueError(
         "No resolution to AWS region, neither from API call nor from environment Variable. "
