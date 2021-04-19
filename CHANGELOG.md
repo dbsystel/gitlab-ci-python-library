@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New addons: *aws* to allow receiving AWS account id and region.
 * New `gcip.addons.container.registries.Registry.AWS()` allows getting an ECR URL to be used in pipeline.
 * Added `crane.pull()` function to `gcip.addons.container.crane`.
+* Added new gcip.addons.security.sops module and added sops_export_decrypted_values function to sops module.
 
 ### Changed
 * Normalize config_file_path in `gcip.addons.container.config.DockerClientConfig`
