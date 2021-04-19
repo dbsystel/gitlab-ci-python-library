@@ -121,10 +121,10 @@ def push(
 
 
 def pull(
-    src_registry: Union[Registry, str],
     *,
+    src_registry: Union[Registry, str],
+    image_name: str,
     tar_path: Optional[str] = None,
-    image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
     docker_client_config: Optional[DockerClientConfig] = None,
     crane_image: Optional[Union[Image, str]] = None,
@@ -156,8 +156,6 @@ def pull(
     if not tar_path:
         tar_path = PredefinedVariables.CI_PROJECT_DIR
 
-    if not image_name:
-        image_name = PredefinedVariables.CI_PROJECT_NAME
     image_path = image_name.replace("/", "_")
 
     if not docker_client_config:
