@@ -24,7 +24,7 @@ In this example `my_next_job` and `my_next_sequence` start as soon as
 
 That also mean that stages are ignored, as the `example` stage for example.
 
-However you have to use the `Need` directly class when depending on other pipelines jobs or for further configuration of the need,
+However you have to use the `Need` class directly when depending on other pipelines jobs or for further configuration of the need,
 like not [downloading artifacts](https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs) from preceding jobs:
 
 ```
