@@ -40,7 +40,7 @@ class WhenStatement(Enum):
 class Rule:
     """This module represents the Gitlab CI [rules](https://docs.gitlab.com/ee/ci/yaml/#rules) keyword.
 
-    [extended_summary]
+    Use `rules` to include or exclude jobs in pipelines.
 
     Args:
         if_statement (Optional[str], optional): The [rules:if clause](https://docs.gitlab.com/ee/ci/yaml/#when) which decides when
