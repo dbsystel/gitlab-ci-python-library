@@ -27,7 +27,7 @@ __email__ = "thomas.t.steinbach@deutschebahn.com"
 
 
 class WhenStatement(Enum):
-    """This enum holds diferent [when](https://docs.gitlab.com/ee/ci/yaml/#when) statements for `Rule`s."""
+    """This enum holds different [when](https://docs.gitlab.com/ee/ci/yaml/#when) statements for `Rule`s."""
 
     ALWAYS = "always"
     DELAYED = "delayed"
