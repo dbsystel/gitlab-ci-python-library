@@ -42,7 +42,7 @@ my_next_sequence.add_needs(my_job, my_sequence)
 <li>all jobs within the last stage of <code>my_sequence</code> have finished</li>
 </ul>
 <p>That also mean that stages are ignored, as the <code>example</code> stage for example.</p>
-<p>However you have to use the <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code> directly class when depending on other pipelines jobs or for further configuration of the need,
+<p>However you have to use the <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code> class directly when depending on other pipelines jobs or for further configuration of the need,
 like not <a href="https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs">downloading artifacts</a> from preceding jobs:</p>
 <pre><code>my_job.add_needs(
     Need(&quot;awesome-job&quot;, project=&quot;master-pipeline&quot;),
@@ -79,7 +79,7 @@ In this example `my_next_job` and `my_next_sequence` start as soon as
 
 That also mean that stages are ignored, as the `example` stage for example.
 
-However you have to use the `Need` directly class when depending on other pipelines jobs or for further configuration of the need,
+However you have to use the `Need` class directly when depending on other pipelines jobs or for further configuration of the need,
 like not [downloading artifacts](https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs) from preceding jobs:
 
 ```
