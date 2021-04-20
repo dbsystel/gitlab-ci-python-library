@@ -11,7 +11,7 @@ class Service:
     """**ALPHA** This class represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword.
 
     Currently there is nothing more implemented than providing a service name. In general the `service` functionality
-    currently isn't well implemented, as is is only available for `gcip.core.pipeline.Pipeline`s.
+    currently isn't well implemented, as it is only available for `gcip.core.pipeline.Pipeline`s.
     """
 
     def __init__(self, name: str):
