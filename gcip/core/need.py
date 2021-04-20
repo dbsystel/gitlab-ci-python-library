@@ -3,8 +3,8 @@
 Needs are to create relationships between `gcip.core.job.Job`s and `gcip.core.sequence.Sequence`s, which will
 then be executed as early as all preceding required jobs finished. This relationship ignores the common ordering by stages.
 
-The `Need` class is mostly for internal use, as you can link `gcip.core.job.Job`s as well as `gcip.core.sequence.Sequence`s
-directly together:
+You do not have to use the `Need` class, when simply linking`gcip.core.job.Job`s as well as `gcip.core.sequence.Sequence`s 
+together. When putting jobs and sequences into the `add_needs()` methods, they were translated into `Need`s internally:
 
 ```
 my_job = Job(stage="example", script="do-something.sh")
@@ -24,8 +24,8 @@ In this example `my_next_job` and `my_next_sequence` start as soon as
 
 That also mean that stages are ignored, as the `example` stage for example.
 
-However you can use the `Need` class directly when depending on other pipelines jobs or you don't want to [download
-artifacts](https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs) from preceding jobs:
+However you have to use the `Need` directly class when depending on other pipelines jobs or for further configuration of the need,
+like not [downloading artifacts](https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs) from preceding jobs:
 
 ```
 my_job.add_needs(
