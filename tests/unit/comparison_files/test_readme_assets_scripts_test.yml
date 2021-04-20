@@ -1,6 +1,0 @@
-stages:
-- print_date
-print-date:
-  stage: print_date
-  script:
-  - git clone --branch main --single-branch https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/path/to/group.git

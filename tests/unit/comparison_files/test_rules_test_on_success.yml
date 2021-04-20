@@ -1,9 +1,0 @@
-stages:
-- testjob
-testjob:
-  stage: testjob
-  script:
-  - foo
-  rules:
-  - when: on_success
-    allow_failure: false

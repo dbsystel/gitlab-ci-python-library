@@ -1,9 +1,0 @@
-stages:
-- testjob
-testjob:
-  stage: testjob
-  script:
-  - foobar
-  variables:
-    variable1: foo
-    variable2: bar
