@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
 <title>gcip.core.service API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="**ALPHA** This module represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,17 +22,42 @@
 <h1 class="title">Module <code>gcip.core.service</code></h1>
 </header>
 <section id="section-intro">
+<p><strong>ALPHA</strong> This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#services">Service</a> keyword.</p>
+<p>The services keyword defines a Docker image that runs during a job linked to the Docker image that the image keyword defines.
+This allows you to access the service image during build time.</p>
+<p>Currently this module is an unfinished prototype.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Service:
-    &#34;&#34;&#34;This class represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword.&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;**ALPHA** This module represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword.
+
+The services keyword defines a Docker image that runs during a job linked to the Docker image that the image keyword defines.
+This allows you to access the service image during build time.
+
+Currently this module is an unfinished prototype.
+&#34;&#34;&#34;
+
+
+class Service:
+    &#34;&#34;&#34;**ALPHA** This class represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword.
+
+    Currently there is nothing more implemented than providing a service name. In general the `service` functionality
+    currently isn&#39;t well implemented, as it is only available for `gcip.core.pipeline.Pipeline`s.
+    &#34;&#34;&#34;
 
     def __init__(self, name: str):
         self._name = name
 
     def render(self) -&gt; str:
+        &#34;&#34;&#34;Return a representation of this Service object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, Any]: A dictionary representing the service object in Gitlab CI.
+        &#34;&#34;&#34;
         return self._name</code></pre>
 </details>
 </section>
@@ -50,18 +75,32 @@
 <span>(</span><span>name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This class represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#services">Service</a> keyword.</p></div>
+<div class="desc"><p><strong>ALPHA</strong> This class represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#services">Service</a> keyword.</p>
+<p>Currently there is nothing more implemented than providing a service name. In general the <code>service</code> functionality
+currently isn't well implemented, as it is only available for <code><a title="gcip.core.pipeline.Pipeline" href="pipeline.html#gcip.core.pipeline.Pipeline">Pipeline</a></code>s.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Service:
-    &#34;&#34;&#34;This class represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword.&#34;&#34;&#34;
+    &#34;&#34;&#34;**ALPHA** This class represents the Gitlab CI [Service](https://docs.gitlab.com/ee/ci/yaml/README.html#services) keyword.
+
+    Currently there is nothing more implemented than providing a service name. In general the `service` functionality
+    currently isn&#39;t well implemented, as it is only available for `gcip.core.pipeline.Pipeline`s.
+    &#34;&#34;&#34;
 
     def __init__(self, name: str):
         self._name = name
 
     def render(self) -&gt; str:
+        &#34;&#34;&#34;Return a representation of this Service object as dictionary with static values.
+
+        The rendered representation is used by the gcip to dump it
+        in YAML format as part of the .gitlab-ci.yml pipeline.
+
+        Returns:
+            Dict[str, Any]: A dictionary representing the service object in Gitlab CI.
+        &#34;&#34;&#34;
         return self._name</code></pre>
 </details>
 <h3>Methods</h3>
@@ -70,12 +109,27 @@
 <span>def <span class="ident">render</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return a representation of this Service object as dictionary with static values.</p>
+<p>The rendered representation is used by the gcip to dump it
+in YAML format as part of the .gitlab-ci.yml pipeline.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Dict[str, Any]</code></dt>
+<dd>A dictionary representing the service object in Gitlab CI.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; str:
+    &#34;&#34;&#34;Return a representation of this Service object as dictionary with static values.
+
+    The rendered representation is used by the gcip to dump it
+    in YAML format as part of the .gitlab-ci.yml pipeline.
+
+    Returns:
+        Dict[str, Any]: A dictionary representing the service object in Gitlab CI.
+    &#34;&#34;&#34;
     return self._name</code></pre>
 </details>
 </dd>
