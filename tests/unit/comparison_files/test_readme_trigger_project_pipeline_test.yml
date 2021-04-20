@@ -1,8 +1,0 @@
-stages:
-- trigger_banana
-trigger-banana:
-  trigger:
-    project: myteam/banana
-    branch: test
-    strategy: depend
-  stage: trigger_banana

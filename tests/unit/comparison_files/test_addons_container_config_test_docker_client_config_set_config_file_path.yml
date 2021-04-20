@@ -1,3 +1,0 @@
-shell_command:
-- mkdir -p /kaniko/.docker
-- echo "{}" > /kaniko/.docker/other.json

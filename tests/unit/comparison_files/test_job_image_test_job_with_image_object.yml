@@ -1,8 +1,0 @@
-stages:
-- testjob
-testjob:
-  image:
-    name: awsome/image:123
-  stage: testjob
-  script:
-  - foobar

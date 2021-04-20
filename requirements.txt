@@ -1,9 +1,0 @@
--e .
-isort
-flake8
-pytest
-pytest-cov
-pytest-mock
-mypy
-black
-boto3~=1.17
