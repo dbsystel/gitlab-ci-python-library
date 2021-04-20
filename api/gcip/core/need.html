@@ -25,8 +25,8 @@
 <p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#needs">needs</a> keyword.</p>
 <p>Needs are to create relationships between <code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code>s and <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>s, which will
 then be executed as early as all preceding required jobs finished. This relationship ignores the common ordering by stages.</p>
-<p>The <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code> class is mostly for internal use, as you can link <code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code>s as well as <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>s
-directly together:</p>
+<p>You do not have to use the <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code> class, when simply linking<code><a title="gcip.core.job.Job" href="job.html#gcip.core.job.Job">Job</a></code>s as well as <code><a title="gcip.core.sequence.Sequence" href="sequence.html#gcip.core.sequence.Sequence">Sequence</a></code>s
+together. When putting jobs and sequences into the <code>add_needs()</code> methods, they were translated into <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code>s internally:</p>
 <pre><code>my_job = Job(stage=&quot;example&quot;, script=&quot;do-something.sh&quot;)
 my_sequence = Sequence()
 ...
@@ -42,8 +42,8 @@ my_next_sequence.add_needs(my_job, my_sequence)
 <li>all jobs within the last stage of <code>my_sequence</code> have finished</li>
 </ul>
 <p>That also mean that stages are ignored, as the <code>example</code> stage for example.</p>
-<p>However you can use the <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code> class directly when depending on other pipelines jobs or you don't want to <a href="https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs">download
-artifacts</a> from preceding jobs:</p>
+<p>However you have to use the <code><a title="gcip.core.need.Need" href="#gcip.core.need.Need">Need</a></code> directly class when depending on other pipelines jobs or for further configuration of the need,
+like not <a href="https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs">downloading artifacts</a> from preceding jobs:</p>
 <pre><code>my_job.add_needs(
     Need(&quot;awesome-job&quot;, project=&quot;master-pipeline&quot;),
     Need(my_job, artifacts=False),
@@ -58,8 +58,8 @@ artifacts</a> from preceding jobs:</p>
 Needs are to create relationships between `gcip.core.job.Job`s and `gcip.core.sequence.Sequence`s, which will
 then be executed as early as all preceding required jobs finished. This relationship ignores the common ordering by stages.
 
-The `Need` class is mostly for internal use, as you can link `gcip.core.job.Job`s as well as `gcip.core.sequence.Sequence`s
-directly together:
+You do not have to use the `Need` class, when simply linking`gcip.core.job.Job`s as well as `gcip.core.sequence.Sequence`s 
+together. When putting jobs and sequences into the `add_needs()` methods, they were translated into `Need`s internally:
 
 ```
 my_job = Job(stage=&#34;example&#34;, script=&#34;do-something.sh&#34;)
@@ -79,8 +79,8 @@ In this example `my_next_job` and `my_next_sequence` start as soon as
 
 That also mean that stages are ignored, as the `example` stage for example.
 
-However you can use the `Need` class directly when depending on other pipelines jobs or you don&#39;t want to [download
-artifacts](https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs) from preceding jobs:
+However you have to use the `Need` directly class when depending on other pipelines jobs or for further configuration of the need,
+like not [downloading artifacts](https://docs.gitlab.com/ee/ci/yaml/#artifact-downloads-with-needs) from preceding jobs:
 
 ```
 my_job.add_needs(

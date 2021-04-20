@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
 <title>gcip.core.rule API documentation</title>
-<meta name="description" content="This module represents the Gitlab CI [rules](https://docs.gitlab.com/ee/ci/yaml/#rules) keyword …" />
+<meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,35 +22,11 @@
 <h1 class="title">Module <code>gcip.core.rule</code></h1>
 </header>
 <section id="section-intro">
-<p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#rules">rules</a> keyword.</p>
-<p>Use rules to include or exclude jobs in pipelines.</p>
-<pre><code>my_job.prepend_rules(
-    Rule(
-        if_statement='$CI_COMMIT_BRANCH == &quot;master&quot;',
-        when=WhenStatement.ON_FAILURE,
-        allow_failure: True,
-        )
-    )
-</code></pre>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;This module represents the Gitlab CI [rules](https://docs.gitlab.com/ee/ci/yaml/#rules) keyword.
-
-Use rules to include or exclude jobs in pipelines.
-
-```
-my_job.prepend_rules(
-    Rule(
-        if_statement=&#39;$CI_COMMIT_BRANCH == &#34;master&#34;&#39;,
-        when=WhenStatement.ON_FAILURE,
-        allow_failure: True,
-        )
-    )
-```
-&#34;&#34;&#34;
-from __future__ import annotations
+<pre><code class="python">from __future__ import annotations
 
 from enum import Enum
 from typing import Any, Dict, Union, Optional
@@ -65,8 +41,6 @@ __email__ = &#34;thomas.t.steinbach@deutschebahn.com&#34;
 
 
 class WhenStatement(Enum):
-    &#34;&#34;&#34;This enum holds diferent [when](https://docs.gitlab.com/ee/ci/yaml/#when) statements for `Rule`s.&#34;&#34;&#34;
-
     ALWAYS = &#34;always&#34;
     DELAYED = &#34;delayed&#34;
     MANUAL = &#34;manual&#34;
@@ -76,19 +50,6 @@ class WhenStatement(Enum):
 
 
 class Rule:
-    &#34;&#34;&#34;This module represents the Gitlab CI [rules](https://docs.gitlab.com/ee/ci/yaml/#rules) keyword.
-
-    [extended_summary]
-
-    Args:
-        if_statement (Optional[str], optional): The [rules:if clause](https://docs.gitlab.com/ee/ci/yaml/#when) which decides when
-            a job to the pipeline. Defaults to None.
-        when (WhenStatement, optional): The [when](https://docs.gitlab.com/ee/ci/yaml/#when) attribute which decides when to run a job.
-            Defaults to WhenStatement.ON_SUCCESS.
-        allow_failure (bool, optional): The [allow_failure](https://docs.gitlab.com/ee/ci/yaml/#allow_failure) attribute which let a
-            job fail without impacting the rest of the CI suite. Defaults to False.
-    &#34;&#34;&#34;
-
     def __init__(
         self,
         *args: Any,
@@ -101,47 +62,10 @@ class Rule:
         self._allow_failure = allow_failure
 
     def never(self) -&gt; Rule:
-        &#34;&#34;&#34;
-        This method returns a copy of this rule with the `when` attribute set to `WhenStatement.NEVER`.
-
-        This method is intended to be used for predefined rules. For instance you have defined an
-        often used rule `on_master` whose if statement checks if the pipeline is executed on branch
-        `master`. Then you can either run a job, if on master...
-
-        ```
-        my_job.append_rules(on_master)
-        ```
-
-        ... or do not run a job if on master...
-
-        ```
-        my_job.append_rules(on_master.never())
-        ```
-
-        Returns:
-            Rule: A new rule object with `when` set to `WhenStatement.NEVER`.
-        &#34;&#34;&#34;
         self._when = WhenStatement.NEVER
         return self
 
-    def copy(self) -&gt; Rule:
-        &#34;&#34;&#34;
-        Returns an identical copy of that rule.
-
-        Returns:
-            Rule: A new rule object with identical configuration.
-        &#34;&#34;&#34;
-        return Rule(self._if, self._when, self._allow_failure)
-
     def render(self) -&gt; Dict[str, Union[str, bool]]:
-        &#34;&#34;&#34;Return a representation of this Rule object as dictionary with static values.
-
-        The rendered representation is used by the gcip to dump it
-        in YAML format as part of the .gitlab-ci.yml pipeline.
-
-        Returns:
-            Dict[str, Any]: A dictionary representing the rule object in Gitlab CI.
-        &#34;&#34;&#34;
         rendered_rule: Dict[str, Union[str, bool]] = {}
         if self._if:
             rendered_rule.update({&#34;if&#34;: self._if})
@@ -169,38 +93,12 @@ class Rule:
 <span>(</span><span>*args: Any, if_statement: Optional[str] = None, when: <a title="gcip.core.rule.WhenStatement" href="#gcip.core.rule.WhenStatement">WhenStatement</a> = WhenStatement.ON_SUCCESS, allow_failure: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This module represents the Gitlab CI <a href="https://docs.gitlab.com/ee/ci/yaml/#rules">rules</a> keyword.</p>
-<p>[extended_summary]</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>if_statement</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
-<dd>The <a href="https://docs.gitlab.com/ee/ci/yaml/#when">rules:if clause</a> which decides when
-a job to the pipeline. Defaults to None.</dd>
-<dt><strong><code>when</code></strong> :&ensp;<code><a title="gcip.core.rule.WhenStatement" href="#gcip.core.rule.WhenStatement">WhenStatement</a></code>, optional</dt>
-<dd>The <a href="https://docs.gitlab.com/ee/ci/yaml/#when">when</a> attribute which decides when to run a job.
-Defaults to WhenStatement.ON_SUCCESS.</dd>
-<dt><strong><code>allow_failure</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>The <a href="https://docs.gitlab.com/ee/ci/yaml/#allow_failure">allow_failure</a> attribute which let a
-job fail without impacting the rest of the CI suite. Defaults to False.</dd>
-</dl></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Rule:
-    &#34;&#34;&#34;This module represents the Gitlab CI [rules](https://docs.gitlab.com/ee/ci/yaml/#rules) keyword.
-
-    [extended_summary]
-
-    Args:
-        if_statement (Optional[str], optional): The [rules:if clause](https://docs.gitlab.com/ee/ci/yaml/#when) which decides when
-            a job to the pipeline. Defaults to None.
-        when (WhenStatement, optional): The [when](https://docs.gitlab.com/ee/ci/yaml/#when) attribute which decides when to run a job.
-            Defaults to WhenStatement.ON_SUCCESS.
-        allow_failure (bool, optional): The [allow_failure](https://docs.gitlab.com/ee/ci/yaml/#allow_failure) attribute which let a
-            job fail without impacting the rest of the CI suite. Defaults to False.
-    &#34;&#34;&#34;
-
     def __init__(
         self,
         *args: Any,
@@ -213,47 +111,10 @@ job fail without impacting the rest of the CI suite. Defaults to False.</dd>
         self._allow_failure = allow_failure
 
     def never(self) -&gt; Rule:
-        &#34;&#34;&#34;
-        This method returns a copy of this rule with the `when` attribute set to `WhenStatement.NEVER`.
-
-        This method is intended to be used for predefined rules. For instance you have defined an
-        often used rule `on_master` whose if statement checks if the pipeline is executed on branch
-        `master`. Then you can either run a job, if on master...
-
-        ```
-        my_job.append_rules(on_master)
-        ```
-
-        ... or do not run a job if on master...
-
-        ```
-        my_job.append_rules(on_master.never())
-        ```
-
-        Returns:
-            Rule: A new rule object with `when` set to `WhenStatement.NEVER`.
-        &#34;&#34;&#34;
         self._when = WhenStatement.NEVER
         return self
 
-    def copy(self) -&gt; Rule:
-        &#34;&#34;&#34;
-        Returns an identical copy of that rule.
-
-        Returns:
-            Rule: A new rule object with identical configuration.
-        &#34;&#34;&#34;
-        return Rule(self._if, self._when, self._allow_failure)
-
     def render(self) -&gt; Dict[str, Union[str, bool]]:
-        &#34;&#34;&#34;Return a representation of this Rule object as dictionary with static values.
-
-        The rendered representation is used by the gcip to dump it
-        in YAML format as part of the .gitlab-ci.yml pipeline.
-
-        Returns:
-            Dict[str, Any]: A dictionary representing the rule object in Gitlab CI.
-        &#34;&#34;&#34;
         rendered_rule: Dict[str, Union[str, bool]] = {}
         if self._if:
             rendered_rule.update({&#34;if&#34;: self._if})
@@ -268,73 +129,16 @@ job fail without impacting the rest of the CI suite. Defaults to False.</dd>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="gcip.core.rule.Rule.copy"><code class="name flex">
-<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="gcip.core.rule.Rule" href="#gcip.core.rule.Rule">Rule</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Returns an identical copy of that rule.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code><a title="gcip.core.rule.Rule" href="#gcip.core.rule.Rule">Rule</a></code></dt>
-<dd>A new rule object with identical configuration.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def copy(self) -&gt; Rule:
-    &#34;&#34;&#34;
-    Returns an identical copy of that rule.
-
-    Returns:
-        Rule: A new rule object with identical configuration.
-    &#34;&#34;&#34;
-    return Rule(self._if, self._when, self._allow_failure)</code></pre>
-</details>
-</dd>
 <dt id="gcip.core.rule.Rule.never"><code class="name flex">
 <span>def <span class="ident">never</span></span>(<span>self) ‑> <a title="gcip.core.rule.Rule" href="#gcip.core.rule.Rule">Rule</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>This method returns a copy of this rule with the <code>when</code> attribute set to <code><a title="gcip.core.rule.WhenStatement.NEVER" href="#gcip.core.rule.WhenStatement.NEVER">WhenStatement.NEVER</a></code>.</p>
-<p>This method is intended to be used for predefined rules. For instance you have defined an
-often used rule <code>on_master</code> whose if statement checks if the pipeline is executed on branch
-<code>master</code>. Then you can either run a job, if on master&hellip;</p>
-<pre><code>my_job.append_rules(on_master)
-</code></pre>
-<p>&hellip; or do not run a job if on master&hellip;</p>
-<pre><code>my_job.append_rules(on_master.never())
-</code></pre>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code><a title="gcip.core.rule.Rule" href="#gcip.core.rule.Rule">Rule</a></code></dt>
-<dd>A new rule object with <code>when</code> set to <code><a title="gcip.core.rule.WhenStatement.NEVER" href="#gcip.core.rule.WhenStatement.NEVER">WhenStatement.NEVER</a></code>.</dd>
-</dl></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def never(self) -&gt; Rule:
-    &#34;&#34;&#34;
-    This method returns a copy of this rule with the `when` attribute set to `WhenStatement.NEVER`.
-
-    This method is intended to be used for predefined rules. For instance you have defined an
-    often used rule `on_master` whose if statement checks if the pipeline is executed on branch
-    `master`. Then you can either run a job, if on master...
-
-    ```
-    my_job.append_rules(on_master)
-    ```
-
-    ... or do not run a job if on master...
-
-    ```
-    my_job.append_rules(on_master.never())
-    ```
-
-    Returns:
-        Rule: A new rule object with `when` set to `WhenStatement.NEVER`.
-    &#34;&#34;&#34;
     self._when = WhenStatement.NEVER
     return self</code></pre>
 </details>
@@ -343,27 +147,12 @@ often used rule <code>on_master</code> whose if statement checks if the pipeline
 <span>def <span class="ident">render</span></span>(<span>self) ‑> Dict[str, Union[str, bool]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return a representation of this Rule object as dictionary with static values.</p>
-<p>The rendered representation is used by the gcip to dump it
-in YAML format as part of the .gitlab-ci.yml pipeline.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Dict[str, Any]</code></dt>
-<dd>A dictionary representing the rule object in Gitlab CI.</dd>
-</dl></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def render(self) -&gt; Dict[str, Union[str, bool]]:
-    &#34;&#34;&#34;Return a representation of this Rule object as dictionary with static values.
-
-    The rendered representation is used by the gcip to dump it
-    in YAML format as part of the .gitlab-ci.yml pipeline.
-
-    Returns:
-        Dict[str, Any]: A dictionary representing the rule object in Gitlab CI.
-    &#34;&#34;&#34;
     rendered_rule: Dict[str, Union[str, bool]] = {}
     if self._if:
         rendered_rule.update({&#34;if&#34;: self._if})
@@ -384,14 +173,12 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This enum holds diferent <a href="https://docs.gitlab.com/ee/ci/yaml/#when">when</a> statements for <code><a title="gcip.core.rule.Rule" href="#gcip.core.rule.Rule">Rule</a></code>s.</p></div>
+<div class="desc"><p>An enumeration.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WhenStatement(Enum):
-    &#34;&#34;&#34;This enum holds diferent [when](https://docs.gitlab.com/ee/ci/yaml/#when) statements for `Rule`s.&#34;&#34;&#34;
-
     ALWAYS = &#34;always&#34;
     DELAYED = &#34;delayed&#34;
     MANUAL = &#34;manual&#34;
@@ -450,7 +237,6 @@ in YAML format as part of the .gitlab-ci.yml pipeline.</p>
 <li>
 <h4><code><a title="gcip.core.rule.Rule" href="#gcip.core.rule.Rule">Rule</a></code></h4>
 <ul class="">
-<li><code><a title="gcip.core.rule.Rule.copy" href="#gcip.core.rule.Rule.copy">copy</a></code></li>
 <li><code><a title="gcip.core.rule.Rule.never" href="#gcip.core.rule.Rule.never">never</a></code></li>
 <li><code><a title="gcip.core.rule.Rule.render" href="#gcip.core.rule.Rule.render">render</a></code></li>
 </ul>
