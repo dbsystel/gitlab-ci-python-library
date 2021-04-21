@@ -1,0 +1,4 @@
+trigger:
+  include:
+  - local: Test-File.yml
+stage: trigger_child

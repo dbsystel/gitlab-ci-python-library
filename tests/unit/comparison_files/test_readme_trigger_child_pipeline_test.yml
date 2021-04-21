@@ -1,0 +1,8 @@
+stages:
+- trigger_subpipe
+trigger-subpipe:
+  trigger:
+    include:
+    - local: ./my-subpipe.yml
+    strategy: depend
+  stage: trigger_subpipe

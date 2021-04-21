@@ -1,0 +1,7 @@
+stages:
+- lint
+lint-flake8:
+  stage: lint
+  script:
+  - pip3 install --upgrade flake8
+  - flake8

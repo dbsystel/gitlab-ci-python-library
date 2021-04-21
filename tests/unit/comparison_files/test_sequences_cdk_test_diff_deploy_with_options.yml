@@ -1,0 +1,19 @@
+stages:
+- diff
+- deploy
+diff-cdk:
+  stage: diff
+  script:
+  - cdk synth -s teststack
+  - cdk diff -d teststack
+deploy-cdk:
+  needs:
+  - job: diff-cdk
+    artifacts: true
+  stage: deploy
+  script:
+  - pip3 install gcip
+  - python3 -m gcip.addons.cdk.tools.wait_for_cloudformation_stack_ready --stack-names
+    'teststack'
+  - cdk deploy --strict --require-approval 'never' -e --toolkit-stack-name toolkit-stack
+    teststack

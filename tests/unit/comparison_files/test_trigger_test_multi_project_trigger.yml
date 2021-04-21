@@ -1,0 +1,5 @@
+trigger:
+  project: my/project
+  branch: staging
+  strategy: depend
+stage: trigger_project

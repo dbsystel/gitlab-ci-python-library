@@ -1,0 +1,7 @@
+= gcip Documentation
+:doctype: book
+
+The Gitlab CI Python Library Documentation
+
+* link:./user/index.html[User Documentation]
+* link:./api/index.html[API Reference]

@@ -1,0 +1,23 @@
+*.swp
+.pytest_cache
+.coverage
+cov.xml
+
+build
+dist
+
+*.egg-info
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+.DS_Store
+
+# generated documenation
+*.html
+docs/api
+
+# gcip
+generated-config.yml

@@ -1,0 +1,10 @@
+stages:
+- single_stage
+single-stage-job1:
+  stage: single_stage
+  script:
+  - date
+single-stage-job2:
+  stage: single_stage
+  script:
+  - date

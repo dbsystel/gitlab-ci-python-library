@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/docker-existing-dockerfile
+{
+    "name": "GCIP development env",
+    "image": "python:3.9",
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [
+        "eamodio.gitlens",
+        "ionutvmi.path-autocomplete",
+        "littlefoxteam.vscode-python-test-adapter",
+        "ms-python.vscode-pylance",
+        "njpwerner.autodocstring",
+        "visualstudioexptteam.vscodeintellicode",
+        "yzhang.markdown-all-in-one",
+        "oderwat.indent-rainbow",
+        "usernamehw.errorlens",
+        "ryanluker.vscode-coverage-gutters"
+    ],
+    // Set container ENV variables
+    "remoteEnv": {
+        "EDITOR": "code --wait"
+    },
+    // Run commands after the container is created - for example installing git.
+    "postCreateCommand": "pip install -U -r requirements.txt",
+    // Mount specific files or directories into the container.
+    "mounts": [
+        "type=bind,src=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,dst=/root/.ssh",
+    ]
+}

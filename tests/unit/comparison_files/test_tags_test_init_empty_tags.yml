@@ -1,0 +1,9 @@
+stages:
+- testjob
+testjob:
+  stage: testjob
+  script:
+  - foobar
+  tags:
+  - foo
+  - bar

@@ -1,0 +1,15 @@
+stages:
+- push_container_image
+push-container-image-with-authentication:
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint:
+    - ''
+  stage: push_container_image
+  script:
+  - mkdir -p $HOME/.docker
+  - 'echo "{\"auths\": {\"https://index.docker.io/v1/\": {\"username\": \"$REGISTRY_USERNAME\",
+    \"password\": \"$REGISTRY_PASSWORD\"}}, \"credHelpers\": {\"0132456789.dkr.eu-central-1.amazonaws.com\":
+    \"ecr-login\"}}" > $HOME/.docker/config.json'
+  - crane validate --remote index.docker.io/alpine:3
+  - crane copy index.docker.io/alpine:3 0132456789.dkr.eu-central-1.amazonaws.com/namespace/alpine:3

@@ -1,0 +1,14 @@
+stages:
+- pull
+pull:
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint:
+    - ''
+  stage: pull
+  script:
+  - mkdir -p $HOME/.docker
+  - 'echo "{\"auths\": {\"https://index.docker.io/v1/\": {\"username\": \"$REGISTRY_USERNAME\",
+    \"password\": \"$REGISTRY_PASSWORD\"}}, \"credHelpers\": {\"0132456789.dkr.eu-central-1.amazonaws.com\":
+    \"ecr-login\"}}" > $HOME/.docker/config.json'
+  - crane pull gcr.io/thomass/gcip:main test/foo/bar/thomass_gcip.tar

@@ -1,0 +1,20 @@
+stages:
+- testjob
+- depending_job
+testjob:
+  stage: testjob
+  script:
+  - foobar
+depending-job:
+  needs:
+  - job: job1
+    artifacts: true
+  - job: job2
+    artifacts: true
+    project: foo/bar
+    ref: main
+  - job: testjob
+    artifacts: true
+  stage: depending_job
+  script:
+  - bar

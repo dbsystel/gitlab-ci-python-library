@@ -1,0 +1,15 @@
+stages:
+- check
+check-simple-scan:
+  image:
+    name: aquasec/trivy:latest
+    entrypoint:
+    - ''
+  stage: check
+  script:
+  - set -eo pipefail
+  - trivy image --input /path/to/project/gitlab-ci-project.tar --no-progress --exit-code
+    1 |tee /path/to/project/trivi.txt
+  artifacts:
+    paths:
+    - trivi.txt
